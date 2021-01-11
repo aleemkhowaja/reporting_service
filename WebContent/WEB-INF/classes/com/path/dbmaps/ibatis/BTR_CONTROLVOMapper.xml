@@ -1,0 +1,350 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="BTR_CONTROL" >
+  <resultMap id="BaseResultMap" type="com.path.dbmaps.vo.BTR_CONTROLVO" >
+    <id column="COMP_CODE" property="COMP_CODE" />
+    <result column="CLIENT_CODE" property="CLIENT_CODE" />
+    <result column="CLIENT_BRIEF_DESC" property="CLIENT_BRIEF_DESC" />
+    <result column="NATIONALITY" property="NATIONALITY" />
+    <result column="EMP_BASE_COUNTRY" property="EMP_BASE_COUNTRY" />
+    <result column="USD_CY_CODE" property="USD_CY_CODE" />
+    <result column="CSV_PATH" property="CSV_PATH" />
+    <result column="BANK_ID" property="BANK_ID" />
+    <result column="REPORT_LANG" property="REPORT_LANG" />
+    <result column="BTR_WEEKEND_DAY" property="BTR_WEEKEND_DAY" />
+    <result column="DEF_NOSTRO_GL" property="DEF_NOSTRO_GL" />
+    <result column="RDS_PARENT_REF" property="RDS_PARENT_REF" />
+    <result column="RDS_FOLDER_NAME" property="RDS_FOLDER_NAME" />
+    <result column="SCHED_PATH" property="SCHED_PATH" />
+    <result column="ADD_REF" property="ADD_REF" />
+    <result column="CB_COUNTRY_CODE" property="CB_COUNTRY_CODE" />
+    <result column="TRADE_VALUE" property="TRADE_VALUE" />
+    <result column="CDR_AMT" property="CDR_AMT" />
+    <result column="SITCOM_ENABLE_YN" property="SITCOM_ENABLE_YN" />
+    <result column="SITCOM_LOCATION" property="SITCOM_LOCATION" />
+    <result column="SITCOM_TEXT" property="SITCOM_TEXT" />
+    <result column="DATE_UPDATED" property="DATE_UPDATED" />
+    <result column="ACBRD_AMOUNT" property="ACBRD_AMOUNT" />
+    <result column="ARGUMENTS_ENABLE_YN" property="ARGUMENTS_ENABLE_YN" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    COMP_CODE, CLIENT_CODE, CLIENT_BRIEF_DESC, NATIONALITY, EMP_BASE_COUNTRY, USD_CY_CODE, 
+    CSV_PATH, BANK_ID, REPORT_LANG, BTR_WEEKEND_DAY, DEF_NOSTRO_GL, RDS_PARENT_REF, RDS_FOLDER_NAME, 
+    SCHED_PATH, ADD_REF, CB_COUNTRY_CODE, TRADE_VALUE, CDR_AMT, SITCOM_ENABLE_YN, SITCOM_LOCATION, 
+    SITCOM_TEXT, DATE_UPDATED, ACBRD_AMOUNT, ARGUMENTS_ENABLE_YN
+  </sql>
+  <select id="selectBTR_CONTROL" resultMap="BaseResultMap" parameterType="com.path.dbmaps.vo.BTR_CONTROLVO" >
+    select 
+    <include refid="Base_Column_List" />
+    from BTR_CONTROL
+    where COMP_CODE = #{COMP_CODE}
+  </select>
+  <delete id="deleteBTR_CONTROL" parameterType="com.path.dbmaps.vo.BTR_CONTROLVO" >
+    delete from BTR_CONTROL
+    where COMP_CODE = #{COMP_CODE}
+  </delete>
+  <insert id="insertBTR_CONTROL" parameterType="com.path.dbmaps.vo.BTR_CONTROLVO" >
+    insert into BTR_CONTROL
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="COMP_CODE != null and COMP_CODE != emptyBigDecimalValue" >
+        COMP_CODE,
+      </if>
+      <if test="CLIENT_CODE != null and CLIENT_CODE != emptyBigDecimalValue" >
+        CLIENT_CODE,
+      </if>
+      <if test="CLIENT_BRIEF_DESC != null" >
+        CLIENT_BRIEF_DESC,
+      </if>
+      <if test="NATIONALITY != null and NATIONALITY != emptyBigDecimalValue" >
+        NATIONALITY,
+      </if>
+      <if test="EMP_BASE_COUNTRY != null and EMP_BASE_COUNTRY != emptyBigDecimalValue" >
+        EMP_BASE_COUNTRY,
+      </if>
+      <if test="USD_CY_CODE != null and USD_CY_CODE != emptyBigDecimalValue" >
+        USD_CY_CODE,
+      </if>
+      <if test="CSV_PATH != null" >
+        CSV_PATH,
+      </if>
+      <if test="BANK_ID != null and BANK_ID != emptyBigDecimalValue" >
+        BANK_ID,
+      </if>
+      <if test="REPORT_LANG != null" >
+        REPORT_LANG,
+      </if>
+      <if test="BTR_WEEKEND_DAY != null and BTR_WEEKEND_DAY != emptyBigDecimalValue" >
+        BTR_WEEKEND_DAY,
+      </if>
+      <if test="DEF_NOSTRO_GL != null and DEF_NOSTRO_GL != emptyBigDecimalValue" >
+        DEF_NOSTRO_GL,
+      </if>
+      <if test="RDS_PARENT_REF != null" >
+        RDS_PARENT_REF,
+      </if>
+      <if test="RDS_FOLDER_NAME != null" >
+        RDS_FOLDER_NAME,
+      </if>
+      <if test="SCHED_PATH != null" >
+        SCHED_PATH,
+      </if>
+      <if test="ADD_REF != null" >
+        ADD_REF,
+      </if>
+      <if test="CB_COUNTRY_CODE != null" >
+        CB_COUNTRY_CODE,
+      </if>
+      <if test="TRADE_VALUE != null" >
+        TRADE_VALUE,
+      </if>
+      <if test="CDR_AMT != null and CDR_AMT != emptyBigDecimalValue" >
+        CDR_AMT,
+      </if>
+      <if test="SITCOM_ENABLE_YN != null" >
+        SITCOM_ENABLE_YN,
+      </if>
+      <if test="SITCOM_LOCATION != null" >
+        SITCOM_LOCATION,
+      </if>
+      <if test="SITCOM_TEXT != null" >
+        SITCOM_TEXT,
+      </if>
+      DATE_UPDATED,
+      <if test="ACBRD_AMOUNT != null and ACBRD_AMOUNT != emptyBigDecimalValue" >
+        ACBRD_AMOUNT,
+      </if>
+      <if test="ARGUMENTS_ENABLE_YN != null" >
+        ARGUMENTS_ENABLE_YN,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="COMP_CODE != null and COMP_CODE != emptyBigDecimalValue" >
+        #{COMP_CODE},
+      </if>
+      <if test="CLIENT_CODE != null and CLIENT_CODE != emptyBigDecimalValue" >
+        #{CLIENT_CODE},
+      </if>
+      <if test="CLIENT_BRIEF_DESC != null" >
+        #{CLIENT_BRIEF_DESC},
+      </if>
+      <if test="NATIONALITY != null and NATIONALITY != emptyBigDecimalValue" >
+        #{NATIONALITY},
+      </if>
+      <if test="EMP_BASE_COUNTRY != null and EMP_BASE_COUNTRY != emptyBigDecimalValue" >
+        #{EMP_BASE_COUNTRY},
+      </if>
+      <if test="USD_CY_CODE != null and USD_CY_CODE != emptyBigDecimalValue" >
+        #{USD_CY_CODE},
+      </if>
+      <if test="CSV_PATH != null" >
+        #{CSV_PATH},
+      </if>
+      <if test="BANK_ID != null and BANK_ID != emptyBigDecimalValue" >
+        #{BANK_ID},
+      </if>
+      <if test="REPORT_LANG != null" >
+        #{REPORT_LANG},
+      </if>
+      <if test="BTR_WEEKEND_DAY != null and BTR_WEEKEND_DAY != emptyBigDecimalValue" >
+        #{BTR_WEEKEND_DAY},
+      </if>
+      <if test="DEF_NOSTRO_GL != null and DEF_NOSTRO_GL != emptyBigDecimalValue" >
+        #{DEF_NOSTRO_GL},
+      </if>
+      <if test="RDS_PARENT_REF != null" >
+        #{RDS_PARENT_REF},
+      </if>
+      <if test="RDS_FOLDER_NAME != null" >
+        #{RDS_FOLDER_NAME},
+      </if>
+      <if test="SCHED_PATH != null" >
+        #{SCHED_PATH},
+      </if>
+      <if test="ADD_REF != null" >
+        #{ADD_REF},
+      </if>
+      <if test="CB_COUNTRY_CODE != null" >
+        #{CB_COUNTRY_CODE},
+      </if>
+      <if test="TRADE_VALUE != null" >
+        #{TRADE_VALUE},
+      </if>
+      <if test="CDR_AMT != null and CDR_AMT != emptyBigDecimalValue" >
+        #{CDR_AMT},
+      </if>
+      <if test="SITCOM_ENABLE_YN != null" >
+        #{SITCOM_ENABLE_YN},
+      </if>
+      <if test="SITCOM_LOCATION != null" >
+        #{SITCOM_LOCATION},
+      </if>
+      <if test="SITCOM_TEXT != null" >
+        #{SITCOM_TEXT},
+      </if>
+      <choose >
+        <when test="isSybase == 1" >
+           GETDATE(),
+        </when>
+        <otherwise >
+           SYSDATE,
+        </otherwise>
+      </choose>
+      <if test="ACBRD_AMOUNT != null and ACBRD_AMOUNT != emptyBigDecimalValue" >
+        #{ACBRD_AMOUNT},
+      </if>
+      <if test="ARGUMENTS_ENABLE_YN != null" >
+        #{ARGUMENTS_ENABLE_YN},
+      </if>
+    </trim>
+  </insert>
+  <sql id="sql_updateBTR_CONTROL" >
+    update BTR_CONTROL
+    <set >
+      <if test="CLIENT_CODE != null" >
+        <choose >
+          <when test="CLIENT_CODE == emptyBigDecimalValue" >
+            CLIENT_CODE = NULL ,
+          </when>
+          <otherwise >
+            CLIENT_CODE = #{CLIENT_CODE},
+          </otherwise>
+        </choose>
+      </if>
+      <if test="CLIENT_BRIEF_DESC != null" >
+        CLIENT_BRIEF_DESC = #{CLIENT_BRIEF_DESC},
+      </if>
+      <if test="NATIONALITY != null" >
+        <choose >
+          <when test="NATIONALITY == emptyBigDecimalValue" >
+            NATIONALITY = NULL ,
+          </when>
+          <otherwise >
+            NATIONALITY = #{NATIONALITY},
+          </otherwise>
+        </choose>
+      </if>
+      <if test="EMP_BASE_COUNTRY != null" >
+        <choose >
+          <when test="EMP_BASE_COUNTRY == emptyBigDecimalValue" >
+            EMP_BASE_COUNTRY = NULL ,
+          </when>
+          <otherwise >
+            EMP_BASE_COUNTRY = #{EMP_BASE_COUNTRY},
+          </otherwise>
+        </choose>
+      </if>
+      <if test="USD_CY_CODE != null" >
+        <choose >
+          <when test="USD_CY_CODE == emptyBigDecimalValue" >
+            USD_CY_CODE = NULL ,
+          </when>
+          <otherwise >
+            USD_CY_CODE = #{USD_CY_CODE},
+          </otherwise>
+        </choose>
+      </if>
+      <if test="CSV_PATH != null" >
+        CSV_PATH = #{CSV_PATH},
+      </if>
+      <if test="BANK_ID != null" >
+        <choose >
+          <when test="BANK_ID == emptyBigDecimalValue" >
+            BANK_ID = NULL ,
+          </when>
+          <otherwise >
+            BANK_ID = #{BANK_ID},
+          </otherwise>
+        </choose>
+      </if>
+      <if test="REPORT_LANG != null" >
+        REPORT_LANG = #{REPORT_LANG},
+      </if>
+      <if test="BTR_WEEKEND_DAY != null" >
+        <choose >
+          <when test="BTR_WEEKEND_DAY == emptyBigDecimalValue" >
+            BTR_WEEKEND_DAY = NULL ,
+          </when>
+          <otherwise >
+            BTR_WEEKEND_DAY = #{BTR_WEEKEND_DAY},
+          </otherwise>
+        </choose>
+      </if>
+      <if test="DEF_NOSTRO_GL != null" >
+        <choose >
+          <when test="DEF_NOSTRO_GL == emptyBigDecimalValue" >
+            DEF_NOSTRO_GL = NULL ,
+          </when>
+          <otherwise >
+            DEF_NOSTRO_GL = #{DEF_NOSTRO_GL},
+          </otherwise>
+        </choose>
+      </if>
+      <if test="RDS_PARENT_REF != null" >
+        RDS_PARENT_REF = #{RDS_PARENT_REF},
+      </if>
+      <if test="RDS_FOLDER_NAME != null" >
+        RDS_FOLDER_NAME = #{RDS_FOLDER_NAME},
+      </if>
+      <if test="SCHED_PATH != null" >
+        SCHED_PATH = #{SCHED_PATH},
+      </if>
+      <if test="ADD_REF != null" >
+        ADD_REF = #{ADD_REF},
+      </if>
+      <if test="CB_COUNTRY_CODE != null" >
+        CB_COUNTRY_CODE = #{CB_COUNTRY_CODE},
+      </if>
+      <if test="TRADE_VALUE != null" >
+        TRADE_VALUE = #{TRADE_VALUE},
+      </if>
+      <if test="CDR_AMT != null" >
+        <choose >
+          <when test="CDR_AMT == emptyBigDecimalValue" >
+            CDR_AMT = NULL ,
+          </when>
+          <otherwise >
+            CDR_AMT = #{CDR_AMT},
+          </otherwise>
+        </choose>
+      </if>
+      <if test="SITCOM_ENABLE_YN != null" >
+        SITCOM_ENABLE_YN = #{SITCOM_ENABLE_YN},
+      </if>
+      <if test="SITCOM_LOCATION != null" >
+        SITCOM_LOCATION = #{SITCOM_LOCATION},
+      </if>
+      <if test="SITCOM_TEXT != null" >
+        SITCOM_TEXT = #{SITCOM_TEXT},
+      </if>
+      DATE_UPDATED = 
+      <choose >
+        <when test="isSybase == 1" >
+           GETDATE(),
+        </when>
+        <otherwise >
+           SYSDATE,
+        </otherwise>
+      </choose>
+      <if test="ACBRD_AMOUNT != null" >
+        <choose >
+          <when test="ACBRD_AMOUNT == emptyBigDecimalValue" >
+            ACBRD_AMOUNT = NULL ,
+          </when>
+          <otherwise >
+            ACBRD_AMOUNT = #{ACBRD_AMOUNT},
+          </otherwise>
+        </choose>
+      </if>
+      <if test="ARGUMENTS_ENABLE_YN != null" >
+        ARGUMENTS_ENABLE_YN = #{ARGUMENTS_ENABLE_YN},
+      </if>
+    </set>
+    where COMP_CODE = #{COMP_CODE}
+  </sql>
+  <update id="updateBTR_CONTROL" parameterType="com.path.dbmaps.vo.BTR_CONTROLVO" >
+    <include refid="sql_updateBTR_CONTROL" />
+    <if test="DATE_UPDATED != null" >
+      AND DATE_UPDATED = #{DATE_UPDATED}
+    </if>
+  </update>
+</mapper>

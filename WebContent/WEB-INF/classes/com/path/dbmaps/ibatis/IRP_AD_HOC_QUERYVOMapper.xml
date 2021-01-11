@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="IRP_AD_HOC_QUERY" >
+  <resultMap id="BaseResultMap" type="com.path.dbmaps.vo.IRP_AD_HOC_QUERYVO" >
+    <id column="QUERY_ID" property="QUERY_ID" />
+    <result column="QUERY_NAME" property="QUERY_NAME" />
+    <result column="DATE_UPDATED" property="DATE_UPDATED" />
+    <result column="CONN_ID" property="CONN_ID" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.path.dbmaps.vo.IRP_AD_HOC_QUERYVO" extends="BaseResultMap" >
+    <result column="QUERY_OBJECT" property="QUERY_OBJECT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    QUERY_ID, QUERY_NAME, DATE_UPDATED, CONN_ID
+  </sql>
+  <sql id="Blob_Column_List" >
+    QUERY_OBJECT
+  </sql>
+  <select id="selectIRP_AD_HOC_QUERY" resultMap="ResultMapWithBLOBs" parameterType="com.path.dbmaps.vo.IRP_AD_HOC_QUERYVO" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from IRP_AD_HOC_QUERY
+    where QUERY_ID = #{QUERY_ID}
+  </select>
+  <delete id="deleteIRP_AD_HOC_QUERY" parameterType="com.path.dbmaps.vo.IRP_AD_HOC_QUERYVO" >
+    delete from IRP_AD_HOC_QUERY
+    where QUERY_ID = #{QUERY_ID}
+  </delete>
+  <insert id="insertIRP_AD_HOC_QUERY" parameterType="com.path.dbmaps.vo.IRP_AD_HOC_QUERYVO" >
+    insert into IRP_AD_HOC_QUERY
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="QUERY_ID != null and QUERY_ID != emptyBigDecimalValue" >
+        QUERY_ID,
+      </if>
+      <if test="QUERY_NAME != null and !&quot;&quot;.equals(QUERY_NAME)" >
+        QUERY_NAME,
+      </if>
+      DATE_UPDATED,
+      <if test="CONN_ID != null and CONN_ID != emptyBigDecimalValue" >
+        CONN_ID,
+      </if>
+      <if test="QUERY_OBJECT != null" >
+        QUERY_OBJECT,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="QUERY_ID != null and QUERY_ID != emptyBigDecimalValue" >
+        #{QUERY_ID},
+      </if>
+      <if test="QUERY_NAME != null and !&quot;&quot;.equals(QUERY_NAME)" >
+        #{QUERY_NAME},
+      </if>
+      <choose >
+        <when test="isSybase == 1" >
+           GETDATE(),
+        </when>
+        <otherwise >
+           SYSDATE,
+        </otherwise>
+      </choose>
+      <if test="CONN_ID != null and CONN_ID != emptyBigDecimalValue" >
+        #{CONN_ID},
+      </if>
+      <if test="QUERY_OBJECT != null" >
+        #{QUERY_OBJECT},
+      </if>
+    </trim>
+  </insert>
+  <sql id="sql_updateIRP_AD_HOC_QUERY" >
+    update IRP_AD_HOC_QUERY
+    <set >
+      <if test="QUERY_NAME != null" >
+        <choose >
+          <when test="QUERY_NAME.equals(&quot;&quot;)" >
+            QUERY_NAME = NULL ,
+          </when>
+          <otherwise >
+            QUERY_NAME = #{QUERY_NAME},
+          </otherwise>
+        </choose>
+      </if>
+      DATE_UPDATED = 
+      <choose >
+        <when test="isSybase == 1" >
+           GETDATE(),
+        </when>
+        <otherwise >
+           SYSDATE,
+        </otherwise>
+      </choose>
+      <if test="CONN_ID != null" >
+        <choose >
+          <when test="CONN_ID == emptyBigDecimalValue" >
+            CONN_ID = NULL ,
+          </when>
+          <otherwise >
+            CONN_ID = #{CONN_ID},
+          </otherwise>
+        </choose>
+      </if>
+      <if test="QUERY_OBJECT != null" >
+        QUERY_OBJECT = #{QUERY_OBJECT},
+      </if>
+    </set>
+    where QUERY_ID = #{QUERY_ID}
+  </sql>
+  <update id="updateIRP_AD_HOC_QUERY" parameterType="com.path.dbmaps.vo.IRP_AD_HOC_QUERYVO" >
+    <include refid="sql_updateIRP_AD_HOC_QUERY" />
+    <if test="DATE_UPDATED != null" >
+      AND DATE_UPDATED = #{DATE_UPDATED}
+    </if>
+  </update>
+</mapper>

@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="IRP_MAIL_SERVER_CONFIG" >
+  <resultMap id="BaseResultMap" type="com.path.dbmaps.vo.IRP_MAIL_SERVER_CONFIGVO" >
+    <id column="MAIL_SERVER_CODE" property="MAIL_SERVER_CODE" />
+    <result column="HOST" property="HOST" />
+    <result column="PORT" property="PORT" />
+    <result column="SERVER_USER_NAME" property="SERVER_USER_NAME" />
+    <result column="SERVER_PASS" property="SERVER_PASS" />
+    <result column="MAIL_FROM" property="MAIL_FROM" />
+    <result column="DATE_UPDATED" property="DATE_UPDATED" />
+    <result column="SSL_ENABLE_YN" property="SSL_ENABLE_YN" />
+    <result column="SSL_PORT_NBR" property="SSL_PORT_NBR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    MAIL_SERVER_CODE, HOST, PORT, SERVER_USER_NAME, SERVER_PASS, MAIL_FROM, DATE_UPDATED, 
+    SSL_ENABLE_YN, SSL_PORT_NBR
+  </sql>
+  <select id="selectIRP_MAIL_SERVER_CONFIG" resultMap="BaseResultMap" parameterType="com.path.dbmaps.vo.IRP_MAIL_SERVER_CONFIGVO" >
+    select 
+    <include refid="Base_Column_List" />
+    from IRP_MAIL_SERVER_CONFIG
+    where MAIL_SERVER_CODE = #{MAIL_SERVER_CODE}
+  </select>
+  <delete id="deleteIRP_MAIL_SERVER_CONFIG" parameterType="com.path.dbmaps.vo.IRP_MAIL_SERVER_CONFIGVO" >
+    delete from IRP_MAIL_SERVER_CONFIG
+    where MAIL_SERVER_CODE = #{MAIL_SERVER_CODE}
+  </delete>
+  <insert id="insertIRP_MAIL_SERVER_CONFIG" parameterType="com.path.dbmaps.vo.IRP_MAIL_SERVER_CONFIGVO" >
+    insert into IRP_MAIL_SERVER_CONFIG
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="MAIL_SERVER_CODE != null and MAIL_SERVER_CODE != emptyBigDecimalValue" >
+        MAIL_SERVER_CODE,
+      </if>
+      <if test="HOST != null" >
+        HOST,
+      </if>
+      <if test="PORT != null and PORT != emptyBigDecimalValue" >
+        PORT,
+      </if>
+      <if test="SERVER_USER_NAME != null" >
+        SERVER_USER_NAME,
+      </if>
+      <if test="SERVER_PASS != null" >
+        SERVER_PASS,
+      </if>
+      <if test="MAIL_FROM != null" >
+        MAIL_FROM,
+      </if>
+      DATE_UPDATED,
+      <if test="SSL_ENABLE_YN != null and SSL_ENABLE_YN != emptyBigDecimalValue" >
+        SSL_ENABLE_YN,
+      </if>
+      <if test="SSL_PORT_NBR != null and SSL_PORT_NBR != emptyBigDecimalValue" >
+        SSL_PORT_NBR,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="MAIL_SERVER_CODE != null and MAIL_SERVER_CODE != emptyBigDecimalValue" >
+        #{MAIL_SERVER_CODE},
+      </if>
+      <if test="HOST != null" >
+        #{HOST},
+      </if>
+      <if test="PORT != null and PORT != emptyBigDecimalValue" >
+        #{PORT},
+      </if>
+      <if test="SERVER_USER_NAME != null" >
+        #{SERVER_USER_NAME},
+      </if>
+      <if test="SERVER_PASS != null" >
+        #{SERVER_PASS},
+      </if>
+      <if test="MAIL_FROM != null" >
+        #{MAIL_FROM},
+      </if>
+      <choose >
+        <when test="isSybase == 1" >
+           GETDATE(),
+        </when>
+        <otherwise >
+           SYSDATE,
+        </otherwise>
+      </choose>
+      <if test="SSL_ENABLE_YN != null and SSL_ENABLE_YN != emptyBigDecimalValue" >
+        #{SSL_ENABLE_YN},
+      </if>
+      <if test="SSL_PORT_NBR != null and SSL_PORT_NBR != emptyBigDecimalValue" >
+        #{SSL_PORT_NBR},
+      </if>
+    </trim>
+  </insert>
+  <sql id="sql_updateIRP_MAIL_SERVER_CONFIG" >
+    update IRP_MAIL_SERVER_CONFIG
+    <set >
+      <if test="HOST != null" >
+        HOST = #{HOST},
+      </if>
+      <if test="PORT != null" >
+        <choose >
+          <when test="PORT == emptyBigDecimalValue" >
+            PORT = NULL ,
+          </when>
+          <otherwise >
+            PORT = #{PORT},
+          </otherwise>
+        </choose>
+      </if>
+      <if test="SERVER_USER_NAME != null" >
+        SERVER_USER_NAME = #{SERVER_USER_NAME},
+      </if>
+      <if test="SERVER_PASS != null" >
+        SERVER_PASS = #{SERVER_PASS},
+      </if>
+      <if test="MAIL_FROM != null" >
+        MAIL_FROM = #{MAIL_FROM},
+      </if>
+      DATE_UPDATED = 
+      <choose >
+        <when test="isSybase == 1" >
+           GETDATE(),
+        </when>
+        <otherwise >
+           SYSDATE,
+        </otherwise>
+      </choose>
+      <if test="SSL_ENABLE_YN != null" >
+        <choose >
+          <when test="SSL_ENABLE_YN == emptyBigDecimalValue" >
+            SSL_ENABLE_YN = NULL ,
+          </when>
+          <otherwise >
+            SSL_ENABLE_YN = #{SSL_ENABLE_YN},
+          </otherwise>
+        </choose>
+      </if>
+      <if test="SSL_PORT_NBR != null" >
+        <choose >
+          <when test="SSL_PORT_NBR == emptyBigDecimalValue" >
+            SSL_PORT_NBR = NULL ,
+          </when>
+          <otherwise >
+            SSL_PORT_NBR = #{SSL_PORT_NBR},
+          </otherwise>
+        </choose>
+      </if>
+    </set>
+    where MAIL_SERVER_CODE = #{MAIL_SERVER_CODE}
+  </sql>
+  <update id="updateIRP_MAIL_SERVER_CONFIG" parameterType="com.path.dbmaps.vo.IRP_MAIL_SERVER_CONFIGVO" >
+    <include refid="sql_updateIRP_MAIL_SERVER_CONFIG" />
+    <if test="DATE_UPDATED != null" >
+      AND DATE_UPDATED = #{DATE_UPDATED}
+    </if>
+  </update>
+</mapper>

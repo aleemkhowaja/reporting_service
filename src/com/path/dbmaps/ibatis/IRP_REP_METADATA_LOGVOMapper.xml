@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="IRP_REP_METADATA_LOG" >
+  <resultMap id="BaseResultMap" type="com.path.dbmaps.vo.IRP_REP_METADATA_LOGVO" >
+    <id column="LOG_ID" property="LOG_ID" />
+    <result column="REPORT_ID" property="REPORT_ID" />
+    <result column="REP_FILE_NAME" property="REP_FILE_NAME" />
+    <result column="LOG_DATE" property="LOG_DATE" />
+    <result column="PROG_REF" property="PROG_REF" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.path.dbmaps.vo.IRP_REP_METADATA_LOGVO" extends="BaseResultMap" >
+    <result column="REPORT_ARGUMENTS" property="REPORT_ARGUMENTS" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    LOG_ID, REPORT_ID, REP_FILE_NAME, LOG_DATE, PROG_REF
+  </sql>
+  <sql id="Blob_Column_List" >
+    REPORT_ARGUMENTS
+  </sql>
+  <select id="selectIRP_REP_METADATA_LOG" resultMap="ResultMapWithBLOBs" parameterType="com.path.dbmaps.vo.IRP_REP_METADATA_LOGVO" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from IRP_REP_METADATA_LOG
+    where LOG_ID = #{LOG_ID}
+  </select>
+  <delete id="deleteIRP_REP_METADATA_LOG" parameterType="com.path.dbmaps.vo.IRP_REP_METADATA_LOGVO" >
+    delete from IRP_REP_METADATA_LOG
+    where LOG_ID = #{LOG_ID}
+  </delete>
+  <insert id="insertIRP_REP_METADATA_LOG" parameterType="com.path.dbmaps.vo.IRP_REP_METADATA_LOGVO" >
+    insert into IRP_REP_METADATA_LOG
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="LOG_ID != null and LOG_ID != emptyBigDecimalValue" >
+        LOG_ID,
+      </if>
+      <if test="REPORT_ID != null and REPORT_ID != emptyBigDecimalValue" >
+        REPORT_ID,
+      </if>
+      <if test="REP_FILE_NAME != null" >
+        REP_FILE_NAME,
+      </if>
+      <if test="LOG_DATE != null" >
+        LOG_DATE,
+      </if>
+      <if test="PROG_REF != null" >
+        PROG_REF,
+      </if>
+      <if test="REPORT_ARGUMENTS != null" >
+        REPORT_ARGUMENTS,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="LOG_ID != null and LOG_ID != emptyBigDecimalValue" >
+        #{LOG_ID},
+      </if>
+      <if test="REPORT_ID != null and REPORT_ID != emptyBigDecimalValue" >
+        #{REPORT_ID},
+      </if>
+      <if test="REP_FILE_NAME != null" >
+        #{REP_FILE_NAME},
+      </if>
+      <if test="LOG_DATE != null" >
+        #{LOG_DATE},
+      </if>
+      <if test="PROG_REF != null" >
+        #{PROG_REF},
+      </if>
+      <if test="REPORT_ARGUMENTS != null" >
+        #{REPORT_ARGUMENTS},
+      </if>
+    </trim>
+  </insert>
+  <sql id="sql_updateIRP_REP_METADATA_LOG" >
+    update IRP_REP_METADATA_LOG
+    <set >
+      <if test="REPORT_ID != null" >
+        <choose >
+          <when test="REPORT_ID == emptyBigDecimalValue" >
+            REPORT_ID = NULL ,
+          </when>
+          <otherwise >
+            REPORT_ID = #{REPORT_ID},
+          </otherwise>
+        </choose>
+      </if>
+      <if test="REP_FILE_NAME != null" >
+        REP_FILE_NAME = #{REP_FILE_NAME},
+      </if>
+      <if test="LOG_DATE != null" >
+        LOG_DATE = #{LOG_DATE},
+      </if>
+      <if test="PROG_REF != null" >
+        PROG_REF = #{PROG_REF},
+      </if>
+      <if test="REPORT_ARGUMENTS != null" >
+        REPORT_ARGUMENTS = #{REPORT_ARGUMENTS},
+      </if>
+    </set>
+    where LOG_ID = #{LOG_ID}
+  </sql>
+  <update id="updateIRP_REP_METADATA_LOG" parameterType="com.path.dbmaps.vo.IRP_REP_METADATA_LOGVO" >
+    <include refid="sql_updateIRP_REP_METADATA_LOG" />
+  </update>
+</mapper>

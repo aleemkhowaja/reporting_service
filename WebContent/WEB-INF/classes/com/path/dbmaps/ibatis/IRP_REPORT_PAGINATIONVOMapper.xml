@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="IRP_REPORT_PAGINATION" >
+  <resultMap id="BaseResultMap" type="com.path.dbmaps.vo.IRP_REPORT_PAGINATIONVOKey" >
+    <id column="APP_NAME" property="APP_NAME" />
+    <id column="FROM_PAGE" property="FROM_PAGE" />
+    <id column="PAGE_COUNTER" property="PAGE_COUNTER" />
+    <id column="PROG_REF" property="PROG_REF" />
+    <id column="TO_PAGE" property="TO_PAGE" />
+    <id column="USER_ID" property="USER_ID" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.path.dbmaps.vo.IRP_REPORT_PAGINATIONVOWithBLOBs" extends="BaseResultMap" >
+    <result column="REPORT_CONTENT" property="REPORT_CONTENT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    APP_NAME, FROM_PAGE, PAGE_COUNTER, PROG_REF, TO_PAGE, USER_ID
+  </sql>
+  <sql id="Blob_Column_List" >
+    REPORT_CONTENT
+  </sql>
+  <select id="selectIRP_REPORT_PAGINATION" resultMap="ResultMapWithBLOBs" parameterType="com.path.dbmaps.vo.IRP_REPORT_PAGINATIONVOKey" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from IRP_REPORT_PAGINATION
+    where APP_NAME = #{APP_NAME}
+      and FROM_PAGE = #{FROM_PAGE}
+      and PAGE_COUNTER = #{PAGE_COUNTER}
+      and PROG_REF = #{PROG_REF}
+      and TO_PAGE = #{TO_PAGE}
+      and USER_ID = #{USER_ID}
+  </select>
+  <delete id="deleteIRP_REPORT_PAGINATION" parameterType="com.path.dbmaps.vo.IRP_REPORT_PAGINATIONVOKey" >
+    delete from IRP_REPORT_PAGINATION
+    where APP_NAME = #{APP_NAME}
+      and FROM_PAGE = #{FROM_PAGE}
+      and PAGE_COUNTER = #{PAGE_COUNTER}
+      and PROG_REF = #{PROG_REF}
+      and TO_PAGE = #{TO_PAGE}
+      and USER_ID = #{USER_ID}
+  </delete>
+  <insert id="insertIRP_REPORT_PAGINATION" parameterType="com.path.dbmaps.vo.IRP_REPORT_PAGINATIONVOWithBLOBs" >
+    insert into IRP_REPORT_PAGINATION
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="APP_NAME != null and !&quot;&quot;.equals(APP_NAME)" >
+        APP_NAME,
+      </if>
+      <if test="FROM_PAGE != null and FROM_PAGE != emptyBigDecimalValue" >
+        FROM_PAGE,
+      </if>
+      <if test="PAGE_COUNTER != null and PAGE_COUNTER != emptyBigDecimalValue" >
+        PAGE_COUNTER,
+      </if>
+      <if test="PROG_REF != null and !&quot;&quot;.equals(PROG_REF)" >
+        PROG_REF,
+      </if>
+      <if test="TO_PAGE != null and TO_PAGE != emptyBigDecimalValue" >
+        TO_PAGE,
+      </if>
+      <if test="USER_ID != null and !&quot;&quot;.equals(USER_ID)" >
+        USER_ID,
+      </if>
+      <if test="REPORT_CONTENT != null" >
+        REPORT_CONTENT,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="APP_NAME != null and !&quot;&quot;.equals(APP_NAME)" >
+        #{APP_NAME},
+      </if>
+      <if test="FROM_PAGE != null and FROM_PAGE != emptyBigDecimalValue" >
+        #{FROM_PAGE},
+      </if>
+      <if test="PAGE_COUNTER != null and PAGE_COUNTER != emptyBigDecimalValue" >
+        #{PAGE_COUNTER},
+      </if>
+      <if test="PROG_REF != null and !&quot;&quot;.equals(PROG_REF)" >
+        #{PROG_REF},
+      </if>
+      <if test="TO_PAGE != null and TO_PAGE != emptyBigDecimalValue" >
+        #{TO_PAGE},
+      </if>
+      <if test="USER_ID != null and !&quot;&quot;.equals(USER_ID)" >
+        #{USER_ID},
+      </if>
+      <if test="REPORT_CONTENT != null" >
+        #{REPORT_CONTENT},
+      </if>
+    </trim>
+  </insert>
+  <sql id="sql_updateIRP_REPORT_PAGINATION" >
+    update IRP_REPORT_PAGINATION
+    <set >
+      <if test="REPORT_CONTENT != null" >
+        REPORT_CONTENT = #{REPORT_CONTENT},
+      </if>
+    </set>
+    where APP_NAME = #{APP_NAME}
+      and FROM_PAGE = #{FROM_PAGE}
+      and PAGE_COUNTER = #{PAGE_COUNTER}
+      and PROG_REF = #{PROG_REF}
+      and TO_PAGE = #{TO_PAGE}
+      and USER_ID = #{USER_ID}
+  </sql>
+  <update id="updateIRP_REPORT_PAGINATION" parameterType="com.path.dbmaps.vo.IRP_REPORT_PAGINATIONVOWithBLOBs" >
+    <include refid="sql_updateIRP_REPORT_PAGINATION" />
+  </update>
+</mapper>

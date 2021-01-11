@@ -1,0 +1,540 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="IRP_AD_HOC_REPORT" >
+  <resultMap id="BaseResultMap" type="com.path.dbmaps.vo.IRP_AD_HOC_REPORTVO" >
+    <id column="REPORT_ID" property="REPORT_ID" />
+    <result column="REPORT_NAME" property="REPORT_NAME" />
+    <result column="PROG_REF" property="PROG_REF" />
+    <result column="CREATED_BY" property="CREATED_BY" />
+    <result column="DATE_CREATED" property="DATE_CREATED" />
+    <result column="MODIFIED_BY" property="MODIFIED_BY" />
+    <result column="DATE_MODIFIED" property="DATE_MODIFIED" />
+    <result column="DOWNLOADABLE_FLAG" property="DOWNLOADABLE_FLAG" />
+    <result column="EDITABLE_FLAG" property="EDITABLE_FLAG" />
+    <result column="REP_FLAG" property="REP_FLAG" />
+    <result column="CONN_ID" property="CONN_ID" />
+    <result column="DEFAULT_FORMAT" property="DEFAULT_FORMAT" />
+    <result column="APP_NAME" property="APP_NAME" />
+    <result column="OLD_REPORT_ID" property="OLD_REPORT_ID" />
+    <result column="DATE_UPDATED" property="DATE_UPDATED" />
+    <result column="BRANCH_CODE" property="BRANCH_CODE" />
+    <result column="COMP_CODE" property="COMP_CODE" />
+    <result column="CSV_SEPARATOR" property="CSV_SEPARATOR" />
+    <result column="SHOW_HEAD_FOOT" property="SHOW_HEAD_FOOT" />
+    <result column="REPORT_TYPE" property="REPORT_TYPE" />
+    <result column="WHEN_NO_DATA" property="WHEN_NO_DATA" />
+    <result column="LANG_INDEPENDENT_YN" property="LANG_INDEPENDENT_YN" />
+    <result column="MAIL_SERVER_CODE" property="MAIL_SERVER_CODE" />
+    <result column="REPORT_VERSION" property="REPORT_VERSION" />
+    <result column="VERSION_DATE" property="VERSION_DATE" />
+    <result column="REPORT_MODIFIED_YN" property="REPORT_MODIFIED_YN" />
+    <result column="NBR_DISPLAYED_ARG_PER_ROW" property="NBR_DISPLAYED_ARG_PER_ROW" />
+    <result column="GENERATED_FILE_NAME" property="GENERATED_FILE_NAME" />
+    <result column="METADATA_REPORT_ID" property="METADATA_REPORT_ID" />
+    <result column="METADATA_REPORT_EXT" property="METADATA_REPORT_EXT" />
+    <result column="METADATA_GENERATED_LOCATION" property="METADATA_GENERATED_LOCATION" />
+    <result column="CIF_AUDIT_YN" property="CIF_AUDIT_YN" />
+    <result column="EXEC_PRC_ON_RETRIEVE_YN" property="EXEC_PRC_ON_RETRIEVE_YN" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.path.dbmaps.vo.IRP_AD_HOC_REPORTVO" extends="BaseResultMap" >
+    <result column="XHTML_FILE" property="XHTML_FILE" />
+    <result column="JRXML_FILE" property="JRXML_FILE" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    REPORT_ID, REPORT_NAME, PROG_REF, CREATED_BY, DATE_CREATED, MODIFIED_BY, DATE_MODIFIED, 
+    DOWNLOADABLE_FLAG, EDITABLE_FLAG, REP_FLAG, CONN_ID, DEFAULT_FORMAT, APP_NAME, OLD_REPORT_ID, 
+    DATE_UPDATED, BRANCH_CODE, COMP_CODE, CSV_SEPARATOR, SHOW_HEAD_FOOT, REPORT_TYPE, 
+    WHEN_NO_DATA, LANG_INDEPENDENT_YN, MAIL_SERVER_CODE, REPORT_VERSION, VERSION_DATE, 
+    REPORT_MODIFIED_YN, NBR_DISPLAYED_ARG_PER_ROW, GENERATED_FILE_NAME, METADATA_REPORT_ID, 
+    METADATA_REPORT_EXT, METADATA_GENERATED_LOCATION, CIF_AUDIT_YN,EXEC_PRC_ON_RETRIEVE_YN
+  </sql>
+  <sql id="Blob_Column_List" >
+    XHTML_FILE, JRXML_FILE
+  </sql>
+  <select id="selectIRP_AD_HOC_REPORT" resultMap="ResultMapWithBLOBs" parameterType="com.path.dbmaps.vo.IRP_AD_HOC_REPORTVO" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from IRP_AD_HOC_REPORT
+    where REPORT_ID = #{REPORT_ID}
+  </select>
+  <delete id="deleteIRP_AD_HOC_REPORT" parameterType="com.path.dbmaps.vo.IRP_AD_HOC_REPORTVO" >
+    delete from IRP_AD_HOC_REPORT
+    where REPORT_ID = #{REPORT_ID}
+  </delete>
+  <insert id="insertIRP_AD_HOC_REPORT" parameterType="com.path.dbmaps.vo.IRP_AD_HOC_REPORTVO" >
+    insert into IRP_AD_HOC_REPORT
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="REPORT_ID != null and REPORT_ID != emptyBigDecimalValue" >
+        REPORT_ID,
+      </if>
+      <if test="REPORT_NAME != null" >
+        REPORT_NAME,
+      </if>
+      <if test="PROG_REF != null" >
+        PROG_REF,
+      </if>
+      <if test="CREATED_BY != null and !&quot;&quot;.equals(CREATED_BY)" >
+        CREATED_BY,
+      </if>
+      <if test="DATE_CREATED != null" >
+        DATE_CREATED,
+      </if>
+      <if test="MODIFIED_BY != null and !&quot;&quot;.equals(MODIFIED_BY)" >
+        MODIFIED_BY,
+      </if>
+      <if test="DATE_MODIFIED != null" >
+        DATE_MODIFIED,
+      </if>
+      <if test="DOWNLOADABLE_FLAG != null and DOWNLOADABLE_FLAG != emptyBigDecimalValue" >
+        DOWNLOADABLE_FLAG,
+      </if>
+      <if test="EDITABLE_FLAG != null and EDITABLE_FLAG != emptyBigDecimalValue" >
+        EDITABLE_FLAG,
+      </if>
+      <if test="REP_FLAG != null and REP_FLAG != emptyBigDecimalValue" >
+        REP_FLAG,
+      </if>
+      <if test="CONN_ID != null and CONN_ID != emptyBigDecimalValue" >
+        CONN_ID,
+      </if>
+      <if test="DEFAULT_FORMAT != null" >
+        DEFAULT_FORMAT,
+      </if>
+      <if test="APP_NAME != null and !&quot;&quot;.equals(APP_NAME)" >
+        APP_NAME,
+      </if>
+      <if test="OLD_REPORT_ID != null and OLD_REPORT_ID != emptyBigDecimalValue" >
+        OLD_REPORT_ID,
+      </if>
+      DATE_UPDATED,
+      <if test="BRANCH_CODE != null and BRANCH_CODE != emptyBigDecimalValue" >
+        BRANCH_CODE,
+      </if>
+      <if test="COMP_CODE != null and COMP_CODE != emptyBigDecimalValue" >
+        COMP_CODE,
+      </if>
+      <if test="CSV_SEPARATOR != null and !&quot;&quot;.equals(CSV_SEPARATOR)" >
+        CSV_SEPARATOR,
+      </if>
+      <if test="SHOW_HEAD_FOOT != null and !&quot;&quot;.equals(SHOW_HEAD_FOOT)" >
+        SHOW_HEAD_FOOT,
+      </if>
+      <if test="REPORT_TYPE != null" >
+        REPORT_TYPE,
+      </if>
+      <if test="WHEN_NO_DATA != null" >
+        WHEN_NO_DATA,
+      </if>
+      <if test="LANG_INDEPENDENT_YN != null" >
+        LANG_INDEPENDENT_YN,
+      </if>
+      <if test="NBR_DISPLAYED_ARG_PER_ROW != null and NBR_DISPLAYED_ARG_PER_ROW != emptyBigDecimalValue" >
+        NBR_DISPLAYED_ARG_PER_ROW,
+      </if>
+      <if test="GENERATED_FILE_NAME != null and !&quot;&quot;.equals(GENERATED_FILE_NAME)" >
+        GENERATED_FILE_NAME,
+      </if>
+      <if test="MAIL_SERVER_CODE != null and MAIL_SERVER_CODE != emptyBigDecimalValue" >
+        MAIL_SERVER_CODE,
+      </if>
+      <if test="REPORT_VERSION != null" >
+        REPORT_VERSION,
+      </if>
+      <if test="VERSION_DATE != null" >
+        VERSION_DATE,
+      </if>
+      <if test="REPORT_MODIFIED_YN != null" >
+        REPORT_MODIFIED_YN,
+      </if>
+      <if test="METADATA_REPORT_ID != null and METADATA_REPORT_ID != emptyBigDecimalValue" >
+        METADATA_REPORT_ID,
+      </if>
+      <if test="METADATA_REPORT_EXT != null and !&quot;&quot;.equals(METADATA_REPORT_EXT)" >
+        METADATA_REPORT_EXT,
+      </if>
+      <if test="METADATA_GENERATED_LOCATION != null and !&quot;&quot;.equals(METADATA_GENERATED_LOCATION)" >
+        METADATA_GENERATED_LOCATION,
+      </if>
+      <if test="XHTML_FILE != null" >
+        XHTML_FILE,
+      </if>
+      <if test="JRXML_FILE != null" >
+        JRXML_FILE,
+      </if>
+      <if test="CIF_AUDIT_YN != null and CIF_AUDIT_YN != emptyBigDecimalValue" >
+        CIF_AUDIT_YN,
+      </if>
+      <if test="EXEC_PRC_ON_RETRIEVE_YN != null" >
+        EXEC_PRC_ON_RETRIEVE_YN,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="REPORT_ID != null and REPORT_ID != emptyBigDecimalValue" >
+        #{REPORT_ID},
+      </if>
+      <if test="REPORT_NAME != null" >
+        #{REPORT_NAME},
+      </if>
+      <if test="PROG_REF != null" >
+        #{PROG_REF},
+      </if>
+      <if test="CREATED_BY != null and !&quot;&quot;.equals(CREATED_BY)" >
+        #{CREATED_BY},
+      </if>
+      <if test="DATE_CREATED != null" >
+        #{DATE_CREATED},
+      </if>
+      <if test="MODIFIED_BY != null and !&quot;&quot;.equals(MODIFIED_BY)" >
+        #{MODIFIED_BY},
+      </if>
+      <if test="DATE_MODIFIED != null" >
+        #{DATE_MODIFIED},
+      </if>
+      <if test="DOWNLOADABLE_FLAG != null and DOWNLOADABLE_FLAG != emptyBigDecimalValue" >
+        #{DOWNLOADABLE_FLAG},
+      </if>
+      <if test="EDITABLE_FLAG != null and EDITABLE_FLAG != emptyBigDecimalValue" >
+        #{EDITABLE_FLAG},
+      </if>
+      <if test="REP_FLAG != null and REP_FLAG != emptyBigDecimalValue" >
+        #{REP_FLAG},
+      </if>
+      <if test="CONN_ID != null and CONN_ID != emptyBigDecimalValue" >
+        #{CONN_ID},
+      </if>
+      <if test="DEFAULT_FORMAT != null" >
+        #{DEFAULT_FORMAT},
+      </if>
+      <if test="APP_NAME != null and !&quot;&quot;.equals(APP_NAME)" >
+        #{APP_NAME},
+      </if>
+      <if test="OLD_REPORT_ID != null and OLD_REPORT_ID != emptyBigDecimalValue" >
+        #{OLD_REPORT_ID},
+      </if>
+      <choose >
+        <when test="isSybase == 1" >
+           GETDATE(),
+        </when>
+        <otherwise >
+           SYSDATE,
+        </otherwise>
+      </choose>
+      <if test="BRANCH_CODE != null and BRANCH_CODE != emptyBigDecimalValue" >
+        #{BRANCH_CODE},
+      </if>
+      <if test="COMP_CODE != null and COMP_CODE != emptyBigDecimalValue" >
+        #{COMP_CODE},
+      </if>
+      <if test="CSV_SEPARATOR != null and !&quot;&quot;.equals(CSV_SEPARATOR)" >
+        #{CSV_SEPARATOR},
+      </if>
+      <if test="SHOW_HEAD_FOOT != null and !&quot;&quot;.equals(SHOW_HEAD_FOOT)" >
+        #{SHOW_HEAD_FOOT},
+      </if>
+      <if test="REPORT_TYPE != null" >
+        #{REPORT_TYPE},
+      </if>
+      <if test="WHEN_NO_DATA != null" >
+        #{WHEN_NO_DATA},
+      </if>
+      <if test="LANG_INDEPENDENT_YN != null" >
+        #{LANG_INDEPENDENT_YN},
+      </if>
+      <if test="NBR_DISPLAYED_ARG_PER_ROW != null and NBR_DISPLAYED_ARG_PER_ROW != emptyBigDecimalValue" >
+        #{NBR_DISPLAYED_ARG_PER_ROW},
+      </if>
+      <if test="GENERATED_FILE_NAME != null and !&quot;&quot;.equals(GENERATED_FILE_NAME)" >
+        #{GENERATED_FILE_NAME},
+      </if>
+      <if test="MAIL_SERVER_CODE != null and MAIL_SERVER_CODE != emptyBigDecimalValue" >
+        #{MAIL_SERVER_CODE},
+      </if>
+      <if test="REPORT_VERSION != null" >
+        #{REPORT_VERSION},
+      </if>
+      <if test="VERSION_DATE != null" >
+        #{VERSION_DATE},
+      </if>
+      <if test="REPORT_MODIFIED_YN != null" >
+        #{REPORT_MODIFIED_YN},
+      </if>
+      <if test="METADATA_REPORT_ID != null and METADATA_REPORT_ID != emptyBigDecimalValue" >
+        #{METADATA_REPORT_ID},
+      </if>
+      <if test="METADATA_REPORT_EXT != null and !&quot;&quot;.equals(METADATA_REPORT_EXT)" >
+        #{METADATA_REPORT_EXT},
+      </if>
+      <if test="METADATA_GENERATED_LOCATION != null and !&quot;&quot;.equals(METADATA_GENERATED_LOCATION)" >
+        #{METADATA_GENERATED_LOCATION},
+      </if>
+      <if test="XHTML_FILE != null" >
+        #{XHTML_FILE},
+      </if>
+      <if test="JRXML_FILE != null" >
+        #{JRXML_FILE},
+      </if>
+      <if test="CIF_AUDIT_YN != null and CIF_AUDIT_YN != emptyBigDecimalValue" >
+        #{CIF_AUDIT_YN},
+      </if>      
+      <if test="EXEC_PRC_ON_RETRIEVE_YN != null" >
+        #{EXEC_PRC_ON_RETRIEVE_YN},
+      </if>      
+    </trim>
+  </insert>
+  <sql id="sql_updateIRP_AD_HOC_REPORT" >
+    update IRP_AD_HOC_REPORT
+    <set >
+      <if test="REPORT_NAME != null" >
+        REPORT_NAME = #{REPORT_NAME},
+      </if>
+      <if test="PROG_REF != null" >
+        PROG_REF = #{PROG_REF},
+      </if>
+      <if test="CREATED_BY != null" >
+        <choose >
+          <when test="CREATED_BY.equals(&quot;&quot;)" >
+            CREATED_BY = NULL ,
+          </when>
+          <otherwise >
+            CREATED_BY = #{CREATED_BY},
+          </otherwise>
+        </choose>
+      </if>
+      <if test="DATE_CREATED != null" >
+        DATE_CREATED = #{DATE_CREATED},
+      </if>
+      <if test="MODIFIED_BY != null" >
+        <choose >
+          <when test="MODIFIED_BY.equals(&quot;&quot;)" >
+            MODIFIED_BY = NULL ,
+          </when>
+          <otherwise >
+            MODIFIED_BY = #{MODIFIED_BY},
+          </otherwise>
+        </choose>
+      </if>
+      <if test="DATE_MODIFIED != null" >
+        DATE_MODIFIED = #{DATE_MODIFIED},
+      </if>
+      <if test="DOWNLOADABLE_FLAG != null" >
+        <choose >
+          <when test="DOWNLOADABLE_FLAG == emptyBigDecimalValue" >
+            DOWNLOADABLE_FLAG = NULL ,
+          </when>
+          <otherwise >
+            DOWNLOADABLE_FLAG = #{DOWNLOADABLE_FLAG},
+          </otherwise>
+        </choose>
+      </if>
+      <if test="EDITABLE_FLAG != null" >
+        <choose >
+          <when test="EDITABLE_FLAG == emptyBigDecimalValue" >
+            EDITABLE_FLAG = NULL ,
+          </when>
+          <otherwise >
+            EDITABLE_FLAG = #{EDITABLE_FLAG},
+          </otherwise>
+        </choose>
+      </if>
+      <if test="REP_FLAG != null" >
+        <choose >
+          <when test="REP_FLAG == emptyBigDecimalValue" >
+            REP_FLAG = NULL ,
+          </when>
+          <otherwise >
+            REP_FLAG = #{REP_FLAG},
+          </otherwise>
+        </choose>
+      </if>
+      <if test="CONN_ID != null" >
+        <choose >
+          <when test="CONN_ID == emptyBigDecimalValue" >
+            CONN_ID = NULL ,
+          </when>
+          <otherwise >
+            CONN_ID = #{CONN_ID},
+          </otherwise>
+        </choose>
+      </if>
+      <if test="DEFAULT_FORMAT != null" >
+        DEFAULT_FORMAT = #{DEFAULT_FORMAT},
+      </if>
+      <if test="APP_NAME != null" >
+        <choose >
+          <when test="APP_NAME.equals(&quot;&quot;)" >
+            APP_NAME = NULL ,
+          </when>
+          <otherwise >
+            APP_NAME = #{APP_NAME},
+          </otherwise>
+        </choose>
+      </if>
+      <if test="OLD_REPORT_ID != null" >
+        <choose >
+          <when test="OLD_REPORT_ID == emptyBigDecimalValue" >
+            OLD_REPORT_ID = NULL ,
+          </when>
+          <otherwise >
+            OLD_REPORT_ID = #{OLD_REPORT_ID},
+          </otherwise>
+        </choose>
+      </if>
+      DATE_UPDATED = 
+      <choose >
+        <when test="isSybase == 1" >
+           GETDATE(),
+        </when>
+        <otherwise >
+           SYSDATE,
+        </otherwise>
+      </choose>
+      <if test="BRANCH_CODE != null" >
+        <choose >
+          <when test="BRANCH_CODE == emptyBigDecimalValue" >
+            BRANCH_CODE = NULL ,
+          </when>
+          <otherwise >
+            BRANCH_CODE = #{BRANCH_CODE},
+          </otherwise>
+        </choose>
+      </if>
+      <if test="COMP_CODE != null" >
+        <choose >
+          <when test="COMP_CODE == emptyBigDecimalValue" >
+            COMP_CODE = NULL ,
+          </when>
+          <otherwise >
+            COMP_CODE = #{COMP_CODE},
+          </otherwise>
+        </choose>
+      </if>
+      <if test="CSV_SEPARATOR != null" >
+        <choose >
+          <when test="CSV_SEPARATOR.equals(&quot;&quot;)" >
+            CSV_SEPARATOR = NULL ,
+          </when>
+          <otherwise >
+            CSV_SEPARATOR = #{CSV_SEPARATOR},
+          </otherwise>
+        </choose>
+      </if>
+      <if test="SHOW_HEAD_FOOT != null" >
+        <choose >
+          <when test="SHOW_HEAD_FOOT.equals(&quot;&quot;)" >
+            SHOW_HEAD_FOOT = NULL ,
+          </when>
+          <otherwise >
+            SHOW_HEAD_FOOT = #{SHOW_HEAD_FOOT},
+          </otherwise>
+        </choose>
+      </if>
+      <if test="REPORT_TYPE != null" >
+        REPORT_TYPE = #{REPORT_TYPE},
+      </if>
+      <if test="WHEN_NO_DATA != null" >
+        WHEN_NO_DATA = #{WHEN_NO_DATA},
+      </if>
+      <if test="LANG_INDEPENDENT_YN != null" >
+        LANG_INDEPENDENT_YN = #{LANG_INDEPENDENT_YN},
+      </if>
+      <if test="NBR_DISPLAYED_ARG_PER_ROW != null" >
+        <choose >
+          <when test="NBR_DISPLAYED_ARG_PER_ROW == emptyBigDecimalValue" >
+            NBR_DISPLAYED_ARG_PER_ROW = NULL ,
+          </when>
+          <otherwise >
+            NBR_DISPLAYED_ARG_PER_ROW = #{NBR_DISPLAYED_ARG_PER_ROW},
+          </otherwise>
+        </choose>
+      </if>
+      <if test="GENERATED_FILE_NAME != null" >
+        <choose >
+          <when test="GENERATED_FILE_NAME.equals(&quot;&quot;)" >
+            GENERATED_FILE_NAME = NULL ,
+          </when>
+          <otherwise >
+            GENERATED_FILE_NAME = #{GENERATED_FILE_NAME},
+          </otherwise>
+        </choose>
+      </if>
+      
+      <if test="MAIL_SERVER_CODE != null" >
+        <choose >
+          <when test="MAIL_SERVER_CODE == emptyBigDecimalValue" >
+            MAIL_SERVER_CODE = NULL ,
+          </when>
+          <otherwise >
+            MAIL_SERVER_CODE = #{MAIL_SERVER_CODE},
+          </otherwise>
+        </choose>
+      </if>
+      <if test="REPORT_VERSION != null" >
+        REPORT_VERSION = #{REPORT_VERSION},
+      </if>
+      <if test="VERSION_DATE != null" >
+        VERSION_DATE = #{VERSION_DATE},
+      </if>
+      <if test="REPORT_MODIFIED_YN != null" >
+        REPORT_MODIFIED_YN = #{REPORT_MODIFIED_YN},
+      </if>
+      <if test="METADATA_REPORT_ID != null" >
+        <choose >
+          <when test="METADATA_REPORT_ID == emptyBigDecimalValue" >
+            METADATA_REPORT_ID = NULL ,
+          </when>
+          <otherwise >
+            METADATA_REPORT_ID = #{METADATA_REPORT_ID},
+          </otherwise>
+        </choose>
+      </if>
+      <if test="METADATA_REPORT_EXT != null" >
+        <choose >
+          <when test="METADATA_REPORT_EXT.equals(&quot;&quot;)" >
+            METADATA_REPORT_EXT = NULL ,
+          </when>
+          <otherwise >
+            METADATA_REPORT_EXT = #{METADATA_REPORT_EXT},
+          </otherwise>
+        </choose>
+      </if>
+      <if test="METADATA_GENERATED_LOCATION != null" >
+        <choose >
+          <when test="METADATA_GENERATED_LOCATION.equals(&quot;&quot;)" >
+            METADATA_GENERATED_LOCATION = NULL ,
+          </when>
+          <otherwise >
+            METADATA_GENERATED_LOCATION = #{METADATA_GENERATED_LOCATION},
+          </otherwise>
+        </choose>
+      </if>
+      <if test="XHTML_FILE != null" >
+        XHTML_FILE = #{XHTML_FILE},
+      </if>
+      <if test="JRXML_FILE != null" >
+        JRXML_FILE = #{JRXML_FILE},
+      </if>
+      <if test="CIF_AUDIT_YN != null" >
+        <choose >
+          <when test="CIF_AUDIT_YN == emptyBigDecimalValue" >
+            CIF_AUDIT_YN = NULL ,
+          </when>
+          <otherwise >
+            CIF_AUDIT_YN = #{CIF_AUDIT_YN},
+          </otherwise>
+        </choose>
+      </if>
+      <if test="EXEC_PRC_ON_RETRIEVE_YN != null" >
+        EXEC_PRC_ON_RETRIEVE_YN = #{EXEC_PRC_ON_RETRIEVE_YN},
+      </if>
+    </set>
+    where REPORT_ID = #{REPORT_ID}
+  </sql>
+  <update id="updateIRP_AD_HOC_REPORT" parameterType="com.path.dbmaps.vo.IRP_AD_HOC_REPORTVO" >
+    <include refid="sql_updateIRP_AD_HOC_REPORT" />
+    <if test="DATE_UPDATED != null" >
+      AND DATE_UPDATED = #{DATE_UPDATED}
+    </if>
+  </update>
+</mapper>

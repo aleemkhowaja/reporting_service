@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+    
+	<bean id="designerDAO" class="com.path.dao.reporting.designer.impl.DesignerDAOImpl" parent="baseDAO">
+	</bean>
+	
+	<bean id="queryDAO" class="com.path.dao.reporting.designer.impl.QueryDAOImpl" parent="baseDAO">
+	</bean>
+	
+	<bean id="snapShotDAO" class="com.path.dao.reporting.designer.impl.SnapShotDAOImpl" parent="baseDAO">
+	</bean>
+	
+	<!-- Mira 04-Jun-2012 Entities' Screen -->
+	<bean id="entitiesDAO" class="com.path.dao.reporting.designer.impl.EntitiesDAOImpl" parent="baseDAO">
+	</bean>
+	<!-- END Mira 04-Jun-2012 -->
+	
+	<bean id="procDAO" class="com.path.dao.reporting.designer.impl.ProceduresDAOImpl" parent="baseDAO">
+	</bean>
+	<bean id="hyperlinksDAO" class="com.path.dao.reporting.designer.impl.HyperlinksDAOImpl" parent="baseDAO">
+	</bean>
+	
+	<bean id="uploadImageDAO" class="com.path.dao.reporting.designer.impl.UploadImageDAOImpl" parent="baseDAO">
+	</bean>
+	
+</beans>

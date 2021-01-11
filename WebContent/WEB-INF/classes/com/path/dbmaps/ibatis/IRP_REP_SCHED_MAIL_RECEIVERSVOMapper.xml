@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="IRP_REP_SCHED_MAIL_RECEIVERS" >
+  <resultMap id="BaseResultMap" type="com.path.dbmaps.vo.IRP_REP_SCHED_MAIL_RECEIVERSVO" >
+    <result column="SCHED_ID" property="SCHED_ID" />
+    <result column="REPORT_ID" property="REPORT_ID" />
+    <result column="USER_ID" property="USER_ID" />
+    <result column="RECEIVER_TYPE" property="RECEIVER_TYPE" />
+    <result column="REPORT_REF" property="REPORT_REF" />
+  </resultMap>
+  <insert id="insertIRP_REP_SCHED_MAIL_RECEIVERS" parameterType="com.path.dbmaps.vo.IRP_REP_SCHED_MAIL_RECEIVERSVO" >
+    insert into IRP_REP_SCHED_MAIL_RECEIVERS
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="SCHED_ID != null and SCHED_ID != emptyBigDecimalValue" >
+        SCHED_ID,
+      </if>
+      <if test="REPORT_ID != null and REPORT_ID != emptyBigDecimalValue" >
+        REPORT_ID,
+      </if>
+      <if test="USER_ID != null" >
+        USER_ID,
+      </if>
+      <if test="RECEIVER_TYPE != null and RECEIVER_TYPE != emptyBigDecimalValue" >
+        RECEIVER_TYPE,
+      </if>
+      <if test="REPORT_REF != null" >
+        REPORT_REF,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="SCHED_ID != null and SCHED_ID != emptyBigDecimalValue" >
+        #{SCHED_ID},
+      </if>
+      <if test="REPORT_ID != null and REPORT_ID != emptyBigDecimalValue" >
+        #{REPORT_ID},
+      </if>
+      <if test="USER_ID != null" >
+        #{USER_ID},
+      </if>
+      <if test="RECEIVER_TYPE != null and RECEIVER_TYPE != emptyBigDecimalValue" >
+        #{RECEIVER_TYPE},
+      </if>
+      <if test="REPORT_REF != null" >
+        #{REPORT_REF},
+      </if>
+    </trim>
+  </insert>
+</mapper>

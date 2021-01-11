@@ -1,0 +1,369 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        
+<mapper namespace="template">
+
+<resultMap type="GLSTMPLTCO"  id="getAllTemplatesMap">     
+  <result property="concatKey" column="concatKey"/>
+  <result property="glstmpltVO.CODE" column="CODE"/>
+  <result property="glstmpltVO.BRIEF_NAME_ENG" column="BRIEF_NAME_ENG"/>
+  <result property="glstmpltVO.DISPLAY_VALUES" column="DISPLAY_VALUES"/>
+  <result property="glstmpltVO.FCR_EXCEL_PATH" column="FCR_EXCEL_PATH"/>
+  <result property="glstmpltVO.COMP_CODE" column="COMP_CODE"/>
+</resultMap>
+
+<resultMap id="returnCrtAddFieldsDet3Value" type="commonDetailsVO" >  
+	<result column="CODE_STR" property="CODE_STR" />
+	<result column="BRIEF_DESC_ENG" property="BRIEF_DESC_ENG" />
+</resultMap>
+
+<sql id="getAllTemplatesSql">
+<include refid="tmplExt.getAllTemplatesSql"/>
+	<if test="CODE != null">
+		AND CODE != #{CODE}
+	</if>
+</sql>
+
+<select id="getAllTemplates"  resultMap="getAllTemplatesMap" parameterType="tmplGridSC">
+	<include refid="servicesCommon.commonGridWrpBefFlip"/>
+	<include refid="getAllTemplatesSql"/>
+	<include refid="servicesCommon.commonGridWrpAftFlip"/>
+	<include refid="servicesCommon.commmonGridWrpFlipClose"/>
+</select>
+
+
+<select id="getAllTemplCount"   resultType="int" parameterType="tmplGridSC">
+	<include refid="servicesCommon.commonGridWrpBefCnt"/>
+	<include refid="getAllTemplatesSql"/>
+	<include refid="servicesCommon.commonGridWrpAftCnt"/>
+	<include refid="servicesCommon.commonGridCountWrpClose"/>
+</select>
+
+
+<delete id="deleteAllLines" parameterType="GLSTMPLTSC">
+	<include refid="tmplExt.deleteAllLines"/>
+</delete>
+
+
+
+<update id="updateTemplate" parameterType="GLSTMPLTCO">
+    update GLSTMPLT
+    <set >
+     <if test="newLineNumber != null" >
+        LINE_NBR = #{newLineNumber},
+      </if>
+      <if test="glstmpltVO.BRIEF_NAME_ENG != null" >
+        BRIEF_NAME_ENG = #{glstmpltVO.BRIEF_NAME_ENG},
+      </if>
+      <if test="glstmpltVO.BRIEF_NAME_ARAB != null" >
+        BRIEF_NAME_ARAB = #{glstmpltVO.BRIEF_NAME_ARAB},
+      </if>
+      <if test="glstmpltVO.FROM_GL != null" >
+        <choose >
+          <when test="glstmpltVO.FROM_GL == emptyBigDecimalValue" >
+            FROM_GL = NULL ,
+          </when>
+          <otherwise >
+            FROM_GL = #{glstmpltVO.FROM_GL},
+          </otherwise>
+        </choose>
+      </if>
+      <if test="glstmpltVO.TO_GL != null" >
+        <choose >
+          <when test="glstmpltVO.TO_GL == emptyBigDecimalValue" >
+            TO_GL = NULL ,
+          </when>
+          <otherwise >
+            TO_GL = #{glstmpltVO.TO_GL},
+          </otherwise>
+        </choose>
+      </if>
+      <if test="glstmpltVO.PRINTED != null" >
+        <choose >
+          <when test="glstmpltVO.PRINTED == emptyBigDecimalValue" >
+            PRINTED = NULL ,
+          </when>
+          <otherwise >
+            PRINTED = #{glstmpltVO.PRINTED},
+          </otherwise>
+        </choose>
+      </if>
+      <if test="glstmpltVO.GL_TYPE != null" >
+        GL_TYPE = #{glstmpltVO.GL_TYPE},
+      </if>
+      <if test="glstmpltVO.IS_SUB_TOTAL != null" >
+        IS_SUB_TOTAL = #{glstmpltVO.IS_SUB_TOTAL},
+      </if>
+      <if test="glstmpltVO.CREATED_BY != null" >
+        CREATED_BY = #{glstmpltVO.CREATED_BY},
+      </if>
+      <if test="glstmpltVO.DATE_CREATED != null" >
+        DATE_CREATED = #{glstmpltVO.DATE_CREATED},
+      </if>
+      <if test="glstmpltVO.MODIFIED_BY != null" >
+        MODIFIED_BY = #{glstmpltVO.MODIFIED_BY},
+      </if>
+      <if test="glstmpltVO.DATE_MODIFIED != null" >
+        DATE_MODIFIED = #{glstmpltVO.DATE_MODIFIED},
+      </if>
+      <if test="glstmpltVO.PER_LINE_GL != null" >
+        PER_LINE_GL = #{glstmpltVO.PER_LINE_GL},
+      </if>
+      <if test="glstmpltVO.BOLD != null" >
+        BOLD = #{glstmpltVO.BOLD},
+      </if>
+      <if test="glstmpltVO.DISPLAY_ZEROS != null" >
+        DISPLAY_ZEROS = #{glstmpltVO.DISPLAY_ZEROS},
+      </if>
+      <if test="glstmpltVO.SAVE_DATA != null" >
+        SAVE_DATA = #{glstmpltVO.SAVE_DATA},
+      </if>
+      <if test="glstmpltVO.DISPLAY_VALUES != null" >
+        DISPLAY_VALUES = #{glstmpltVO.DISPLAY_VALUES},
+      </if>
+      <if test="glstmpltVO.DISP_LINE_TOT_ZERO != null" >
+        DISP_LINE_TOT_ZERO = #{glstmpltVO.DISP_LINE_TOT_ZERO},
+      </if>
+      <if test="glstmpltVO.EXPRESSION_LINES != null" >
+        EXPRESSION_LINES = #{glstmpltVO.EXPRESSION_LINES},
+      </if>
+      <if test="glstmpltVO.FCR != null" >
+        FCR = #{glstmpltVO.FCR},
+      </if>
+      <if test="glstmpltVO.ADD_DESC != null" >
+        ADD_DESC = #{glstmpltVO.ADD_DESC},
+      </if>
+      <if test="glstmpltVO.GL_CODES != null" >
+        GL_CODES = #{glstmpltVO.GL_CODES},
+      </if>
+      <if test="glstmpltVO.BOTTOM_BORDER != null" >
+        <choose >
+          <when test="glstmpltVO.BOTTOM_BORDER == emptyBigDecimalValue" >
+            BOTTOM_BORDER = NULL ,
+          </when>
+          <otherwise >
+            BOTTOM_BORDER = #{glstmpltVO.BOTTOM_BORDER},
+          </otherwise>
+        </choose>
+      </if>
+      <if test="glstmpltVO.CURRENCY != null" >
+        <choose >
+          <when test="glstmpltVO.CURRENCY == emptyBigDecimalValue" >
+            CURRENCY = NULL ,
+          </when>
+          <otherwise >
+            CURRENCY = #{glstmpltVO.CURRENCY},
+          </otherwise>
+        </choose>
+      </if>
+      <if test="glstmpltVO.CSV != null" >
+        CSV = #{glstmpltVO.CSV},
+      </if>
+      <if test="glstmpltVO.FCR_EXCEL_PATH != null" >
+        FCR_EXCEL_PATH = #{glstmpltVO.FCR_EXCEL_PATH},
+      </if>
+      <if test="glstmpltVO.FOR_ROUND != null" >
+        FOR_ROUND = #{glstmpltVO.FOR_ROUND},
+      </if>
+      <if test="glstmpltVO.ADD_DESC1 != null" >
+        ADD_DESC1 = #{glstmpltVO.ADD_DESC1},
+      </if>
+      DATE_UPDATED = 
+      <choose >
+        <when test="isSybase == 1" >
+           GETDATE(),
+        </when>
+        <otherwise >
+           SYSDATE,
+        </otherwise>
+      </choose>
+      <if test="glstmpltVO.EXPRESSION != null" >
+        EXPRESSION = #{glstmpltVO.EXPRESSION},
+      </if>
+    </set>
+    where CODE = #{glstmpltVO.CODE}
+      and COMP_CODE = #{glstmpltVO.COMP_CODE}
+      and LINE_NBR = #{glstmpltVO.LINE_NBR}
+      and TEMPLATE_TYPE = #{glstmpltVO.TEMPLATE_TYPE}
+    <if test="glstmpltVO.DATE_UPDATED != null" > AND DATE_UPDATED = #{glstmpltVO.DATE_UPDATED} </if>
+</update>
+
+
+
+
+
+
+<update id="updateGL" parameterType="GLSTMPLTGLSDETCO">
+    update GLSTMPLTGLSDET
+    <set >
+    <if test="newLineNumber != null" >
+        LINE_NBR = #{newLineNumber},
+      </if>
+      <if test="glstmpltGlsDetVO.TEMPLATE_TYPE != null" >
+        TEMPLATE_TYPE = #{glstmpltGlsDetVO.TEMPLATE_TYPE},
+      </if>
+      <if test="glstmpltGlsDetVO.FROM_GL != null" >
+        <choose >
+          <when test="glstmpltGlsDetVO.FROM_GL == emptyBigDecimalValue" >
+            FROM_GL = NULL ,
+          </when>
+          <otherwise >
+            FROM_GL = #{glstmpltGlsDetVO.FROM_GL},
+          </otherwise>
+        </choose>
+      </if>
+      <if test="glstmpltGlsDetVO.TO_GL != null" >
+        <choose >
+          <when test="glstmpltGlsDetVO.TO_GL == emptyBigDecimalValue" >
+            TO_GL = NULL ,
+          </when>
+          <otherwise >
+            TO_GL = #{glstmpltGlsDetVO.TO_GL},
+          </otherwise>
+        </choose>
+      </if>
+      <if test="glstmpltGlsDetVO.GL_COMP != null" >
+        <choose >
+          <when test="glstmpltGlsDetVO.GL_COMP == emptyBigDecimalValue" >
+            GL_COMP = NULL ,
+          </when>
+          <otherwise >
+            GL_COMP = #{glstmpltGlsDetVO.GL_COMP},
+          </otherwise>
+        </choose>
+      </if>
+      <if test="glstmpltGlsDetVO.BRANCH_CODE != null" >
+        <choose >
+          <when test="glstmpltGlsDetVO.BRANCH_CODE == emptyBigDecimalValue" >
+            BRANCH_CODE = NULL ,
+          </when>
+          <otherwise >
+            BRANCH_CODE = #{glstmpltGlsDetVO.BRANCH_CODE},
+          </otherwise>
+        </choose>
+      </if>
+      <if test="glstmpltGlsDetVO.DIV_CODE != null" >
+        <choose >
+          <when test="glstmpltGlsDetVO.DIV_CODE == emptyBigDecimalValue" >
+            DIV_CODE = NULL ,
+          </when>
+          <otherwise >
+            DIV_CODE = #{glstmpltGlsDetVO.DIV_CODE},
+          </otherwise>
+        </choose>
+      </if>
+      <if test="glstmpltGlsDetVO.DEPT_CODE != null" >
+        <choose >
+          <when test="glstmpltGlsDetVO.DEPT_CODE == emptyBigDecimalValue" >
+            DEPT_CODE = NULL ,
+          </when>
+          <otherwise >
+            DEPT_CODE = #{glstmpltGlsDetVO.DEPT_CODE},
+          </otherwise>
+        </choose>
+      </if>
+      <if test="glstmpltGlsDetVO.GL_SIGN != null" >
+        GL_SIGN = #{glstmpltGlsDetVO.GL_SIGN},
+      </if>
+      <if test="glstmpltGlsDetVO.ADD_SUBTRACT != null" >
+        <choose >
+          <when test="glstmpltGlsDetVO.ADD_SUBTRACT == emptyBigDecimalValue" >
+            ADD_SUBTRACT = NULL ,
+          </when>
+          <otherwise >
+            ADD_SUBTRACT = #{glstmpltGlsDetVO.ADD_SUBTRACT},
+          </otherwise>
+        </choose>
+      </if>
+      <if test="glstmpltGlsDetVO.PERCENTAGE != null" >
+        <choose >
+          <when test="glstmpltGlsDetVO.PERCENTAGE == emptyBigDecimalValue" >
+            PERCENTAGE = NULL ,
+          </when>
+          <otherwise >
+            PERCENTAGE = #{glstmpltGlsDetVO.PERCENTAGE},
+          </otherwise>
+        </choose>
+      </if>
+      <if test="glstmpltGlsDetVO.EXCLUDE_CLOSING_ENTRY != null" >
+        EXCLUDE_CLOSING_ENTRY = #{glstmpltGlsDetVO.EXCLUDE_CLOSING_ENTRY},
+      </if>
+      <if test="glstmpltGlsDetVO.CALC_TYPE != null" >
+        CALC_TYPE = #{glstmpltGlsDetVO.CALC_TYPE},
+      </if>
+      <if test="glstmpltGlsDetVO.CONTRIBUTION != null" >
+        CONTRIBUTION = #{glstmpltGlsDetVO.CONTRIBUTION},
+      </if>
+      DATE_UPDATED = 
+      <choose >
+        <when test="isSybase == 1" >
+           GETDATE(),
+        </when>
+        <otherwise >
+           SYSDATE,
+        </otherwise>
+      </choose>
+    </set>
+    where CODE = #{glstmpltGlsDetVO.CODE}
+      and COMP_CODE = #{glstmpltGlsDetVO.COMP_CODE}
+      and LINE_NBR = #{glstmpltGlsDetVO.LINE_NBR}
+      and LINE_NBR_DET = #{glstmpltGlsDetVO.LINE_NBR_DET}
+    <if test="glstmpltGlsDetVO.DATE_UPDATED != null" > AND DATE_UPDATED = #{glstmpltGlsDetVO.DATE_UPDATED} </if>
+</update>
+
+
+<insert id="createLike"  parameterType="com.path.vo.reporting.ftr.template.GLSTMPLTSC"> 
+<include refid="tmplExt.createLike"/>
+</insert>
+
+<delete id="deleteAllTemplateLines" parameterType="GLSTMPLTSC">
+	<include refid="tmplExt.deleteAllTemplateLines"/>
+</delete>
+
+<select id="checkCrosscheckReport"   resultType="int" parameterType="commonDetailsSC">
+	SELECT COUNT(1)
+	FROM   FTR_CAPITAL_ADEQ
+	WHERE  REP_REF    		= #{PROG_REF}
+	AND	   USER_ID    		= #{userId}
+	AND    AS_OF_DATE 		= CONVERT(DATETIME,#{AS_OF_DATE},103) 
+	AND    TRADE_VAL  		= #{TRADE_DATE_VAL}
+	AND    CURRENCY_CODE 	= #{baseCurrencyCode}
+</select>
+
+
+<select id="checkSmartMandatoryDetails" parameterType="GLSTMPLT_CRITERIASC" resultMap="S_ADDITIONS_OPTIONS.BaseResultMap">
+SELECT S_ADDITIONS_OPTIONS.OPTION_TYPE
+  FROM GLSTMPLT_CRITERIA, S_ADDITIONS_OPTIONS
+ WHERE GLSTMPLT_CRITERIA.COMP_CODE = #{COMP_CODE}
+   AND GLSTMPLT_CRITERIA.CODE =#{CODE}
+   AND S_ADDITIONS_OPTIONS.OPTION_CODE = GLSTMPLT_CRITERIA.SMART_CODE
+   AND S_ADDITIONS_OPTIONS.OPTION_SERIAL = 0
+</select>
+
+<select id="retCrtAddFieldsLst"   resultMap="CTS_ADD_FIELDS.BaseResultMap" parameterType="tmplGridSC">
+	SELECT	<include refid="CTS_ADD_FIELDS.Base_Column_List"/>
+	FROM CTS_ADD_FIELDS
+	WHERE CODE = #{CODE_CAF,jdbcType=NUMERIC}
+	AND FIELD_SEQ = #{FIELD_SEQ,jdbcType=NUMERIC}
+</select>
+
+<select id="retCrtAddFieldsDet3Lst"   resultMap="returnCrtAddFieldsDet3Value" parameterType="tmplGridSC">
+	<include refid="servicesCommon.commonGridWrpBefFlip"/>
+	${CAF_SQL_QUERY}
+	<include refid="servicesCommon.commonGridWrpAftFlip"/>
+	<include refid="servicesCommon.commmonGridWrpFlipClose"/>
+</select>
+
+<select id="retCrtAddFieldsDet3LstCount"   resultType="int" parameterType="tmplGridSC">
+	<include refid="servicesCommon.commonGridWrpBefCnt"/>
+	${CAF_SQL_QUERY}
+	<include refid="servicesCommon.commonGridWrpAftCnt"/>
+	<include refid="servicesCommon.commonGridCountWrpClose"/>
+</select>
+
+<select id="retCrtAddFieldsDet3Dep"   resultMap="returnCrtAddFieldsDet3Value" parameterType="tmplGridSC">
+	${CAF_SQL_QUERY}
+</select>
+
+</mapper>

@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="IRP_REP_PROC" >
+  <resultMap id="BaseResultMap" type="com.path.dbmaps.vo.IRP_REP_PROCVO" >
+    <id column="PROC_ID" property="PROC_ID" />
+    <id column="REPORT_ID" property="REPORT_ID" />
+    <result column="PROC_ORDER" property="PROC_ORDER" />
+    <result column="EXEC_BEFORE" property="EXEC_BEFORE" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    PROC_ID, REPORT_ID, PROC_ORDER, EXEC_BEFORE
+  </sql>
+  <select id="selectIRP_REP_PROC" resultMap="BaseResultMap" parameterType="com.path.dbmaps.vo.IRP_REP_PROCVOKey" >
+    select 
+    <include refid="Base_Column_List" />
+    from IRP_REP_PROC
+    where PROC_ID = #{PROC_ID}
+      and REPORT_ID = #{REPORT_ID}
+  </select>
+  <delete id="deleteIRP_REP_PROC" parameterType="com.path.dbmaps.vo.IRP_REP_PROCVOKey" >
+    delete from IRP_REP_PROC
+    where PROC_ID = #{PROC_ID}
+      and REPORT_ID = #{REPORT_ID}
+  </delete>
+  <insert id="insertIRP_REP_PROC" parameterType="com.path.dbmaps.vo.IRP_REP_PROCVO" >
+    insert into IRP_REP_PROC
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="PROC_ID != null and PROC_ID != emptyBigDecimalValue" >
+        PROC_ID,
+      </if>
+      <if test="REPORT_ID != null and REPORT_ID != emptyBigDecimalValue" >
+        REPORT_ID,
+      </if>
+      <if test="PROC_ORDER != null and PROC_ORDER != emptyBigDecimalValue" >
+        PROC_ORDER,
+      </if>
+      <if test="EXEC_BEFORE != null and EXEC_BEFORE != emptyBigDecimalValue" >
+        EXEC_BEFORE,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="PROC_ID != null and PROC_ID != emptyBigDecimalValue" >
+        #{PROC_ID},
+      </if>
+      <if test="REPORT_ID != null and REPORT_ID != emptyBigDecimalValue" >
+        #{REPORT_ID},
+      </if>
+      <if test="PROC_ORDER != null and PROC_ORDER != emptyBigDecimalValue" >
+        #{PROC_ORDER},
+      </if>
+      <if test="EXEC_BEFORE != null and EXEC_BEFORE != emptyBigDecimalValue" >
+        #{EXEC_BEFORE},
+      </if>
+    </trim>
+  </insert>
+  <sql id="sql_updateIRP_REP_PROC" >
+    update IRP_REP_PROC
+    <set >
+      <if test="PROC_ORDER != null" >
+        <choose >
+          <when test="PROC_ORDER == emptyBigDecimalValue" >
+            PROC_ORDER = NULL ,
+          </when>
+          <otherwise >
+            PROC_ORDER = #{PROC_ORDER},
+          </otherwise>
+        </choose>
+      </if>
+      <if test="EXEC_BEFORE != null" >
+        <choose >
+          <when test="EXEC_BEFORE == emptyBigDecimalValue" >
+            EXEC_BEFORE = NULL ,
+          </when>
+          <otherwise >
+            EXEC_BEFORE = #{EXEC_BEFORE},
+          </otherwise>
+        </choose>
+      </if>
+    </set>
+    where PROC_ID = #{PROC_ID}
+      and REPORT_ID = #{REPORT_ID}
+  </sql>
+  <update id="updateIRP_REP_PROC" parameterType="com.path.dbmaps.vo.IRP_REP_PROCVO" >
+    <include refid="sql_updateIRP_REP_PROC" />
+  </update>
+</mapper>

@@ -1,0 +1,311 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        
+<mapper namespace="tmplExt">
+	<sql id="getAllTemplatesSql">	  
+	  SELECT CONVERT(VARCHAR,T.COMP_CODE) + CONVERT(VARCHAR, T.CODE) AS concatKey ,
+	       T.CODE,
+		   T.COMP_CODE,
+	       T.BRIEF_NAME_ENG,
+	       T.DISPLAY_VALUES,
+	       T.FCR_EXCEL_PATH
+	  FROM GLSTMPLT T
+	  WHERE T.COMP_CODE=#{COMP_CODE} 
+	  AND T.LINE_NBR = 0
+	</sql>
+	
+	
+	<sql id="deleteAllLines">
+		begin transaction 
+			  DELETE FROM GLSTMPLTGLSDET WHERE CODE = #{CODE}    
+		      DELETE FROM FTR_MISMATCH_REPORT WHERE TMPLT_CODE = #{CODE}    
+		      DELETE FROM FTR_TMPLT_EXPR WHERE CODE = #{CODE} AND TMPLT_TYPE = #{templateType} 
+		      DELETE FROM GLSTMPLT_PARAM_LINK WHERE TEMP_CODE  = #{CODE}
+		      DELETE FROM GLSTMPLT WHERE LINE_NBR <![CDATA[<> ]]> 0 AND CODE = #{CODE}	
+		commit transaction
+	</sql>
+	
+	<sql id="deleteAllTemplateLines">
+		    BEGIN
+		      DELETE FROM GLSTMPLTGLSDET WHERE CODE = #{CODE}
+		      DELETE FROM FTR_MISMATCH_REPORT WHERE TMPLT_CODE = #{CODE}  
+		      DELETE FROM FTR_TMPLT_EXPR WHERE CODE = #{CODE}  AND TMPLT_TYPE = #{templateType} 
+		      DELETE FROM GLSTMPLT_PARAM_LINK WHERE TEMP_CODE  = #{CODE}
+		      DELETE FROM FTR_TMPL_REF WHERE TEMPLATE_CODE = #{CODE}
+		      DELETE FROM FTR_ACCOUNTS WHERE TEMP_CODE = #{CODE}
+		      DELETE FROM GLSTMPLTDET WHERE CODE = #{CODE}
+		      DELETE FROM GLSTMPLT WHERE  CODE = #{CODE}
+    		END
+	</sql>
+	
+	
+	<sql id="createLike">	
+	begin
+INSERT INTO GLSTMPLT
+  (COMP_CODE,
+   TEMPLATE_TYPE,
+   CODE,
+   LINE_NBR,
+   BRIEF_NAME_ENG,
+   BRIEF_NAME_ARAB,
+   FROM_GL,
+   TO_GL,
+   PRINTED,
+   GL_TYPE,
+   IS_SUB_TOTAL,
+   CREATED_BY,
+   DATE_CREATED,
+   MODIFIED_BY,
+   DATE_MODIFIED,
+   PER_LINE_GL,
+   BOLD,
+   DISPLAY_ZEROS,
+   SAVE_DATA,
+   DISP_LINE_TOT_ZERO,
+   EXPRESSION_LINES,
+   FCR,
+   EXPRESSION,
+   ADD_DESC,
+   GL_CODES,
+   BOTTOM_BORDER,
+   CURRENCY,
+   FCR_EXCEL_PATH,
+   ADD_DESC1,
+   POST_CODE,
+   PERCENTAGE 
+   )
+  SELECT COMP_CODE,
+         TEMPLATE_TYPE,
+         #{CODE},
+         LINE_NBR,
+         BRIEF_NAME_ENG,
+         BRIEF_NAME_ARAB,
+         FROM_GL,
+         TO_GL,
+         PRINTED,
+         GL_TYPE,
+         IS_SUB_TOTAL,
+		 #{userName},
+         getDate(),
+         NULL,
+         NULL,
+         PER_LINE_GL,
+         BOLD,
+         DISPLAY_ZEROS,
+         SAVE_DATA,
+         DISP_LINE_TOT_ZERO,
+         EXPRESSION_LINES,
+         FCR,
+         EXPRESSION,
+         ADD_DESC,
+         GL_CODES,
+         BOTTOM_BORDER,
+         CURRENCY,
+         FCR_EXCEL_PATH,
+         ADD_DESC1,
+         POST_CODE,
+         PERCENTAGE 
+    FROM GLSTMPLT
+   WHERE GLSTMPLT.COMP_CODE = #{COMP_CODE}
+     AND GLSTMPLT.CODE = #{oldCode}
+
+INSERT INTO GLSTMPLTDET
+  (COMP_CODE,
+   TEMPLATE_TYPE,
+   CODE,
+   LINE_NBR,
+   LINE_NBR_DET,
+   FROM_LINE_NBR,
+   TO_LINE_NBR,
+   ADD_SUBTRACT)
+  SELECT COMP_CODE,
+         TEMPLATE_TYPE,
+         #{CODE},
+         LINE_NBR,
+         LINE_NBR_DET,
+         FROM_LINE_NBR,
+         TO_LINE_NBR,
+         ADD_SUBTRACT
+    FROM GLSTMPLTDET
+   WHERE GLSTMPLTDET.COMP_CODE = #{COMP_CODE}
+     AND GLSTMPLTDET.CODE = #{oldCode}
+
+
+INSERT INTO GLSTMPLTGLSDET
+  (COMP_CODE,
+   TEMPLATE_TYPE,
+   CODE,
+   LINE_NBR,
+   LINE_NBR_DET,
+   FROM_GL,
+   TO_GL,
+   BRANCH_CODE,
+   DIV_CODE,
+   DEPT_CODE,
+   GL_SIGN,
+   GL_COMP,
+   ADD_SUBTRACT,
+   PERCENTAGE,
+   CALC_TYPE,
+   EXCLUDE_CLOSING_ENTRY,
+   CONTRIBUTION)
+  SELECT COMP_CODE,
+         TEMPLATE_TYPE,
+         #{CODE},
+         LINE_NBR,
+         LINE_NBR_DET,
+         FROM_GL,
+         TO_GL,
+         BRANCH_CODE,
+         DIV_CODE,
+         DEPT_CODE,
+         GL_SIGN,
+         GL_COMP,
+         ADD_SUBTRACT,
+         PERCENTAGE,
+         CALC_TYPE,
+         EXCLUDE_CLOSING_ENTRY,
+         CONTRIBUTION
+    FROM GLSTMPLTGLSDET
+   WHERE GLSTMPLTGLSDET.COMP_CODE = #{COMP_CODE}
+     AND GLSTMPLTGLSDET.CODE = #{oldCode}
+
+
+INSERT INTO GLSTMPLTPROVGLSDET
+  (COMP_CODE,
+   TEMPLATE_TYPE,
+   CODE,
+   LINE_NBR,
+   LINE_NBR_DET,
+   FROM_GL,
+   TO_GL,
+   GL_COMP,
+   BRANCH_CODE,
+   DIV_CODE,
+   DEPT_CODE)
+  SELECT COMP_CODE,
+         TEMPLATE_TYPE,
+         #{CODE},
+         LINE_NBR,
+         LINE_NBR_DET,
+         FROM_GL,
+         TO_GL,
+         GL_COMP,
+         BRANCH_CODE,
+         DIV_CODE,
+         DEPT_CODE
+    FROM GLSTMPLTPROVGLSDET
+   WHERE GLSTMPLTPROVGLSDET.COMP_CODE = #{COMP_CODE}
+     AND GLSTMPLTPROVGLSDET.CODE = #{oldCode}
+
+INSERT INTO GLSTMPLT_PARAM_LINK
+  (COMP_CODE,
+   TEMP_CODE,
+   LINE_NO,
+   SUB_LINE_NO,
+   CRITERIA_CODE,
+   CODE1,
+   CODE2,
+   PERCENTAGE,
+   TYPE1,
+   RESIDENT,
+   SECURITY_LISTED,
+   INCLUDE,
+   OPERATOR,
+   AMOUNT,
+   DEBIT_CREDIT_IND,
+   COLL_PER_TYPE,
+   TOTAL_AMT_SIGN,
+   TRS_ASSET_TYPE,
+   MAT_DATE,
+   SECURITY_CODE1,
+   SECURITY_CODE2,
+   CBK_CIF_TYPE,
+   OPERATOR1,
+   DEAL_TENURE)
+  SELECT COMP_CODE,
+         #{CODE},
+         LINE_NO,
+         SUB_LINE_NO,
+         CRITERIA_CODE,
+         CODE1,
+         CODE2,
+         PERCENTAGE,
+         TYPE1,
+         RESIDENT,
+         SECURITY_LISTED,
+         INCLUDE,
+         OPERATOR,
+         AMOUNT,
+         DEBIT_CREDIT_IND,
+         COLL_PER_TYPE,
+         TOTAL_AMT_SIGN,
+         TRS_ASSET_TYPE,
+         MAT_DATE,
+         SECURITY_CODE1,
+         SECURITY_CODE2,
+         CBK_CIF_TYPE,
+         OPERATOR1,
+         DEAL_TENURE
+    FROM GLSTMPLT_PARAM_LINK
+   WHERE GLSTMPLT_PARAM_LINK.COMP_CODE = #{COMP_CODE}
+     AND GLSTMPLT_PARAM_LINK.TEMP_CODE = #{oldCode}
+
+
+INSERT INTO FTR_TMPL_REF
+  (COMP_CODE, TEMPLATE_CODE, REPORT_REF, APP_NAME,TEMPLATE_ORDER,DATE_UPDATED)
+  SELECT COMP_CODE, #{CODE}, REPORT_REF, APP_NAME,TEMPLATE_ORDER,GETDATE()
+    FROM FTR_TMPL_REF
+   WHERE FTR_TMPL_REF.COMP_CODE = #{COMP_CODE}
+     AND FTR_TMPL_REF.TEMPLATE_CODE = #{oldCode}
+     AND FTR_TMPL_REF.APP_NAME = 'REP'
+
+  
+   INSERT INTO FTR_TMPLT_EXPR(TMPLT_TYPE,
+                        COMP_CODE,
+                        CODE,
+                        TMPLT_LINE_NO,
+                        LINE_NO,
+                        EXP_TYPE,
+                        LEFT_OPERATOR,
+                        EXP_LINE,
+                        EXP_VALUE,
+                        RIGHT_OPERATOR,
+                        OPERATOR)
+    SELECT TMPLT_TYPE,
+           COMP_CODE,
+           #{CODE},
+           TMPLT_LINE_NO,
+           LINE_NO,
+           EXP_TYPE,
+           LEFT_OPERATOR,
+           EXP_LINE,
+           EXP_VALUE,
+           RIGHT_OPERATOR,
+           OPERATOR
+            FROM FTR_TMPLT_EXPR
+           WHERE FTR_TMPLT_EXPR.COMP_CODE = #{COMP_CODE}
+             AND FTR_TMPLT_EXPR.CODE = #{oldCode}
+             AND FTR_TMPLT_EXPR.TMPLT_TYPE = 'T'
+
+          
+           INSERT INTO FTR_MISMATCH_REPORT(COMP_CODE,
+                                     TMPLT_CODE,
+                                     LINE_NO,
+                                     TMPLT_CODE1,
+                                     SUB_LINE_NO)
+          
+            SELECT COMP_CODE,
+                   #{CODE},
+                   LINE_NO,
+                   TMPLT_CODE1,
+                   SUB_LINE_NO
+                    FROM FTR_MISMATCH_REPORT
+                   WHERE COMP_CODE = #{COMP_CODE}
+                     AND TMPLT_CODE = #{oldCode}
+
+end
+</sql>
+	
+</mapper>

@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="FTR_RATE_UPLOAD" >
+  <resultMap id="BaseResultMap" type="com.path.dbmaps.vo.FTR_RATE_UPLOADVO" >
+    <id column="COMP_CODE" property="COMP_CODE" />
+    <id column="CURRENCY_CODE" property="CURRENCY_CODE" />
+    <id column="VALUE_DATE" property="VALUE_DATE" />
+    <result column="DISC_FACTOR" property="DISC_FACTOR" />
+    <result column="RATE" property="RATE" />
+    <result column="ADJUST_RATE" property="ADJUST_RATE" />
+    <result column="NET_RATE" property="NET_RATE" />
+    <result column="DATE_UPDATED" property="DATE_UPDATED" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    COMP_CODE, CURRENCY_CODE, VALUE_DATE, DISC_FACTOR, RATE, ADJUST_RATE, NET_RATE, DATE_UPDATED
+  </sql>
+  <select id="selectFTR_RATE_UPLOAD" resultMap="BaseResultMap" parameterType="com.path.dbmaps.vo.FTR_RATE_UPLOADVO" >
+    select 
+    <include refid="Base_Column_List" />
+    from FTR_RATE_UPLOAD
+    where COMP_CODE = #{COMP_CODE}
+      and CURRENCY_CODE = #{CURRENCY_CODE}
+      and VALUE_DATE = #{VALUE_DATE}
+  </select>
+  <delete id="deleteFTR_RATE_UPLOAD" parameterType="com.path.dbmaps.vo.FTR_RATE_UPLOADVO" >
+    delete from FTR_RATE_UPLOAD
+    where COMP_CODE = #{COMP_CODE}
+      and CURRENCY_CODE = #{CURRENCY_CODE}
+      and VALUE_DATE = #{VALUE_DATE}
+  </delete>
+  <insert id="insertFTR_RATE_UPLOAD" parameterType="com.path.dbmaps.vo.FTR_RATE_UPLOADVO" >
+    insert into FTR_RATE_UPLOAD
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="COMP_CODE != null and COMP_CODE != emptyBigDecimalValue" >
+        COMP_CODE,
+      </if>
+      <if test="CURRENCY_CODE != null and CURRENCY_CODE != emptyBigDecimalValue" >
+        CURRENCY_CODE,
+      </if>
+      <if test="VALUE_DATE != null" >
+        VALUE_DATE,
+      </if>
+      <if test="DISC_FACTOR != null and DISC_FACTOR != emptyBigDecimalValue" >
+        DISC_FACTOR,
+      </if>
+      <if test="RATE != null and RATE != emptyBigDecimalValue" >
+        RATE,
+      </if>
+      <if test="ADJUST_RATE != null and ADJUST_RATE != emptyBigDecimalValue" >
+        ADJUST_RATE,
+      </if>
+      <if test="NET_RATE != null and NET_RATE != emptyBigDecimalValue" >
+        NET_RATE,
+      </if>
+      DATE_UPDATED,
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="COMP_CODE != null and COMP_CODE != emptyBigDecimalValue" >
+        #{COMP_CODE},
+      </if>
+      <if test="CURRENCY_CODE != null and CURRENCY_CODE != emptyBigDecimalValue" >
+        #{CURRENCY_CODE},
+      </if>
+      <if test="VALUE_DATE != null" >
+        #{VALUE_DATE},
+      </if>
+      <if test="DISC_FACTOR != null and DISC_FACTOR != emptyBigDecimalValue" >
+        #{DISC_FACTOR},
+      </if>
+      <if test="RATE != null and RATE != emptyBigDecimalValue" >
+        #{RATE},
+      </if>
+      <if test="ADJUST_RATE != null and ADJUST_RATE != emptyBigDecimalValue" >
+        #{ADJUST_RATE},
+      </if>
+      <if test="NET_RATE != null and NET_RATE != emptyBigDecimalValue" >
+        #{NET_RATE},
+      </if>
+      <choose >
+        <when test="isSybase == 1" >
+           GETDATE(),
+        </when>
+        <otherwise >
+           SYSDATE,
+        </otherwise>
+      </choose>
+    </trim>
+  </insert>
+  <sql id="sql_updateFTR_RATE_UPLOAD" >
+    update FTR_RATE_UPLOAD
+    <set >
+      <if test="DISC_FACTOR != null" >
+        <choose >
+          <when test="DISC_FACTOR == emptyBigDecimalValue" >
+            DISC_FACTOR = NULL ,
+          </when>
+          <otherwise >
+            DISC_FACTOR = #{DISC_FACTOR},
+          </otherwise>
+        </choose>
+      </if>
+      <if test="RATE != null" >
+        <choose >
+          <when test="RATE == emptyBigDecimalValue" >
+            RATE = NULL ,
+          </when>
+          <otherwise >
+            RATE = #{RATE},
+          </otherwise>
+        </choose>
+      </if>
+      <if test="ADJUST_RATE != null" >
+        <choose >
+          <when test="ADJUST_RATE == emptyBigDecimalValue" >
+            ADJUST_RATE = NULL ,
+          </when>
+          <otherwise >
+            ADJUST_RATE = #{ADJUST_RATE},
+          </otherwise>
+        </choose>
+      </if>
+      <if test="NET_RATE != null" >
+        <choose >
+          <when test="NET_RATE == emptyBigDecimalValue" >
+            NET_RATE = NULL ,
+          </when>
+          <otherwise >
+            NET_RATE = #{NET_RATE},
+          </otherwise>
+        </choose>
+      </if>
+      DATE_UPDATED = 
+      <choose >
+        <when test="isSybase == 1" >
+           GETDATE(),
+        </when>
+        <otherwise >
+           SYSDATE,
+        </otherwise>
+      </choose>
+    </set>
+    where COMP_CODE = #{COMP_CODE}
+      and CURRENCY_CODE = #{CURRENCY_CODE}
+      and VALUE_DATE = #{VALUE_DATE}
+  </sql>
+  <update id="updateFTR_RATE_UPLOAD" parameterType="com.path.dbmaps.vo.FTR_RATE_UPLOADVO" >
+    <include refid="sql_updateFTR_RATE_UPLOAD" />
+    <if test="DATE_UPDATED != null" >
+      AND DATE_UPDATED = #{DATE_UPDATED}
+    </if>
+  </update>
+</mapper>

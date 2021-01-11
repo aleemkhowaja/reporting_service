@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+	
+	<bean name="/filterCriteriaBOService" factory-bean="pathBeanFactoryExporter"  factory-method="export" >
+		<constructor-arg name="serviceName" value="filterCriteriaBOService" />
+		<constructor-arg name="service" ref="filterCriteriaBO" />
+		<constructor-arg name="serviceInterface" value="com.path.bo.reporting.ftr.filterCriteria.FilterCriteriaBO" />		
+	</bean>
+	
+	<bean name="/templateBOService" factory-bean="pathBeanFactoryExporter"  factory-method="export" >
+		<constructor-arg name="serviceName" value="templateBOService" />
+		<constructor-arg name="service" ref="templateBO" />
+		<constructor-arg name="serviceInterface" value="com.path.bo.reporting.ftr.template.TemplateBO" />		
+	</bean>
+	
+	<bean name="/columnTemplateBOService" factory-bean="pathBeanFactoryExporter"  factory-method="export" >
+		<constructor-arg name="serviceName" value="columnTemplateBOService" />
+		<constructor-arg name="service" ref="columnTemplateBO" />
+		<constructor-arg name="serviceInterface" value="com.path.bo.reporting.ftr.columntemplate.ColumnTemplateBO" />		
+	</bean>
+	
+	<bean name="/columnTemplateDetBOService" factory-bean="pathBeanFactoryExporter"  factory-method="export" >
+		<constructor-arg name="serviceName" value="columnTemplateDetBOService" />
+		<constructor-arg name="service" ref="columnTemplateDetBO" />
+		<constructor-arg name="serviceInterface" value="com.path.bo.reporting.ftr.columntemplate.ColumnTemplateDetBO" />		
+	</bean>
+	
+	<bean name="/templateProcBOService" factory-bean="pathBeanFactoryExporter"  factory-method="export" >
+		<constructor-arg name="serviceName" value="templateProcBOService" />
+		<constructor-arg name="service" ref="templateProcBO" />
+		<constructor-arg name="serviceInterface" value="com.path.bo.reporting.ftr.templateProcess.TemplateProcessBO" />		
+	</bean>
+	
+	
+	<bean name="/fcrBOService" factory-bean="pathBeanFactoryExporter"  factory-method="export" >
+		<constructor-arg name="serviceName" value="fcrBOService" />
+		<constructor-arg name="service" ref="fcrBO" />
+		<constructor-arg name="serviceInterface" value="com.path.bo.reporting.ftr.fcr.FcrBO" />		
+	</bean>
+	
+	<bean name="/foldersBOService" factory-bean="pathBeanFactoryExporter"  factory-method="export" >
+		<constructor-arg name="serviceName" value="foldersBOService" />
+		<constructor-arg name="service" ref="foldersBO" />
+		<constructor-arg name="serviceInterface" value="com.path.bo.reporting.ftr.folders.FoldersBO" />		
+	</bean>
+	
+	<bean name="/connectionBOService" factory-bean="pathBeanFactoryExporter"  factory-method="export" >
+		<constructor-arg name="serviceName" value="connectionBOService" />
+		<constructor-arg name="service" ref="connectionBO" />
+		<constructor-arg name="serviceInterface" value="com.path.bo.reporting.connection.ConnectionBO" />		
+	</bean>
+	<bean name="/cbParamBOService" factory-bean="pathBeanFactoryExporter"  factory-method="export" >
+		<constructor-arg name="serviceName" value="cbParamBOService" />
+		<constructor-arg name="service" ref="cbParamBO" />
+		<constructor-arg name="serviceInterface" value="com.path.bo.reporting.ftr.cbParam.CbParamBO" />		
+	</bean>
+	
+	<bean name="/controlRecordBOService" factory-bean="pathBeanFactoryExporter"  factory-method="export" >
+		<constructor-arg name="serviceName" value="controlRecordBOService" />
+		<constructor-arg name="service" ref="controlRecordBO" />
+		<constructor-arg name="serviceInterface" value="com.path.bo.reporting.ftr.controlRecord.ControlRecordBO" />		
+	</bean>
+	
+	<bean name="/templateHeaderBOService" factory-bean="pathBeanFactoryExporter"  factory-method="export" >
+		<constructor-arg name="serviceName" value="templateHeaderBOService" />
+		<constructor-arg name="service" ref="templateHeaderBO" />
+		<constructor-arg name="serviceInterface" value="com.path.bo.reporting.ftr.templateHeader.TemplateHeaderBO" />		
+	</bean>
+	<bean name="/timeBucketsBOService" factory-bean="pathBeanFactoryExporter"  factory-method="export" >
+		<constructor-arg name="serviceName" value="timeBucketsBOService" />
+		<constructor-arg name="service" ref="timeBucketsBO" />
+		<constructor-arg name="serviceInterface" value="com.path.bo.reporting.ftr.timeBuckets.TimeBucketsBO" />		
+	</bean>
+	
+	<bean name="/timerScheduleBOService" factory-bean="pathBeanFactoryExporter"  factory-method="export" >
+		<constructor-arg name="serviceName" value="timerScheduleBOService" />
+		<constructor-arg name="service" ref="timerScheduleBO" />
+		<constructor-arg name="serviceInterface" value="com.path.bo.reporting.ftr.scheduler.TimerScheduleBO" />		
+	</bean>
+	
+	<bean name="/schedulerUtilitiesBOServices" factory-bean="pathBeanFactoryExporter"  factory-method="export" >
+		<constructor-arg name="serviceName" value="schedulerUtilitiesBOServices" />
+		<constructor-arg name="service" ref="schedulerUtilities" />
+		<constructor-arg name="serviceInterface" value="com.path.bo.reporting.ftr.scheduler.SchedulerUtilities" />		
+	</bean>	
+		
+</beans>

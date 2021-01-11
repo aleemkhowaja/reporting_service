@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="REP_MISMATCH_COLUMN" >
+  <resultMap id="BaseResultMap" type="com.path.dbmaps.vo.REP_MISMATCH_COLUMNVO" >
+    <id column="RELATED_COLUMN" property="RELATED_COLUMN" />
+    <id column="REP_MISMATCH_ID" property="REP_MISMATCH_ID" />
+    <result column="COLUMN_TYPE" property="COLUMN_TYPE" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    RELATED_COLUMN, REP_MISMATCH_ID, COLUMN_TYPE
+  </sql>
+  <select id="selectREP_MISMATCH_COLUMN" resultMap="BaseResultMap" parameterType="com.path.dbmaps.vo.REP_MISMATCH_COLUMNVO" >
+    select 
+    <include refid="Base_Column_List" />
+    from REP_MISMATCH_COLUMN
+    where RELATED_COLUMN = #{RELATED_COLUMN}
+      and REP_MISMATCH_ID = #{REP_MISMATCH_ID}
+  </select>
+  <delete id="deleteREP_MISMATCH_COLUMN" parameterType="com.path.dbmaps.vo.REP_MISMATCH_COLUMNVO" >
+    delete from REP_MISMATCH_COLUMN
+    where RELATED_COLUMN = #{RELATED_COLUMN}
+      and REP_MISMATCH_ID = #{REP_MISMATCH_ID}
+  </delete>
+  <insert id="insertREP_MISMATCH_COLUMN" parameterType="com.path.dbmaps.vo.REP_MISMATCH_COLUMNVO" >
+    insert into REP_MISMATCH_COLUMN
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="RELATED_COLUMN != null" >
+        RELATED_COLUMN,
+      </if>
+      <if test="REP_MISMATCH_ID != null and REP_MISMATCH_ID != emptyBigDecimalValue" >
+        REP_MISMATCH_ID,
+      </if>
+      <if test="COLUMN_TYPE != null" >
+        COLUMN_TYPE,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="RELATED_COLUMN != null" >
+        #{RELATED_COLUMN},
+      </if>
+      <if test="REP_MISMATCH_ID != null and REP_MISMATCH_ID != emptyBigDecimalValue" >
+        #{REP_MISMATCH_ID},
+      </if>
+      <if test="COLUMN_TYPE != null" >
+        #{COLUMN_TYPE},
+      </if>
+    </trim>
+  </insert>
+  <sql id="sql_updateREP_MISMATCH_COLUMN" >
+    update REP_MISMATCH_COLUMN
+    <set >
+      <if test="COLUMN_TYPE != null" >
+        COLUMN_TYPE = #{COLUMN_TYPE},
+      </if>
+    </set>
+    where RELATED_COLUMN = #{RELATED_COLUMN}
+      and REP_MISMATCH_ID = #{REP_MISMATCH_ID}
+  </sql>
+  <update id="updateREP_MISMATCH_COLUMN" parameterType="com.path.dbmaps.vo.REP_MISMATCH_COLUMNVO" >
+    <include refid="sql_updateREP_MISMATCH_COLUMN" />
+  </update>
+</mapper>

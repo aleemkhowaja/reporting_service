@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        
+<mapper namespace="templateLines">
+
+ 
+
+<resultMap type="GLSTMPLTCO"  	id="getAllTemplateLinesMap">     
+    <id	 	column="concatKey" 				property="concatKey" />
+    <id 	column="COMP_CODE" 				property="glstmpltVO.COMP_CODE" />
+    <id 	column="CODE" 					property="glstmpltVO.CODE" />
+    <id 	column="LINE_NBR" 				property="glstmpltVO.LINE_NBR" />
+    <result column="TEMPLATE_DESCRIPTION1" 	property="glstmpltVO.BRIEF_NAME_ENG" />
+    <result column="BRIEF_NAME_ARAB" 		property="glstmpltVO.BRIEF_NAME_ARAB" />
+    <result column="PRINTEDStr" 			property="PRINTEDStr" />
+    <result column="PRINTED" 				property="glstmpltVO.PRINTED" />
+    <result column="BOLD"					property="glstmpltVO.BOLD" />
+    <result column="DISPLAY_ZEROS" 			property="glstmpltVO.DISPLAY_ZEROS" />
+    <result column="SAVE_DATA" 				property="glstmpltVO.SAVE_DATA" />
+    <result column="DISP_LINE_TOT_ZERO" 	property="glstmpltVO.DISP_LINE_TOT_ZERO" />
+    <result column="EXPRESSION" 			property="glstmpltVO.EXPRESSION" />
+    <result column="EXPRESSION_LINES" 		property="glstmpltVO.EXPRESSION_LINES" />
+    <result column="ADD_DESC" 				property="glstmpltVO.ADD_DESC" />
+    <result column="GL_CODES" 				property="glstmpltVO.GL_CODES" />
+    <result column="BOTTOM_BORDER" 			property="glstmpltVO.BOTTOM_BORDER" />
+    <result column="BOTTOM_BORDERStr" 		property="BOTTOM_BORDERStr" />
+    <result column="CSV" 					property="glstmpltVO.CSV" />
+    <result column="CURRENCYStr" 			property="CURRENCYStr" />
+    <result column="CURRENCY" 				property="glstmpltVO.CURRENCY" />
+    <result column="FOR_ROUND" 					property="glstmpltVO.FOR_ROUND" />
+    <result column="ADD_DESC2" 				property="glstmpltVO.ADD_DESC1" />
+    <result column="LINE_NBR" 				property="newLineNumber" />
+    <result column="GL_TYPE" 				property="glstmpltVO.GL_TYPE" />
+    <result column="IS_SUB_TOTAL" 				property="glstmpltVO.IS_SUB_TOTAL" />
+    <result column="isSubTotalStr" 				property="isSubTotalStr" />    
+    <result column="POST_CODE" 				property="glstmpltVO.POST_CODE" /> 
+    <result column="PERCENTAGE" 			property="glstmpltVO.PERCENTAGE" /> 
+</resultMap>
+
+
+<resultMap type="GLSTMPLTCO"  							id="getCurrencyListMap">     
+    <id 	column="CURRENCY" 				property="glstmpltVO.CURRENCY"/>
+    <result column="BRIEF_NAME_ENG" 		property="glstmpltVO.BRIEF_NAME_ENG"/>
+    <result column="ADD_DESC" 				property="glstmpltVO.ADD_DESC"/>
+    <result column="ADD_DESC1" 				property="glstmpltVO.ADD_DESC1"/>
+    <result column="BRIEF_NAME_ARAB" 		property="glstmpltVO.BRIEF_NAME_ARAB"/>
+    <result column="DISPLAY_ZEROS" 			property="glstmpltVO.DISPLAY_ZEROS"/>
+</resultMap>
+
+<sql id="getAllTemplateLinesSql">
+	<include refid="tmplLineExt.getAllTemplateLinesSql"/>
+</sql>
+
+<sql id="getAllCurrencyListSql">
+	  SELECT  	CURRENCY_CODE,
+	        	ADDITIONAL_REFERENCE,
+	        	BRIEF_DESC_ENG,
+	        	LONG_DESC_ENG,
+	        	BRIEF_DESC_ARAB,
+	        	LONG_DESC_ARAB
+	  FROM 		CURRENCIES C
+	  WHERE 	COMP_CODE=#{COMP_CODE}
+
+</sql>
+
+<select id="getAllTemplateLines"  resultMap="getAllTemplateLinesMap" parameterType="glstmpltSC">
+	<include refid="servicesCommon.commonGridWrpBefFlip"/>
+	<include refid="getAllTemplateLinesSql"/>
+	<include refid="servicesCommon.commonGridWrpAftFlip"/>
+	<include refid="servicesCommon.commmonGridWrpFlipClose"/>
+</select>
+
+<select id="getAllTemplateLinesTmplsc"  resultMap="getAllTemplateLinesMap" parameterType="tmplGridSC">
+	<include refid="servicesCommon.commonGridWrpBefFlip"/>
+	<include refid="getAllTemplateLinesSql"/>
+	<include refid="servicesCommon.commonGridWrpAftFlip"/>
+	<include refid="servicesCommon.commmonGridWrpFlipClose"/>
+</select>
+
+<select id="getAllTemplateLinesCount"   resultType="int" parameterType="tmplGridSC">
+	<include refid="servicesCommon.commonGridWrpBefCnt"/>
+	<include refid="getAllTemplateLinesSql"/>
+	<include refid="servicesCommon.commonGridWrpAftCnt"/>
+	<include refid="servicesCommon.commonGridCountWrpClose"/>
+</select>
+
+
+<sql id="getCurrencyListSql">
+	 SELECT  	CURRENCY_CODE AS CURRENCY,
+	        	ADDITIONAL_REFERENCE AS BRIEF_NAME_ENG,
+	        	BRIEF_DESC_ENG AS ADD_DESC,
+	        	LONG_DESC_ENG AS ADD_DESC1,
+	        	BRIEF_DESC_ARAB AS BRIEF_NAME_ARAB,
+	        	LONG_DESC_ARAB AS DISPLAY_ZEROS
+	  FROM 		CURRENCIES C
+	  WHERE 	COMP_CODE=#{COMP_CODE}
+</sql>
+
+<select id="getCurrencyList"  resultMap="getCurrencyListMap" parameterType="tmplGridSC">
+
+<include refid="servicesCommon.commonGridWrpBefFlip"/>
+	<include refid="getCurrencyListSql"/>
+	<include refid="servicesCommon.commonGridWrpAftFlip"/>
+	<include refid="servicesCommon.commmonGridWrpFlipClose"/>
+</select>
+
+
+
+<select id="getCurrencyListCount"   resultType="int" parameterType="tmplGridSC">
+	<include refid="servicesCommon.commonGridWrpBefCnt"/>
+	<include refid="getCurrencyListSql"/>
+	<include refid="servicesCommon.commonGridWrpAftCnt"/>
+	<include refid="servicesCommon.commonGridCountWrpClose"/>
+</select>
+
+<select id="getCurrencyDependency"  resultMap="getCurrencyListMap" parameterType="GLSTMPLTVO">
+	 SELECT  	CURRENCY_CODE AS CURRENCY,
+	        	ADDITIONAL_REFERENCE AS BRIEF_NAME_ENG,
+	        	BRIEF_DESC_ENG AS ADD_DESC,
+	        	LONG_DESC_ENG AS ADD_DESC1,
+	        	BRIEF_DESC_ARAB AS BRIEF_NAME_ARAB,
+	        	LONG_DESC_ARAB AS DISPLAY_ZEROS
+	  FROM 		CURRENCIES C
+    WHERE   COMP_CODE=#{COMP_CODE}  AND CURRENCY_CODE=#{CURRENCY} 
+
+</select>
+
+
+ <delete id="deleteLinesByTemplate" parameterType="GLSTMPLTVO" >
+    DELETE FROM GLSTMPLT
+    WHERE COMP_CODE = #{COMP_CODE}
+    AND CODE = #{CODE}
+    AND LINE_NBR = #{LINE_NBR}
+    AND TEMPLATE_TYPE = #{TEMPLATE_TYPE}
+  </delete>
+  
+    
+ <select id="checkRTVcalcType" parameterType="commonDetailsSC" resultType="int">
+ SELECT COUNT(1)
+  FROM GLSTMPLTGLSDET
+ WHERE COMP_CODE = #{compCode}
+   AND CODE = #{TEMPLATE_CODE}
+   AND CALC_TYPE = 'RTV'
+   AND NOT EXISTS
+ (SELECT 1
+          FROM GLSTMPLT_CRITERIA, GLSTMPLT_PARAM_LINK
+         WHERE GLSTMPLT_CRITERIA.COMP_CODE = GLSTMPLT_PARAM_LINK.COMP_CODE
+           AND GLSTMPLT_CRITERIA.CODE = GLSTMPLT_PARAM_LINK.CRITERIA_CODE
+           AND GLSTMPLT_CRITERIA.CRI_TYPE = 'CUR'
+           AND GLSTMPLT_PARAM_LINK.COMP_CODE = #{compCode}
+           AND GLSTMPLT_PARAM_LINK.TEMP_CODE = #{TEMPLATE_CODE}
+           AND GLSTMPLT_PARAM_LINK.LINE_NO = GLSTMPLTGLSDET.LINE_NBR)
+   AND EXISTS
+ (SELECT 1
+          FROM COLMNTMPLT
+         WHERE COLMNTMPLT.COMP_CODE = #{compCode}
+           AND COLMNTMPLT.CODE = #{CODE}
+           AND COLMNTMPLT.COL_TYPE NOT IN ('X', 'AR', 'EN', 'BRC', 'COC')
+           AND (SELECT COUNT(1)
+                  FROM GLSTMPLT_CRITERIA, COLMNTMPLT_PARAM_LINK
+                 WHERE GLSTMPLT_CRITERIA.COMP_CODE =
+                       COLMNTMPLT_PARAM_LINK.COMP_CODE
+                   AND GLSTMPLT_CRITERIA.CODE =
+                       COLMNTMPLT_PARAM_LINK.CRITERIA_CODE
+                   AND COLMNTMPLT_PARAM_LINK.COMP_CODE = COLMNTMPLT.COMP_CODE
+                   AND COLMNTMPLT_PARAM_LINK.TEMP_CODE = COLMNTMPLT.CODE
+                   AND COLMNTMPLT_PARAM_LINK.LINE_NO = COLMNTMPLT.LINE_NBR
+                   AND GLSTMPLT_CRITERIA.CRI_TYPE = 'CUR') <![CDATA[ <> ]]> 1)
+  </select>
+
+</mapper>

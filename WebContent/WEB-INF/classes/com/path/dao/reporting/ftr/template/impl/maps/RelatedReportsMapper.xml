@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        
+<mapper namespace="relatedReports">
+
+<resultMap type="FTR_TMPL_REFCO"  id="getRelatedReportsListMap">     
+    <id 	column="COMP_CODE" 			property="ftrTmplRefVO.COMP_CODE" />
+    <id 	column="TEMPLATE_CODE" 		property="ftrTmplRefVO.TEMPLATE_CODE" />
+    <id 	column="REPORT_REF" 		property="ftrTmplRefVO.REPORT_REF" />
+    <id 	column="APP_NAME" 			property="ftrTmplRefVO.APP_NAME" />
+    <result column="TEMPLATE_ORDER" 	property="ftrTmplRefVO.TEMPLATE_ORDER" />
+    <result column="REPORT_NAME" 		property="reportName" />
+    <result column="CONCATKEY" 			property="concatKey" />
+</resultMap>
+
+
+<sql id="getRelatedReportsSql">
+	<include refid="relatedReportsExt.getRelatedReportsSql"/>
+</sql>
+
+
+<select id="getRelatedReportsList"  resultMap="getRelatedReportsListMap" parameterType="tmplGridSC">
+	<include refid="servicesCommon.commonGridWrpBefFlip"/>
+	<include refid="getRelatedReportsSql"/>
+	<include refid="servicesCommon.commonGridWrpAftFlip"/>
+	<include refid="servicesCommon.commmonGridWrpFlipClose"/>
+</select>
+
+
+<select id="getRelatedReportsCount"   resultType="int" parameterType="tmplGridSC">
+	<include refid="servicesCommon.commonGridWrpBefCnt"/>
+	<include refid="getRelatedReportsSql"/>
+	<include refid="servicesCommon.commonGridWrpAftCnt"/>
+	<include refid="servicesCommon.commonGridCountWrpClose"/>
+</select>
+
+  <sql id="sql_updateFTR_TMPL_REF" >
+    update FTR_TMPL_REF
+    <set >
+      <if test="ftrTmplRefVO.TEMPLATE_ORDER != null" >
+        <choose >
+          <when test="ftrTmplRefVO.TEMPLATE_ORDER == emptyBigDecimalValue" >
+            TEMPLATE_ORDER = NULL ,
+          </when>
+          <otherwise >
+            TEMPLATE_ORDER = #{ftrTmplRefVO.TEMPLATE_ORDER},
+          </otherwise>
+        </choose>
+      </if>
+       <if test="ftrTmplRefVO.REPORT_REF != null" >
+            REPORT_REF = #{ftrTmplRefVO.REPORT_REF},
+      </if>
+      DATE_UPDATED = 
+      <choose >
+        <when test="isSybase == 1" >
+           GETDATE(),
+        </when>
+        <otherwise >
+           SYSDATE,
+        </otherwise>
+      </choose>
+    </set>
+    where APP_NAME = #{ftrTmplRefVO.APP_NAME}
+      and COMP_CODE = #{ftrTmplRefVO.COMP_CODE}
+      <if test="oldReportRef != ''" >
+      	and REPORT_REF = #{oldReportRef}
+      </if>
+      <if test="oldReportRef==''">
+      	and REPORT_REF = #{ftrTmplRefVO.REPORT_REF}
+      </if>
+      and TEMPLATE_CODE = #{ftrTmplRefVO.TEMPLATE_CODE}
+  </sql>
+  <update id="updateFTR_TMPL_REF" parameterType="com.path.vo.reporting.ftr.template.FTR_TMPL_REFCO" >
+    <include refid="sql_updateFTR_TMPL_REF" />
+    <if test="ftrTmplRefVO.DATE_UPDATED != null" >
+      AND DATE_UPDATED = #{ftrTmplRefVO.DATE_UPDATED}
+    </if>
+  </update>
+  
+  
+<delete id="deleteRelatedReportsByTemplate" parameterType="GLSTMPLTVO">
+     DELETE FROM FTR_TMPL_REF
+     WHERE COMP_CODE = #{COMP_CODE}
+     AND TEMPLATE_CODE = #{CODE}
+</delete> 
+
+<select id="checkOrderInOtherTemplate" resultType="java.lang.Integer" parameterType="tmplGridSC">  
+	SELECT COUNT(1)
+	  FROM FTR_TMPL_REF
+	 WHERE REPORT_REF = #{REPORT_REF}
+	   AND TEMPLATE_ORDER = #{TEMPLATE_ORDER}
+	   AND APP_NAME = 'REP'  
+</select>
+  
+</mapper>

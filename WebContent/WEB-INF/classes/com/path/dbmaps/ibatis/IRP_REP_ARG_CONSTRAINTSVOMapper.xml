@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="IRP_REP_ARG_CONSTRAINTS" >
+  <resultMap id="BaseResultMap" type="com.path.dbmaps.vo.IRP_REP_ARG_CONSTRAINTSVO" >
+    <id column="ARGUMENT_ID" property="ARGUMENT_ID" />
+    <id column="REPORT_ID" property="REPORT_ID" />
+    <id column="VALUE_CODE" property="VALUE_CODE" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.path.dbmaps.vo.IRP_REP_ARG_CONSTRAINTSVO" extends="BaseResultMap" >
+    <result column="VALUE" property="VALUE" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ARGUMENT_ID, REPORT_ID, VALUE_CODE
+  </sql>
+  <sql id="Blob_Column_List" >
+    VALUE
+  </sql>
+  <select id="selectIRP_REP_ARG_CONSTRAINTS" resultMap="ResultMapWithBLOBs" parameterType="com.path.dbmaps.vo.IRP_REP_ARG_CONSTRAINTSVO" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from IRP_REP_ARG_CONSTRAINTS
+    where ARGUMENT_ID = #{ARGUMENT_ID}
+      and REPORT_ID = #{REPORT_ID}
+      and VALUE_CODE = #{VALUE_CODE}
+  </select>
+  <delete id="deleteIRP_REP_ARG_CONSTRAINTS" parameterType="com.path.dbmaps.vo.IRP_REP_ARG_CONSTRAINTSVO" >
+    delete from IRP_REP_ARG_CONSTRAINTS
+    where ARGUMENT_ID = #{ARGUMENT_ID}
+      and REPORT_ID = #{REPORT_ID}
+      and VALUE_CODE = #{VALUE_CODE}
+  </delete>
+  <insert id="insertIRP_REP_ARG_CONSTRAINTS" parameterType="com.path.dbmaps.vo.IRP_REP_ARG_CONSTRAINTSVO" >
+    insert into IRP_REP_ARG_CONSTRAINTS
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="ARGUMENT_ID != null and ARGUMENT_ID != emptyBigDecimalValue" >
+        ARGUMENT_ID,
+      </if>
+      <if test="REPORT_ID != null and REPORT_ID != emptyBigDecimalValue" >
+        REPORT_ID,
+      </if>
+      <if test="VALUE_CODE != null" >
+        VALUE_CODE,
+      </if>
+      <if test="VALUE != null" >
+        VALUE,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="ARGUMENT_ID != null and ARGUMENT_ID != emptyBigDecimalValue" >
+        #{ARGUMENT_ID},
+      </if>
+      <if test="REPORT_ID != null and REPORT_ID != emptyBigDecimalValue" >
+        #{REPORT_ID},
+      </if>
+      <if test="VALUE_CODE != null" >
+        #{VALUE_CODE},
+      </if>
+      <if test="VALUE != null" >
+        #{VALUE},
+      </if>
+    </trim>
+  </insert>
+  <sql id="sql_updateIRP_REP_ARG_CONSTRAINTS" >
+    update IRP_REP_ARG_CONSTRAINTS
+    <set >
+      <if test="VALUE != null" >
+        VALUE = #{VALUE},
+      </if>
+    </set>
+    where ARGUMENT_ID = #{ARGUMENT_ID}
+      and REPORT_ID = #{REPORT_ID}
+      and VALUE_CODE = #{VALUE_CODE}
+  </sql>
+  <update id="updateIRP_REP_ARG_CONSTRAINTS" parameterType="com.path.dbmaps.vo.IRP_REP_ARG_CONSTRAINTSVO" >
+    <include refid="sql_updateIRP_REP_ARG_CONSTRAINTS" />
+  </update>
+</mapper>

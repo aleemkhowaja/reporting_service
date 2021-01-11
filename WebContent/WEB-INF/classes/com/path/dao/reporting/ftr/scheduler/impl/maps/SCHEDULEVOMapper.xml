@@ -1,0 +1,684 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="SCHEDULER" >
+  
+  <resultMap id="ReportSchedParamMap" type="com.path.vo.reporting.scheduler.IRP_REPORT_SCHED_PARAMSCO" >
+    <id column="PARAM_ID" property="PARAM_ID" />
+    <id column="REPORT_ID" property="REPORT_ID" />
+    <id column="SCHED_ID" property="SCHED_ID" />
+    <result column="PARAM_NAME" property="PARAM_NAME" />
+    <result column="PARAM_VALUE" property="PARAM_VALUE" />
+    <result column="PARAM_TYPE" property="PARAM_TYPE" />
+    <result column="SESSION_ATTR_NAME" property="SESSION_ATTR_NAME" />
+    <result column="ARGUMENT_SOURCE" property="ARGUMENT_SOURCE" />
+    <result column="MULTISELECT_YN" property="MULTISELECT_YN" />
+    <result column="REPORT_REF" property="REPORT_REF" />
+  </resultMap>
+  
+  <resultMap id="logResultMap" type="com.path.vo.reporting.scheduler.IRP_REPORT_SCHED_LOGCO" >
+    <id column="REPORT_ID" property="REPORT_ID" />
+    <id column="SCHEDULED_DATE" property="SCHEDULED_DATE" />
+    <id column="SCHED_ID" property="SCHED_ID" />
+    <id column="START_DATE" property="START_DATE" />
+    
+    <result column="START_DATE_STR" property="START_DATE_STR" />
+    <result column="REPORT_NAME" property="REPORT_NAME" />
+    <result column="SCHED_NAME" property="SCHED_NAME"/>
+    <result column="END_DATE" property="END_DATE" />
+    <result column="STATUS" property="STATUS" />
+    <result column="REMARKS" property="REMARKS" />
+    <result column="REP_FORMAT" property="REP_FORMAT" />
+    <result column="START_DATE_STR1" property="START_DATE_STR1" />
+    <result column="SCHED_DATE_STR1" property="SCHED_DATE_STR1" />
+    <result column="PROG_REF" property="PROG_REF" />
+    <result column="SNAPSHOT_ID" property="SNAPSHOT_ID" />
+    <result column="IS_DB" property="IS_DB" />
+     <result column="SAVE_DATA_TYPE" property="SAVE_DATA_TYPE" />
+     <result column="SAVE_DATA_TYPE_STR" property="SAVE_DATA_TYPE_STR" />
+     <result column="STATUS_DESC" property="STATUS_DESC" />
+     <result column="FILE_NAME" property="FILE_NAME" />
+     <result column="REPORT_FORMAT_TRANS" property="REPORT_FORMAT_TRANS" />
+     <result column="CONN_ID" property="CONN_ID" />
+     <result column="PREVIEW" property="PREVIEW" />
+  </resultMap>
+  
+  <resultMap id="ScheduleResultMap" type="com.path.vo.reporting.scheduler.IRP_SCHEDULECO" >
+    <id column="SCHED_ID" property="SCHED_VO.SCHED_ID" />
+    <result column="END_OF_MONTH" property="SCHED_VO.END_OF_MONTH" />
+    <result column="SCHED_NAME" property="SCHED_VO.SCHED_NAME" />
+    <result column="FIRST_RUN_DATE_STR" property="FIRST_RUN_DATE_STR" />
+    <result column="SCHED_EXPIRY_DATE_STR" property="SCHED_EXPIRY_DATE_STR" />
+     <result column="NEXT_RUN_DATE_STR" property="NEXT_RUN_DATE_STR" />
+    <result column="FIRST_RUN_DATE" property="SCHED_VO.FIRST_RUN_DATE" />
+    <result column="SCHED_EXPIRY_DATE" property="SCHED_VO.SCHED_EXPIRY_DATE" />
+    <result column="SCHED_FREQUENCY" property="SCHED_VO.SCHED_FREQUENCY" />
+    <result column="FREQUENCY_HOUR" property="SCHED_VO.FREQUENCY_HOUR" />
+    <result column="FREQUENCY_MINUTE" property="SCHED_VO.FREQUENCY_MINUTE" />
+    <result column="NEXT_RUN_DATE" property="SCHED_VO.NEXT_RUN_DATE" />
+    <result column="LOG_COUNT" property="LOG_COUNT" />
+    <result column="DATE_UPDATED" property="SCHED_VO.DATE_UPDATED" />
+    <result column="SCHED_TYPE" property="SCHED_VO.SCHED_TYPE" />
+    <result column="SCHED_TYPE_STR" property="SCHED_TYPE_STR"/>
+    <result column="BATCH_CODE" property="SCHED_VO.BATCH_CODE" />
+    <result column="BATCH_BRIEF_NAME" property="BATCH_BRIEF_NAME" />
+    <result column="EVT_ID" property="SCHED_VO.EVT_ID" />
+    <result column="EVT_BRIEF_NAME" property="EVT_BRIEF_NAME" />
+  </resultMap>
+  
+  <resultMap id="ScheduleDetailsResultMap" type="com.path.vo.reporting.scheduler.IRP_SCHED_DETAILSCO" >
+    <id column="FREQUENCY_OCCURENCE" property="FREQUENCY_OCCURENCE" />
+    <id column="SCHED_ID" property="SCHED_ID" />
+  </resultMap>
+  
+  <resultMap id="ReportScheduleResultMap" type="com.path.vo.reporting.scheduler.IRP_REPORT_SCHEDULECO" >
+    <id column="REPORT_ID" property="REPORT_ID" />
+    <id column="SCHED_ID" property="SCHED_ID" />
+    <result column="REPORT_FORMAT" property="REPORT_FORMAT" />
+    <result column="IS_ACTIVE" property="IS_ACTIVE" />
+    <result column="PRINTER_NAME" property="PRINTER_NAME" />
+    <result column="DATA_ONLY" property="DATA_ONLY" />
+    <result column="REPORT_NAME" property="REPORT_NAME" />
+    <result column="PROG_REF" property="PROG_REF" />
+    <result column="XHTML_FILE" property="XHTML_FILE" />
+    <result column="JRXML_FILE" property="JRXML_FILE" />
+    <result column="NEXT_RUN_DATE" property="NEXT_RUN_DATE" />
+    <result column="CSV_SEPARATOR" property="CSV_SEPARATOR" />
+    <result column="SHOW_HEAD_FOOT" property="SHOW_HEAD_FOOT" />
+    <result column="APP_NAME" property="REPORT_APP_NAME" />
+    <result column="REPORT_LANGUAGE" property="REPORT_LANGUAGE" />
+    <result column="SAVE_DATA_TYPE" property="SAVE_DATA_TYPE" />
+    <result column="MAIL_SERVER_CODE" property="MAIL_SERVER_CODE" />
+    <result column="FROM_EMAIL_TYPE" property="FROM_EMAIL_TYPE" />
+    <result column="FROM_EMAIL_VAL" property="FROM_EMAIL_VAL" />
+    <result column="TO_EMAIL_TYPE" property="TO_EMAIL_TYPE" />
+    <result column="TO_EMAIL_VAL" property="TO_EMAIL_VAL" />
+    <result column="CC_EMAIL_TYPE" property="CC_EMAIL_TYPE" />
+    <result column="CC_EMAIL_VAL" property="CC_EMAIL_VAL" />
+    <result column="BCC_EMAIL_TYPE" property="BCC_EMAIL_TYPE" />
+    <result column="BCC_EMAIL_VAL" property="BCC_EMAIL_VAL" />
+    <result column="EMAIL_SUBJECT" property="EMAIL_SUBJECT" />
+    <result column="EMAIL_BODY" property="EMAIL_BODY" />
+    <result column="ATTACH_FILE_NAME" property="ATTACH_FILE_NAME" />
+    <result column="SEND_IF_NO_DATA_YN" property="SEND_IF_NO_DATA_YN" />
+    <result column="PRINT_IF_NO_DATA_YN" property="PRINT_IF_NO_DATA_YN" />
+    <result column="MAIL_SERVER_HOST" property="MAIL_SERVER_HOST" />
+    <result column="DEFAULT_FROM_MS" property="DEFAULT_FROM_MS" />
+    <result column="EMAIL_CONSOLIDATED_YN" property="EMAIL_CONSOLIDATED_YN" />
+    <result column="DATE_TYPE" property="DATE_TYPE" />
+    <result column="REPORT_FORMAT_TRANS" property="REPORT_FORMAT_TRANS" />
+    <result column="CONN_ID" property="CONN_ID" />
+    <result column="WHEN_NO_DATA" property="WHEN_NO_DATA" />
+    <result column="LANG_INDEPENDENT_YN" property="LANG_INDEPENDENT_YN" />
+    <result column="REPORT_REF" property="REPORT_REF" />
+    <result column="FCR_REPORT_NAME" property="FCR_REPORT_NAME" />
+    <result column="REPORT_REF" property="REPORT_REF" />
+    <result column="FCR_REPORT_NAME" property="FCR_REPORT_NAME" />
+    <result column="SECURED_FILE_YN" property="SECURED_FILE_YN" />
+    <result column="SECURED_PWD_FIELD_NAME" property="SECURED_PWD_FIELD_NAME"/>
+    <result column="BATCH_CODE" property="BATCH_CODE"/>
+    <result column="EVT_ID" property="EVT_ID"/>
+    <result column="IS_FCR_YN" property="IS_FCR_YN"/>
+  
+  </resultMap>
+  
+  <resultMap id="retSchedParamValuesMap" type="com.path.vo.reporting.scheduler.IRP_REPORT_SCHED_PARAMSCO" >
+ 	<id column="PARAM_NAME" property="PARAM_NAME" />
+    <result column="PARAM_VALUE" property="PARAM_VALUE" />
+  </resultMap>
+  
+  <resultMap id="retRepMainArgsMapper" type="irp_rep_argumentsCO" >
+ 	<id column="ARGUMENT_ID" property="ARGUMENT_ID" />
+    <result column="ARGUMENT_NAME" property="ARGUMENT_NAME" />
+    <result column="ARGUMENT_TYPE" property="ARGUMENT_TYPE" />
+  </resultMap>
+  
+   <resultMap id="retMailFeGroupByListMap" type="irp_rep_sched_mail_group_byCO" >
+    <result column="SCHED_ID" property="mailGrpVO.SCHED_ID" />
+    <result column="REPORT_ID" property="mailGrpVO.REPORT_ID" />
+    <result column="FIELD_ALIAS" property="mailGrpVO.FIELD_ALIAS" />
+    <result column="GRP_ORDER" property="mailGrpVO.GRP_ORDER" />
+  </resultMap>
+  
+   <resultMap id="retRepSchedMailLogDetLstMap" type="irp_report_sched_log_detailsco">
+  	<result column="FROM_EMAIL_VAL" property="logDetVO.FROM_EMAIL_VAL" />
+    <result column="RECEIVER_TYPE" property="logDetVO.RECEIVER_TYPE" />
+    <result column="RECEIVER_EMAIL_VAL" property="logDetVO.RECEIVER_EMAIL_VAL" />
+    <result column="STATUS" property="logDetVO.STATUS" />
+    <result column="REMARKS" property="logDetVO.REMARKS" />
+    <result column="LINE_NBR" property="logDetVO.LINE_NBR" />
+    <result column="RECEIVER_TYPE_STR" property="RECEIVER_TYPE_STR" />
+    <result column="STATUS_DESC" property="STATUS_DESC" />    
+    <result column="EMAIL_SUBJECT" property="logDetVO.EMAIL_SUBJECT" />
+    <result column="CIF_NO" property="logDetVO.CIF_NO" />
+    <result column="START_DATE" property="logDetVO.START_DATE" />
+  </resultMap>
+  
+  <resultMap id="returnSchedSessionParamsValMap" type="IRP_REP_SCHED_SESSION_PARAMVO">
+	  <result column="SESSION_NAME" property="SESSION_NAME" />
+	  <result column="SESSION_VAL" property="SESSION_VAL" />
+  </resultMap>
+  
+  <select id="findLogCount" parameterType="com.path.vo.reporting.scheduler.IRP_REPORT_SCHEDULESC" resultType="int">
+  	SELECT COUNT(*)
+  	FROM IRP_REPORT_SCHED_LOG
+  	WHERE SCHED_ID = #{SCHED_ID}
+  	AND REPORT_ID = #{REPORT_ID}
+  </select>
+  
+  <update id="updateNextRunDate" parameterType="com.path.vo.reporting.scheduler.IRP_SCHEDULESC">
+  		UPDATE IRP_SCHEDULE SET NEXT_RUN_DATE=#{NEXT_RUN_DATE}
+		WHERE SCHED_ID=#{SCHED_ID}
+  </update>
+  
+
+  <delete id="deleteScheduleDetails" parameterType="com.path.dbmaps.vo.IRP_SCHEDULEVO">
+	  delete 
+	  from IRP_SCHED_DETAILS
+	  where SCHED_ID=#{SCHED_ID}
+  </delete>
+  
+  <select id="findTableByTableName" parameterType="com.path.vo.reporting.scheduler.IRP_REPORT_SCHEDULESC" resultType="int">
+		SELECT COUNT(1) 
+  	<if test="isOracle == 1">
+    	FROM user_tables 
+			WHERE table_name = #{tableName}
+	</if>
+	<if test="isSybase == 1 and isSQLServer != 1 " >
+		FROM sysobjects
+			WHERE name = #{tableName}
+	</if>
+ </select>
+  
+
+  <select id="selectSCHEDULE" resultMap="ScheduleResultMap" parameterType="com.path.dbmaps.vo.IRP_SCHEDULEVO" >
+    select 
+    <include refid="SCHEDULEREXT.Scheduler_Column_List" />
+    from IRP_SCHEDULE
+    where SCHED_ID = #{SCHED_ID}
+    order by SCHED_NAME
+  </select>
+  <select id="findSchedules" parameterType="com.path.vo.reporting.scheduler.IRP_SCHEDULESC" resultMap="ScheduleResultMap" >
+    <include refid="servicesCommon.commonGridWrpBefFlip"/>
+  	SELECT 
+  	<include refid="SCHEDULEREXT.Scheduler_Grid_Column_List" />
+  	FROM IRP_SCHEDULE
+  	<include refid="servicesCommon.commonGridWrpAftFlip"/>
+	<include refid="servicesCommon.commmonGridWrpFlipClose"/>
+  </select>
+  
+ <select id="selectREPORT_SCHED_PARAMS" resultMap="ReportSchedParamMap" parameterType="com.path.vo.reporting.scheduler.IRP_REPORT_SCHED_PARAMSSC" >
+   select P.* , A.SESSION_ATTR_NAME ,A.ARGUMENT_SOURCE, A.MULTISELECT_YN
+    from IRP_REPORT_SCHED_PARAMS P , IRP_REP_ARGUMENTS A
+    WHERE  P.REPORT_ID=A.REPORT_ID 
+    AND P.PARAM_ID =A.ARGUMENT_ID
+    AND P.REPORT_ID = #{REPORT_ID}
+    AND P.SCHED_ID = #{SCHED_ID}
+    AND P.REPORT_REF = #{REPORT_REF}
+  </select>
+  <select id="findReportByRunningStatus" resultMap="logResultMap" parameterType="com.path.vo.reporting.scheduler.IRP_REPORT_SCHED_PARAMSSC">
+  	<include refid="servicesCommon.commonGridWrpBefFlip"/>
+	<include refid="SCHEDULEREXT.findReportByRunningStatus"/>
+	<include refid="servicesCommon.commonGridWrpAftFlip"/>
+	<include refid="servicesCommon.commmonGridWrpFlipClose"/>
+  </select>
+  
+
+   <select id="findReportByRunningStatusCount" resultType="int" parameterType="com.path.vo.reporting.scheduler.IRP_REPORT_SCHED_PARAMSSC">
+	<include refid="servicesCommon.commonGridWrpBefCnt"/>
+	<include refid="SCHEDULEREXT.findReportByRunningStatus"/>
+	<include refid="servicesCommon.commonGridWrpAftCnt"/>
+	<include refid="servicesCommon.commonGridCountWrpClose"/>
+  </select>
+
+  <select id="findSingleSchedule" resultMap="ScheduleResultMap" parameterType="com.path.vo.reporting.scheduler.IRP_SCHEDULESC">
+  	SELECT 
+  	<include refid="SCHEDULEREXT.Scheduler_Column_List" />
+  	, (SELECT COUNT(RSL.SCHED_ID) FROM IRP_REPORT_SCHED_LOG RSL WHERE RSL.SCHED_ID = IRP_SCHEDULE.SCHED_ID) LOG_COUNT
+  	FROM IRP_SCHEDULE
+  	WHERE SCHED_ID=#{SCHED_ID}
+  </select>
+  
+   <select id="findScheduleDetails" resultMap="ScheduleDetailsResultMap" parameterType="com.path.vo.reporting.scheduler.IRP_SCHEDULESC">
+  	SELECT SCHED_ID,FREQUENCY_OCCURENCE
+  	FROM IRP_SCHED_DETAILS
+  	WHERE SCHED_ID=#{SCHED_ID}
+  </select>
+  
+  <select id="findReportSchedules" parameterType="com.path.vo.reporting.scheduler.IRP_REPORT_SCHEDULESC" resultMap="ReportScheduleResultMap">
+		SELECT * FROM(
+		select 
+       		IRP_REPORT_SCHEDULE.*, NEXT_RUN_DATE, 
+       		CASE WHEN IRP_REPORT_SCHEDULE.IS_FCR_YN =1 THEN (SELECT MIN(BRIEF_NAME_ENG) FROM FTR_OPT WHERE
+       			FTR_OPT.PROG_REF = IRP_REPORT_SCHEDULE.REPORT_REF) ELSE IRP_AD_HOC_REPORT.REPORT_NAME END AS REPORT_NAME ,
+       		(SELECT VALUE_DESC
+          FROM SYS_PARAM_LOV_TRANS
+         WHERE VALUE_CODE = IRP_REPORT_SCHEDULE.REPORT_FORMAT
+           AND LOV_TYPE_ID = #{lovTypeId}
+           AND LANG_CODE = #{LANG_CODE}) AS REPORT_FORMAT_TRANS
+		from 
+     		IRP_REPORT_SCHEDULE INNER JOIN IRP_AD_HOC_REPORT 
+     		ON IRP_REPORT_SCHEDULE.REPORT_ID = IRP_AD_HOC_REPORT.REPORT_ID
+     		
+     		INNER JOIN IRP_SCHEDULE ON IRP_REPORT_SCHEDULE.SCHED_ID=IRP_SCHEDULE.SCHED_ID
+     		WHERE IRP_REPORT_SCHEDULE.SCHED_ID=#{SCHED_ID}
+     		)TBL
+     		ORDER BY TBL.REPORT_NAME
+  </select>
+  
+    <select id="findSingleReportSchedule" parameterType="com.path.vo.reporting.scheduler.IRP_REPORT_SCHEDULESC" resultMap="ReportScheduleResultMap">
+	   SELECT S.*,
+       NEXT_RUN_DATE,
+       IRP_AD_HOC_REPORT.REPORT_NAME,
+       (CASE WHEN IS_FCR_YN = 1 THEN
+          (SELECT FTR_OPT.BRIEF_NAME_ENG FROM FTR_OPT WHERE FTR_OPT.PROG_REF = S.REPORT_REF) END) AS FCR_REPORT_NAME,
+       (SELECT M.HOST
+        FROM IRP_MAIL_SERVER_CONFIG M
+        WHERE M.MAIL_SERVER_CODE = S.MAIL_SERVER_CODE) AS MAIL_SERVER_HOST,
+       (SELECT M.MAIL_FROM
+        FROM IRP_MAIL_SERVER_CONFIG M
+        WHERE M.MAIL_SERVER_CODE = S.MAIL_SERVER_CODE) AS DEFAULT_FROM_MS
+		FROM IRP_REPORT_SCHEDULE S
+		INNER JOIN IRP_AD_HOC_REPORT ON S.REPORT_ID = IRP_AD_HOC_REPORT.REPORT_ID
+		INNER JOIN IRP_SCHEDULE ON S.SCHED_ID = IRP_SCHEDULE.SCHED_ID
+     	WHERE S.SCHED_ID=#{SCHED_ID}
+     	AND S.REPORT_ID=#{REPORT_ID}
+     	AND (CASE WHEN S.IS_FCR_YN=0 THEN 1 END = 1
+     	<if test="REPORT_REF != null" >
+	    	OR CASE WHEN S.IS_FCR_YN=1 THEN REPORT_REF END = #{REPORT_REF}
+	    </if>)
+  </select>
+  
+    <select id="findReportSchedulesCount" parameterType="com.path.vo.reporting.scheduler.IRP_REPORT_SCHEDULESC" resultType="int">
+		select 
+       		count(*)
+		from 
+     		IRP_REPORT_SCHEDULE INNER JOIN IRP_AD_HOC_REPORT 
+     		ON IRP_REPORT_SCHEDULE.REPORT_ID = IRP_AD_HOC_REPORT.REPORT_ID
+     		WHERE IRP_REPORT_SCHEDULE.SCHED_ID=#{SCHED_ID} 
+	<if test="REPORT_ID != null" >
+		AND ((CASE WHEN(IRP_REPORT_SCHEDULE.IS_FCR_YN = 0) THEN
+        		IRP_REPORT_SCHEDULE.REPORT_ID END) = #{REPORT_ID}
+	    		OR 	
+	    	(CASE WHEN(IRP_REPORT_SCHEDULE.IS_FCR_YN = 1) THEN
+	        	IRP_REPORT_SCHEDULE.REPORT_REF END) =
+	        	<if test="REPORT_REF != null" >
+	        	 #{REPORT_REF}
+	        	</if>
+	        	<if test="REPORT_REF == null" >
+	        	 ''
+	        	</if>) 
+      </if>
+  </select>
+  
+  <select id="findSchedulesCount" resultType="int">
+  	SELECT COUNT(*)
+  	FROM IRP_SCHEDULE
+  </select>
+  <delete id="deleteSCHEDULE" parameterType="com.path.dbmaps.vo.IRP_SCHEDULEVO" >
+    delete from IRP_SCHEDULE
+    where SCHED_ID = #{SCHED_ID}
+  </delete>
+  <insert id="insertSCHEDULE" parameterType="com.path.dbmaps.vo.IRP_SCHEDULEVO"  keyProperty="SCHED_ID">
+    insert into IRP_SCHEDULE
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="SCHED_ID != null" >
+        SCHED_ID,
+      </if>
+      <if test="END_OF_MONTH != null" >
+        END_OF_MONTH,
+      </if>
+      <if test="SCHED_NAME != null" >
+        SCHED_NAME,
+      </if>
+      <if test="FIRST_RUN_DATE != null" >
+        FIRST_RUN_DATE,
+      </if>
+      <if test="SCHED_EXPIRY_DATE != null" >
+        SCHED_EXPIRY_DATE,
+      </if>
+      <if test="SCHED_FREQUENCY != null" >
+        SCHED_FREQUENCY,
+      </if>
+      <if test="NEXT_RUN_DATE != null" >
+        NEXT_RUN_DATE,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="SCHED_ID != null" >
+        #{SCHED_ID},
+      </if>
+      <if test="END_OF_MONTH != null" >
+        #{END_OF_MONTH},
+      </if>
+      <if test="SCHED_NAME != null" >
+        #{SCHED_NAME},
+      </if>
+      <if test="FIRST_RUN_DATE != null" >
+        #{FIRST_RUN_DATE},
+      </if>
+      <if test="SCHED_EXPIRY_DATE != null" >
+        #{SCHED_EXPIRY_DATE},
+      </if>
+      <if test="SCHED_FREQUENCY != null" >
+        #{SCHED_FREQUENCY},
+      </if>
+      <if test="NEXT_RUN_DATE != null" >
+        #{NEXT_RUN_DATE},
+      </if>
+    </trim>
+  </insert>
+ 
+  
+  <delete id="deleteLOG" parameterType="com.path.dbmaps.vo.IRP_REPORT_SCHED_LOGVO" >
+    delete from IRP_REPORT_SCHED_LOG
+    where REPORT_ID = #{REPORT_ID}
+      and SCHEDULED_DATE = #{SCHEDULED_DATE}
+      and SCHED_ID = #{SCHED_ID}
+      and START_DATE = #{START_DATE}
+  </delete>
+  <insert id="insertLOG" parameterType="IRP_REPORT_SCHED_LOGCO" >
+   <selectKey resultType="java.lang.String" keyProperty="REPORT_FORMAT" order="BEFORE">
+	    SELECT RS.REPORT_FORMAT
+        FROM IRP_REPORT_SCHEDULE RS
+        WHERE REPORT_ID = #{REPORT_ID}
+              AND SCHED_ID =  #{SCHED_ID}
+              AND REPORT_REF = #{REPORT_REF}
+   </selectKey>
+     insert into IRP_REPORT_SCHED_LOG
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      REPORT_FORMAT,
+      <if test="REPORT_ID != null" >
+        REPORT_ID,
+      </if>
+      <if test="SCHEDULED_DATE != null" >
+        SCHEDULED_DATE,
+      </if>
+      <if test="SCHED_ID != null" >
+        SCHED_ID,
+      </if>
+      <if test="START_DATE != null" >
+        START_DATE,
+      </if>
+      <if test="END_DATE != null" >
+        END_DATE,
+      </if>
+      <if test="STATUS != null" >
+        STATUS,
+      </if>
+      <if test="REMARKS != null" >
+        REMARKS,
+      </if>
+       <if test="SAVE_DATA_TYPE != null and SAVE_DATA_TYPE != emptyBigDecimalValue" >
+        SAVE_DATA_TYPE,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+        #{REPORT_FORMAT},
+      <if test="REPORT_ID != null" >
+        #{REPORT_ID},
+      </if>
+      <if test="SCHEDULED_DATE != null" >
+        #{SCHEDULED_DATE},
+      </if>
+      <if test="SCHED_ID != null" >
+        #{SCHED_ID},
+      </if>
+      <if test="START_DATE != null" >
+        #{START_DATE},
+      </if>
+      <if test="END_DATE != null" >
+        #{END_DATE},
+      </if>
+      <if test="STATUS != null" >
+        #{STATUS},
+      </if>
+      <if test="REMARKS != null" >
+        #{REMARKS},
+      </if>
+      <if test="SAVE_DATA_TYPE != null and SAVE_DATA_TYPE != emptyBigDecimalValue" >
+        #{SAVE_DATA_TYPE},
+      </if>
+    </trim>
+  </insert>
+  
+  <delete id="deleteSchedParam" parameterType="com.path.vo.reporting.scheduler.IRP_REPORT_SCHED_PARAMSSC">
+	 DELETE FROM IRP_REPORT_SCHED_PARAMS
+ 	 WHERE SCHED_ID = #{SCHED_ID}
+ 	 <if test="REPORT_ID != null">
+   	 	AND REPORT_ID = #{REPORT_ID}
+   	 </if>
+   	  <if test="REPORT_REF != null">
+   	 	AND REPORT_REF = #{REPORT_REF}
+   	 </if>		
+  </delete>
+  
+  <select id="retSchedParamValues" parameterType="com.path.vo.reporting.scheduler.IRP_REPORT_SCHED_PARAMSSC" resultMap="retSchedParamValuesMap">
+  SELECT PARAM_NAME, PARAM_VALUE
+  FROM IRP_REPORT_SCHED_PARAMS
+ WHERE SCHED_ID = #{SCHED_ID}
+   AND REPORT_ID =  #{REPORT_ID}
+   AND REPORT_REF =#{REPORT_REF}
+  
+  </select>
+  
+  <select id="retRepMainArgsMap" parameterType="com.path.vo.reporting.scheduler.IRP_REPORT_SCHED_PARAMSSC" resultMap="retRepMainArgsMapper">
+         SELECT ARGUMENT_ID, ARGUMENT_NAME, ARGUMENT_TYPE
+        FROM IRP_REP_ARGUMENTS
+       WHERE REPORT_ID = #{REPORT_ID}
+  
+  </select>
+  
+  <delete id="deleteReportSchedule" parameterType="com.path.dbmaps.vo.IRP_REPORT_SCHEDULEVO" >
+    delete from IRP_REPORT_SCHEDULE
+      WHERE SCHED_ID = #{SCHED_ID}
+  </delete>
+  
+  <delete id="deletSchedLogs" parameterType="com.path.vo.reporting.scheduler.IRP_SCHEDULECO" >
+    delete from IRP_REPORT_SCHED_LOG
+      WHERE SCHED_ID = #{SCHED_VO.SCHED_ID}
+  </delete>
+  
+  <select id="checkSchedIsRunning" parameterType="com.path.vo.reporting.scheduler.IRP_REPORT_SCHEDULESC" resultType="int">
+	 SELECT COUNT(*)
+	 FROM IRP_REPORT_SCHED_LOG
+	 WHERE IRP_REPORT_SCHED_LOG.SCHED_ID = #{SCHED_ID}
+     AND IRP_REPORT_SCHED_LOG.STATUS='r'
+  </select>
+  
+  <update id="updateSchedule" parameterType="com.path.vo.reporting.scheduler.IRP_SCHEDULECO">
+  		<include refid="IRP_SCHEDULE.sql_updateIRP_SCHEDULE" />
+    	<if test="DATE_UPDATED != null" > AND DATE_UPDATED = #{SCHED_VO.DATE_UPDATED} </if>
+  </update>
+  
+  
+   <select id="retMailFeGroupByCnt" resultType="int" parameterType="irp_rep_sched_mail_group_bySC"> 
+	  SELECT COUNT(1) FROM  
+	  (
+		  SELECT SCHED_ID, REPORT_ID,FIELD_ALIAS, GRP_ORDER
+		  FROM IRP_REP_SCHED_MAIL_GROUP_BY 
+		  WHERE SCHED_ID=#{SCHED_ID} AND REPORT_ID= #{REPORT_ID}
+	 )TBL
+  </select> 
+  
+   <select id="retMailFeGroupByList" resultMap="retMailFeGroupByListMap" parameterType="irp_rep_sched_mail_group_bySC" >
+  	  SELECT SCHED_ID, REPORT_ID,FIELD_ALIAS, GRP_ORDER
+	  FROM IRP_REP_SCHED_MAIL_GROUP_BY 
+	  WHERE SCHED_ID=#{SCHED_ID} AND REPORT_ID= #{REPORT_ID}
+	  ORDER BY GRP_ORDER 
+  </select>
+  
+  <delete id="deleteGrpByFeMail" parameterType="irp_rep_sched_mail_group_bySC">
+  	DELETE FROM IRP_REP_SCHED_MAIL_GROUP_BY
+ 	WHERE SCHED_ID = #{SCHED_ID}
+ 	<if test="REPORT_ID != null and REPORT_ID != emptyBigDecimalValue" >
+  	 	AND REPORT_ID = #{REPORT_ID}
+    </if>
+  </delete>
+  
+  <select id="retSchedMailUsersCnt" resultType="int" parameterType="irp_rep_sched_mail_receiversvokeyVO">
+   SELECT COUNT(1) FROM  
+   (
+   	  	SELECT SCHED_ID, REPORT_ID, USER_ID, RECEIVER_TYPE
+		FROM IRP_REP_SCHED_MAIL_RECEIVERS
+		WHERE SCHED_ID =#{SCHED_ID}
+		AND REPORT_ID = #{REPORT_ID}
+		<if test="RECEIVER_TYPE != null">
+			AND RECEIVER_TYPE=#{RECEIVER_TYPE}
+		</if>
+   )TBL
+	  
+  </select>
+  
+  <select id="retSchedMailUsersList"  resultMap="IRP_REP_SCHED_MAIL_RECEIVERS.BaseResultMap" parameterType="irp_rep_sched_mail_receiversvokeyVO">
+  		SELECT SCHED_ID, REPORT_ID, USER_ID, RECEIVER_TYPE
+		FROM IRP_REP_SCHED_MAIL_RECEIVERS
+		WHERE SCHED_ID =#{SCHED_ID}
+		AND REPORT_ID = #{REPORT_ID}
+		AND RECEIVER_TYPE=#{RECEIVER_TYPE}
+  		
+  </select>
+  
+  <delete id="deleteMailUsersList" parameterType="irp_rep_sched_mail_receiversvokeyVO">
+  	 DELETE FROM IRP_REP_SCHED_MAIL_RECEIVERS
+     WHERE SCHED_ID = #{SCHED_ID}
+     <if test="REPORT_ID != null and REPORT_ID != emptyBigDecimalValue" >
+      	AND REPORT_ID = #{REPORT_ID}
+     </if>
+     <if test="RECEIVER_TYPE != null and RECEIVER_TYPE != emptyBigDecimalValue" >
+      	AND RECEIVER_TYPE = #{RECEIVER_TYPE}
+      </if>
+  </delete>
+  
+  <delete id="deleteRepSchedGryByFields" parameterType="java.util.List">
+  	DELETE FROM IRP_REP_SCHED_MAIL_GROUP_BY WHERE REPORT_ID IN 
+  	<foreach item="item" index="index" collection="list"
+		open="(" separator="," close=")">
+		#{item}
+	</foreach>
+  </delete>
+  
+  <delete id="deleteRepSchedReceivers" parameterType="java.util.List">
+  	DELETE FROM IRP_REP_SCHED_MAIL_RECEIVERS WHERE REPORT_ID IN 
+  	<foreach item="item" index="index" collection="list"
+		open="(" separator="," close=")">
+		#{item}
+	</foreach>
+  </delete>
+  
+  <select id="retMailUserList" parameterType="irp_rep_sched_mail_receiversvokeyVO" resultType="java.lang.String">
+  	SELECT U.EMAIL_ID
+ 	FROM USR U, IRP_REP_SCHED_MAIL_RECEIVERS R
+ 	WHERE R.SCHED_ID = #{SCHED_ID}
+  	 AND R.RECEIVER_TYPE = #{RECEIVER_TYPE}
+  	 AND R.REPORT_ID = #{REPORT_ID}
+  	 AND R.USER_ID = U.USER_ID
+  </select>
+  
+   <select id="retRepSchedMailLogDetCnt" resultType="int" parameterType="irp_report_schedulesc"> 
+	<include refid="servicesCommon.commonGridWrpBefCnt"/>
+	<include refid="SCHEDULEREXT.retRepSchedMailLogDetSql"/>
+	<include refid="servicesCommon.commonGridWrpAftCnt"/>
+	<include refid="servicesCommon.commonGridCountWrpClose"/>
+  </select> 
+  
+  
+   <select id="retRepSchedMailLogDetLst" resultMap="retRepSchedMailLogDetLstMap" parameterType="irp_report_schedulesc" >
+  	<include refid="servicesCommon.commonGridWrpBefFlip"/>
+	<include refid="SCHEDULEREXT.retRepSchedMailLogDetSql"/>
+	<include refid="servicesCommon.commonGridWrpAftFlip"/>
+	<include refid="servicesCommon.commmonGridWrpFlipClose"/>
+  </select>
+  
+    <delete id="deleteRepSchedList" parameterType="java.util.List">
+  	DELETE FROM IRP_REPORT_SCHEDULE WHERE REPORT_ID IN 
+  	<foreach item="item" index="index" collection="list"
+		open="(" separator="," close=")">
+		#{item}
+	</foreach>
+  </delete>
+  
+   <select id="retSchedUsage"  parameterType="java.util.List" resultType="java.math.BigDecimal">
+	 SELECT DISTINCT REPORT_ID FROM IRP_REPORT_SCHEDULE WHERE REPORT_ID IN
+	 <foreach item="item" index="index" collection="list"
+		open="(" separator="," close=")">
+		#{item}
+	</foreach>
+  </select>
+  
+  <delete id="deleteRepSchedArg" parameterType="irp_report_sched_paramssc">
+     delete 
+    from IRP_REPORT_SCHED_PARAMS
+    where REPORT_ID = #{REPORT_ID}
+      and PARAM_ID = #{PARAM_ID}
+  </delete>
+  
+  <select id="checkSchedHasReport" resultType="int" parameterType="java.lang.String" >
+  	SELECT COUNT(1) FROM IRP_REPORT_SCHEDULE T WHERE T.REPORT_REF = #{VALUE}
+  </select>
+    
+  <delete id="deleteRepsSchedParams" parameterType="java.util.List">
+    DELETE FROM IRP_REPORT_SCHED_PARAMS WHERE REPORT_ID IN 
+  	<foreach item="item" index="index" collection="list"
+		open="(" separator="," close=")">
+		#{item}
+	</foreach>
+  </delete>
+  
+    
+  <select id="retRepSchedByRepId"  resultType="IRP_REPORT_SCHEDULEVO" parameterType="irp_report_schedulesc">
+  		SELECT * FROM IRP_REPORT_SCHEDULE WHERE REPORT_ID IN
+  		<foreach item="item" index="index" collection="listReportsId"
+			open="(" separator="," close=")">
+			#{item}
+	    </foreach>
+  </select>
+  
+   <select id="retRepSchedParamByRepId"  resultType="IRP_REPORT_SCHED_PARAMSVO" parameterType="irp_report_schedulesc">
+  		SELECT * FROM IRP_REPORT_SCHED_PARAMS WHERE REPORT_ID IN
+  		<foreach item="item" index="index" collection="listReportsId"
+			open="(" separator="," close=")">
+			#{item}
+	    </foreach>
+  </select>
+  
+  <select id="retRepSchedMailGroupByRepId"  resultType="IRP_REP_SCHED_MAIL_GROUP_BYVO" parameterType="irp_report_schedulesc">
+  		SELECT * FROM IRP_REP_SCHED_MAIL_GROUP_BY WHERE REPORT_ID IN
+  		<foreach item="item" index="index" collection="listReportsId"
+			open="(" separator="," close=")">
+			#{item}
+	    </foreach>
+  </select>
+  
+  <select id="retRepSchedMailRecvByRepId"  resultType="IRP_REP_SCHED_MAIL_RECEIVERSVO" parameterType="irp_report_schedulesc">
+  		SELECT * FROM IRP_REP_SCHED_MAIL_RECEIVERS WHERE REPORT_ID IN
+  		<foreach item="item" index="index" collection="listReportsId"
+			open="(" separator="," close=")">
+			#{item}
+	    </foreach>
+  </select>
+  
+  <select id="returnSchedSessionParamsVal" resultMap="returnSchedSessionParamsValMap">
+ 	SELECT SESSION_NAME,SESSION_VAL
+	FROM IRP_REP_SCHED_SESSION_PARAM 
+  </select>
+  
+    <select id="selectSchedReports" parameterType="com.path.vo.reporting.scheduler.IRP_SCHEDULESC" resultMap="ReportScheduleResultMap">
+  	SELECT IRP_REPORT_SCHEDULE.*,IRP_AD_HOC_REPORT.REPORT_NAME,XHTML_FILE, JRXML_FILE, IRP_AD_HOC_REPORT.PROG_REF,IRP_AD_HOC_REPORT.APP_NAME,
+  	NEXT_RUN_DATE,IRP_AD_HOC_REPORT.CONN_ID,IRP_AD_HOC_REPORT.WHEN_NO_DATA,IRP_AD_HOC_REPORT.LANG_INDEPENDENT_YN
+	FROM 
+    IRP_AD_HOC_REPORT 
+    INNER JOIN IRP_REPORT_SCHEDULE ON IRP_AD_HOC_REPORT.REPORT_ID=IRP_REPORT_SCHEDULE.REPORT_ID
+    INNER JOIN IRP_SCHEDULE ON IRP_REPORT_SCHEDULE.SCHED_ID=IRP_SCHEDULE.SCHED_ID
+    WHERE IRP_REPORT_SCHEDULE.IS_ACTIVE='Y'
+    AND IRP_REPORT_SCHEDULE.SCHED_ID = #{SCHED_ID}
+  </select>
+  
+   <update id="updateLOG" parameterType="com.path.dbmaps.vo.IRP_REPORT_SCHED_LOGVO" >
+   	<include refid="SCHEDULEREXT.updateLOG"></include>
+   </update>
+  
+  <select id="retCountAlertEventType" parameterType="com.path.vo.reporting.scheduler.IRP_SCHEDULESC" resultType="int">
+  	SELECT COUNT(1) FROM SYS_PARAM_LOV_TRANS 
+  	WHERE LOV_TYPE_ID = #{SCHED_TYPE_LOV_TYPE_ID} AND LANG_CODE = #{preferredLanguage} AND VALUE_CODE = #{alertTypeValueCode}
+  </select>
+</mapper>

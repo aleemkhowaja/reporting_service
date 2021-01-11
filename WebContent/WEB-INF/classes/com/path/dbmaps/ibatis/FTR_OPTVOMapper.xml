@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="FTR_OPT" >
+  <resultMap id="BaseResultMap" type="com.path.dbmaps.vo.FTR_OPTVO" >
+    <id column="CODE" property="CODE" />
+    <result column="PROG_REF" property="PROG_REF" />
+    <result column="PARENT_REF" property="PARENT_REF" />
+    <result column="BRIEF_NAME_ENG" property="BRIEF_NAME_ENG" />
+    <result column="BRIEF_NAME_ARAB" property="BRIEF_NAME_ARAB" />
+    <result column="DISP_ORDER" property="DISP_ORDER" />
+    <result column="TMPLT_CODE" property="TMPLT_CODE" />
+    <result column="COLUMN_CODE" property="COLUMN_CODE" />
+    <result column="APP_NAME" property="APP_NAME" />
+    <result column="DATE_UPDATED" property="DATE_UPDATED" />
+    <result column="GROUP_BY" property="GROUP_BY" />
+    <result column="REP_TYPE" property="REP_TYPE" />
+    <result column="ROW_COLMN" property="ROW_COLMN" />
+    <result column="REP_CURRENCY" property="REP_CURRENCY" />
+    <result column="GENERATED_FILE_NAME" property="GENERATED_FILE_NAME" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    CODE, PROG_REF, PARENT_REF, BRIEF_NAME_ENG, BRIEF_NAME_ARAB, DISP_ORDER, TMPLT_CODE, 
+    COLUMN_CODE, APP_NAME, DATE_UPDATED, GROUP_BY, REP_TYPE, ROW_COLMN,
+    REP_CURRENCY, GENERATED_FILE_NAME
+  </sql>
+  <select id="selectFTR_OPT" resultMap="BaseResultMap" parameterType="com.path.dbmaps.vo.FTR_OPTVOKey" >
+    select 
+    <include refid="Base_Column_List" />
+    from FTR_OPT
+    where CODE = #{CODE}
+  </select>
+  <delete id="deleteFTR_OPT" parameterType="com.path.dbmaps.vo.FTR_OPTVOKey" >
+    delete from FTR_OPT
+    where CODE = #{CODE}
+  </delete>
+  <insert id="insertFTR_OPT" parameterType="com.path.dbmaps.vo.FTR_OPTVO" >
+    insert into FTR_OPT
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="CODE != null and CODE != emptyBigDecimalValue" >
+        CODE,
+      </if>
+      <if test="PROG_REF != null" >
+        PROG_REF,
+      </if>
+      <if test="PARENT_REF != null" >
+        PARENT_REF,
+      </if>
+      <if test="BRIEF_NAME_ENG != null" >
+        BRIEF_NAME_ENG,
+      </if>
+      <if test="BRIEF_NAME_ARAB != null" >
+        BRIEF_NAME_ARAB,
+      </if>
+      <if test="DISP_ORDER != null and DISP_ORDER != emptyBigDecimalValue" >
+        DISP_ORDER,
+      </if>
+      <if test="TMPLT_CODE != null and TMPLT_CODE != emptyBigDecimalValue" >
+        TMPLT_CODE,
+      </if>
+      <if test="COLUMN_CODE != null and COLUMN_CODE != emptyBigDecimalValue" >
+        COLUMN_CODE,
+      </if>
+      <if test="APP_NAME != null" >
+        APP_NAME,
+      </if>
+      DATE_UPDATED,
+      <if test="GROUP_BY != null" >
+        GROUP_BY,
+      </if>
+      <if test="REP_TYPE != null" >
+        REP_TYPE,
+      </if>
+      <if test="ROW_COLMN != null and ROW_COLMN != emptyBigDecimalValue" >
+        ROW_COLMN,
+      </if>
+      <if test="REP_CURRENCY != null and REP_CURRENCY != emptyBigDecimalValue" >
+        REP_CURRENCY,
+      </if>
+      <if test="GENERATED_FILE_NAME != null and !&quot;&quot;.equals(GENERATED_FILE_NAME)" >
+        GENERATED_FILE_NAME,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="CODE != null and CODE != emptyBigDecimalValue" >
+        #{CODE},
+      </if>
+      <if test="PROG_REF != null" >
+        #{PROG_REF},
+      </if>
+      <if test="PARENT_REF != null" >
+        #{PARENT_REF},
+      </if>
+      <if test="BRIEF_NAME_ENG != null" >
+        #{BRIEF_NAME_ENG},
+      </if>
+      <if test="BRIEF_NAME_ARAB != null" >
+        #{BRIEF_NAME_ARAB},
+      </if>
+      <if test="DISP_ORDER != null and DISP_ORDER != emptyBigDecimalValue" >
+        #{DISP_ORDER},
+      </if>
+      <if test="TMPLT_CODE != null and TMPLT_CODE != emptyBigDecimalValue" >
+        #{TMPLT_CODE},
+      </if>
+      <if test="COLUMN_CODE != null and COLUMN_CODE != emptyBigDecimalValue" >
+        #{COLUMN_CODE},
+      </if>
+      <if test="APP_NAME != null" >
+        #{APP_NAME},
+      </if>
+      <choose >
+        <when test="isSybase == 1" >
+           GETDATE(),
+        </when>
+        <otherwise >
+           SYSDATE,
+        </otherwise>
+      </choose>
+      <if test="GROUP_BY != null" >
+        #{GROUP_BY},
+      </if>
+      <if test="REP_TYPE != null" >
+        #{REP_TYPE},
+      </if>
+      <if test="ROW_COLMN != null and ROW_COLMN != emptyBigDecimalValue" >
+        #{ROW_COLMN},
+      </if>
+      <if test="REP_CURRENCY != null and REP_CURRENCY != emptyBigDecimalValue" >
+        #{REP_CURRENCY},
+      </if>
+      <if test="GENERATED_FILE_NAME != null and !&quot;&quot;.equals(GENERATED_FILE_NAME)" >
+        #{GENERATED_FILE_NAME},
+      </if>
+    </trim>
+  </insert>
+  <sql id="sql_updateFTR_OPT" >
+    update FTR_OPT
+    <set >
+      <if test="PROG_REF != null" >
+        PROG_REF = #{PROG_REF},
+      </if>
+      <if test="PARENT_REF != null" >
+        PARENT_REF = #{PARENT_REF},
+      </if>
+      <if test="BRIEF_NAME_ENG != null" >
+        BRIEF_NAME_ENG = #{BRIEF_NAME_ENG},
+      </if>
+      <if test="BRIEF_NAME_ARAB != null" >
+        BRIEF_NAME_ARAB = #{BRIEF_NAME_ARAB},
+      </if>
+      <if test="DISP_ORDER != null" >
+        <choose >
+          <when test="DISP_ORDER == emptyBigDecimalValue" >
+            DISP_ORDER = NULL ,
+          </when>
+          <otherwise >
+            DISP_ORDER = #{DISP_ORDER},
+          </otherwise>
+        </choose>
+      </if>
+      <if test="TMPLT_CODE != null" >
+        <choose >
+          <when test="TMPLT_CODE == emptyBigDecimalValue" >
+            TMPLT_CODE = NULL ,
+          </when>
+          <otherwise >
+            TMPLT_CODE = #{TMPLT_CODE},
+          </otherwise>
+        </choose>
+      </if>
+      <if test="COLUMN_CODE != null" >
+        <choose >
+          <when test="COLUMN_CODE == emptyBigDecimalValue" >
+            COLUMN_CODE = NULL ,
+          </when>
+          <otherwise >
+            COLUMN_CODE = #{COLUMN_CODE},
+          </otherwise>
+        </choose>
+      </if>
+      <if test="APP_NAME != null" >
+        APP_NAME = #{APP_NAME},
+      </if>
+      DATE_UPDATED = 
+      <choose >
+        <when test="isSybase == 1" >
+           GETDATE(),
+        </when>
+        <otherwise >
+           SYSDATE,
+        </otherwise>
+      </choose>
+      <if test="GROUP_BY != null" >
+        GROUP_BY = #{GROUP_BY},
+      </if>
+      <if test="REP_TYPE != null" >
+        REP_TYPE = #{REP_TYPE},
+      </if>
+      <if test="ROW_COLMN != null" >
+        <choose >
+          <when test="ROW_COLMN == emptyBigDecimalValue" >
+            ROW_COLMN = NULL ,
+          </when>
+          <otherwise >
+            ROW_COLMN = #{ROW_COLMN},
+          </otherwise>
+        </choose>
+      </if>
+      <if test="REP_CURRENCY != null" >
+        <choose >
+          <when test="REP_CURRENCY == emptyBigDecimalValue" >
+            REP_CURRENCY = NULL ,
+          </when>
+          <otherwise >
+            REP_CURRENCY = #{REP_CURRENCY},
+          </otherwise>
+        </choose>
+      </if>
+      <if test="GENERATED_FILE_NAME != null" >
+        <choose >
+          <when test="GENERATED_FILE_NAME.equals(&quot;&quot;)" >
+            GENERATED_FILE_NAME = NULL ,
+          </when>
+          <otherwise >
+            GENERATED_FILE_NAME = #{GENERATED_FILE_NAME},
+          </otherwise>
+        </choose>
+      </if>
+    </set>
+    where CODE = #{CODE}
+  </sql>
+  <update id="updateFTR_OPT" parameterType="com.path.dbmaps.vo.FTR_OPTVO" >
+    <include refid="sql_updateFTR_OPT" />
+    <if test="DATE_UPDATED != null" >
+      AND DATE_UPDATED = #{DATE_UPDATED}
+    </if>
+  </update>
+</mapper>

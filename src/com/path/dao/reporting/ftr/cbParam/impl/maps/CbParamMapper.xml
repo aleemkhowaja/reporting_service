@@ -1,0 +1,316 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        
+<mapper namespace="cbParam">
+
+<resultMap type="cbParamCO"  id="cbResultMap">     
+  	<result column="COMP_CODE" property="ftr_cb_codeVO.COMP_CODE" />
+    <result column="CODE" property="ftr_cb_codeVO.ENTITY_CODE" />
+    <result column="SUB_CODE" property="ftr_cb_codeVO.SUB_ENTITY_CODE" />
+    <result column="DESCRIPTION" property="DESCRIPTION" />
+    <result column="DOC_TYPE" property="DOC_TYPE" />
+    <result column="SUB_DESCRIPTION" property="SUB_DESCRIPTION" />
+    <result column="ENTITY_CB_CODE" property="ftr_cb_codeVO.ENTITY_CB_CODE" />
+    <result column="ENTITY_TYPE" property="ftr_cb_codeVO.ENTITY_TYPE" />
+    <result column="DATE_UPDATED" property="ftr_cb_codeVO.DATE_UPDATED" />
+    <result column="concatKey" property="concatKey" />
+</resultMap>
+
+<sql id="selectPCSql">
+SELECT
+		TRSCLASS.CODE,
+		TRSCLASS.LONG_NAME_ENG DESCRIPTION,
+		0 SUB_CODE,
+		TRSCLASS.COMP_CODE,
+		FTR_CB_CODE.ENTITY_CB_CODE,
+		'PC' ENTITY_TYPE,		
+		<choose> 
+			<when test="isSQLServer == 1">
+				CONVERT(VARCHAR,TRSCLASS.CODE)+'0' concatKey,
+			</when>
+			<otherwise>
+				<choose><when test="isSybase == 1">CONVERT(VARCHAR,TRSCLASS.CODE)||'0' concatKey,</when><otherwise>TRSCLASS.CODE||'0' concatKey,</otherwise></choose>
+			</otherwise>
+		</choose>
+		FTR_CB_CODE.DATE_UPDATED
+		
+FROM TRSCLASS 
+
+LEFT OUTER JOIN FTR_CB_CODE 
+	ON  TRSCLASS.CODE 				= FTR_CB_CODE.ENTITY_CODE
+	AND TRSCLASS.COMP_CODE 			= FTR_CB_CODE.COMP_CODE
+	AND FTR_CB_CODE.ENTITY_TYPE		= 'PC'
+
+WHERE TRSCLASS.COMP_CODE			= #{COMP_CODE}
+</sql>
+
+<select id="selectA01MT"  resultMap="cbResultMap" parameterType="cbParamSC">
+	<include refid="servicesCommon.commonGridWrpBefFlip"/>
+	<include refid="selectPCSql"/>
+	<include refid="servicesCommon.commonGridWrpAftFlip"/>
+	<include refid="servicesCommon.commmonGridWrpFlipClose"/>
+</select>
+
+
+<select id="retA01MTListCount" parameterType="cbParamSC"  resultType="int" >
+	<include refid="servicesCommon.commonGridWrpBefCnt"/>
+	<include refid="selectPCSql"/>
+	<include refid="servicesCommon.commonGridWrpAftCnt"/>
+	<include refid="servicesCommon.commonGridCountWrpClose"/>
+</select>
+
+<select id="retCbParamMapA01MT" parameterType="cbParamSC" resultMap="cbResultMap">
+	<include refid="selectPCSql"/>
+</select>
+
+<sql id="selectCYSql">
+SELECT
+		CURRENCIES.CURRENCY_CODE CODE,
+		CURRENCIES.LONG_DESC_ENG DESCRIPTION,
+		0 SUB_CODE,
+		CURRENCIES.COMP_CODE,
+		FTR_CB_CODE.ENTITY_CB_CODE, 
+		'CY' ENTITY_TYPE,
+		<choose> 
+			<when test="isSQLServer == 1">
+				CONVERT(VARCHAR,CURRENCIES.CURRENCY_CODE)+'0' concatKey,
+			</when>
+			<otherwise>
+				<choose><when test="isSybase == 1">CONVERT(VARCHAR,CURRENCIES.CURRENCY_CODE)||'0' concatKey,</when><otherwise>CURRENCIES.CURRENCY_CODE||'0' concatKey,</otherwise></choose>
+			</otherwise>
+		</choose>
+		FTR_CB_CODE.DATE_UPDATED
+
+FROM CURRENCIES 
+
+LEFT OUTER JOIN FTR_CB_CODE 
+	ON  CURRENCIES.CURRENCY_CODE 	= FTR_CB_CODE.ENTITY_CODE
+	AND CURRENCIES.COMP_CODE 		= FTR_CB_CODE.COMP_CODE
+	AND FTR_CB_CODE.ENTITY_TYPE		=	'CY'
+
+WHERE CURRENCIES.COMP_CODE			= #{COMP_CODE}
+</sql>
+
+<select id="selectB01MT"  resultMap="cbResultMap" parameterType="cbParamSC">
+	<include refid="servicesCommon.commonGridWrpBefFlip"/>
+	<include refid="selectCYSql"/>
+	<include refid="servicesCommon.commonGridWrpAftFlip"/>
+	<include refid="servicesCommon.commmonGridWrpFlipClose"/>
+</select>
+
+
+<select id="retB01MTListCount" parameterType="cbParamSC"  resultType="int" >
+	<include refid="servicesCommon.commonGridWrpBefCnt"/>
+	<include refid="selectCYSql"/>
+	<include refid="servicesCommon.commonGridWrpAftCnt"/>
+	<include refid="servicesCommon.commonGridCountWrpClose"/>
+</select>
+
+<select id="retCbParamMapB01MT" parameterType="cbParamSC" resultMap="cbResultMap">
+	<include refid="selectCYSql"/>
+</select>
+
+<sql id="selectCTSql">
+SELECT
+		FMSCOLATTYPE.CODE,
+		FMSCOLATTYPE.LONG_NAME_ENG DESCRIPTION,
+		0 SUB_CODE,
+		FMSCOLATTYPE.COMP_CODE,
+		FTR_CB_CODE.ENTITY_CB_CODE, 
+		'CT' ENTITY_TYPE,
+		<choose> 
+			<when test="isSQLServer == 1">
+				CONVERT(VARCHAR,FMSCOLATTYPE.CODE)+'0' concatKey,
+			</when>
+			<otherwise>
+				<choose><when test="isSybase == 1">CONVERT(VARCHAR,FMSCOLATTYPE.CODE)||'0' concatKey,</when><otherwise>FMSCOLATTYPE.CODE||'0' concatKey,</otherwise></choose>
+			</otherwise>
+		</choose>
+		FTR_CB_CODE.DATE_UPDATED
+
+		
+FROM FMSCOLATTYPE 
+
+LEFT OUTER JOIN FTR_CB_CODE 
+	ON  FMSCOLATTYPE.CODE 			= FTR_CB_CODE.ENTITY_CODE
+	AND FMSCOLATTYPE.COMP_CODE 		= FTR_CB_CODE.COMP_CODE
+	AND FTR_CB_CODE.ENTITY_TYPE		= 'CT'
+
+WHERE FMSCOLATTYPE.COMP_CODE		= #{COMP_CODE}
+</sql>
+
+
+<select id="selectC01MT"  resultMap="cbResultMap" parameterType="cbParamSC">
+	<include refid="servicesCommon.commonGridWrpBefFlip"/>
+	<include refid="selectCTSql"/>
+	<include refid="servicesCommon.commonGridWrpAftFlip"/>
+	<include refid="servicesCommon.commmonGridWrpFlipClose"/>
+</select>
+
+
+<select id="retC01MTListCount" parameterType="cbParamSC"  resultType="int" >
+	<include refid="servicesCommon.commonGridWrpBefCnt"/>
+	<include refid="selectCTSql"/>
+	<include refid="servicesCommon.commonGridWrpAftCnt"/>
+	<include refid="servicesCommon.commonGridCountWrpClose"/>
+</select>
+
+<select id="retCbParamMapC01MT" parameterType="cbParamSC" resultMap="cbResultMap">
+	<include refid="selectCTSql"/>
+</select>
+
+<sql id="selectSSSql">
+SELECT  
+		ECO_SECTORS.COMP_CODE,
+		ECO_SECTORS.SECTOR_CODE CODE,
+		ECO_SECTORS.LONG_DESC_ENG DESCRIPTION,   
+		RIFSEC.SUB_SECTOR_CODE SUB_CODE,
+		RIFSEC.LONG_DESC_ENG SUB_DESCRIPTION,
+		FTR_CB_CODE.ENTITY_CB_CODE, 
+		'SS' ENTITY_TYPE,		
+		<choose> 
+			<when test="isSQLServer == 1">
+				CONVERT(VARCHAR,ECO_SECTORS.SECTOR_CODE)+CONVERT(VARCHAR,RIFSEC.SUB_SECTOR_CODE) concatKey,
+			</when>
+			<otherwise>
+				<choose><when test="isSybase == 1">CONVERT(VARCHAR,ECO_SECTORS.SECTOR_CODE)|| CONVERT(VARCHAR,RIFSEC.SUB_SECTOR_CODE) concatKey,</when><otherwise>ECO_SECTORS.SECTOR_CODE|| RIFSEC.SUB_SECTOR_CODE concatKey,</otherwise></choose>
+			</otherwise>
+		</choose>
+		FTR_CB_CODE.DATE_UPDATED
+
+
+FROM  	ECO_SECTORS	
+JOIN 	RIFSEC
+	ON 		ECO_SECTORS.COMP_CODE		= RIFSEC.COMP_CODE
+	AND   	ECO_SECTORS.SECTOR_CODE		= RIFSEC.SECTOR_CODE
+
+LEFT OUTER JOIN FTR_CB_CODE 
+	ON  ECO_SECTORS.SECTOR_CODE 		= FTR_CB_CODE.ENTITY_CODE
+	AND ECO_SECTORS.COMP_CODE 			= FTR_CB_CODE.COMP_CODE
+	AND RIFSEC.SUB_SECTOR_CODE 			= FTR_CB_CODE.SUB_ENTITY_CODE
+	AND FTR_CB_CODE.ENTITY_TYPE			= 'SS'
+
+
+WHERE 	ECO_SECTORS.COMP_CODE			= #{COMP_CODE}
+</sql>
+
+
+<select id="selectD01MT"  resultMap="cbResultMap" parameterType="cbParamSC">
+	<include refid="servicesCommon.commonGridWrpBefFlip"/>
+	<include refid="selectSSSql"/>
+	<include refid="servicesCommon.commonGridWrpAftFlip"/>
+	<include refid="servicesCommon.commmonGridWrpFlipClose"/>
+</select>
+
+
+<select id="retD01MTListCount" parameterType="cbParamSC"  resultType="int" >
+	<include refid="servicesCommon.commonGridWrpBefCnt"/>
+	<include refid="selectSSSql"/>
+	<include refid="servicesCommon.commonGridWrpAftCnt"/>
+	<include refid="servicesCommon.commonGridCountWrpClose"/>
+</select>
+
+
+<select id="retCbParamMapD01MT" parameterType="cbParamSC" resultMap="cbResultMap">
+	<include refid="selectSSSql"/>
+</select>
+
+
+<sql id="selectPCTFASql">
+SELECT
+    (
+    	SELECT 	VALUE_DESC 
+    	FROM 	SYS_PARAM_LOV_TRANS 
+    	WHERE	LOV_TYPE_ID 		=	#{lovTypeId}
+    	AND 	LANG_CODE			=	#{lang}
+    	AND		VALUE_CODE			=	TFSDOCTYPE.DOC_TYPE
+    ) DOC_TYPE,
+    TFSDOCTYPE.CODE  CODE,
+    0 SUB_CODE,
+    TFSDOCTYPE.LONG_NAME_ENG DESCRIPTION,
+    TFSDOCTYPE.COMP_CODE  ,
+    FTR_CB_CODE.ENTITY_CB_CODE ,  
+	(
+	SELECT 	VALUE_CODE
+   	FROM 	SYS_PARAM_LOV_TRANS 
+   	WHERE	LOV_TYPE_ID 		=	#{lovTypeId}
+   	AND 	LANG_CODE			=	#{lang}
+   	AND		VALUE_CODE			=	TFSDOCTYPE.DOC_TYPE
+	)ENTITY_TYPE,
+	<choose> 
+			<when test="isSQLServer == 1">
+				CONVERT(VARCHAR,TFSDOCTYPE.CODE) + (
+												SELECT 	VALUE_CODE
+											   	FROM 	SYS_PARAM_LOV_TRANS 
+											   	WHERE	LOV_TYPE_ID 		=	#{lovTypeId}
+											   	AND 	LANG_CODE			=	#{lang}
+											   	AND		VALUE_CODE			=	TFSDOCTYPE.DOC_TYPE
+												)  
+						concatKey,
+			</when>
+			<otherwise>
+				<choose>
+					<when test="isSybase == 1">
+						CONVERT(VARCHAR,TFSDOCTYPE.CODE) || (
+															SELECT 	VALUE_CODE
+														   	FROM 	SYS_PARAM_LOV_TRANS 
+														   	WHERE	LOV_TYPE_ID 		=	#{lovTypeId}
+														   	AND 	LANG_CODE			=	#{lang}
+														   	AND		VALUE_CODE			=	TFSDOCTYPE.DOC_TYPE
+															)  
+						concatKey,
+					</when>
+					<otherwise>
+						TFSDOCTYPE.CODE || (
+											SELECT 	VALUE_CODE
+										   	FROM 	SYS_PARAM_LOV_TRANS 
+										   	WHERE	LOV_TYPE_ID 		=	#{lovTypeId}
+										   	AND 	LANG_CODE			=	#{lang}
+										   	AND		VALUE_CODE			=	TFSDOCTYPE.DOC_TYPE
+											) 
+						concatKey,
+					</otherwise>
+				</choose>
+			</otherwise>
+		</choose>
+    FTR_CB_CODE.DATE_UPDATED
+FROM TFSDOCTYPE 
+
+LEFT OUTER JOIN FTR_CB_CODE 
+  ON  TFSDOCTYPE.CODE     = FTR_CB_CODE.ENTITY_CODE
+  AND TFSDOCTYPE.COMP_CODE   = FTR_CB_CODE.COMP_CODE
+  AND (
+      (FTR_CB_CODE.ENTITY_TYPE  =  'I' AND TFSDOCTYPE.DOC_TYPE = 'I' )
+      OR
+      (FTR_CB_CODE.ENTITY_TYPE  =  'O' AND TFSDOCTYPE.DOC_TYPE = 'O' )
+      OR
+      (FTR_CB_CODE.ENTITY_TYPE  =  'G' AND TFSDOCTYPE.DOC_TYPE = 'G' )
+      OR
+      (FTR_CB_CODE.ENTITY_TYPE  =  'N' AND TFSDOCTYPE.DOC_TYPE = 'N' )
+      OR
+      (FTR_CB_CODE.ENTITY_TYPE  =  'U' AND TFSDOCTYPE.DOC_TYPE = 'U' )
+      )
+WHERE TFSDOCTYPE.COMP_CODE  = #{COMP_CODE}
+</sql>
+
+<select id="selectE01MT"  resultMap="cbResultMap" parameterType="cbParamSC">
+	<include refid="servicesCommon.commonGridWrpBefFlip"/>
+	<include refid="selectPCTFASql"/>
+	<include refid="servicesCommon.commonGridWrpAftFlip"/>
+	<include refid="servicesCommon.commmonGridWrpFlipClose"/>
+</select>
+
+
+<select id="retE01MTListCount" parameterType="cbParamSC"  resultType="int" >
+	<include refid="servicesCommon.commonGridWrpBefCnt"/>
+	<include refid="selectPCTFASql"/>
+	<include refid="servicesCommon.commonGridWrpAftCnt"/>
+	<include refid="servicesCommon.commonGridCountWrpClose"/>
+</select>
+
+<select id="retCbParamMapE01MT" parameterType="cbParamSC" resultMap="cbResultMap">
+	<include refid="selectPCTFASql"/>
+</select>
+
+</mapper>

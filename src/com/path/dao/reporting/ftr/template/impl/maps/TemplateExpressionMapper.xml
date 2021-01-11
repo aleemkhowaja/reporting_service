@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="templateExpression" >
+  
+  <resultMap id="ExpressionResultMap" type="ftr_tmplt_exprCO" >
+    <id column="COMP_CODE" property="ftrTmpltExprVO.COMP_CODE" />
+    <id column="TMPLT_TYPE" property="ftrTmpltExprVO.TMPLT_TYPE" />
+    <id column="CODE" property="ftrTmpltExprVO.CODE" />
+    <id column="TMPLT_LINE_NO" property="ftrTmpltExprVO.TMPLT_LINE_NO" />
+    <id column="LINE_NO" property="ftrTmpltExprVO.LINE_NO" />
+    <result column="EXP_TYPE" property="ftrTmpltExprVO.EXP_TYPE" />
+    <result column="LEFT_OPERATOR" property="ftrTmpltExprVO.LEFT_OPERATOR" />
+    <result column="EXP_LINE" property="ftrTmpltExprVO.EXP_LINE" />
+    <result column="EXP_VALUE" property="ftrTmpltExprVO.EXP_VALUE" />
+    <result column="RIGHT_OPERATOR" property="ftrTmpltExprVO.RIGHT_OPERATOR" />
+    <result column="OPERATOR" property="ftrTmpltExprVO.OPERATOR" />
+    <result column="TMPLT_LINE_NO" 		property="newLineNumber" />
+  </resultMap>
+
+<select id="select_expr_list" resultMap="ExpressionResultMap" parameterType="ftr_tmplt_exprVO">
+  	SELECT COMP_CODE, TMPLT_TYPE, CODE, TMPLT_LINE_NO, LINE_NO, 
+    EXP_TYPE, LEFT_OPERATOR, EXP_LINE, EXP_VALUE, RIGHT_OPERATOR, OPERATOR
+    FROM FTR_TMPLT_EXPR
+    WHERE COMP_CODE = #{COMP_CODE}
+    AND CODE = #{CODE}
+    AND TMPLT_LINE_NO = #{LINE_NBR}
+    AND	TMPLT_TYPE = 'C'
+    ORDER BY LINE_NO ASC
+</select>
+
+<delete id="deleteExpressionsByColumnTemplate" parameterType="ftr_tmplt_exprVO">
+   DELETE 	FROM FTR_TMPLT_EXPR
+   WHERE 	COMP_CODE = #{COMP_CODE}
+   AND 		CODE = #{CODE}
+   AND		TMPLT_TYPE = #{TMPLT_TYPE}
+</delete>
+
+<delete id="deleteExpressionsByColTempLine" parameterType="ftr_tmplt_exprVO">
+  	DELETE 	FROM FTR_TMPLT_EXPR
+  	WHERE 	COMP_CODE = #{COMP_CODE}
+  	AND 	CODE = #{CODE}
+  	AND		TMPLT_LINE_NO = #{TMPLT_LINE_NO}
+  	AND		TMPLT_TYPE = #{TMPLT_TYPE}
+</delete>
+
+<delete id="deleteExpression" parameterType="ftr_tmplt_exprVO">
+  	DELETE 	FROM FTR_TMPLT_EXPR
+  	WHERE 	COMP_CODE = #{COMP_CODE}
+  	AND 	CODE = #{CODE}
+  	AND		TMPLT_LINE_NO = #{TMPLT_LINE_NO}
+  	AND		LINE_NO = #{LINE_NO}
+  	AND		TMPLT_TYPE = #{TMPLT_TYPE}
+</delete>
+
+<insert id="saveExpr" parameterType="ftr_tmplt_exprVO" >
+  insert into FTR_TMPLT_EXPR
+  <trim prefix="(" suffix=")" suffixOverrides="," >
+    <if test="COMP_CODE != null" >
+      COMP_CODE,
+    </if>
+    <if test="TMPLT_TYPE != null" >
+      TMPLT_TYPE,
+    </if>
+    <if test="CODE != null" >
+      CODE,
+    </if>
+    <if test="TMPLT_LINE_NO != null" >
+      TMPLT_LINE_NO,
+    </if>
+    <if test="LINE_NO != null" >
+      LINE_NO,
+    </if>
+    <if test="EXP_TYPE != null" >
+      EXP_TYPE,
+    </if>
+    <if test="LEFT_OPERATOR != null" >
+      LEFT_OPERATOR,
+    </if>
+    <if test="EXP_LINE != null" >
+      EXP_LINE,
+    </if>
+    <if test="EXP_VALUE != null and EXP_VALUE != emptyBigDecimalValue">
+      EXP_VALUE,
+    </if>
+    <if test="RIGHT_OPERATOR != null" >
+      RIGHT_OPERATOR,
+    </if>
+    <if test="OPERATOR != null" >
+      OPERATOR,
+    </if>
+  </trim>
+  <trim prefix="values (" suffix=")" suffixOverrides="," >
+    <if test="COMP_CODE != null" >
+      #{COMP_CODE},
+    </if>
+    <if test="TMPLT_TYPE != null" >
+      'C',
+    </if>
+    <if test="CODE != null" >
+      #{CODE},
+    </if>
+    <if test="TMPLT_LINE_NO != null" >
+      #{TMPLT_LINE_NO},
+    </if>
+    <if test="LINE_NO != null" >
+      #{LINE_NO},
+    </if>
+    <if test="EXP_TYPE != null" >
+      #{EXP_TYPE},
+    </if>
+    <if test="LEFT_OPERATOR != null" >
+      #{LEFT_OPERATOR},
+    </if>
+    <if test="EXP_LINE != null" >
+      #{EXP_LINE},
+    </if>
+    <if test="EXP_VALUE != null" >
+      #{EXP_VALUE},
+    </if>
+    <if test="RIGHT_OPERATOR != null" >
+      #{RIGHT_OPERATOR},
+    </if>
+    <if test="OPERATOR != null" >
+      #{OPERATOR},
+    </if>
+  </trim>
+</insert>
+</mapper>

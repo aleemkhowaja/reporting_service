@@ -1,0 +1,282 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="GLSTMPLTGLSDET" >
+  <resultMap id="BaseResultMap" type="com.path.dbmaps.vo.GLSTMPLTGLSDETVO" >
+    <id column="CODE" property="CODE" />
+    <id column="COMP_CODE" property="COMP_CODE" />
+    <id column="LINE_NBR" property="LINE_NBR" />
+    <id column="LINE_NBR_DET" property="LINE_NBR_DET" />
+    <result column="TEMPLATE_TYPE" property="TEMPLATE_TYPE" />
+    <result column="FROM_GL" property="FROM_GL" />
+    <result column="TO_GL" property="TO_GL" />
+    <result column="GL_COMP" property="GL_COMP" />
+    <result column="BRANCH_CODE" property="BRANCH_CODE" />
+    <result column="DIV_CODE" property="DIV_CODE" />
+    <result column="DEPT_CODE" property="DEPT_CODE" />
+    <result column="GL_SIGN" property="GL_SIGN" />
+    <result column="ADD_SUBTRACT" property="ADD_SUBTRACT" />
+    <result column="PERCENTAGE" property="PERCENTAGE" />
+    <result column="EXCLUDE_CLOSING_ENTRY" property="EXCLUDE_CLOSING_ENTRY" />
+    <result column="CALC_TYPE" property="CALC_TYPE" />
+    <result column="CONTRIBUTION" property="CONTRIBUTION" />
+    <result column="DATE_UPDATED" property="DATE_UPDATED" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    CODE, COMP_CODE, LINE_NBR, LINE_NBR_DET, TEMPLATE_TYPE, FROM_GL, TO_GL, GL_COMP, 
+    BRANCH_CODE, DIV_CODE, DEPT_CODE, GL_SIGN, ADD_SUBTRACT, PERCENTAGE, EXCLUDE_CLOSING_ENTRY, 
+    CALC_TYPE, CONTRIBUTION, DATE_UPDATED
+  </sql>
+  <select id="selectGLSTMPLTGLSDET" resultMap="BaseResultMap" parameterType="com.path.dbmaps.vo.GLSTMPLTGLSDETVO" >
+    select 
+    <include refid="Base_Column_List" />
+    from GLSTMPLTGLSDET
+    where CODE = #{CODE}
+      and COMP_CODE = #{COMP_CODE}
+      and LINE_NBR = #{LINE_NBR}
+      and LINE_NBR_DET = #{LINE_NBR_DET}
+  </select>
+  <delete id="deleteGLSTMPLTGLSDET" parameterType="com.path.dbmaps.vo.GLSTMPLTGLSDETVO" >
+    delete from GLSTMPLTGLSDET
+    where CODE = #{CODE}
+      and COMP_CODE = #{COMP_CODE}
+      and LINE_NBR = #{LINE_NBR}
+      and LINE_NBR_DET = #{LINE_NBR_DET}
+  </delete>
+  <insert id="insertGLSTMPLTGLSDET" parameterType="com.path.dbmaps.vo.GLSTMPLTGLSDETVO" >
+    insert into GLSTMPLTGLSDET
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="CODE != null and CODE != emptyBigDecimalValue" >
+        CODE,
+      </if>
+      <if test="COMP_CODE != null and COMP_CODE != emptyBigDecimalValue" >
+        COMP_CODE,
+      </if>
+      <if test="LINE_NBR != null and LINE_NBR != emptyBigDecimalValue" >
+        LINE_NBR,
+      </if>
+      <if test="LINE_NBR_DET != null and LINE_NBR_DET != emptyBigDecimalValue" >
+        LINE_NBR_DET,
+      </if>
+      <if test="TEMPLATE_TYPE != null" >
+        TEMPLATE_TYPE,
+      </if>
+      <if test="FROM_GL != null and FROM_GL != emptyBigDecimalValue" >
+        FROM_GL,
+      </if>
+      <if test="TO_GL != null and TO_GL != emptyBigDecimalValue" >
+        TO_GL,
+      </if>
+      <if test="GL_COMP != null and GL_COMP != emptyBigDecimalValue" >
+        GL_COMP,
+      </if>
+      <if test="BRANCH_CODE != null and BRANCH_CODE != emptyBigDecimalValue" >
+        BRANCH_CODE,
+      </if>
+      <if test="DIV_CODE != null and DIV_CODE != emptyBigDecimalValue" >
+        DIV_CODE,
+      </if>
+      <if test="DEPT_CODE != null and DEPT_CODE != emptyBigDecimalValue" >
+        DEPT_CODE,
+      </if>
+      <if test="GL_SIGN != null" >
+        GL_SIGN,
+      </if>
+      <if test="ADD_SUBTRACT != null and ADD_SUBTRACT != emptyBigDecimalValue" >
+        ADD_SUBTRACT,
+      </if>
+      <if test="PERCENTAGE != null and PERCENTAGE != emptyBigDecimalValue" >
+        PERCENTAGE,
+      </if>
+      <if test="EXCLUDE_CLOSING_ENTRY != null" >
+        EXCLUDE_CLOSING_ENTRY,
+      </if>
+      <if test="CALC_TYPE != null" >
+        CALC_TYPE,
+      </if>
+      <if test="CONTRIBUTION != null" >
+        CONTRIBUTION,
+      </if>
+      DATE_UPDATED,
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="CODE != null and CODE != emptyBigDecimalValue" >
+        #{CODE},
+      </if>
+      <if test="COMP_CODE != null and COMP_CODE != emptyBigDecimalValue" >
+        #{COMP_CODE},
+      </if>
+      <if test="LINE_NBR != null and LINE_NBR != emptyBigDecimalValue" >
+        #{LINE_NBR},
+      </if>
+      <if test="LINE_NBR_DET != null and LINE_NBR_DET != emptyBigDecimalValue" >
+        #{LINE_NBR_DET},
+      </if>
+      <if test="TEMPLATE_TYPE != null" >
+        #{TEMPLATE_TYPE},
+      </if>
+      <if test="FROM_GL != null and FROM_GL != emptyBigDecimalValue" >
+        #{FROM_GL},
+      </if>
+      <if test="TO_GL != null and TO_GL != emptyBigDecimalValue" >
+        #{TO_GL},
+      </if>
+      <if test="GL_COMP != null and GL_COMP != emptyBigDecimalValue" >
+        #{GL_COMP},
+      </if>
+      <if test="BRANCH_CODE != null and BRANCH_CODE != emptyBigDecimalValue" >
+        #{BRANCH_CODE},
+      </if>
+      <if test="DIV_CODE != null and DIV_CODE != emptyBigDecimalValue" >
+        #{DIV_CODE},
+      </if>
+      <if test="DEPT_CODE != null and DEPT_CODE != emptyBigDecimalValue" >
+        #{DEPT_CODE},
+      </if>
+      <if test="GL_SIGN != null" >
+        #{GL_SIGN},
+      </if>
+      <if test="ADD_SUBTRACT != null and ADD_SUBTRACT != emptyBigDecimalValue" >
+        #{ADD_SUBTRACT},
+      </if>
+      <if test="PERCENTAGE != null and PERCENTAGE != emptyBigDecimalValue" >
+        #{PERCENTAGE},
+      </if>
+      <if test="EXCLUDE_CLOSING_ENTRY != null" >
+        #{EXCLUDE_CLOSING_ENTRY},
+      </if>
+      <if test="CALC_TYPE != null" >
+        #{CALC_TYPE},
+      </if>
+      <if test="CONTRIBUTION != null" >
+        #{CONTRIBUTION},
+      </if>
+      <choose >
+        <when test="isSybase == 1" >
+           GETDATE(),
+        </when>
+        <otherwise >
+           SYSDATE,
+        </otherwise>
+      </choose>
+    </trim>
+  </insert>
+  <sql id="sql_updateGLSTMPLTGLSDET" >
+    update GLSTMPLTGLSDET
+    <set >
+      <if test="TEMPLATE_TYPE != null" >
+        TEMPLATE_TYPE = #{TEMPLATE_TYPE},
+      </if>
+      <if test="FROM_GL != null" >
+        <choose >
+          <when test="FROM_GL == emptyBigDecimalValue" >
+            FROM_GL = NULL ,
+          </when>
+          <otherwise >
+            FROM_GL = #{FROM_GL},
+          </otherwise>
+        </choose>
+      </if>
+      <if test="TO_GL != null" >
+        <choose >
+          <when test="TO_GL == emptyBigDecimalValue" >
+            TO_GL = NULL ,
+          </when>
+          <otherwise >
+            TO_GL = #{TO_GL},
+          </otherwise>
+        </choose>
+      </if>
+      <if test="GL_COMP != null" >
+        <choose >
+          <when test="GL_COMP == emptyBigDecimalValue" >
+            GL_COMP = NULL ,
+          </when>
+          <otherwise >
+            GL_COMP = #{GL_COMP},
+          </otherwise>
+        </choose>
+      </if>
+      <if test="BRANCH_CODE != null" >
+        <choose >
+          <when test="BRANCH_CODE == emptyBigDecimalValue" >
+            BRANCH_CODE = NULL ,
+          </when>
+          <otherwise >
+            BRANCH_CODE = #{BRANCH_CODE},
+          </otherwise>
+        </choose>
+      </if>
+      <if test="DIV_CODE != null" >
+        <choose >
+          <when test="DIV_CODE == emptyBigDecimalValue" >
+            DIV_CODE = NULL ,
+          </when>
+          <otherwise >
+            DIV_CODE = #{DIV_CODE},
+          </otherwise>
+        </choose>
+      </if>
+      <if test="DEPT_CODE != null" >
+        <choose >
+          <when test="DEPT_CODE == emptyBigDecimalValue" >
+            DEPT_CODE = NULL ,
+          </when>
+          <otherwise >
+            DEPT_CODE = #{DEPT_CODE},
+          </otherwise>
+        </choose>
+      </if>
+      <if test="GL_SIGN != null" >
+        GL_SIGN = #{GL_SIGN},
+      </if>
+      <if test="ADD_SUBTRACT != null" >
+        <choose >
+          <when test="ADD_SUBTRACT == emptyBigDecimalValue" >
+            ADD_SUBTRACT = NULL ,
+          </when>
+          <otherwise >
+            ADD_SUBTRACT = #{ADD_SUBTRACT},
+          </otherwise>
+        </choose>
+      </if>
+      <if test="PERCENTAGE != null" >
+        <choose >
+          <when test="PERCENTAGE == emptyBigDecimalValue" >
+            PERCENTAGE = NULL ,
+          </when>
+          <otherwise >
+            PERCENTAGE = #{PERCENTAGE},
+          </otherwise>
+        </choose>
+      </if>
+      <if test="EXCLUDE_CLOSING_ENTRY != null" >
+        EXCLUDE_CLOSING_ENTRY = #{EXCLUDE_CLOSING_ENTRY},
+      </if>
+      <if test="CALC_TYPE != null" >
+        CALC_TYPE = #{CALC_TYPE},
+      </if>
+      <if test="CONTRIBUTION != null" >
+        CONTRIBUTION = #{CONTRIBUTION},
+      </if>
+      DATE_UPDATED = 
+      <choose >
+        <when test="isSybase == 1" >
+           GETDATE(),
+        </when>
+        <otherwise >
+           SYSDATE,
+        </otherwise>
+      </choose>
+    </set>
+    where CODE = #{CODE}
+      and COMP_CODE = #{COMP_CODE}
+      and LINE_NBR = #{LINE_NBR}
+      and LINE_NBR_DET = #{LINE_NBR_DET}
+  </sql>
+  <update id="updateGLSTMPLTGLSDET" parameterType="com.path.dbmaps.vo.GLSTMPLTGLSDETVO" >
+    <include refid="sql_updateGLSTMPLTGLSDET" />
+    <if test="DATE_UPDATED != null" >
+      AND DATE_UPDATED = #{DATE_UPDATED}
+    </if>
+  </update>
+</mapper>

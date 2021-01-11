@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+        "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="repMisProcMapper">
+
+	<resultMap type="REP_MISMATCH_PROCESSCO" id="retCrtProgRefLkpMap">
+		<result property="CRITERIA" column="CRITERIA_CODE" />
+		<result property="PROG_REF" column="REP_REFERENCE" />
+		<result property="CRITERIA_COLUMN" column="CRITERIA_COLUMN" />
+		<result property="REP_MISMATCH_ID" column="REP_MISMATCH_ID" />
+		<result property="REP_MISMATCH_ID" column="REP_MISMATCH_ID" />
+		<result property="CRT_PROGREF" column="CRT_PROGREF" />
+	</resultMap>
+
+	<sql id="retCrtProgRefLkpLstSql">
+		SELECT DISTINCT CRITERIA_CODE,
+		REP_REFERENCE,
+		CRITERIA_COLUMN,
+		REP_MISMATCH_ID,
+		<choose>
+			<when test="MISMATCH_TYPE == 1">
+				CRITERIA_CODE
+          </when>
+			<otherwise>
+				REP_REFERENCE
+          </otherwise>
+		</choose> as CRT_PROGREF
+		FROM REP_MISMATCH_PARAM
+		WHERE COMP_CODE = #{compCode}
+		AND MISMATCH_TYPE =#{MISMATCH_TYPE}
+		AND REP_MISMATCH_ID =
+		(SELECT MIN(REP_MISMATCH_ID)
+		FROM REP_MISMATCH_PARAM A
+		WHERE REP_MISMATCH_PARAM.CRITERIA_CODE = A.CRITERIA_CODE
+		AND REP_MISMATCH_PARAM.COMP_CODE = A.COMP_CODE
+		AND REP_MISMATCH_PARAM.MISMATCH_TYPE = A.MISMATCH_TYPE)
+	</sql>
+
+	<select id="retCrtProgRefLkpLst" resultMap="retCrtProgRefLkpMap" parameterType="REP_MISMATCH_PROCESSSC">
+		<include refid="servicesCommon.commonGridWrpBefFlip" />
+		<include refid="retCrtProgRefLkpLstSql" />
+		<include refid="servicesCommon.commonGridWrpAftFlip" />
+		<include refid="servicesCommon.commmonGridWrpFlipClose" />
+	</select>
+
+
+	<select id="retCrtProgRefLkpCnt" resultType="int" parameterType="REP_MISMATCH_PROCESSSC">
+		<include refid="servicesCommon.commonGridWrpBefCnt" />
+		<include refid="retCrtProgRefLkpLstSql" />
+		<include refid="servicesCommon.commonGridWrpAftCnt" />
+		<include refid="servicesCommon.commonGridCountWrpClose" />
+	</select>
+	
+	<sql id="retMisProcGridInterLstSql">
+	SELECT DISTINCT REP_REFERENCE,
+	REP_MISMATCH_ID,
+	CRITERIA_CODE,
+	CRITERIA_COLUMN
+	FROM REP_MISMATCH_PARAM
+	WHERE COMP_CODE =  #{compCode}
+	AND MISMATCH_TYPE = #{MISMATCH_TYPE}
+	AND CRITERIA_CODE = #{CRITERIA_VAL}
+	AND REP_MISMATCH_ID = (SELECT MIN(REP_MISMATCH_ID)
+	FROM REP_MISMATCH_PARAM A
+	WHERE REP_MISMATCH_PARAM.CRITERIA_CODE = A.CRITERIA_CODE
+	AND REP_MISMATCH_PARAM.COMP_CODE = A.COMP_CODE
+	AND REP_MISMATCH_PARAM.MISMATCH_TYPE = A.MISMATCH_TYPE
+	AND REP_MISMATCH_PARAM.REP_REFERENCE = A.REP_REFERENCE)
+	</sql>
+	
+	 <select id="retMisProcGridInterLst" resultMap="retCrtProgRefLkpMap" parameterType="REP_MISMATCH_PROCESSSC">
+		<include refid="servicesCommon.commonGridWrpBefFlip" />
+		<include refid="retMisProcGridInterLstSql" />
+		<include refid="servicesCommon.commonGridWrpAftFlip" />
+		<include refid="servicesCommon.commmonGridWrpFlipClose" />
+	</select>
+		
+	<select id="retMisProcGridInterCnt" resultType="int" parameterType="REP_MISMATCH_PROCESSSC">
+		<include refid="servicesCommon.commonGridWrpBefCnt" />
+		<include refid="retMisProcGridInterLstSql" />
+		<include refid="servicesCommon.commonGridWrpAftCnt" />
+		<include refid="servicesCommon.commonGridCountWrpClose" />
+	</select>
+
+	<sql id="retMisProcGridIntraLstSql">
+		SELECT I.RELATED_CRITERIA AS CRITERIA_CODE, P.REP_REFERENCE, P.CRITERIA_COLUMN
+		FROM REP_MISMATCH_INTRA_CRITERIA I, REP_MISMATCH_PARAM P
+		WHERE I.REP_MISMATCH_ID = P.REP_MISMATCH_ID
+		AND I.REP_MISMATCH_ID = #{REP_MIS_ID}
+	</sql>	
+	
+	 <select id="retMisProcGridIntraLst" resultMap="retCrtProgRefLkpMap" parameterType="REP_MISMATCH_PROCESSSC">
+		<include refid="servicesCommon.commonGridWrpBefFlip" />
+		<include refid="retMisProcGridIntraLstSql" />
+		<include refid="servicesCommon.commonGridWrpAftFlip" />
+		<include refid="servicesCommon.commmonGridWrpFlipClose" />
+	</select>
+	
+	<select id="retMisProcGridIntraCnt" resultType="int" parameterType="REP_MISMATCH_PROCESSSC">
+		<include refid="servicesCommon.commonGridWrpBefCnt" />
+		<include refid="retMisProcGridIntraLstSql" />
+		<include refid="servicesCommon.commonGridWrpAftCnt" />
+		<include refid="servicesCommon.commonGridCountWrpClose" />
+	</select>
+
+ <select id="retMisProcSnpInfoList" parameterType="REP_MISMATCH_PROCESSSC" resultMap="snapshotInformationMapper.snapshotInformationMap">
+	SELECT P.REP_REFERENCE ,P.SNAPSHOT_FREQUENCY,
+	I.RETREIVE_DATE,I.REP_BLOB
+	FROM REP_SNAPSHOT_PARAM P, REP_SNAPSHOT_INFO I
+	WHERE P.REP_ID = I.REP_ID
+	AND P.REP_REFERENCE IN 
+	<foreach item="item" index="index" collection="progRefs" open="(" separator="," close=")">
+		#{item}
+	</foreach>
+	AND P.SNAPSHOT_FREQUENCY = #{MISMATCH_FREQ}
+ </select>
+ 
+ <select id="retRelColBySnp" parameterType="REP_MISMATCH_PROCESSSC" resultMap="reportsMismatchMapper.getReportsMismatchRelColsMap">
+	SELECT C.RELATED_COLUMN,P.CRITERIA_COLUMN
+	FROM REP_MISMATCH_PARAM P,REP_MISMATCH_COLUMN C
+	WHERE C.REP_MISMATCH_ID= P.REP_MISMATCH_ID
+	AND P.MISMATCH_TYPE = #{MISMATCH_TYPE}
+	AND P.CRITERIA_CODE = #{CRITERIA_VAL}
+	AND P.REP_REFERENCE = #{MISMATCH_REP_REF}
+ </select>
+</mapper>

@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="IRP_REP_HYPERLINKS" >
+  <resultMap id="BaseResultMap" type="com.path.dbmaps.vo.IRP_REP_HYPERLINKSVO" >
+    <id column="ARGUMENT_ID" property="ARGUMENT_ID" />
+    <id column="COLUMN_NAME" property="COLUMN_NAME" />
+    <id column="REPORT_ID" property="REPORT_ID" />
+    <result column="LINKED_REPORT_ID" property="LINKED_REPORT_ID" />
+    <result column="ARGUMENT_TYPE" property="ARGUMENT_TYPE" />
+    <result column="VALUE_STATIC" property="VALUE_STATIC" />
+    <result column="VALUE_SESSION" property="VALUE_SESSION" />
+    <result column="VALUE_COLUMN" property="VALUE_COLUMN" />
+    <result column="FIELD_INDEX" property="FIELD_INDEX" />
+    <result column="LINKED_FIELD_INDEX" property="LINKED_FIELD_INDEX" />
+    <result column="DATE_UPDATED" property="DATE_UPDATED" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ARGUMENT_ID, COLUMN_NAME, REPORT_ID, LINKED_REPORT_ID, ARGUMENT_TYPE, VALUE_STATIC, 
+    VALUE_SESSION, VALUE_COLUMN, FIELD_INDEX, LINKED_FIELD_INDEX, DATE_UPDATED
+  </sql>
+  <select id="selectIRP_REP_HYPERLINKS" resultMap="BaseResultMap" parameterType="com.path.dbmaps.vo.IRP_REP_HYPERLINKSVOKey" >
+    select 
+    <include refid="Base_Column_List" />
+    from IRP_REP_HYPERLINKS
+    where ARGUMENT_ID = #{ARGUMENT_ID}
+      and COLUMN_NAME = #{COLUMN_NAME}
+      and REPORT_ID = #{REPORT_ID}
+  </select>
+  <delete id="deleteIRP_REP_HYPERLINKS" parameterType="com.path.dbmaps.vo.IRP_REP_HYPERLINKSVOKey" >
+    delete from IRP_REP_HYPERLINKS
+    where ARGUMENT_ID = #{ARGUMENT_ID}
+      and COLUMN_NAME = #{COLUMN_NAME}
+      and REPORT_ID = #{REPORT_ID}
+  </delete>
+  <insert id="insertIRP_REP_HYPERLINKS" parameterType="com.path.dbmaps.vo.IRP_REP_HYPERLINKSVO" >
+    insert into IRP_REP_HYPERLINKS
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="ARGUMENT_ID != null and ARGUMENT_ID != emptyBigDecimalValue" >
+        ARGUMENT_ID,
+      </if>
+      <if test="COLUMN_NAME != null" >
+        COLUMN_NAME,
+      </if>
+      <if test="REPORT_ID != null and REPORT_ID != emptyBigDecimalValue" >
+        REPORT_ID,
+      </if>
+      <if test="LINKED_REPORT_ID != null and LINKED_REPORT_ID != emptyBigDecimalValue" >
+        LINKED_REPORT_ID,
+      </if>
+      <if test="ARGUMENT_TYPE != null and ARGUMENT_TYPE != emptyBigDecimalValue" >
+        ARGUMENT_TYPE,
+      </if>
+      <if test="VALUE_STATIC != null and !&quot;&quot;.equals(VALUE_STATIC)" >
+        VALUE_STATIC,
+      </if>
+      <if test="VALUE_SESSION != null and !&quot;&quot;.equals(VALUE_SESSION)" >
+        VALUE_SESSION,
+      </if>
+      <if test="VALUE_COLUMN != null and !&quot;&quot;.equals(VALUE_COLUMN)" >
+        VALUE_COLUMN,
+      </if>
+      <if test="FIELD_INDEX != null and FIELD_INDEX != emptyBigDecimalValue" >
+        FIELD_INDEX,
+      </if>
+      <if test="LINKED_FIELD_INDEX != null and LINKED_FIELD_INDEX != emptyBigDecimalValue" >
+        LINKED_FIELD_INDEX,
+      </if>
+      DATE_UPDATED,
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="ARGUMENT_ID != null and ARGUMENT_ID != emptyBigDecimalValue" >
+        #{ARGUMENT_ID},
+      </if>
+      <if test="COLUMN_NAME != null" >
+        #{COLUMN_NAME},
+      </if>
+      <if test="REPORT_ID != null and REPORT_ID != emptyBigDecimalValue" >
+        #{REPORT_ID},
+      </if>
+      <if test="LINKED_REPORT_ID != null and LINKED_REPORT_ID != emptyBigDecimalValue" >
+        #{LINKED_REPORT_ID},
+      </if>
+      <if test="ARGUMENT_TYPE != null and ARGUMENT_TYPE != emptyBigDecimalValue" >
+        #{ARGUMENT_TYPE},
+      </if>
+      <if test="VALUE_STATIC != null and !&quot;&quot;.equals(VALUE_STATIC)" >
+        #{VALUE_STATIC},
+      </if>
+      <if test="VALUE_SESSION != null and !&quot;&quot;.equals(VALUE_SESSION)" >
+        #{VALUE_SESSION},
+      </if>
+      <if test="VALUE_COLUMN != null and !&quot;&quot;.equals(VALUE_COLUMN)" >
+        #{VALUE_COLUMN},
+      </if>
+      <if test="FIELD_INDEX != null and FIELD_INDEX != emptyBigDecimalValue" >
+        #{FIELD_INDEX},
+      </if>
+      <if test="LINKED_FIELD_INDEX != null and LINKED_FIELD_INDEX != emptyBigDecimalValue" >
+        #{LINKED_FIELD_INDEX},
+      </if>
+      <choose >
+        <when test="isSybase == 1" >
+           GETDATE(),
+        </when>
+        <otherwise >
+           SYSDATE,
+        </otherwise>
+      </choose>
+    </trim>
+  </insert>
+  <sql id="sql_updateIRP_REP_HYPERLINKS" >
+    update IRP_REP_HYPERLINKS
+    <set >
+      <if test="LINKED_REPORT_ID != null" >
+        <choose >
+          <when test="LINKED_REPORT_ID == emptyBigDecimalValue" >
+            LINKED_REPORT_ID = NULL ,
+          </when>
+          <otherwise >
+            LINKED_REPORT_ID = #{LINKED_REPORT_ID},
+          </otherwise>
+        </choose>
+      </if>
+      <if test="ARGUMENT_TYPE != null" >
+        <choose >
+          <when test="ARGUMENT_TYPE == emptyBigDecimalValue" >
+            ARGUMENT_TYPE = NULL ,
+          </when>
+          <otherwise >
+            ARGUMENT_TYPE = #{ARGUMENT_TYPE},
+          </otherwise>
+        </choose>
+      </if>
+      <if test="VALUE_STATIC != null" >
+        <choose >
+          <when test="VALUE_STATIC.equals(&quot;&quot;)" >
+            VALUE_STATIC = NULL ,
+          </when>
+          <otherwise >
+            VALUE_STATIC = #{VALUE_STATIC},
+          </otherwise>
+        </choose>
+      </if>
+      <if test="VALUE_SESSION != null" >
+        <choose >
+          <when test="VALUE_SESSION.equals(&quot;&quot;)" >
+            VALUE_SESSION = NULL ,
+          </when>
+          <otherwise >
+            VALUE_SESSION = #{VALUE_SESSION},
+          </otherwise>
+        </choose>
+      </if>
+      <if test="VALUE_COLUMN != null" >
+        <choose >
+          <when test="VALUE_COLUMN.equals(&quot;&quot;)" >
+            VALUE_COLUMN = NULL ,
+          </when>
+          <otherwise >
+            VALUE_COLUMN = #{VALUE_COLUMN},
+          </otherwise>
+        </choose>
+      </if>
+      <if test="FIELD_INDEX != null" >
+        <choose >
+          <when test="FIELD_INDEX == emptyBigDecimalValue" >
+            FIELD_INDEX = NULL ,
+          </when>
+          <otherwise >
+            FIELD_INDEX = #{FIELD_INDEX},
+          </otherwise>
+        </choose>
+      </if>
+      <if test="LINKED_FIELD_INDEX != null" >
+        <choose >
+          <when test="LINKED_FIELD_INDEX == emptyBigDecimalValue" >
+            LINKED_FIELD_INDEX = NULL ,
+          </when>
+          <otherwise >
+            LINKED_FIELD_INDEX = #{LINKED_FIELD_INDEX},
+          </otherwise>
+        </choose>
+      </if>
+      DATE_UPDATED = 
+      <choose >
+        <when test="isSybase == 1" >
+           GETDATE(),
+        </when>
+        <otherwise >
+           SYSDATE,
+        </otherwise>
+      </choose>
+    </set>
+    where ARGUMENT_ID = #{ARGUMENT_ID}
+      and COLUMN_NAME = #{COLUMN_NAME}
+      and REPORT_ID = #{REPORT_ID}
+  </sql>
+  <update id="updateIRP_REP_HYPERLINKS" parameterType="com.path.dbmaps.vo.IRP_REP_HYPERLINKSVO" >
+    <include refid="sql_updateIRP_REP_HYPERLINKS" />
+  </update>
+</mapper>

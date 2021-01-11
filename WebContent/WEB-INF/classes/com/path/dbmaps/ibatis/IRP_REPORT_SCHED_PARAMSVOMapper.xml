@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="IRP_REPORT_SCHED_PARAMS" >
+  <resultMap id="BaseResultMap" type="com.path.dbmaps.vo.IRP_REPORT_SCHED_PARAMSVO" >
+    <id column="PARAM_ID" property="PARAM_ID" />
+    <id column="REPORT_ID" property="REPORT_ID" />
+    <id column="REPORT_REF" property="REPORT_REF" />
+    <id column="SCHED_ID" property="SCHED_ID" />
+    <result column="PARAM_NAME" property="PARAM_NAME" />
+    <result column="PARAM_VALUE" property="PARAM_VALUE" />
+    <result column="PARAM_TYPE" property="PARAM_TYPE" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    PARAM_ID, REPORT_ID, REPORT_REF, SCHED_ID, PARAM_NAME, PARAM_VALUE, PARAM_TYPE
+  </sql>
+  <select id="selectIRP_REPORT_SCHED_PARAMS" resultMap="BaseResultMap" parameterType="com.path.dbmaps.vo.IRP_REPORT_SCHED_PARAMSVO" >
+    select 
+    <include refid="Base_Column_List" />
+    from IRP_REPORT_SCHED_PARAMS
+    where PARAM_ID = #{PARAM_ID}
+      and REPORT_ID = #{REPORT_ID}
+      and REPORT_REF = #{REPORT_REF}
+      and SCHED_ID = #{SCHED_ID}
+  </select>
+  <delete id="deleteIRP_REPORT_SCHED_PARAMS" parameterType="com.path.dbmaps.vo.IRP_REPORT_SCHED_PARAMSVO" >
+    delete from IRP_REPORT_SCHED_PARAMS
+    where PARAM_ID = #{PARAM_ID}
+      and REPORT_ID = #{REPORT_ID}
+      and REPORT_REF = #{REPORT_REF}
+      and SCHED_ID = #{SCHED_ID}
+  </delete>
+  <insert id="insertIRP_REPORT_SCHED_PARAMS" parameterType="com.path.dbmaps.vo.IRP_REPORT_SCHED_PARAMSVO" >
+    insert into IRP_REPORT_SCHED_PARAMS
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="PARAM_ID != null and PARAM_ID != emptyBigDecimalValue" >
+        PARAM_ID,
+      </if>
+      <if test="REPORT_ID != null and REPORT_ID != emptyBigDecimalValue" >
+        REPORT_ID,
+      </if>
+      <if test="REPORT_REF != null" >
+        REPORT_REF,
+      </if>
+      <if test="SCHED_ID != null and SCHED_ID != emptyBigDecimalValue" >
+        SCHED_ID,
+      </if>
+      <if test="PARAM_NAME != null" >
+        PARAM_NAME,
+      </if>
+      <if test="PARAM_VALUE != null" >
+        PARAM_VALUE,
+      </if>
+      <if test="PARAM_TYPE != null" >
+        PARAM_TYPE,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="PARAM_ID != null and PARAM_ID != emptyBigDecimalValue" >
+        #{PARAM_ID},
+      </if>
+      <if test="REPORT_ID != null and REPORT_ID != emptyBigDecimalValue" >
+        #{REPORT_ID},
+      </if>
+      <if test="REPORT_REF != null" >
+        #{REPORT_REF},
+      </if>
+      <if test="SCHED_ID != null and SCHED_ID != emptyBigDecimalValue" >
+        #{SCHED_ID},
+      </if>
+      <if test="PARAM_NAME != null" >
+        #{PARAM_NAME},
+      </if>
+      <if test="PARAM_VALUE != null" >
+        #{PARAM_VALUE},
+      </if>
+      <if test="PARAM_TYPE != null" >
+        #{PARAM_TYPE},
+      </if>
+    </trim>
+  </insert>
+  <sql id="sql_updateIRP_REPORT_SCHED_PARAMS" >
+    update IRP_REPORT_SCHED_PARAMS
+    <set >
+      <if test="PARAM_NAME != null" >
+        PARAM_NAME = #{PARAM_NAME},
+      </if>
+      <if test="PARAM_VALUE != null" >
+        PARAM_VALUE = #{PARAM_VALUE},
+      </if>
+      <if test="PARAM_TYPE != null" >
+        PARAM_TYPE = #{PARAM_TYPE},
+      </if>
+    </set>
+    where PARAM_ID = #{PARAM_ID}
+      and REPORT_ID = #{REPORT_ID}
+      and REPORT_REF = #{REPORT_REF}
+      and SCHED_ID = #{SCHED_ID}
+  </sql>
+  <update id="updateIRP_REPORT_SCHED_PARAMS" parameterType="com.path.dbmaps.vo.IRP_REPORT_SCHED_PARAMSVO" >
+    <include refid="sql_updateIRP_REPORT_SCHED_PARAMS" />
+  </update>
+</mapper>

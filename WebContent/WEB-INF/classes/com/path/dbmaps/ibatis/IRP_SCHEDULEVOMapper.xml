@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="IRP_SCHEDULE" >
+  <resultMap id="BaseResultMap" type="com.path.dbmaps.vo.IRP_SCHEDULEVO" >
+    <id column="SCHED_ID" property="SCHED_ID" />
+    <result column="END_OF_MONTH" property="END_OF_MONTH" />
+    <result column="SCHED_NAME" property="SCHED_NAME" />
+    <result column="FIRST_RUN_DATE" property="FIRST_RUN_DATE" />
+    <result column="SCHED_EXPIRY_DATE" property="SCHED_EXPIRY_DATE" />
+    <result column="SCHED_FREQUENCY" property="SCHED_FREQUENCY" />
+    <result column="NEXT_RUN_DATE" property="NEXT_RUN_DATE" />
+    <result column="DATE_UPDATED" property="DATE_UPDATED" />
+    <result column="SCHED_TYPE" property="SCHED_TYPE" />
+    <result column="FREQUENCY_HOUR" property="FREQUENCY_HOUR" />
+    <result column="FREQUENCY_MINUTE" property="FREQUENCY_MINUTE" />
+    <result column="BATCH_CODE" property="BATCH_CODE" />
+    <result column="EVT_ID" property="EVT_ID" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    SCHED_ID, END_OF_MONTH, SCHED_NAME, FIRST_RUN_DATE, SCHED_EXPIRY_DATE, SCHED_FREQUENCY, 
+    NEXT_RUN_DATE, DATE_UPDATED, SCHED_TYPE, FREQUENCY_HOUR, FREQUENCY_MINUTE, BATCH_CODE, 
+    EVT_ID
+  </sql>
+  <select id="selectIRP_SCHEDULE" resultMap="BaseResultMap" parameterType="com.path.dbmaps.vo.IRP_SCHEDULEVO" >
+    select 
+    <include refid="Base_Column_List" />
+    from IRP_SCHEDULE
+    where SCHED_ID = #{SCHED_ID}
+  </select>
+  <delete id="deleteIRP_SCHEDULE" parameterType="com.path.dbmaps.vo.IRP_SCHEDULEVO" >
+    delete from IRP_SCHEDULE
+    where SCHED_ID = #{SCHED_ID}
+  </delete>
+  <insert id="insertIRP_SCHEDULE" parameterType="com.path.dbmaps.vo.IRP_SCHEDULEVO" >
+    insert into IRP_SCHEDULE
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="SCHED_ID != null and SCHED_ID != emptyBigDecimalValue" >
+        SCHED_ID,
+      </if>
+      <if test="END_OF_MONTH != null and !&quot;&quot;.equals(END_OF_MONTH)" >
+        END_OF_MONTH,
+      </if>
+      <if test="SCHED_NAME != null and !&quot;&quot;.equals(SCHED_NAME)" >
+        SCHED_NAME,
+      </if>
+      <if test="FIRST_RUN_DATE != null" >
+        FIRST_RUN_DATE,
+      </if>
+      <if test="SCHED_EXPIRY_DATE != null" >
+        SCHED_EXPIRY_DATE,
+      </if>
+      <if test="SCHED_FREQUENCY != null and !&quot;&quot;.equals(SCHED_FREQUENCY)" >
+        SCHED_FREQUENCY,
+      </if>
+      <if test="NEXT_RUN_DATE != null" >
+        NEXT_RUN_DATE,
+      </if>
+      DATE_UPDATED,
+      <if test="SCHED_TYPE != null and SCHED_TYPE != emptyBigDecimalValue" >
+        SCHED_TYPE,
+      </if>
+      <if test="FREQUENCY_HOUR != null and FREQUENCY_HOUR != emptyBigDecimalValue" >
+        FREQUENCY_HOUR,
+      </if>
+      <if test="FREQUENCY_MINUTE != null and FREQUENCY_MINUTE != emptyBigDecimalValue" >
+        FREQUENCY_MINUTE,
+      </if>
+      <if test="BATCH_CODE != null and BATCH_CODE != emptyBigDecimalValue" >
+        BATCH_CODE,
+      </if>
+      <if test="EVT_ID != null and EVT_ID != emptyBigDecimalValue" >
+        EVT_ID,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="SCHED_ID != null and SCHED_ID != emptyBigDecimalValue" >
+        #{SCHED_ID},
+      </if>
+      <if test="END_OF_MONTH != null and !&quot;&quot;.equals(END_OF_MONTH)" >
+        #{END_OF_MONTH},
+      </if>
+      <if test="SCHED_NAME != null and !&quot;&quot;.equals(SCHED_NAME)" >
+        #{SCHED_NAME},
+      </if>
+      <if test="FIRST_RUN_DATE != null" >
+        #{FIRST_RUN_DATE},
+      </if>
+      <if test="SCHED_EXPIRY_DATE != null" >
+        #{SCHED_EXPIRY_DATE},
+      </if>
+      <if test="SCHED_FREQUENCY != null and !&quot;&quot;.equals(SCHED_FREQUENCY)" >
+        #{SCHED_FREQUENCY},
+      </if>
+      <if test="NEXT_RUN_DATE != null" >
+        #{NEXT_RUN_DATE},
+      </if>
+      <choose >
+        <when test="isSybase == 1" >
+           GETDATE(),
+        </when>
+        <otherwise >
+           SYSDATE,
+        </otherwise>
+      </choose>
+      <if test="SCHED_TYPE != null and SCHED_TYPE != emptyBigDecimalValue" >
+        #{SCHED_TYPE},
+      </if>
+      <if test="FREQUENCY_HOUR != null and FREQUENCY_HOUR != emptyBigDecimalValue" >
+        #{FREQUENCY_HOUR},
+      </if>
+      <if test="FREQUENCY_MINUTE != null and FREQUENCY_MINUTE != emptyBigDecimalValue" >
+        #{FREQUENCY_MINUTE},
+      </if>
+      <if test="BATCH_CODE != null and BATCH_CODE != emptyBigDecimalValue" >
+        #{BATCH_CODE},
+      </if>
+      <if test="EVT_ID != null and EVT_ID != emptyBigDecimalValue" >
+        #{EVT_ID},
+      </if>
+    </trim>
+  </insert>
+  <sql id="sql_updateIRP_SCHEDULE" >
+    update IRP_SCHEDULE
+    <set >
+      <if test="END_OF_MONTH != null" >
+        <choose >
+          <when test="END_OF_MONTH.equals(&quot;&quot;)" >
+            END_OF_MONTH = NULL ,
+          </when>
+          <otherwise >
+            END_OF_MONTH = #{END_OF_MONTH},
+          </otherwise>
+        </choose>
+      </if>
+      <if test="SCHED_NAME != null" >
+        <choose >
+          <when test="SCHED_NAME.equals(&quot;&quot;)" >
+            SCHED_NAME = NULL ,
+          </when>
+          <otherwise >
+            SCHED_NAME = #{SCHED_NAME},
+          </otherwise>
+        </choose>
+      </if>
+      <if test="FIRST_RUN_DATE != null" >
+        FIRST_RUN_DATE = #{FIRST_RUN_DATE},
+      </if>
+      <if test="SCHED_EXPIRY_DATE != null" >
+        SCHED_EXPIRY_DATE = #{SCHED_EXPIRY_DATE},
+      </if>
+      <if test="SCHED_FREQUENCY != null" >
+        <choose >
+          <when test="SCHED_FREQUENCY.equals(&quot;&quot;)" >
+            SCHED_FREQUENCY = NULL ,
+          </when>
+          <otherwise >
+            SCHED_FREQUENCY = #{SCHED_FREQUENCY},
+          </otherwise>
+        </choose>
+      </if>
+      <if test="NEXT_RUN_DATE != null" >
+        NEXT_RUN_DATE = #{NEXT_RUN_DATE},
+      </if>
+      DATE_UPDATED = 
+      <choose >
+        <when test="isSybase == 1" >
+           GETDATE(),
+        </when>
+        <otherwise >
+           SYSDATE,
+        </otherwise>
+      </choose>
+      <if test="SCHED_TYPE != null" >
+        <choose >
+          <when test="SCHED_TYPE == emptyBigDecimalValue" >
+            SCHED_TYPE = NULL ,
+          </when>
+          <otherwise >
+            SCHED_TYPE = #{SCHED_TYPE},
+          </otherwise>
+        </choose>
+      </if>
+      <if test="FREQUENCY_HOUR != null" >
+        <choose >
+          <when test="FREQUENCY_HOUR == emptyBigDecimalValue" >
+            FREQUENCY_HOUR = NULL ,
+          </when>
+          <otherwise >
+            FREQUENCY_HOUR = #{FREQUENCY_HOUR},
+          </otherwise>
+        </choose>
+      </if>
+      <if test="FREQUENCY_MINUTE != null" >
+        <choose >
+          <when test="FREQUENCY_MINUTE == emptyBigDecimalValue" >
+            FREQUENCY_MINUTE = NULL ,
+          </when>
+          <otherwise >
+            FREQUENCY_MINUTE = #{FREQUENCY_MINUTE},
+          </otherwise>
+        </choose>
+      </if>
+      <if test="BATCH_CODE != null" >
+        <choose >
+          <when test="BATCH_CODE == emptyBigDecimalValue" >
+            BATCH_CODE = NULL ,
+          </when>
+          <otherwise >
+            BATCH_CODE = #{BATCH_CODE},
+          </otherwise>
+        </choose>
+      </if>
+      <if test="EVT_ID != null" >
+        <choose >
+          <when test="EVT_ID == emptyBigDecimalValue" >
+            EVT_ID = NULL ,
+          </when>
+          <otherwise >
+            EVT_ID = #{EVT_ID},
+          </otherwise>
+        </choose>
+      </if>
+    </set>
+    where SCHED_ID = #{SCHED_ID}
+  </sql>
+  <update id="updateIRP_SCHEDULE" parameterType="com.path.dbmaps.vo.IRP_SCHEDULEVO" >
+    <include refid="sql_updateIRP_SCHEDULE" />
+    <if test="DATE_UPDATED != null" >
+      AND DATE_UPDATED = #{DATE_UPDATED}
+    </if>
+  </update>
+</mapper>

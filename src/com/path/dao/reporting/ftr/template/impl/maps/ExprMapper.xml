@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="templateExpr" >
+
+  <resultMap id="getExprListMap" type="com.path.vo.reporting.ftr.template.FTR_TMPLT_EXPRCO" >
+    <id column="concatKey" 				property="concatKey" />
+    <result column="COMP_CODE" 			property="ftrTmpltExprVO.COMP_CODE" />
+    <result column="LINE_NO" 			property="ftrTmpltExprVO.LINE_NO" />
+    <result column="CODE" 				property="ftrTmpltExprVO.CODE" />
+    <result column="TMPLT_LINE_NO" 		property="ftrTmpltExprVO.TMPLT_LINE_NO" />
+    <result column="EXP_LINE" 			property="ftrTmpltExprVO.EXP_LINE" />
+    <result column="EXP_TYPE" 			property="ftrTmpltExprVO.EXP_TYPE" />
+    <result column="EXP_VALUE" 			property="ftrTmpltExprVO.EXP_VALUE" />
+    <result column="OPERATOR" 			property="ftrTmpltExprVO.OPERATOR" />
+    <result column="LEFT_OPERATOR"		property="ftrTmpltExprVO.LEFT_OPERATOR" />
+    <result column="RIGHT_OPERATOR" 	property="ftrTmpltExprVO.RIGHT_OPERATOR" />
+    <result column="TMPLT_LINE_NO" 		property="newLineNumber" />
+  </resultMap>
+  
+  <resultMap id="getMaxSubLineNbMap" type="com.path.vo.reporting.ftr.template.FTR_TMPLT_EXPRCO" >
+    <id column="LINE_NO" 				property="ftrTmpltExprVO.LINE_NO" />
+  </resultMap>
+  
+  <select id="getExprList" resultMap="getExprListMap" parameterType="GLSTMPLTSC" >
+    SELECT 
+    <include refid="ExprExt.getExprListSql" />
+    FROM FTR_TMPLT_EXPR
+    WHERE COMP_CODE = #{COMP_CODE}
+      AND CODE = #{CODE}
+      AND TMPLT_LINE_NO = #{LINE_NBR}
+      AND TMPLT_TYPE = 'T'
+      ORDER BY LINE_NO ASC
+  </select>
+  
+  <select id="getMaxSubLineNb" parameterType="GLSTMPLTSC" resultMap="getMaxSubLineNbMap">
+  	SELECT MAX(E.LINE_NO)+1 AS LINE_NO
+  	FROM FTR_TMPLT_EXPR E
+ 	WHERE E.COMP_CODE = #{COMP_CODE}
+  	 AND E.CODE = #{CODE}
+  	 AND E.TMPLT_LINE_NO = #{LINE_NBR}
+  	 AND TMPLT_TYPE = 'T'
+  </select>
+  
+  <delete id="deleteExprByTempl" parameterType="GLSTMPLTVO">
+   DELETE FROM FTR_TMPLT_EXPR
+    WHERE COMP_CODE = #{COMP_CODE}
+    AND CODE = #{CODE}
+    AND TMPLT_TYPE = 'T'
+  </delete>
+  
+  
+  
+   <insert id="saveExpr" parameterType="FTR_TMPLT_EXPRVO" >
+    INSERT INTO FTR_TMPLT_EXPR
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="COMP_CODE != null" >
+        COMP_CODE,
+      </if>
+      <if test="CODE != null" >
+        CODE,
+      </if>
+      <if test="TMPLT_LINE_NO != null" >
+        TMPLT_LINE_NO,
+      </if>
+        TMPLT_TYPE,
+      <if test="EXP_LINE != null" >
+        EXP_LINE,
+      </if>
+      <if test="EXP_TYPE != null" >
+        EXP_TYPE,
+      </if>
+      <if test="EXP_VALUE != null" >
+        EXP_VALUE,
+      </if>
+      <if test="OPERATOR != null" >
+        OPERATOR,
+      </if>
+      <if test="LEFT_OPERATOR != null" >
+        LEFT_OPERATOR,
+      </if>
+      <if test="RIGHT_OPERATOR != null" >
+        RIGHT_OPERATOR,
+      </if>
+      <if test="LINE_NO != null" >
+        LINE_NO,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="COMP_CODE != null" >
+        #{COMP_CODE},
+      </if>
+      <if test="CODE != null" >
+        #{CODE},
+      </if>
+      <if test="TMPLT_LINE_NO != null" >
+        #{TMPLT_LINE_NO},
+      </if>
+        'T',
+      <if test="EXP_LINE != null" >
+        #{EXP_LINE},
+      </if>
+      <if test="EXP_TYPE != null" >
+        #{EXP_TYPE},
+      </if>
+      <if test="EXP_VALUE != null" >
+        #{EXP_VALUE},
+      </if>
+      <if test="OPERATOR != null" >
+        #{OPERATOR},
+      </if>
+      <if test="LEFT_OPERATOR != null" >
+        #{LEFT_OPERATOR},
+      </if>
+      <if test="RIGHT_OPERATOR != null" >
+        #{RIGHT_OPERATOR},
+      </if>
+      <if test="LINE_NO != null" >
+        #{LINE_NO},
+      </if>
+    </trim>
+  </insert>
+  
+  
+  <delete id="deletExpr" parameterType="FTR_TMPLT_EXPRVO" >
+    DELETE FROM FTR_TMPLT_EXPR
+    WHERE COMP_CODE = #{COMP_CODE}
+	  	 AND CODE = #{CODE}
+	  	 AND TMPLT_LINE_NO = #{TMPLT_LINE_NO}
+	  	 <if test="LINE_NO != null" >
+	  	 	AND LINE_NO= #{LINE_NO}
+	  	 </if>
+	  	 AND TMPLT_TYPE ='T'
+  </delete>
+  
+</mapper>

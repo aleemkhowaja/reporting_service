@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="IRP_SUB_REPORT" >
+  <resultMap id="BaseResultMap" type="com.path.dbmaps.vo.IRP_SUB_REPORTVO" >
+    <id column="REPORT_ID" property="REPORT_ID" />
+    <id column="SUB_REPORT_EXPRESSION" property="SUB_REPORT_EXPRESSION" />
+    <result column="SUB_REPORT_ID" property="SUB_REPORT_ID" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    REPORT_ID, SUB_REPORT_EXPRESSION, SUB_REPORT_ID
+  </sql>
+  <select id="selectIRP_SUB_REPORT" resultMap="BaseResultMap" parameterType="com.path.dbmaps.vo.IRP_SUB_REPORTVO" >
+    select 
+    <include refid="Base_Column_List" />
+    from IRP_SUB_REPORT
+    where REPORT_ID = #{REPORT_ID}
+      and SUB_REPORT_EXPRESSION = #{SUB_REPORT_EXPRESSION}
+  </select>
+  <delete id="deleteIRP_SUB_REPORT" parameterType="com.path.dbmaps.vo.IRP_SUB_REPORTVO" >
+    delete from IRP_SUB_REPORT
+    where REPORT_ID = #{REPORT_ID}
+      and SUB_REPORT_EXPRESSION = #{SUB_REPORT_EXPRESSION}
+  </delete>
+  <insert id="insertIRP_SUB_REPORT" parameterType="com.path.dbmaps.vo.IRP_SUB_REPORTVO" >
+    insert into IRP_SUB_REPORT
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="REPORT_ID != null and REPORT_ID != emptyBigDecimalValue" >
+        REPORT_ID,
+      </if>
+      <if test="SUB_REPORT_EXPRESSION != null" >
+        SUB_REPORT_EXPRESSION,
+      </if>
+      <if test="SUB_REPORT_ID != null and SUB_REPORT_ID != emptyBigDecimalValue" >
+        SUB_REPORT_ID,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="REPORT_ID != null and REPORT_ID != emptyBigDecimalValue" >
+        #{REPORT_ID},
+      </if>
+      <if test="SUB_REPORT_EXPRESSION != null" >
+        #{SUB_REPORT_EXPRESSION},
+      </if>
+      <if test="SUB_REPORT_ID != null and SUB_REPORT_ID != emptyBigDecimalValue" >
+        #{SUB_REPORT_ID},
+      </if>
+    </trim>
+  </insert>
+  <sql id="sql_updateIRP_SUB_REPORT" >
+    update IRP_SUB_REPORT
+    <set >
+      <if test="SUB_REPORT_ID != null" >
+        <choose >
+          <when test="SUB_REPORT_ID == emptyBigDecimalValue" >
+            SUB_REPORT_ID = NULL ,
+          </when>
+          <otherwise >
+            SUB_REPORT_ID = #{SUB_REPORT_ID},
+          </otherwise>
+        </choose>
+      </if>
+    </set>
+    where REPORT_ID = #{REPORT_ID}
+      and SUB_REPORT_EXPRESSION = #{SUB_REPORT_EXPRESSION}
+  </sql>
+  <update id="updateIRP_SUB_REPORT" parameterType="com.path.dbmaps.vo.IRP_SUB_REPORTVO" >
+    <include refid="sql_updateIRP_SUB_REPORT" />
+  </update>
+</mapper>

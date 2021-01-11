@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        
+<mapper namespace="filterCriteria">
+
+<resultMap type="GLSTMPLT_CRITERIACO"  id="filterCriteriaMap">     
+  	<id 	column="COMP_CODE" 					property="glstmpltCriteriaVO.COMP_CODE" />
+    <id 	column="CODE" 						property="glstmpltCriteriaVO.CODE" />
+    <result column="BRIEF_DESC_ENG" 			property="glstmpltCriteriaVO.BRIEF_DESC_ENG" />
+    <result column="CRI_TYPE" 					property="glstmpltCriteriaVO.CRI_TYPE" />
+    <result column="BRIEF_DESC_ARAB" 			property="glstmpltCriteriaVO.BRIEF_DESC_ARAB" />
+    <result column="LONG_DESC_ENG" 				property="glstmpltCriteriaVO.LONG_DESC_ENG" />
+    <result column="LONG_DESC_ARAB" 			property="glstmpltCriteriaVO.LONG_DESC_ARAB" />
+    <result column="SMART_CODE"					property="glstmpltCriteriaVO.SMART_CODE" />
+    <result column="CRITERIA_TYPE_DESCRIPTION"  property="CRITERIA_TYPE_DESCRIPTION" />
+    <result column="SMART_BRIEF_NAME_ENG"  		property="SMART_BRIEF_NAME_ENG" />
+</resultMap>
+
+<sql id="filterCriteriaSql">
+SELECT COMP_CODE, CODE, BRIEF_DESC_ENG, CRI_TYPE,
+BRIEF_DESC_ARAB, LONG_DESC_ENG, LONG_DESC_ARAB,
+        (SELECT ICT.CRITERIA_TYPE_DESCRIPTION 
+       		FROM IRP_CRITERIA_TYPE ICT 
+       		WHERE ICT.CRITERIA_TYPE_CODE = IFC.CRI_TYPE 
+       		AND ICT.LANG_CODE = #{LANG_CODE} ) CRITERIA_TYPE_DESCRIPTION
+       	,(SELECT OPTION_CODE
+          FROM S_ADDITIONS_OPTIONS SA
+         WHERE SA.OPTION_CODE = IFC.SMART_CODE
+           AND SA.OPTION_SERIAL = 0) SMART_CODE
+        ,(SELECT SA.BRIEF_NAME_ENG
+          FROM S_ADDITIONS_OPTIONS SA
+         WHERE SA.OPTION_CODE = IFC.SMART_CODE
+           AND SA.OPTION_SERIAL = 0) SMART_BRIEF_NAME_ENG 
+FROM GLSTMPLT_CRITERIA IFC
+WHERE COMP_CODE = #{COMP_CODE} 
+</sql>
+
+<select id="filterCriteriaList"  resultMap="filterCriteriaMap" parameterType="GLSTMPLT_CRITERIASC">
+	<include refid="servicesCommon.commonGridWrpBefFlip"/>
+	<include refid="filterCriteriaSql"/>
+	<include refid="servicesCommon.commonGridWrpAftFlip"/>
+	<include refid="servicesCommon.commmonGridWrpFlipClose"/>
+</select>
+
+<select id="filterCriteriaCnt"  resultType="int" parameterType="GLSTMPLT_CRITERIASC"> 
+	<include refid="servicesCommon.commonGridWrpBefCnt"/>
+	<include refid="filterCriteriaSql"/>
+	<include refid="servicesCommon.commonGridWrpAftCnt"/>
+	<include refid="servicesCommon.commonGridCountWrpClose"/>  
+</select>
+
+<select id="filterCriteriaById" resultMap="filterCriteriaMap" parameterType="glstmplt_criteriaVO">
+	<include refid="filterCriteriaSql"/>
+	AND CRITERIA_CODE = #{CRITERIA_CODE}
+</select>
+
+<delete id="delete" parameterType="GLSTMPLT_CRITERIAVO">
+	delete from GLSTMPLT_CRITERIA  	
+	WHERE COMP_CODE = #{COMP_CODE} and CODE = #{CODE}
+</delete>
+<select id="findCriteriaUsageCount" resultType="int" parameterType="GLSTMPLT_CRITERIAVO">
+	SELECT COUNT(*)
+	FROM GLSTMPLT_PARAM_LINK
+	WHERE COMP_CODE= #{COMP_CODE}
+	AND CRITERIA_CODE=#{CODE}
+</select>
+<select id="findCriteriaCount" resultType="int" parameterType="GLSTMPLT_CRITERIAVO">
+	SELECT COUNT(*)
+	FROM GLSTMPLT_CRITERIA
+	WHERE COMP_CODE= #{COMP_CODE}
+	AND CODE=#{CODE}
+</select>
+
+ <update id="updateFilterCriteria" parameterType="GLSTMPLT_CRITERIAVO">
+	   <include refid="GLSTMPLT_CRITERIA.sql_updateGLSTMPLT_CRITERIA" />
+     <if test="DATE_UPDATED != null" > AND DATE_UPDATED = #{DATE_UPDATED} </if>
+</update>
+</mapper>

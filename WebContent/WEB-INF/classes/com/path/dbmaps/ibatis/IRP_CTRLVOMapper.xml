@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="IRP_CTRL" >
+  <resultMap id="BaseResultMap" type="com.path.dbmaps.vo.IRP_CTRLVO" >
+    <result column="OVERSIZE_LIMIT" property="OVERSIZE_LIMIT" />
+  </resultMap>
+  <insert id="insertIRP_CTRL" parameterType="com.path.dbmaps.vo.IRP_CTRLVO" >
+    insert into IRP_CTRL
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="OVERSIZE_LIMIT != null and !&quot;&quot;.equals(OVERSIZE_LIMIT)" >
+        OVERSIZE_LIMIT,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="OVERSIZE_LIMIT != null and !&quot;&quot;.equals(OVERSIZE_LIMIT)" >
+        #{OVERSIZE_LIMIT},
+      </if>
+    </trim>
+  </insert>
+</mapper>

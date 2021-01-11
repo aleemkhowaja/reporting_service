@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="FTR_CB_CODE" >
+  <resultMap id="BaseResultMap" type="com.path.dbmaps.vo.FTR_CB_CODEVO" >
+    <id column="COMP_CODE" property="COMP_CODE" />
+    <id column="ENTITY_CODE" property="ENTITY_CODE" />
+    <id column="ENTITY_TYPE" property="ENTITY_TYPE" />
+    <id column="SUB_ENTITY_CODE" property="SUB_ENTITY_CODE" />
+    <result column="ENTITY_CB_CODE" property="ENTITY_CB_CODE" />
+    <result column="DATE_UPDATED" property="DATE_UPDATED" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    COMP_CODE, ENTITY_CODE, ENTITY_TYPE, SUB_ENTITY_CODE, ENTITY_CB_CODE, DATE_UPDATED
+  </sql>
+  <select id="selectFTR_CB_CODE" resultMap="BaseResultMap" parameterType="com.path.dbmaps.vo.FTR_CB_CODEVOKey" >
+    select 
+    <include refid="Base_Column_List" />
+    from FTR_CB_CODE
+    where COMP_CODE = #{COMP_CODE}
+      and ENTITY_CODE = #{ENTITY_CODE}
+      and ENTITY_TYPE = #{ENTITY_TYPE}
+      and SUB_ENTITY_CODE = #{SUB_ENTITY_CODE}
+  </select>
+  <delete id="deleteFTR_CB_CODE" parameterType="com.path.dbmaps.vo.FTR_CB_CODEVOKey" >
+    delete from FTR_CB_CODE
+    where COMP_CODE = #{COMP_CODE}
+      and ENTITY_CODE = #{ENTITY_CODE}
+      and ENTITY_TYPE = #{ENTITY_TYPE}
+      and SUB_ENTITY_CODE = #{SUB_ENTITY_CODE}
+  </delete>
+  <insert id="insertFTR_CB_CODE" parameterType="com.path.dbmaps.vo.FTR_CB_CODEVO" >
+    insert into FTR_CB_CODE
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="COMP_CODE != null and COMP_CODE != emptyBigDecimalValue" >
+        COMP_CODE,
+      </if>
+      <if test="ENTITY_CODE != null and ENTITY_CODE != emptyBigDecimalValue" >
+        ENTITY_CODE,
+      </if>
+      <if test="ENTITY_TYPE != null" >
+        ENTITY_TYPE,
+      </if>
+      <if test="SUB_ENTITY_CODE != null and SUB_ENTITY_CODE != emptyBigDecimalValue" >
+        SUB_ENTITY_CODE,
+      </if>
+      <if test="ENTITY_CB_CODE != null and ENTITY_CB_CODE != emptyBigDecimalValue" >
+        ENTITY_CB_CODE,
+      </if>
+      DATE_UPDATED,
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="COMP_CODE != null and COMP_CODE != emptyBigDecimalValue" >
+        #{COMP_CODE},
+      </if>
+      <if test="ENTITY_CODE != null and ENTITY_CODE != emptyBigDecimalValue" >
+        #{ENTITY_CODE},
+      </if>
+      <if test="ENTITY_TYPE != null" >
+        #{ENTITY_TYPE},
+      </if>
+      <if test="SUB_ENTITY_CODE != null and SUB_ENTITY_CODE != emptyBigDecimalValue" >
+        #{SUB_ENTITY_CODE},
+      </if>
+      <if test="ENTITY_CB_CODE != null and ENTITY_CB_CODE != emptyBigDecimalValue" >
+        #{ENTITY_CB_CODE},
+      </if>
+      <choose >
+        <when test="isSybase == 1" >
+           GETDATE(),
+        </when>
+        <otherwise >
+           SYSDATE,
+        </otherwise>
+      </choose>
+    </trim>
+  </insert>
+  <sql id="sql_updateFTR_CB_CODE" >
+    update FTR_CB_CODE
+    <set >
+      <if test="ENTITY_CB_CODE != null" >
+        <choose >
+          <when test="ENTITY_CB_CODE == emptyBigDecimalValue" >
+            ENTITY_CB_CODE = NULL ,
+          </when>
+          <otherwise >
+            ENTITY_CB_CODE = #{ENTITY_CB_CODE},
+          </otherwise>
+        </choose>
+      </if>
+      DATE_UPDATED = 
+      <choose >
+        <when test="isSybase == 1" >
+           GETDATE(),
+        </when>
+        <otherwise >
+           SYSDATE,
+        </otherwise>
+      </choose>
+    </set>
+    where COMP_CODE = #{COMP_CODE}
+      and ENTITY_CODE = #{ENTITY_CODE}
+      and ENTITY_TYPE = #{ENTITY_TYPE}
+      and SUB_ENTITY_CODE = #{SUB_ENTITY_CODE}
+  </sql>
+  <update id="updateFTR_CB_CODE" parameterType="com.path.dbmaps.vo.FTR_CB_CODEVO" >
+    <include refid="sql_updateFTR_CB_CODE" />
+    <if test="DATE_UPDATED != null" >
+      AND DATE_UPDATED = #{DATE_UPDATED}
+    </if>
+  </update>
+</mapper>

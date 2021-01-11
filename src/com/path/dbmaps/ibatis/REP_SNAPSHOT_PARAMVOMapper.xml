@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="REP_SNAPSHOT_PARAM" >
+  <resultMap id="BaseResultMap" type="com.path.dbmaps.vo.REP_SNAPSHOT_PARAMVO" >
+    <id column="REP_ID" property="REP_ID" />
+    <result column="COMP_CODE" property="COMP_CODE" />
+    <result column="REP_REFERENCE" property="REP_REFERENCE" />
+    <result column="SNAPSHOT_FREQUENCY" property="SNAPSHOT_FREQUENCY" />
+    <result column="ADDITIONAL_REFERENCE" property="ADDITIONAL_REFERENCE" />
+    <result column="SAVE_REP_YN" property="SAVE_REP_YN" />
+    <result column="REP_TYPE" property="REP_TYPE" />
+    <result column="CREATED_BY" property="CREATED_BY" />
+    <result column="CREATED_DATE" property="CREATED_DATE" />
+    <result column="SITCOM_ENABLE_YN" property="SITCOM_ENABLE_YN" />
+    <result column="SITCOM_ORDER" property="SITCOM_ORDER" />
+    <result column="SAVE_REP_DETAILS_YN" property="SAVE_REP_DETAILS_YN" />
+    <result column="REP_MODIFY_ENABLE_YN" property="REP_MODIFY_ENABLE_YN" />
+    <result column="REP_AUDIT_YN" property="REP_AUDIT_YN" />
+    <result column="REP_COMMENTS_YN" property="REP_COMMENTS_YN" />
+    <result column="DATE_UPDATED" property="DATE_UPDATED" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.path.dbmaps.vo.REP_SNAPSHOT_PARAMVO" extends="BaseResultMap" >
+    <result column="SITCOM_FORMULA" property="SITCOM_FORMULA" />
+    <result column="SITCOM_FORMULA_HEADER" property="SITCOM_FORMULA_HEADER" />
+    <result column="SITCOM_FORMULA_FOOTER" property="SITCOM_FORMULA_FOOTER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    REP_ID, COMP_CODE, REP_REFERENCE, SNAPSHOT_FREQUENCY, ADDITIONAL_REFERENCE, SAVE_REP_YN, 
+    REP_TYPE, CREATED_BY, CREATED_DATE, SITCOM_ENABLE_YN, SITCOM_ORDER, SAVE_REP_DETAILS_YN, 
+    REP_MODIFY_ENABLE_YN, REP_AUDIT_YN, REP_COMMENTS_YN, DATE_UPDATED
+  </sql>
+  <sql id="Blob_Column_List" >
+    SITCOM_FORMULA, SITCOM_FORMULA_HEADER, SITCOM_FORMULA_FOOTER
+  </sql>
+  <select id="selectREP_SNAPSHOT_PARAM" resultMap="ResultMapWithBLOBs" parameterType="com.path.dbmaps.vo.REP_SNAPSHOT_PARAMVO" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from REP_SNAPSHOT_PARAM
+    where REP_ID = #{REP_ID}
+  </select>
+  <delete id="deleteREP_SNAPSHOT_PARAM" parameterType="com.path.dbmaps.vo.REP_SNAPSHOT_PARAMVO" >
+    delete from REP_SNAPSHOT_PARAM
+    where REP_ID = #{REP_ID}
+  </delete>
+  <insert id="insertREP_SNAPSHOT_PARAM" parameterType="com.path.dbmaps.vo.REP_SNAPSHOT_PARAMVO" >
+    insert into REP_SNAPSHOT_PARAM
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="REP_ID != null and REP_ID != emptyBigDecimalValue" >
+        REP_ID,
+      </if>
+      <if test="COMP_CODE != null and COMP_CODE != emptyBigDecimalValue" >
+        COMP_CODE,
+      </if>
+      <if test="REP_REFERENCE != null" >
+        REP_REFERENCE,
+      </if>
+      <if test="SNAPSHOT_FREQUENCY != null" >
+        SNAPSHOT_FREQUENCY,
+      </if>
+      <if test="ADDITIONAL_REFERENCE != null" >
+        ADDITIONAL_REFERENCE,
+      </if>
+      <if test="SAVE_REP_YN != null" >
+        SAVE_REP_YN,
+      </if>
+      <if test="REP_TYPE != null" >
+        REP_TYPE,
+      </if>
+      <if test="CREATED_BY != null" >
+        CREATED_BY,
+      </if>
+      <if test="CREATED_DATE != null" >
+        CREATED_DATE,
+      </if>
+      <if test="SITCOM_ENABLE_YN != null" >
+        SITCOM_ENABLE_YN,
+      </if>
+      <if test="SITCOM_ORDER != null and SITCOM_ORDER != emptyBigDecimalValue" >
+        SITCOM_ORDER,
+      </if>
+      <if test="SAVE_REP_DETAILS_YN != null" >
+        SAVE_REP_DETAILS_YN,
+      </if>
+      <if test="REP_MODIFY_ENABLE_YN != null" >
+        REP_MODIFY_ENABLE_YN,
+      </if>
+      <if test="REP_AUDIT_YN != null" >
+        REP_AUDIT_YN,
+      </if>
+      <if test="REP_COMMENTS_YN != null" >
+        REP_COMMENTS_YN,
+      </if>
+      DATE_UPDATED,
+      <if test="SITCOM_FORMULA != null" >
+        SITCOM_FORMULA,
+      </if>
+      <if test="SITCOM_FORMULA_HEADER != null" >
+        SITCOM_FORMULA_HEADER,
+      </if>
+      <if test="SITCOM_FORMULA_FOOTER != null" >
+        SITCOM_FORMULA_FOOTER,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="REP_ID != null and REP_ID != emptyBigDecimalValue" >
+        #{REP_ID},
+      </if>
+      <if test="COMP_CODE != null and COMP_CODE != emptyBigDecimalValue" >
+        #{COMP_CODE},
+      </if>
+      <if test="REP_REFERENCE != null" >
+        #{REP_REFERENCE},
+      </if>
+      <if test="SNAPSHOT_FREQUENCY != null" >
+        #{SNAPSHOT_FREQUENCY},
+      </if>
+      <if test="ADDITIONAL_REFERENCE != null" >
+        #{ADDITIONAL_REFERENCE},
+      </if>
+      <if test="SAVE_REP_YN != null" >
+        #{SAVE_REP_YN},
+      </if>
+      <if test="REP_TYPE != null" >
+        #{REP_TYPE},
+      </if>
+      <if test="CREATED_BY != null" >
+        #{CREATED_BY},
+      </if>
+      <if test="CREATED_DATE != null" >
+        #{CREATED_DATE},
+      </if>
+      <if test="SITCOM_ENABLE_YN != null" >
+        #{SITCOM_ENABLE_YN},
+      </if>
+      <if test="SITCOM_ORDER != null and SITCOM_ORDER != emptyBigDecimalValue" >
+        #{SITCOM_ORDER},
+      </if>
+      <if test="SAVE_REP_DETAILS_YN != null" >
+        #{SAVE_REP_DETAILS_YN},
+      </if>
+      <if test="REP_MODIFY_ENABLE_YN != null" >
+        #{REP_MODIFY_ENABLE_YN},
+      </if>
+      <if test="REP_AUDIT_YN != null" >
+        #{REP_AUDIT_YN},
+      </if>
+      <if test="REP_COMMENTS_YN != null" >
+        #{REP_COMMENTS_YN},
+      </if>
+      <choose >
+        <when test="isSybase == 1" >
+           GETDATE(),
+        </when>
+        <otherwise >
+           SYSDATE,
+        </otherwise>
+      </choose>
+      <if test="SITCOM_FORMULA != null" >
+        #{SITCOM_FORMULA},
+      </if>
+      <if test="SITCOM_FORMULA_HEADER != null" >
+        #{SITCOM_FORMULA_HEADER},
+      </if>
+      <if test="SITCOM_FORMULA_FOOTER != null" >
+        #{SITCOM_FORMULA_FOOTER},
+      </if>
+    </trim>
+  </insert>
+  <sql id="sql_updateREP_SNAPSHOT_PARAM" >
+    update REP_SNAPSHOT_PARAM
+    <set >
+      <if test="COMP_CODE != null" >
+        <choose >
+          <when test="COMP_CODE == emptyBigDecimalValue" >
+            COMP_CODE = NULL ,
+          </when>
+          <otherwise >
+            COMP_CODE = #{COMP_CODE},
+          </otherwise>
+        </choose>
+      </if>
+      <if test="REP_REFERENCE != null" >
+        REP_REFERENCE = #{REP_REFERENCE},
+      </if>
+      <if test="SNAPSHOT_FREQUENCY != null" >
+        SNAPSHOT_FREQUENCY = #{SNAPSHOT_FREQUENCY},
+      </if>
+      <if test="ADDITIONAL_REFERENCE != null" >
+        ADDITIONAL_REFERENCE = #{ADDITIONAL_REFERENCE},
+      </if>
+      <if test="SAVE_REP_YN != null" >
+        SAVE_REP_YN = #{SAVE_REP_YN},
+      </if>
+      <if test="REP_TYPE != null" >
+        REP_TYPE = #{REP_TYPE},
+      </if>
+      <if test="CREATED_BY != null" >
+        CREATED_BY = #{CREATED_BY},
+      </if>
+      <if test="CREATED_DATE != null" >
+        CREATED_DATE = #{CREATED_DATE},
+      </if>
+      <if test="SITCOM_ENABLE_YN != null" >
+        SITCOM_ENABLE_YN = #{SITCOM_ENABLE_YN},
+      </if>
+      <if test="SITCOM_ORDER != null" >
+        <choose >
+          <when test="SITCOM_ORDER == emptyBigDecimalValue" >
+            SITCOM_ORDER = NULL ,
+          </when>
+          <otherwise >
+            SITCOM_ORDER = #{SITCOM_ORDER},
+          </otherwise>
+        </choose>
+      </if>
+      <if test="SAVE_REP_DETAILS_YN != null" >
+        SAVE_REP_DETAILS_YN = #{SAVE_REP_DETAILS_YN},
+      </if>
+      <if test="REP_MODIFY_ENABLE_YN != null" >
+        REP_MODIFY_ENABLE_YN = #{REP_MODIFY_ENABLE_YN},
+      </if>
+      <if test="REP_AUDIT_YN != null" >
+        REP_AUDIT_YN = #{REP_AUDIT_YN},
+      </if>
+      <if test="REP_COMMENTS_YN != null" >
+        REP_COMMENTS_YN = #{REP_COMMENTS_YN},
+      </if>
+      DATE_UPDATED = 
+      <choose >
+        <when test="isSybase == 1" >
+           GETDATE(),
+        </when>
+        <otherwise >
+           SYSDATE,
+        </otherwise>
+      </choose>
+      <if test="SITCOM_FORMULA != null" >
+        SITCOM_FORMULA = #{SITCOM_FORMULA},
+      </if>
+      <if test="SITCOM_FORMULA_HEADER != null" >
+        SITCOM_FORMULA_HEADER = #{SITCOM_FORMULA_HEADER},
+      </if>
+      <if test="SITCOM_FORMULA_FOOTER != null" >
+        SITCOM_FORMULA_FOOTER = #{SITCOM_FORMULA_FOOTER},
+      </if>
+    </set>
+    where REP_ID = #{REP_ID}
+  </sql>
+  <update id="updateREP_SNAPSHOT_PARAM" parameterType="com.path.dbmaps.vo.REP_SNAPSHOT_PARAMVO" >
+    <include refid="sql_updateREP_SNAPSHOT_PARAM" />
+    <if test="DATE_UPDATED != null" >
+      AND DATE_UPDATED = #{DATE_UPDATED}
+    </if>
+  </update>
+</mapper>

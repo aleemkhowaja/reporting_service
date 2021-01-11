@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="PTH_CLIENTS" >
+  <resultMap id="BaseResultMap" type="com.path.dbmaps.vo.PTH_CLIENTSVO" >
+    <id column="CLIENT_ACRONYM" property="CLIENT_ACRONYM" />
+    <result column="CLIENT_NAME" property="CLIENT_NAME" />
+    <result column="IS_DEFAULT_YN" property="IS_DEFAULT_YN" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    CLIENT_ACRONYM, CLIENT_NAME, IS_DEFAULT_YN
+  </sql>
+  <select id="selectPTH_CLIENTS" resultMap="BaseResultMap" parameterType="com.path.dbmaps.vo.PTH_CLIENTSVO" >
+    select 
+    <include refid="Base_Column_List" />
+    from PTH_CLIENTS
+    where CLIENT_ACRONYM = #{CLIENT_ACRONYM}
+  </select>
+  <delete id="deletePTH_CLIENTS" parameterType="com.path.dbmaps.vo.PTH_CLIENTSVO" >
+    delete from PTH_CLIENTS
+    where CLIENT_ACRONYM = #{CLIENT_ACRONYM}
+  </delete>
+  <insert id="insertPTH_CLIENTS" parameterType="com.path.dbmaps.vo.PTH_CLIENTSVO" >
+    insert into PTH_CLIENTS
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="CLIENT_ACRONYM != null" >
+        CLIENT_ACRONYM,
+      </if>
+      <if test="CLIENT_NAME != null" >
+        CLIENT_NAME,
+      </if>
+      <if test="IS_DEFAULT_YN != null" >
+        IS_DEFAULT_YN,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="CLIENT_ACRONYM != null" >
+        #{CLIENT_ACRONYM},
+      </if>
+      <if test="CLIENT_NAME != null" >
+        #{CLIENT_NAME},
+      </if>
+      <if test="IS_DEFAULT_YN != null" >
+        #{IS_DEFAULT_YN},
+      </if>
+    </trim>
+  </insert>
+  <sql id="sql_updatePTH_CLIENTS" >
+    update PTH_CLIENTS
+    <set >
+      <if test="CLIENT_NAME != null" >
+        CLIENT_NAME = #{CLIENT_NAME},
+      </if>
+      <if test="IS_DEFAULT_YN != null" >
+        IS_DEFAULT_YN = #{IS_DEFAULT_YN},
+      </if>
+    </set>
+    where CLIENT_ACRONYM = #{CLIENT_ACRONYM}
+  </sql>
+  <update id="updatePTH_CLIENTS" parameterType="com.path.dbmaps.vo.PTH_CLIENTSVO" >
+    <include refid="sql_updatePTH_CLIENTS" />
+  </update>
+</mapper>

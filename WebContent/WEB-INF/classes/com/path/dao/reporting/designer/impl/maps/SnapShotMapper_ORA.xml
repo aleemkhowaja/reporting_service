@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        
+<mapper namespace="snapShotExt">
+	<sql id="retSnapshotListSql">
+		<choose>
+	 		<when test="eod == 1">
+       		  SELECT S.SNAPSHOT_ID,
+              TO_CHAR(S.EXECUTION_DATE, 'DD/MM/YYYY HH:MI:SS AM') AS EXECUTION_DATE_STR,
+	          S.REPORT_FORMAT,
+	          (SELECT VALUE_DESC
+		          FROM SYS_PARAM_LOV_TRANS
+		         WHERE VALUE_CODE =  S.REPORT_FORMAT
+		           AND LOV_TYPE_ID = #{FILE_FORMAT_LOV_TYPE_ID}
+		           AND LANG_CODE =#{LANG_CODE}) AS REPORT_FORMAT_TRANS,
+	          S.REPORT_NAME,
+	          S.APP_NAME,
+	          S.EXECUTED_BY,
+	          S.IS_DB,
+	          S.FILE_NAME,
+	          S.CONN_ID,
+	          S.SNAPSHOT_REF
+	   		  FROM IRP_SNAPSHOTS S
+			  WHERE S.EXECUTED_BY IN  (SELECT RU.USERID_VIEWED  FROM REP_USERS RU WHERE RU.USERID_VIEWER = #{EXECUTED_BY})
+			 
+			 UNION ALL
+			 
+			  SELECT S.SNAPSHOT_ID,
+	          TO_CHAR(S.EXECUTION_DATE, 'DD/MM/YYYY HH:MI:SS AM') AS EXECUTION_DATE_STR,
+	          S.REPORT_FORMAT,
+	          (SELECT VALUE_DESC
+		          FROM SYS_PARAM_LOV_TRANS
+		         WHERE VALUE_CODE =  S.REPORT_FORMAT
+		           AND LOV_TYPE_ID = #{FILE_FORMAT_LOV_TYPE_ID}
+		           AND LANG_CODE =#{LANG_CODE}) AS REPORT_FORMAT_TRANS,
+	          S.REPORT_NAME,
+	          S.APP_NAME,
+	          S.EXECUTED_BY,
+	          S.IS_DB,
+	          S.FILE_NAME,
+	          S.CONN_ID,
+	          S.SNAPSHOT_REF
+	   		  FROM IRP_SNAPSHOTS S
+	   		  WHERE S.EXECUTED_BY=#{EXECUTED_BY}
+	   		 
+	   		 </when>
+	   		 
+	   		 <otherwise>
+					   		 
+			  SELECT S.SNAPSHOT_ID,
+              TO_CHAR(S.EXECUTION_DATE, 'DD/MM/YYYY HH:MI:SS AM') AS EXECUTION_DATE_STR,
+              S.REPORT_FORMAT,
+               (SELECT VALUE_DESC
+		          FROM SYS_PARAM_LOV_TRANS
+		         WHERE VALUE_CODE =  S.REPORT_FORMAT
+		           AND LOV_TYPE_ID = #{FILE_FORMAT_LOV_TYPE_ID}
+		           AND LANG_CODE =#{LANG_CODE}) AS REPORT_FORMAT_TRANS,
+              S.REPORT_NAME,
+              S.APP_NAME,
+              S.EXECUTED_BY,
+              S.IS_DB,
+              S.FILE_NAME,
+              S.CONN_ID,
+              S.SNAPSHOT_REF
+	         FROM IRP_SNAPSHOTS S
+	        WHERE S.EXECUTED_BY = #{EXECUTED_BY}
+	          AND S.COMP_CODE = #{compCode}
+	          AND S.BRANCH_CODE =#{branchCode}
+       
+      		 UNION ALL
+       
+      		  SELECT S.SNAPSHOT_ID,
+              TO_CHAR(S.EXECUTION_DATE, 'DD/MM/YYYY HH:MI:SS AM') AS EXECUTION_DATE_STR,
+              S.REPORT_FORMAT,
+              (SELECT VALUE_DESC
+		          FROM SYS_PARAM_LOV_TRANS
+		         WHERE VALUE_CODE =  S.REPORT_FORMAT
+		           AND LOV_TYPE_ID = #{FILE_FORMAT_LOV_TYPE_ID}
+		           AND LANG_CODE =#{LANG_CODE}) AS REPORT_FORMAT_TRANS,
+              S.REPORT_NAME,
+              S.APP_NAME,
+              S.EXECUTED_BY,
+              S.IS_DB,
+              S.FILE_NAME,
+              S.CONN_ID,
+              S.SNAPSHOT_REF
+	         FROM IRP_SNAPSHOTS S
+	         WHERE EXISTS  (SELECT 1
+                                    FROM REP_USERS RU
+                                   WHERE RU.USERID_VIEWED = S.EXECUTED_BY
+                                     AND RU.COMP_CODE = S.COMP_CODE
+                                     AND RU.BRANCH_CODE = S.BRANCH_CODE
+                                     AND RU.USERID_VIEWER = #{EXECUTED_BY})  
+			 AND S.COMP_CODE = #{compCode}
+             AND S.BRANCH_CODE =#{branchCode} 		
+	   		 
+	   		 </otherwise>
+   		</choose>
+	</sql>
+
+
+</mapper>

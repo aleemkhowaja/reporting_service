@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="IRP_APP_CONNECTION" >
+  <resultMap id="BaseResultMap" type="com.path.dbmaps.vo.IRP_APP_CONNECTIONVO" >
+    <id column="APP_NAME" property="APP_NAME" />
+    <result column="CON_ID" property="CON_ID" />
+    <result column="DATE_UPDATED" property="DATE_UPDATED" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    APP_NAME, CON_ID, DATE_UPDATED
+  </sql>
+  <select id="selectIRP_APP_CONNECTION" resultMap="BaseResultMap" parameterType="com.path.dbmaps.vo.IRP_APP_CONNECTIONVO" >
+    select 
+    <include refid="Base_Column_List" />
+    from IRP_APP_CONNECTION
+    where APP_NAME = #{APP_NAME}
+  </select>
+  <delete id="deleteIRP_APP_CONNECTION" parameterType="com.path.dbmaps.vo.IRP_APP_CONNECTIONVO" >
+    delete from IRP_APP_CONNECTION
+    where APP_NAME = #{APP_NAME}
+  </delete>
+  <insert id="insertIRP_APP_CONNECTION" parameterType="com.path.dbmaps.vo.IRP_APP_CONNECTIONVO" >
+    insert into IRP_APP_CONNECTION
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="APP_NAME != null" >
+        APP_NAME,
+      </if>
+      <if test="CON_ID != null and CON_ID != emptyBigDecimalValue" >
+        CON_ID,
+      </if>
+      DATE_UPDATED,
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="APP_NAME != null" >
+        #{APP_NAME},
+      </if>
+      <if test="CON_ID != null and CON_ID != emptyBigDecimalValue" >
+        #{CON_ID},
+      </if>
+      <choose >
+        <when test="isSybase == 1" >
+           GETDATE(),
+        </when>
+        <otherwise >
+           SYSDATE,
+        </otherwise>
+      </choose>
+    </trim>
+  </insert>
+  <sql id="sql_updateIRP_APP_CONNECTION" >
+    update IRP_APP_CONNECTION
+    <set >
+      <if test="CON_ID != null" >
+        <choose >
+          <when test="CON_ID == emptyBigDecimalValue" >
+            CON_ID = NULL ,
+          </when>
+          <otherwise >
+            CON_ID = #{CON_ID},
+          </otherwise>
+        </choose>
+      </if>
+      DATE_UPDATED = 
+      <choose >
+        <when test="isSybase == 1" >
+           GETDATE(),
+        </when>
+        <otherwise >
+           SYSDATE,
+        </otherwise>
+      </choose>
+    </set>
+    where APP_NAME = #{APP_NAME}
+  </sql>
+  <update id="updateIRP_APP_CONNECTION" parameterType="com.path.dbmaps.vo.IRP_APP_CONNECTIONVO" >
+    <include refid="sql_updateIRP_APP_CONNECTION" />
+  </update>
+</mapper>

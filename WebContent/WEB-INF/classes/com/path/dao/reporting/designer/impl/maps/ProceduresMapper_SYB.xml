@@ -1,0 +1,289 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        
+<mapper namespace="procExt">
+	<sql id="retSysProcListSql">
+		SELECT name AS PROC_NAME, name AS PROC_DESC 
+		FROM sysobjects
+		WHERE sysobjects.type ='P'
+	</sql>
+
+
+  <sql id="retProceduresParamsSql">
+<choose> 
+	<when test="isSQLServer == 1">
+  SELECT TBL.PARAM_ID,
+       TBL.PROC_ID,
+       TBL.REPORT_ID,
+       TBL.QRY_PARAM_NAME,
+       TBL.PARAM_ORDER,
+       TBL.PARAM_NAME,
+       TBL.OUTPUT_PARAM_TYPE,
+       TBL.SUCCESS_VALUE,
+       (case
+		 when TBL.PARAM_TYPE = 175 or TBL.PARAM_TYPE = 239 or TBL.PARAM_TYPE = 167 or TBL.PARAM_TYPE = 231 then
+		  'VARCHAR'
+		 when TBL.PARAM_TYPE = 40 then
+		  'DATE'
+		 when TBL.PARAM_TYPE = 61 or TBL.PARAM_TYPE = 42 or TBL.PARAM_TYPE = 58 then
+		  'DATETIME'
+		 when TBL.PARAM_TYPE = 59 or TBL.PARAM_TYPE = 60 or TBL.PARAM_TYPE = 62 or TBL.PARAM_TYPE = 106 or
+			  TBL.PARAM_TYPE = 56 or TBL.PARAM_TYPE = 52 or TBL.PARAM_TYPE = 122 or TBL.PARAM_TYPE = 48 or TBL.PARAM_TYPE = 108 then
+		  'NUMBER'
+		 when TBL.PARAM_TYPE = 41 or TBL.PARAM_TYPE = 189 or TBL.PARAM_TYPE = 165 then
+		  'TIME'
+	   end) AS PARAM_TYPE,
+       (case when TBL.PARAM_IN_OUT = 0 then 'IN'
+			 when TBL.PARAM_IN_OUT = 1 then 'OUT' end) AS PARAM_IN_OUT,       
+       TBL.PROC_NAME
+  FROM (SELECT P.PARAM_ID,
+               P.PROC_ID,
+               P.REPORT_ID,
+               (SELECT RA.ARGUMENT_NAME
+                  FROM IRP_REP_ARGUMENTS RA
+                 WHERE RA.REPORT_ID =  #{REP_ID}
+                   AND RA.ARGUMENT_ID = P.PARAM_ID) AS QRY_PARAM_NAME,
+               P.PARAM_ORDER,
+               P.PARAM_NAME,
+               P.OUTPUT_PARAM_TYPE,
+               P.SUCCESS_VALUE,
+               (SELECT xtype
+                  FROM syscolumns s
+                 WHERE s.id = (select id
+                                 from sysobjects
+                                where sysobjects.type = 'P'
+                                  and name = #{PROCEDURE_NAME})
+                   AND name = P.PARAM_NAME) AS PARAM_TYPE,      
+               (SELECT isoutparam
+                FROM syscolumns c
+                WHERE c.id =(select id
+                                 from sysobjects
+                                where sysobjects.type = 'P'
+                                  and name = #{PROCEDURE_NAME})
+                   AND name = P.PARAM_NAME) AS PARAM_IN_OUT,
+               #{PROCEDURE_NAME} AS PROC_NAME
+          FROM IRP_REP_PROC_PARAMS P
+         WHERE P.PROC_ID = #{PROCEDURE_ID}
+           AND P.REPORT_ID =  #{REP_ID}) AS TBL
+UNION
+SELECT NULL AS PARAM_ID,
+       #{PROCEDURE_ID} AS PROC_ID,
+        #{REP_ID} AS REPORT_ID,
+       '' AS QRY_PARAM_NAME,
+       colid AS PARAM_ORDER,
+       name AS PARAM_NAME,
+       NULL AS OUTPUT_PARAM_TYPE,
+       NULL AS SUCCESS_VALUE,
+       (case
+		 when xtype = 175 or xtype = 239 or xtype = 167 or xtype = 231 then
+		  'VARCHAR'
+		 when xtype = 40 then
+		  'DATE'
+		 when xtype = 61 or xtype = 42 or xtype = 58 then
+		  'DATETIME'
+		 when xtype = 59 or xtype = 60 or xtype = 62 or xtype = 106 or
+			  xtype = 56 or xtype = 52 or xtype = 122 or xtype = 48 or xtype = 108 then
+		  'NUMBER'
+		 when xtype = 41 or xtype = 189 or xtype = 165 then
+		  'TIME'
+	   end) AS PARAM_TYPE,
+       ( case when isoutparam = 0 then 'IN'
+		      when isoutparam = 1 then 'OUT'
+		 end
+       	)AS PARAM_IN_OUT,
+       #{PROCEDURE_NAME} AS PROC_NAME
+  from syscolumns
+ where id = (select id
+               from sysobjects
+              where sysobjects.type = 'P'
+                and name = #{PROCEDURE_NAME})
+   AND name NOT IN (SELECT RP.PARAM_NAME
+                      FROM IRP_REP_PROC_PARAMS RP
+                     WHERE RP.REPORT_ID =  #{REP_ID}
+                       AND RP.PROC_ID = #{PROCEDURE_ID})
+</when>
+<otherwise>
+  SELECT TBL.PARAM_ID,
+       TBL.PROC_ID,
+       TBL.REPORT_ID,
+       TBL.QRY_PARAM_NAME,
+       TBL.PARAM_ORDER,
+       TBL.PARAM_NAME,
+       TBL.OUTPUT_PARAM_TYPE,
+       TBL.SUCCESS_VALUE,
+       (case
+         when TBL.PARAM_TYPE = 47 or TBL.PARAM_TYPE = 39 or
+              TBL.PARAM_TYPE = 135 or TBL.PARAM_TYPE = 155 then
+          'VARCHAR'
+         when TBL.PARAM_TYPE = 49 or TBL.PARAM_TYPE = 123 then
+          'DATE'
+         when TBL.PARAM_TYPE = 58 or TBL.PARAM_TYPE = 111 or
+              TBL.PARAM_TYPE = 61 then
+          'DATETIME'
+         when TBL.PARAM_TYPE = 59 or TBL.PARAM_TYPE = 60 or
+              TBL.PARAM_TYPE = 110 or TBL.PARAM_TYPE = 62 or
+              TBL.PARAM_TYPE = 109 or TBL.PARAM_TYPE = 55 or
+              TBL.PARAM_TYPE = 106 then
+          'NUMBER'
+         when TBL.PARAM_TYPE = 54 or TBL.PARAM_TYPE = 56 or
+              TBL.PARAM_TYPE = 38 or TBL.PARAM_TYPE = 122 or
+              TBL.PARAM_TYPE = 48 or TBL.PARAM_TYPE = 52 or
+              TBL.PARAM_TYPE = 108 or TBL.PARAM_TYPE = 63 then
+          'NUMBER'
+         when TBL.PARAM_TYPE = 51 or TBL.PARAM_TYPE = 147 or
+              TBL.PARAM_TYPE = 37 then
+          'TIME'
+       end) AS PARAM_TYPE,
+       (case 
+       	 when TBL.PARAM_IN_OUT = 1 then
+       	   'IN'
+       	 when TBL.PARAM_IN_OUT = 2 then
+       	   'OUT'
+       	end) AS PARAM_IN_OUT,       
+       TBL.PROC_NAME
+  FROM (SELECT P.PARAM_ID,
+               P.PROC_ID,
+               P.REPORT_ID,
+               (SELECT RA.ARGUMENT_NAME
+                  FROM IRP_REP_ARGUMENTS RA
+                 WHERE RA.REPORT_ID =  #{REP_ID}
+                   AND RA.ARGUMENT_ID = P.PARAM_ID) AS QRY_PARAM_NAME,
+               P.PARAM_ORDER,
+               P.PARAM_NAME,
+               P.OUTPUT_PARAM_TYPE,
+               P.SUCCESS_VALUE,
+               (SELECT type
+                  FROM syscolumns s
+                 WHERE s.id = (select id
+                                 from sysobjects
+                                where sysobjects.type = 'P'
+                                  and name = #{PROCEDURE_NAME})
+                   AND name = P.PARAM_NAME) AS PARAM_TYPE,      
+               (SELECT status2 
+                FROM syscolumns c
+                WHERE c.id =(select id
+                                 from sysobjects
+                                where sysobjects.type = 'P'
+                                  and name = #{PROCEDURE_NAME})
+                   AND name = P.PARAM_NAME) AS PARAM_IN_OUT,
+               #{PROCEDURE_NAME} AS PROC_NAME
+          FROM IRP_REP_PROC_PARAMS P
+         WHERE P.PROC_ID = #{PROCEDURE_ID}
+           AND P.REPORT_ID =  #{REP_ID}) AS TBL
+UNION
+SELECT NULL AS PARAM_ID,
+       #{PROCEDURE_ID} AS PROC_ID,
+        #{REP_ID} AS REPORT_ID,
+       '' AS QRY_PARAM_NAME,
+       colid AS PARAM_ORDER,
+       name AS PARAM_NAME,
+       NULL AS OUTPUT_PARAM_TYPE,
+       NULL AS SUCCESS_VALUE,
+       (case
+         when type = 47 or type = 39 or type = 135 or type = 155 then
+          'VARCHAR2'
+         when type = 49 or type = 123 then
+          'DATE'
+         when type = 58 or type = 111 or type = 61 then
+          'DATETIME'
+         when type = 59 or type = 60 or type = 110 or type = 62 or
+              type = 109 or type = 55 or type = 106 then
+          'NUMBER'
+         when type = 54 or type = 56 or type = 38 or type = 122 or type = 48 or
+              type = 52 or type = 108 or type = 63 then
+          'NUMBER'
+         when type = 51 or type = 147 or type = 37 then
+          'TIME'
+       end) AS PARAM_TYPE,
+       (case 
+       	 when status2 = 1 then
+       	   'IN'
+       	 when status2 = 2 then 
+       	   'OUT'
+       	end)AS PARAM_IN_OUT,
+       #{PROCEDURE_NAME} AS PROC_NAME
+  from syscolumns
+ where id = (select id
+               from sysobjects
+              where sysobjects.type = 'P'
+                and name = #{PROCEDURE_NAME})
+   AND name NOT IN (SELECT RP.PARAM_NAME
+                      FROM IRP_REP_PROC_PARAMS RP
+                     WHERE RP.REPORT_ID =  #{REP_ID}
+                       AND RP.PROC_ID = #{PROCEDURE_ID})
+
+	</otherwise>
+</choose>
+
+  </sql>
+  
+   <sql id="retSysProcParamsSql">
+SELECT NULL AS PARAM_ID,
+       NULL AS PROC_ID,
+       #{REP_ID} AS REPORT_ID,
+       '' AS QRY_PARAM_NAME,
+       colid AS PARAM_ORDER,
+       name AS PARAM_NAME,
+       RP.OUTPUT_PARAM_TYPE AS OUTPUT_PARAM_TYPE,        
+       RP.SUCCESS_VALUE AS SUCCESS_VALUE,   
+       (   
+		<choose> 
+		  <when test="isSQLServer == 1"> 
+				case
+		         when xtype = 175 or xtype = 239 or xtype = 167 or xtype = 231 then
+		          'VARCHAR'
+		         when xtype = 40 then
+		          'DATE'
+		         when xtype = 61 or xtype = 42 or xtype = 58 then
+		          'DATETIME'
+		         when xtype = 59 or xtype = 60 or xtype = 62 or xtype = 106 or
+		              xtype = 56 or xtype = 52 or xtype = 122 or xtype = 48 or xtype = 108 then
+		          'NUMBER'
+		         when xtype = 41 or xtype = 189 or xtype = 165 then
+		          'TIME'
+		       end
+		  </when> 
+		  <otherwise> 
+				case
+		         when type = 47 or type = 39 or type = 135 or type = 155 then
+		          'VARCHAR'
+		         when type = 49 or type = 123 then
+		          'DATE'
+		         when type = 58 or type = 111 or type = 61 then
+		          'DATETIME'
+		         when type = 59 or type = 60 or type = 110 or type = 62 or
+		              type = 109 or type = 55 or type = 106 then
+		          'NUMBER'
+		         when type = 54 or type = 56 or type = 38 or type = 122 or type = 48 or
+		              type = 52 or type = 108 or type = 63 then
+		          'NUMBER'
+		         when type = 51 or type = 147 or type = 37 then
+		          'TIME'
+		       end
+		  </otherwise> 
+		</choose>
+       ) AS PARAM_TYPE,
+       (
+		<choose> 
+		  <when test="isSQLServer == 1"> 
+		    case when isoutparam = 0 then 'IN'
+		         when isoutparam = 1 then 'OUT'
+		    end
+		  </when> 
+		  <otherwise> 
+		    case when status2 = 1 then 'IN'
+		    	 when status2 = 2 then 'OUT' 
+		    end
+		  </otherwise> 
+		</choose>
+       	)AS PARAM_IN_OUT,
+       #{PROCEDURE_NAME}  AS PROC_NAME
+  from syscolumns
+  LEFT outer JOIN IRP_REP_PROC_PARAMS RP ON RP.REPORT_ID =  #{REP_ID} AND RP.PROC_ID = #{PROCEDURE_ID} AND RP.PARAM_NAME = syscolumns.name
+ where id = (select id
+               from sysobjects
+              where sysobjects.type = 'P'
+                and name = #{PROCEDURE_NAME} )
+  </sql>
+</mapper>

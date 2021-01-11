@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="REP_SNAPSHOT_INFO" >
+  <resultMap id="BaseResultMap" type="com.path.dbmaps.vo.REP_SNAPSHOT_INFOVO" >
+    <id column="REP_SNAPSHOT_ID" property="REP_SNAPSHOT_ID" />
+    <result column="REP_ID" property="REP_ID" />
+    <result column="DESCRIPTION" property="DESCRIPTION" />
+    <result column="SNAPSHOT_USER" property="SNAPSHOT_USER" />
+    <result column="SNAPSHOT_DATE" property="SNAPSHOT_DATE" />
+    <result column="DECLARED_YN" property="DECLARED_YN" />
+    <result column="DECLARED_BY" property="DECLARED_BY" />
+    <result column="DECLARED_DATE" property="DECLARED_DATE" />
+    <result column="RETREIVE_DATE" property="RETREIVE_DATE" />
+    <result column="SITCOM_FILE_ID" property="SITCOM_FILE_ID" />
+    <result column="DATE_UPDATED" property="DATE_UPDATED" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.path.dbmaps.vo.REP_SNAPSHOT_INFOVO" extends="BaseResultMap" >
+    <result column="REP_BLOB" property="REP_BLOB" />
+    <result column="JRXML_FILE" property="JRXML_FILE" />
+    <result column="SNAPSHOT_PARAMS" property="SNAPSHOT_PARAMS" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    REP_SNAPSHOT_ID, REP_ID, DESCRIPTION, SNAPSHOT_USER, SNAPSHOT_DATE, DECLARED_YN, 
+    DECLARED_BY, DECLARED_DATE, RETREIVE_DATE, SITCOM_FILE_ID, DATE_UPDATED
+  </sql>
+  <sql id="Blob_Column_List" >
+    REP_BLOB, JRXML_FILE, SNAPSHOT_PARAMS
+  </sql>
+  <select id="selectREP_SNAPSHOT_INFO" resultMap="ResultMapWithBLOBs" parameterType="com.path.dbmaps.vo.REP_SNAPSHOT_INFOVO" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from REP_SNAPSHOT_INFO
+    where REP_SNAPSHOT_ID = #{REP_SNAPSHOT_ID}
+  </select>
+  <delete id="deleteREP_SNAPSHOT_INFO" parameterType="com.path.dbmaps.vo.REP_SNAPSHOT_INFOVO" >
+    delete from REP_SNAPSHOT_INFO
+    where REP_SNAPSHOT_ID = #{REP_SNAPSHOT_ID}
+  </delete>
+  <insert id="insertREP_SNAPSHOT_INFO" parameterType="com.path.dbmaps.vo.REP_SNAPSHOT_INFOVO" >
+    insert into REP_SNAPSHOT_INFO
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="REP_SNAPSHOT_ID != null and REP_SNAPSHOT_ID != emptyBigDecimalValue" >
+        REP_SNAPSHOT_ID,
+      </if>
+      <if test="REP_ID != null and REP_ID != emptyBigDecimalValue" >
+        REP_ID,
+      </if>
+      <if test="DESCRIPTION != null" >
+        DESCRIPTION,
+      </if>
+      <if test="SNAPSHOT_USER != null" >
+        SNAPSHOT_USER,
+      </if>
+      <if test="SNAPSHOT_DATE != null" >
+        SNAPSHOT_DATE,
+      </if>
+      <if test="DECLARED_YN != null" >
+        DECLARED_YN,
+      </if>
+      <if test="DECLARED_BY != null" >
+        DECLARED_BY,
+      </if>
+      <if test="DECLARED_DATE != null" >
+        DECLARED_DATE,
+      </if>
+      <if test="RETREIVE_DATE != null" >
+        RETREIVE_DATE,
+      </if>
+      <if test="SITCOM_FILE_ID != null and SITCOM_FILE_ID != emptyBigDecimalValue" >
+        SITCOM_FILE_ID,
+      </if>
+      DATE_UPDATED,
+      <if test="REP_BLOB != null" >
+        REP_BLOB,
+      </if>
+      <if test="JRXML_FILE != null" >
+        JRXML_FILE,
+      </if>
+      <if test="SNAPSHOT_PARAMS != null" >
+        SNAPSHOT_PARAMS,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="REP_SNAPSHOT_ID != null and REP_SNAPSHOT_ID != emptyBigDecimalValue" >
+        #{REP_SNAPSHOT_ID},
+      </if>
+      <if test="REP_ID != null and REP_ID != emptyBigDecimalValue" >
+        #{REP_ID},
+      </if>
+      <if test="DESCRIPTION != null" >
+        #{DESCRIPTION},
+      </if>
+      <if test="SNAPSHOT_USER != null" >
+        #{SNAPSHOT_USER},
+      </if>
+      <if test="SNAPSHOT_DATE != null" >
+        #{SNAPSHOT_DATE},
+      </if>
+      <if test="DECLARED_YN != null" >
+        #{DECLARED_YN},
+      </if>
+      <if test="DECLARED_BY != null" >
+        #{DECLARED_BY},
+      </if>
+      <if test="DECLARED_DATE != null" >
+        #{DECLARED_DATE},
+      </if>
+      <if test="RETREIVE_DATE != null" >
+        #{RETREIVE_DATE},
+      </if>
+      <if test="SITCOM_FILE_ID != null and SITCOM_FILE_ID != emptyBigDecimalValue" >
+        #{SITCOM_FILE_ID},
+      </if>
+      <choose >
+        <when test="isSybase == 1" >
+           GETDATE(),
+        </when>
+        <otherwise >
+           SYSDATE,
+        </otherwise>
+      </choose>
+      <if test="REP_BLOB != null" >
+        #{REP_BLOB},
+      </if>
+      <if test="JRXML_FILE != null" >
+        #{JRXML_FILE},
+      </if>
+      <if test="SNAPSHOT_PARAMS != null" >
+        #{SNAPSHOT_PARAMS},
+      </if>
+      
+    </trim>
+  </insert>
+  <sql id="sql_updateREP_SNAPSHOT_INFO" >
+    update REP_SNAPSHOT_INFO
+    <set >
+      <if test="REP_ID != null" >
+        <choose >
+          <when test="REP_ID == emptyBigDecimalValue" >
+            REP_ID = NULL ,
+          </when>
+          <otherwise >
+            REP_ID = #{REP_ID},
+          </otherwise>
+        </choose>
+      </if>
+      <if test="DESCRIPTION != null" >
+        DESCRIPTION = #{DESCRIPTION},
+      </if>
+      <if test="SNAPSHOT_USER != null" >
+        SNAPSHOT_USER = #{SNAPSHOT_USER},
+      </if>
+      <if test="SNAPSHOT_DATE != null" >
+        SNAPSHOT_DATE = #{SNAPSHOT_DATE},
+      </if>
+      <if test="DECLARED_YN != null" >
+        DECLARED_YN = #{DECLARED_YN},
+      </if>
+      <if test="DECLARED_BY != null" >
+        DECLARED_BY = #{DECLARED_BY},
+      </if>
+      <if test="DECLARED_DATE != null" >
+        DECLARED_DATE = #{DECLARED_DATE},
+      </if>
+      <if test="RETREIVE_DATE != null" >
+        RETREIVE_DATE = #{RETREIVE_DATE},
+      </if>
+      <if test="SITCOM_FILE_ID != null" >
+        <choose >
+          <when test="SITCOM_FILE_ID == emptyBigDecimalValue" >
+            SITCOM_FILE_ID = NULL ,
+          </when>
+          <otherwise >
+            SITCOM_FILE_ID = #{SITCOM_FILE_ID},
+          </otherwise>
+        </choose>
+      </if>
+      DATE_UPDATED = 
+      <choose >
+        <when test="isSybase == 1" >
+           GETDATE(),
+        </when>
+        <otherwise >
+           SYSDATE,
+        </otherwise>
+      </choose>
+      <if test="REP_BLOB != null" >
+        REP_BLOB = #{REP_BLOB},
+      </if>
+      <if test="JRXML_FILE != null" >
+        JRXML_FILE = #{JRXML_FILE},
+      </if>
+      <if test="SNAPSHOT_PARAMS != null" >
+        SNAPSHOT_PARAMS = #{SNAPSHOT_PARAMS},
+      </if>
+    </set>
+    where REP_SNAPSHOT_ID = #{REP_SNAPSHOT_ID}
+  </sql>
+  <update id="updateREP_SNAPSHOT_INFO" parameterType="com.path.dbmaps.vo.REP_SNAPSHOT_INFOVO" >
+    <include refid="sql_updateREP_SNAPSHOT_INFO" />
+    <if test="DATE_UPDATED != null" >
+      AND DATE_UPDATED = #{DATE_UPDATED}
+    </if>
+  </update>
+</mapper>

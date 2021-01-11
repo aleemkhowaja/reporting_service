@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        
+<mapper namespace="entExt">
+
+<sql id="loadTableViewListSql">	
+  	SELECT	object_name OBJECT_DB_NAME,
+  			OBJECT_TYPE OBJECT_TYPE 
+  	FROM	user_objects
+  	WHERE 	OBJECT_TYPE IN ('TABLE','VIEW','SYNONYM') 
+  	AND TEMPORARY='N'
+ 	<if test="OBJECT_DB_NAME != null" >
+ 		AND object_name =  #{OBJECT_DB_NAME}
+ 	</if>
+ 	AND NOT EXISTS (SELECT 	1
+					FROM 	IRP_ENTITIES 
+					WHERE 	ENTITY_DB_NAME = user_objects.object_name)
+</sql>
+  	
+  
+<sql id="loadFieldLkpListSql">
+ 	
+SELECT COLUMN_NAME COLUMN_NAME,
+       CASE DATA_TYPE
+         WHEN 'VARCHAR2' THEN
+          'java.lang.String'
+         WHEN 'NUMBER' THEN
+          'java.math.BigDecimal'
+         WHEN 'DATE' THEN
+          'java.util.Date'
+         ELSE
+          'UNDEFINED'
+       END COLUMN_TYPE
+
+  FROM USER_TAB_COLUMNS C
+
+ WHERE C.TABLE_NAME =  #{ENTITY_DB_NAME}
+      
+   AND C.COLUMN_NAME NOT IN
+       (SELECT F.FIELD_DB_NAME
+          FROM IRP_FIELDS F
+         WHERE ENTITY_DB_NAME = C.TABLE_NAME
+           AND FIELD_DB_NAME = C.COLUMN_NAME)
+	 		
+	<if test="addedFieldsListStr != null" >
+			 AND C.COLUMN_NAME NOT IN
+			  <foreach item="item" index="index" collection="addedFieldsListStr"  open="(" separator="," close=")" >
+		 	 	#{item}
+		 	 </foreach>
+	</if>	
+	<if test="delFieldsList != null">
+	
+	UNION
+		SELECT S.FIELD_DB_NAME, UPPER(S.FIELD_DATA_TYPE)
+		FROM IRP_FIELDS S
+	 	WHERE S.ENTITY_DB_NAME =  #{ENTITY_DB_NAME}
+	 	 AND S.FIELD_DB_NAME IN 
+	 	 <foreach item="item" index="index" collection="delFieldsList"  open="(" separator="," close=")" >
+	 	 	#{item}
+	 	 </foreach>
+	</if> 		
+	
+  		
+ 	
+</sql>
+  	
+
+
+<sql id="loadAllFieldsListSql">
+ 	 SELECT #{ENTITY_DB_NAME} ENTITY_DB_NAME,
+        COLUMN_NAME FIELD_DB_NAME,
+        CASE DATA_TYPE
+          WHEN 'VARCHAR2' THEN
+           'java.lang.String'
+          WHEN 'NUMBER' THEN
+           'java.math.BigDecimal'
+          WHEN 'DATE' THEN
+             'java.util.Date'
+          ELSE
+           'UNDEFINED'
+        END FIELD_DATA_TYPE
+   FROM USER_TAB_COLUMNS C
+  WHERE C.TABLE_NAME = #{ENTITY_DB_NAME}
+ 	
+</sql>
+
+</mapper>

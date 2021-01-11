@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="IRP_REP_PROC_PARAMS" >
+  <resultMap id="BaseResultMap" type="com.path.dbmaps.vo.IRP_REP_PROC_PARAMSVO" >
+    <id column="PARAM_NAME" property="PARAM_NAME" />
+    <id column="PROC_ID" property="PROC_ID" />
+    <id column="REPORT_ID" property="REPORT_ID" />
+    <result column="PARAM_ID" property="PARAM_ID" />
+    <result column="PARAM_ORDER" property="PARAM_ORDER" />
+    <result column="OUTPUT_PARAM_TYPE" property="OUTPUT_PARAM_TYPE" />
+    <result column="SUCCESS_VALUE" property="SUCCESS_VALUE" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    PARAM_NAME, PROC_ID, REPORT_ID, PARAM_ID, PARAM_ORDER, OUTPUT_PARAM_TYPE, SUCCESS_VALUE
+  </sql>
+  <select id="selectIRP_REP_PROC_PARAMS" resultMap="BaseResultMap" parameterType="com.path.dbmaps.vo.IRP_REP_PROC_PARAMSVO" >
+    select 
+    <include refid="Base_Column_List" />
+    from IRP_REP_PROC_PARAMS
+    where PARAM_NAME = #{PARAM_NAME}
+      and PROC_ID = #{PROC_ID}
+      and REPORT_ID = #{REPORT_ID}
+  </select>
+  <delete id="deleteIRP_REP_PROC_PARAMS" parameterType="com.path.dbmaps.vo.IRP_REP_PROC_PARAMSVO" >
+    delete from IRP_REP_PROC_PARAMS
+    where PARAM_NAME = #{PARAM_NAME}
+      and PROC_ID = #{PROC_ID}
+      and REPORT_ID = #{REPORT_ID}
+  </delete>
+  <insert id="insertIRP_REP_PROC_PARAMS" parameterType="com.path.dbmaps.vo.IRP_REP_PROC_PARAMSVO" >
+    insert into IRP_REP_PROC_PARAMS
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="PARAM_NAME != null" >
+        PARAM_NAME,
+      </if>
+      PROC_ID,
+      <if test="REPORT_ID != null and REPORT_ID != emptyBigDecimalValue" >
+        REPORT_ID,
+      </if>
+      <if test="PARAM_ID != null and PARAM_ID != emptyBigDecimalValue" >
+        PARAM_ID,
+      </if>
+      <if test="PARAM_ORDER != null and PARAM_ORDER != emptyBigDecimalValue" >
+        PARAM_ORDER,
+      </if>
+      <if test="OUTPUT_PARAM_TYPE != null and !&quot;&quot;.equals(OUTPUT_PARAM_TYPE)" >
+        OUTPUT_PARAM_TYPE,
+      </if>
+      <if test="SUCCESS_VALUE != null and !&quot;&quot;.equals(SUCCESS_VALUE)" >
+        SUCCESS_VALUE,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="PARAM_NAME != null" >
+        #{PARAM_NAME},
+      </if>
+      #{PROC_ID},
+      <if test="REPORT_ID != null and REPORT_ID != emptyBigDecimalValue" >
+        #{REPORT_ID},
+      </if>
+      <if test="PARAM_ID != null and PARAM_ID != emptyBigDecimalValue" >
+        #{PARAM_ID},
+      </if>
+      <if test="PARAM_ORDER != null and PARAM_ORDER != emptyBigDecimalValue" >
+        #{PARAM_ORDER},
+      </if>
+      <if test="OUTPUT_PARAM_TYPE != null and !&quot;&quot;.equals(OUTPUT_PARAM_TYPE)" >
+        #{OUTPUT_PARAM_TYPE},
+      </if>
+      <if test="SUCCESS_VALUE != null and !&quot;&quot;.equals(SUCCESS_VALUE)" >
+        #{SUCCESS_VALUE},
+      </if>
+    </trim>
+  </insert>
+  <sql id="sql_updateIRP_REP_PROC_PARAMS" >
+    update IRP_REP_PROC_PARAMS
+    <set >
+      <if test="PARAM_ID != null" >
+        <choose >
+          <when test="PARAM_ID == emptyBigDecimalValue" >
+            PARAM_ID = NULL ,
+          </when>
+          <otherwise >
+            PARAM_ID = #{PARAM_ID},
+          </otherwise>
+        </choose>
+      </if>
+      <if test="PARAM_ORDER != null" >
+        <choose >
+          <when test="PARAM_ORDER == emptyBigDecimalValue" >
+            PARAM_ORDER = NULL ,
+          </when>
+          <otherwise >
+            PARAM_ORDER = #{PARAM_ORDER},
+          </otherwise>
+        </choose>
+      </if>
+      <if test="OUTPUT_PARAM_TYPE != null" >
+        <choose >
+          <when test="OUTPUT_PARAM_TYPE.equals(&quot;&quot;)" >
+            OUTPUT_PARAM_TYPE = NULL ,
+          </when>
+          <otherwise >
+            OUTPUT_PARAM_TYPE = #{OUTPUT_PARAM_TYPE},
+          </otherwise>
+        </choose>
+      </if>
+      <if test="SUCCESS_VALUE != null" >
+        <choose >
+          <when test="SUCCESS_VALUE.equals(&quot;&quot;)" >
+            SUCCESS_VALUE = NULL ,
+          </when>
+          <otherwise >
+            SUCCESS_VALUE = #{SUCCESS_VALUE},
+          </otherwise>
+        </choose>
+      </if>
+    </set>
+    where PARAM_NAME = #{PARAM_NAME}
+      and PROC_ID = #{PROC_ID}
+      and REPORT_ID = #{REPORT_ID}
+  </sql>
+  <update id="updateIRP_REP_PROC_PARAMS" parameterType="com.path.dbmaps.vo.IRP_REP_PROC_PARAMSVO" >
+    <include refid="sql_updateIRP_REP_PROC_PARAMS" />
+  </update>
+</mapper>

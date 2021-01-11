@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        
+<mapper namespace="relatedReportsExt">	
+<sql id="getRelatedReportsSql">
+SELECT 
+<choose> 
+	<when test="isSQLServer == 1">
+			CONVERT(VARCHAR, COMP_CODE) + CONVERT(VARCHAR, TEMPLATE_CODE) +
+		       CONVERT(VARCHAR, REPORT_REF) + CONVERT(VARCHAR, APP_NAME)
+	</when>
+	<otherwise>
+			CONVERT(VARCHAR, COMP_CODE) || CONVERT(VARCHAR, TEMPLATE_CODE) ||
+	       CONVERT(VARCHAR, REPORT_REF) || CONVERT(VARCHAR, APP_NAME)
+	</otherwise>
+</choose>  AS CONCATKEY,
+       COMP_CODE,
+       TEMPLATE_CODE,
+       REPORT_REF,
+       APP_NAME,
+       TEMPLATE_ORDER,
+       (CASE
+         WHEN (SELECT IR.REPORT_NAME
+                 FROM IRP_AD_HOC_REPORT IR
+                WHERE IR.REPORT_TYPE = '1'
+                  AND PROG_REF = FTR_TMPL_REF.REPORT_REF) IS NULL THEN
+          (SELECT FO.BRIEF_NAME_ENG REPORT_NAME
+             FROM FTR_OPT FO
+            WHERE FO.STANDARD_FLAG_YN = 'N'
+              AND FO.APP_NAME = 'REP'
+              AND PROG_REF = FTR_TMPL_REF.REPORT_REF)
+         ELSE
+          (SELECT IR.REPORT_NAME
+             FROM IRP_AD_HOC_REPORT IR
+            WHERE IR.REPORT_TYPE = '1'
+              AND PROG_REF = FTR_TMPL_REF.REPORT_REF)
+       END) REPORT_NAME
+  FROM FTR_TMPL_REF
+ WHERE FTR_TMPL_REF.TEMPLATE_CODE =
+       CONVERT(NUMERIC, #{relatedRepCodeParam})
+
+</sql>
+</mapper>

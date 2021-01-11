@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        
+<mapper namespace="crtExt">
+	<sql id="getCrtListSql">
+	   T.COMP_CODE || T.TEMP_CODE || T.LINE_NO ||
+       T.SUB_LINE_NO AS concatKey,
+       T.COMP_CODE,
+       T.SUB_LINE_NO,
+       T.TEMP_CODE,
+       T.LINE_NO,
+       T.CRITERIA_CODE,
+       FF.CRI_TYPE,
+       CT.COMPONENT,	 
+       CT.CRITERIA_TYPE_CODE,
+   	   CT.TABLE1 AS TABLE_NAME1,
+       CT.TABLE2 AS TABLE_NAME2,
+       FF.BRIEF_DESC_ENG AS CRITERIA_NAME,
+       FF.CRI_LINE_GL AS CRI_LINE_GL,
+       (SELECT V.VALUE_DESC
+   		 FROM SYS_PARAM_LOV_TRANS V
+   		 WHERE V.LOV_TYPE_ID = 5
+     	 AND V.VALUE_CODE = T.OPERATOR
+     	 AND #{LANG_CODE} = V.LANG_CODE) AS OPERATOR_NAME,     
+	   (CASE
+	   	 WHEN (FF.CRI_TYPE = 'ECS' AND COALESCE(T.CODE1,0) NOT IN (0) ) THEN TO_CHAR(T.CODE1)
+	   	 WHEN (FF.CRI_TYPE = 'PDC') THEN
+	   	 TO_CHAR(T.CODE1)
+	   	 WHEN (FF.CRI_TYPE = 'CIT') THEN
+           TO_CHAR(T.CODE1)
+	   	 WHEN (FF.CRI_TYPE = 'CTY') THEN
+	   	 TO_CHAR(T.CODE1)
+         WHEN (FF.CRI_TYPE IN ('AMT', 'AGL')) THEN
+          TO_CHAR(T.OPERATOR)
+         WHEN (FF.CRI_TYPE = 'MAT') THEN
+          TO_CHAR(T.MAT_DATE)
+         WHEN (FF.CRI_TYPE = 'ATT' OR FF.CRI_TYPE = 'FDT') THEN
+          TO_CHAR(T.TRS_ASSET_TYPE)
+         WHEN (FF.CRI_TYPE IN ('DTN', 'DPR', 'MBK','OM')) THEN
+          TO_CHAR(T.OPERATOR1)
+         WHEN (FF.CRI_TYPE IN ('AMT', 'AGL')) THEN
+          TO_CHAR(T.OPERATOR)
+         WHEN (FF.CRI_TYPE = 'DCT') THEN
+          TO_CHAR(T.TYPE1)
+         WHEN (FF.CRI_TYPE = 'WCL'  OR 
+         	   FF.CRI_TYPE = 'WOD' OR
+               (FF.CRI_TYPE = 'SMT' /* AND CODE1_VISIBLE = 0*/
+              )) THEN
+          TO_CHAR(CODE1)
+         WHEN (FF.CRI_TYPE = 'SEC') THEN
+         	   TO_CHAR(SECURITY_CODE1)
+         WHEN (FF.CRI_TYPE = 'CZT') THEN
+          TO_CHAR(T.COLL_PER_TYPE)
+         WHEN (FF.CRI_TYPE = 'DCS') THEN
+          TO_CHAR(T.DEBIT_CREDIT_IND)
+         WHEN (FF.CRI_TYPE = 'TOT') THEN
+          TO_CHAR(T.TOTAL_AMT_SIGN)
+         WHEN (FF.CRI_TYPE IN ('DTN', 'DPR')) THEN
+          TO_CHAR(T.DEAL_TENURE)
+         WHEN (FF.CRI_TYPE = 'SU') THEN
+          T.SOURCE_USAGES
+         WHEN (FF.CRI_TYPE = 'CBK') THEN
+          T.CBK_CIF_TYPE
+         WHEN (FF.CRI_TYPE = 'SCT') THEN
+          T.SECURITY_LISTED
+         WHEN (FF.CRI_TYPE = 'CCL') THEN
+          TO_CHAR(T.CATEGORY)
+         WHEN (FF.CRI_TYPE = 'RES') THEN
+          T.RESIDENT
+         WHEN (FF.CRI_TYPE = 'MBK') THEN
+         T.OPERATOR
+         <if test="FROM_COL ==null">  
+         	WHEN (FF.CRI_TYPE = 'SCL') THEN
+         	TO_CHAR(T.SECURITY_CLASS)
+         </if>
+         WHEN (FF.CRI_TYPE = 'GLT') THEN
+          T.GL_TERM
+          ELSE TO_CHAR(T.CODE1)
+       END) AS CODE1,
+       (CASE WHEN (FF.CRI_TYPE IN ('SEC')) THEN
+       	 T.SECURITY_CODE2
+       	 ELSE T.CODE2 END) AS CODE2,   
+       (CASE
+         WHEN (FF.CRI_TYPE IN ('AMT','MBK','AGL','OM')) THEN
+          TO_CHAR(T.AMOUNT)
+         WHEN (FF.CRI_TYPE IN ( 'DPR')) THEN
+          T.OPERATOR1
+         WHEN (FF.CRI_TYPE IN ('AMT', 'AGL')) THEN
+          T.OPERATOR
+         WHEN (FF.CRI_TYPE = 'PER' AND FF.CRI_LINE_GL = 'L') THEN
+          TO_CHAR(T.PERCENTAGE)
+         WHEN (FF.CRI_TYPE = 'WCL'  OR
+               FF.CRI_TYPE = 'WOD') THEN
+          TO_CHAR(CODE1)
+         WHEN (FF.CRI_TYPE IN ('DTN', 'DPR')) THEN
+          TO_CHAR(T.DEAL_TENURE)
+         WHEN (FF.CRI_TYPE = 'MBK') THEN
+          T.DATE_TYPE
+       END) AS VALUE1,
+       (CASE WHEN (T.OPERATOR <![CDATA[<> '>' AND (FF.CRI_TYPE = 'AMT' OR FF.CRI_TYPE = 'OM' OR FF.CRI_TYPE='MBK') AND
+              T.OPERATOR <> '<' AND T.OPERATOR <> '>=' AND
+              T.OPERATOR <> '<=')]]> THEN
+          			TO_CHAR(T.AMOUNT2)
+        END) AS VALUE2,
+       T.OPERATOR,
+       T.OPERATOR1,
+       T.DATE_TYPE,
+       T.GENDER,
+       T.SECURITY_CODE1,
+       <if test="FROM_COL ==null">  
+       	T.SECURITY_CLASS,
+       </if>
+      (CASE WHEN T.INCLUDE='N' THEN 'NO' ELSE 'YES' END )AS INCLUDE
+	</sql>
+
+</mapper>

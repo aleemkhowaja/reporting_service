@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="FTR_ACCOUNTS" >
+  <resultMap id="BaseResultMap" type="com.path.dbmaps.vo.FTR_ACCOUNTSVO" >
+    <id column="BRANCH_CODE" property="BRANCH_CODE" />
+    <id column="CIF_SUB_NO" property="CIF_SUB_NO" />
+    <id column="COMP_CODE" property="COMP_CODE" />
+    <id column="CURRENCY_CODE" property="CURRENCY_CODE" />
+    <id column="GL_CODE" property="GL_CODE" />
+    <id column="SL_NO" property="SL_NO" />
+    <id column="SUB_LINE_NBR" property="SUB_LINE_NBR" />
+    <id column="TEMP_CODE" property="TEMP_CODE" />
+    <id column="TMPLT_LINE_NBR" property="TMPLT_LINE_NBR" />
+    <result column="INCLUDE" property="INCLUDE" />
+    <result column="DATE_UPDATED" property="DATE_UPDATED" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    BRANCH_CODE, CIF_SUB_NO, COMP_CODE, CURRENCY_CODE, GL_CODE, SL_NO, SUB_LINE_NBR, 
+    TEMP_CODE, TMPLT_LINE_NBR, INCLUDE, DATE_UPDATED
+  </sql>
+  <select id="selectFTR_ACCOUNTS" resultMap="BaseResultMap" parameterType="com.path.dbmaps.vo.FTR_ACCOUNTSVO" >
+    select 
+    <include refid="Base_Column_List" />
+    from FTR_ACCOUNTS
+    where BRANCH_CODE = #{BRANCH_CODE}
+      and CIF_SUB_NO = #{CIF_SUB_NO}
+      and COMP_CODE = #{COMP_CODE}
+      and CURRENCY_CODE = #{CURRENCY_CODE}
+      and GL_CODE = #{GL_CODE}
+      and SL_NO = #{SL_NO}
+      and SUB_LINE_NBR = #{SUB_LINE_NBR}
+      and TEMP_CODE = #{TEMP_CODE}
+      and TMPLT_LINE_NBR = #{TMPLT_LINE_NBR}
+  </select>
+  <delete id="deleteFTR_ACCOUNTS" parameterType="com.path.dbmaps.vo.FTR_ACCOUNTSVO" >
+    delete from FTR_ACCOUNTS
+    where BRANCH_CODE = #{BRANCH_CODE}
+      and CIF_SUB_NO = #{CIF_SUB_NO}
+      and COMP_CODE = #{COMP_CODE}
+      and CURRENCY_CODE = #{CURRENCY_CODE}
+      and GL_CODE = #{GL_CODE}
+      and SL_NO = #{SL_NO}
+      and SUB_LINE_NBR = #{SUB_LINE_NBR}
+      and TEMP_CODE = #{TEMP_CODE}
+      and TMPLT_LINE_NBR = #{TMPLT_LINE_NBR}
+  </delete>
+  <insert id="insertFTR_ACCOUNTS" parameterType="com.path.dbmaps.vo.FTR_ACCOUNTSVO" >
+    insert into FTR_ACCOUNTS
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="BRANCH_CODE != null and BRANCH_CODE != emptyBigDecimalValue" >
+        BRANCH_CODE,
+      </if>
+      <if test="CIF_SUB_NO != null and CIF_SUB_NO != emptyBigDecimalValue" >
+        CIF_SUB_NO,
+      </if>
+      <if test="COMP_CODE != null and COMP_CODE != emptyBigDecimalValue" >
+        COMP_CODE,
+      </if>
+      <if test="CURRENCY_CODE != null and CURRENCY_CODE != emptyBigDecimalValue" >
+        CURRENCY_CODE,
+      </if>
+      <if test="GL_CODE != null and GL_CODE != emptyBigDecimalValue" >
+        GL_CODE,
+      </if>
+      <if test="SL_NO != null and SL_NO != emptyBigDecimalValue" >
+        SL_NO,
+      </if>
+      <if test="SUB_LINE_NBR != null and SUB_LINE_NBR != emptyBigDecimalValue" >
+        SUB_LINE_NBR,
+      </if>
+      <if test="TEMP_CODE != null and TEMP_CODE != emptyBigDecimalValue" >
+        TEMP_CODE,
+      </if>
+      <if test="TMPLT_LINE_NBR != null and TMPLT_LINE_NBR != emptyBigDecimalValue" >
+        TMPLT_LINE_NBR,
+      </if>
+      <if test="INCLUDE != null" >
+        INCLUDE,
+      </if>
+      DATE_UPDATED,
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="BRANCH_CODE != null and BRANCH_CODE != emptyBigDecimalValue" >
+        #{BRANCH_CODE},
+      </if>
+      <if test="CIF_SUB_NO != null and CIF_SUB_NO != emptyBigDecimalValue" >
+        #{CIF_SUB_NO},
+      </if>
+      <if test="COMP_CODE != null and COMP_CODE != emptyBigDecimalValue" >
+        #{COMP_CODE},
+      </if>
+      <if test="CURRENCY_CODE != null and CURRENCY_CODE != emptyBigDecimalValue" >
+        #{CURRENCY_CODE},
+      </if>
+      <if test="GL_CODE != null and GL_CODE != emptyBigDecimalValue" >
+        #{GL_CODE},
+      </if>
+      <if test="SL_NO != null and SL_NO != emptyBigDecimalValue" >
+        #{SL_NO},
+      </if>
+      <if test="SUB_LINE_NBR != null and SUB_LINE_NBR != emptyBigDecimalValue" >
+        #{SUB_LINE_NBR},
+      </if>
+      <if test="TEMP_CODE != null and TEMP_CODE != emptyBigDecimalValue" >
+        #{TEMP_CODE},
+      </if>
+      <if test="TMPLT_LINE_NBR != null and TMPLT_LINE_NBR != emptyBigDecimalValue" >
+        #{TMPLT_LINE_NBR},
+      </if>
+      <if test="INCLUDE != null" >
+        #{INCLUDE},
+      </if>
+      <choose >
+        <when test="isSybase == 1" >
+           GETDATE(),
+        </when>
+        <otherwise >
+           SYSDATE,
+        </otherwise>
+      </choose>
+    </trim>
+  </insert>
+  <sql id="sql_updateFTR_ACCOUNTS" >
+    update FTR_ACCOUNTS
+    <set >
+      <if test="INCLUDE != null" >
+        INCLUDE = #{INCLUDE},
+      </if>
+      DATE_UPDATED = 
+      <choose >
+        <when test="isSybase == 1" >
+           GETDATE(),
+        </when>
+        <otherwise >
+           SYSDATE,
+        </otherwise>
+      </choose>
+    </set>
+    where BRANCH_CODE = #{BRANCH_CODE}
+      and CIF_SUB_NO = #{CIF_SUB_NO}
+      and COMP_CODE = #{COMP_CODE}
+      and CURRENCY_CODE = #{CURRENCY_CODE}
+      and GL_CODE = #{GL_CODE}
+      and SL_NO = #{SL_NO}
+      and SUB_LINE_NBR = #{SUB_LINE_NBR}
+      and TEMP_CODE = #{TEMP_CODE}
+      and TMPLT_LINE_NBR = #{TMPLT_LINE_NBR}
+  </sql>
+  <update id="updateFTR_ACCOUNTS" parameterType="com.path.dbmaps.vo.FTR_ACCOUNTSVO" >
+    <include refid="sql_updateFTR_ACCOUNTS" />
+    <if test="DATE_UPDATED != null" >
+      AND DATE_UPDATED = #{DATE_UPDATED}
+    </if>
+  </update>
+</mapper>

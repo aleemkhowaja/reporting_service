@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="IRP_REPORT_QUERY" >
+  <resultMap id="BaseResultMap" type="com.path.dbmaps.vo.IRP_REPORT_QUERYVOKey" >
+    <id column="QUERY_ID" property="QUERY_ID" />
+    <id column="REPORT_ID" property="REPORT_ID" />
+  </resultMap>
+  <delete id="deleteIRP_REPORT_QUERY" parameterType="com.path.dbmaps.vo.IRP_REPORT_QUERYVOKey" >
+    delete from IRP_REPORT_QUERY
+    where QUERY_ID = #{QUERY_ID}
+      and REPORT_ID = #{REPORT_ID}
+  </delete>
+  <insert id="insertIRP_REPORT_QUERY" parameterType="com.path.dbmaps.vo.IRP_REPORT_QUERYVOKey" >
+    insert into IRP_REPORT_QUERY
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="QUERY_ID != null" >
+        QUERY_ID,
+      </if>
+      <if test="REPORT_ID != null" >
+        REPORT_ID,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="QUERY_ID != null" >
+        #{QUERY_ID},
+      </if>
+      <if test="REPORT_ID != null" >
+        #{REPORT_ID},
+      </if>
+    </trim>
+  </insert>
+</mapper>

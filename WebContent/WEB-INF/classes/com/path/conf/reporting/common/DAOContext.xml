@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+    
+	<bean id="reportDAO" class="com.path.dao.reporting.common.impl.ReportDAOImpl" parent="baseDAO">
+	</bean>
+	
+	<bean id="commonLookupDAO" class="com.path.dao.reporting.common.impl.CommonLookupDAOImpl" parent="baseDAO">
+		<property name="queryDAO" ref="queryDAO"></property>
+	</bean>
+	
+	<bean id="commonRepFuncDAO" class="com.path.dao.reporting.common.impl.CommonRepFuncDAOImpl" parent="baseDAO">
+	</bean>
+	
+	<bean id="commonReportingDAO" class="com.path.dao.reporting.common.impl.CommonReportingDAOImpl" parent="baseDAO">
+	</bean>
+	
+</beans>

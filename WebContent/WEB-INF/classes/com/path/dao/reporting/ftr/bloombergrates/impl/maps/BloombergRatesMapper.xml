@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+        "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="bloombergRatesMapper">
+
+
+ <resultMap type="bloombergRatesCO" id="retBloombergRatesListMap">
+    <result column="COMP_CODE" 			property="ftrRateUploadVO.COMP_CODE"/>
+    <result column="CURRENCY_CODE" 		property="ftrRateUploadVO.CURRENCY_CODE"/>
+    <result column="VALUE_DATE" 		property="ftrRateUploadVO.VALUE_DATE"/>
+    <result column="DISC_FACTOR" 		property="ftrRateUploadVO.DISC_FACTOR"/>
+    <result column="RATE" 				property="ftrRateUploadVO.RATE"/>
+    <result column="ADJUST_RATE" 		property="ftrRateUploadVO.ADJUST_RATE"/>
+    <result column="NET_RATE" 			property="ftrRateUploadVO.NET_RATE"/>
+    <result column="DATE_UPDATED" 		property="ftrRateUploadVO.DATE_UPDATED"/>
+    <result column="oldAdjustRate" 		property="oldAdjustRate"/>
+    
+    
+  </resultMap>
+  
+  <sql id="retBloombergRatesListSql">
+	  
+SELECT COMP_CODE 
+	   ,CURRENCY_CODE
+	   ,VALUE_DATE
+	   ,DISC_FACTOR
+	   ,RATE
+	   ,ADJUST_RATE
+	   ,NET_RATE
+	   ,DATE_UPDATED
+	   ,ADJUST_RATE AS oldAdjustRate
+FROM FTR_RATE_UPLOAD
+WHERE COMP_CODE = #{COMP_CODE}	   
+    
+	
+</sql>
+
+  <select id="retBloombergRatesList" resultMap="retBloombergRatesListMap" parameterType="bloombergRatesSC">
+  	<include refid="servicesCommon.commonGridWrpBefFlip"/>
+ 	<include refid="retBloombergRatesListSql"/>
+	<include refid="servicesCommon.commonGridWrpAftFlip"/>
+	<include refid="servicesCommon.commmonGridWrpFlipClose"/>
+  </select>
+
+  <select id="retBloombergRatesCount" resultType="int" parameterType="bloombergRatesSC">
+	<include refid="servicesCommon.commonGridWrpBefCnt"/>
+	<include refid="retBloombergRatesListSql"/>
+	<include refid="servicesCommon.commonGridWrpAftCnt"/>
+	<include refid="servicesCommon.commonGridCountWrpClose"/>
+  </select>
+  
+  
+<delete id="deleteBloombergRates">
+
+DELETE FROM FTR_RATE_UPLOAD
+
+</delete>  
+	
+<insert id="insertBloombergRates" parameterType="bloombergRatesCO">
+Begin
+	<foreach collection="blgRtesLst" item="theCO" index="index" >
+	INSERT INTO FTR_RATE_UPLOAD (COMP_CODE
+							  ,CURRENCY_CODE
+							  ,VALUE_DATE
+							  ,DISC_FACTOR
+							  ,RATE
+							  ,ADJUST_RATE
+							  ,NET_RATE
+							  ,DATE_UPDATED
+							  ) 
+							  
+							  VALUES (
+							  #{theCO.ftrRateUploadVO.COMP_CODE}
+							,#{theCO.ftrRateUploadVO.CURRENCY_CODE}
+							,#{theCO.ftrRateUploadVO.VALUE_DATE}
+							,#{theCO.ftrRateUploadVO.DISC_FACTOR}
+							,#{theCO.ftrRateUploadVO.RATE}
+							,#{theCO.ftrRateUploadVO.ADJUST_RATE}
+							,#{theCO.ftrRateUploadVO.NET_RATE}
+					<choose>
+    					<when test="isOracle == 1">
+							,sysdate
+						</when>
+						<otherwise>
+							,GETDATE()
+						</otherwise>	
+					</choose>
+						)<if test="isOracle == 1">;</if>
+	</foreach>
+End <if test="isOracle == 1">;</if>
+</insert>
+
+</mapper>

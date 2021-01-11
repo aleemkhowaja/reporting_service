@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="hyperlinksExt">
+	<sql id="retHyperlinkParamsListSql">
+	 CONVERT(VARCHAR(30),DATE_UPDATED,109) AS DATE_UPDATED_STR
+	</sql>
+	
+	<sql id="deleteHyperlink">
+	<choose> 
+	<when test="isSQLServer == 1">
+		 AND CONVERT (DATETIME2 ,#{DATE_UPDATED_STR}, 109)= DATE_UPDATED
+	</when>
+	<otherwise>
+			 AND CONVERT (DATETIME ,#{DATE_UPDATED_STR}, 109)= DATE_UPDATED
+	</otherwise>
+	</choose>
+	</sql>
+	
+	 <sql id="retHyperlinksParams">
+  	SELECT H.FIELD_INDEX,H.ARGUMENT_TYPE,AR.ARGUMENT_TYPE  PARAM_TYPE,H.LINKED_REPORT_ID,
+       (CASE
+         WHEN H.ARGUMENT_TYPE = 0 THEN
+          H.VALUE_STATIC
+         ELSE
+          CASE
+         WHEN H.ARGUMENT_TYPE = 1 THEN
+           CONVERT(VARCHAR, H.LINKED_FIELD_INDEX)
+         ELSE
+          H.VALUE_SESSION
+       END END)  VALUE_STATIC,
+      R.PROG_REF LINKED_PROG_REF
+  FROM IRP_REP_HYPERLINKS H, IRP_REP_ARGUMENTS AR ,IRP_AD_HOC_REPORT R
+ WHERE H.LINKED_REPORT_ID = AR.REPORT_ID AND H.ARGUMENT_ID=AR.ARGUMENT_ID
+   AND R.REPORT_ID = H.LINKED_REPORT_ID
+   AND H.REPORT_ID = #{rep_Id}
+ ORDER BY H.FIELD_INDEX,AR.ARGUMENT_ORDER
+  </sql>
+  
+</mapper>

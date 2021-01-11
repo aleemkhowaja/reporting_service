@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="BTR_CONTROLADD" >
+  <resultMap id="coResultMap" type="com.path.vo.reporting.ftr.controlRecord.BTR_CONTROLCO" >
+    <id column="COMP_CODE" 						property="btrControlVO.COMP_CODE" />
+    <result column="CLIENT_CODE" 				property="btrControlVO.CLIENT_CODE" />
+    <result column="CLIENT_BRIEF_DESC"  		property="btrControlVO.CLIENT_BRIEF_DESC" />
+    <result column="NATIONALITY" 				property="btrControlVO.NATIONALITY" />
+    <result column="EMP_BASE_COUNTRY" 			property="btrControlVO.EMP_BASE_COUNTRY" />
+    <result column="USD_CY_CODE" 				property="btrControlVO.USD_CY_CODE" />
+    <result column="CSV_PATH" 					property="btrControlVO.CSV_PATH" />
+    <result column="BANK_ID"					property="btrControlVO.BANK_ID" />
+    <result column="REPORT_LANG" 				property="btrControlVO.REPORT_LANG" />
+    <result column="BTR_WEEKEND_DAY" 			property="btrControlVO.BTR_WEEKEND_DAY" />
+    <result column="DEF_NOSTRO_GL" 				property="btrControlVO.DEF_NOSTRO_GL" />
+    <result column="RDS_PARENT_REF" 			property="btrControlVO.RDS_PARENT_REF" />
+    <result column="RDS_FOLDER_NAME" 			property="btrControlVO.RDS_FOLDER_NAME" />
+    <result column="ACBRD_AMOUNT" 				property="btrControlVO.ACBRD_AMOUNT" />
+    <result column="SCHED_PATH" 				property="btrControlVO.SCHED_PATH" />
+    <result column="CDR_AMT" 					property="btrControlVO.CDR_AMT" />
+    <result column="ADD_REF" 					property="btrControlVO.ADD_REF" />
+    <result column="CB_COUNTRY_CODE" 			property="btrControlVO.CB_COUNTRY_CODE" />
+    <result column="TRADE_VALUE" 				property="btrControlVO.TRADE_VALUE" />
+    <result column="SITCOM_ENABLE_YN" 			property="btrControlVO.SITCOM_ENABLE_YN" />
+    <result column="SITCOM_TEXT" 				property="btrControlVO.SITCOM_TEXT" />
+    <result column="SITCOM_LOCATION" 			property="btrControlVO.SITCOM_LOCATION" />
+    <result column="DATE_UPDATED" 				property="btrControlVO.DATE_UPDATED" />
+    <result column="NATIONALITY_BRIEF_DESC_ENG"	property="NATIONALITY_BRIEF_DESC_ENG"/>
+    <result column="ARGUMENTS_ENABLE_YN"		property="btrControlVO.ARGUMENTS_ENABLE_YN" />
+  </resultMap>
+  
+  <select id="retrieveData" resultMap="coResultMap" parameterType="com.path.vo.reporting.ftr.controlRecord.BTR_CONTROLSC" >
+    SELECT COMP_CODE, CLIENT_CODE, CLIENT_BRIEF_DESC, NATIONALITY, EMP_BASE_COUNTRY, USD_CY_CODE, 
+    CSV_PATH, BANK_ID, REPORT_LANG, BTR_WEEKEND_DAY, DEF_NOSTRO_GL, RDS_PARENT_REF, RDS_FOLDER_NAME, 
+    ACBRD_AMOUNT, SCHED_PATH, CDR_AMT, ADD_REF, CB_COUNTRY_CODE, TRADE_VALUE, SITCOM_ENABLE_YN, 
+    SITCOM_TEXT, SITCOM_LOCATION, DATE_UPDATED,(SELECT BRIEF_DESC_ENG FROM NATIONALITY N 
+    WHERE N.CODE = BTR_CONTROL.NATIONALITY AND N.COMP_CODE = BTR_CONTROL.COMP_CODE) NATIONALITY_BRIEF_DESC_ENG, ARGUMENTS_ENABLE_YN
+	FROM BTR_CONTROL WHERE COMP_CODE = #{COMP_CODE}
+  </select>
+
+</mapper>

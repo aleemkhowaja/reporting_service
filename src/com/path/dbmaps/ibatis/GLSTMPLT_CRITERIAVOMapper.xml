@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="GLSTMPLT_CRITERIA" >
+  <resultMap id="BaseResultMap" type="com.path.dbmaps.vo.GLSTMPLT_CRITERIAVO" >
+    <id column="CODE" property="CODE" />
+    <id column="COMP_CODE" property="COMP_CODE" />
+    <result column="BRIEF_DESC_ENG" property="BRIEF_DESC_ENG" />
+    <result column="LONG_DESC_ENG" property="LONG_DESC_ENG" />
+    <result column="BRIEF_DESC_ARAB" property="BRIEF_DESC_ARAB" />
+    <result column="LONG_DESC_ARAB" property="LONG_DESC_ARAB" />
+    <result column="LINKED_IND" property="LINKED_IND" />
+    <result column="LINKED_CODE" property="LINKED_CODE" />
+    <result column="CRI_TYPE" property="CRI_TYPE" />
+    <result column="CRI_LINE_GL" property="CRI_LINE_GL" />
+    <result column="SMART_CODE" property="SMART_CODE" />
+    <result column="DATE_UPDATED" property="DATE_UPDATED" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    CODE, COMP_CODE, BRIEF_DESC_ENG, LONG_DESC_ENG, BRIEF_DESC_ARAB, LONG_DESC_ARAB, 
+    LINKED_IND, LINKED_CODE, CRI_TYPE, CRI_LINE_GL, SMART_CODE, DATE_UPDATED
+  </sql>
+  <select id="selectGLSTMPLT_CRITERIA" resultMap="BaseResultMap" parameterType="com.path.dbmaps.vo.GLSTMPLT_CRITERIAVO" >
+    select 
+    <include refid="Base_Column_List" />
+    from GLSTMPLT_CRITERIA
+    where CODE = #{CODE}
+      and COMP_CODE = #{COMP_CODE}
+  </select>
+  <delete id="deleteGLSTMPLT_CRITERIA" parameterType="com.path.dbmaps.vo.GLSTMPLT_CRITERIAVO" >
+    delete from GLSTMPLT_CRITERIA
+    where CODE = #{CODE}
+      and COMP_CODE = #{COMP_CODE}
+  </delete>
+  <insert id="insertGLSTMPLT_CRITERIA" parameterType="com.path.dbmaps.vo.GLSTMPLT_CRITERIAVO" >
+    insert into GLSTMPLT_CRITERIA
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="CODE != null and CODE != emptyBigDecimalValue" >
+        CODE,
+      </if>
+      <if test="COMP_CODE != null and COMP_CODE != emptyBigDecimalValue" >
+        COMP_CODE,
+      </if>
+      <if test="BRIEF_DESC_ENG != null" >
+        BRIEF_DESC_ENG,
+      </if>
+      <if test="LONG_DESC_ENG != null" >
+        LONG_DESC_ENG,
+      </if>
+      <if test="BRIEF_DESC_ARAB != null" >
+        BRIEF_DESC_ARAB,
+      </if>
+      <if test="LONG_DESC_ARAB != null" >
+        LONG_DESC_ARAB,
+      </if>
+      <if test="LINKED_IND != null" >
+        LINKED_IND,
+      </if>
+      <if test="LINKED_CODE != null and LINKED_CODE != emptyBigDecimalValue" >
+        LINKED_CODE,
+      </if>
+      <if test="CRI_TYPE != null" >
+        CRI_TYPE,
+      </if>
+      <if test="CRI_LINE_GL != null" >
+        CRI_LINE_GL,
+      </if>
+      <if test="SMART_CODE != null and SMART_CODE != emptyBigDecimalValue" >
+        SMART_CODE,
+      </if>
+      DATE_UPDATED,
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="CODE != null and CODE != emptyBigDecimalValue" >
+        #{CODE},
+      </if>
+      <if test="COMP_CODE != null and COMP_CODE != emptyBigDecimalValue" >
+        #{COMP_CODE},
+      </if>
+      <if test="BRIEF_DESC_ENG != null" >
+        #{BRIEF_DESC_ENG},
+      </if>
+      <if test="LONG_DESC_ENG != null" >
+        #{LONG_DESC_ENG},
+      </if>
+      <if test="BRIEF_DESC_ARAB != null" >
+        #{BRIEF_DESC_ARAB},
+      </if>
+      <if test="LONG_DESC_ARAB != null" >
+        #{LONG_DESC_ARAB},
+      </if>
+      <if test="LINKED_IND != null" >
+        #{LINKED_IND},
+      </if>
+      <if test="LINKED_CODE != null and LINKED_CODE != emptyBigDecimalValue" >
+        #{LINKED_CODE},
+      </if>
+      <if test="CRI_TYPE != null" >
+        #{CRI_TYPE},
+      </if>
+      <if test="CRI_LINE_GL != null" >
+        #{CRI_LINE_GL},
+      </if>
+      <if test="SMART_CODE != null and SMART_CODE != emptyBigDecimalValue" >
+        #{SMART_CODE},
+      </if>
+      <choose >
+        <when test="isSybase == 1" >
+           GETDATE(),
+        </when>
+        <otherwise >
+           SYSDATE,
+        </otherwise>
+      </choose>
+    </trim>
+  </insert>
+  <sql id="sql_updateGLSTMPLT_CRITERIA" >
+    update GLSTMPLT_CRITERIA
+    <set >
+      <if test="BRIEF_DESC_ENG != null" >
+        BRIEF_DESC_ENG = #{BRIEF_DESC_ENG},
+      </if>
+      <if test="LONG_DESC_ENG != null" >
+        LONG_DESC_ENG = #{LONG_DESC_ENG},
+      </if>
+      <if test="BRIEF_DESC_ARAB != null" >
+        BRIEF_DESC_ARAB = #{BRIEF_DESC_ARAB},
+      </if>
+      <if test="LONG_DESC_ARAB != null" >
+        LONG_DESC_ARAB = #{LONG_DESC_ARAB},
+      </if>
+      <if test="LINKED_IND != null" >
+        LINKED_IND = #{LINKED_IND},
+      </if>
+      <if test="LINKED_CODE != null" >
+        <choose >
+          <when test="LINKED_CODE == emptyBigDecimalValue" >
+            LINKED_CODE = NULL ,
+          </when>
+          <otherwise >
+            LINKED_CODE = #{LINKED_CODE},
+          </otherwise>
+        </choose>
+      </if>
+      <if test="CRI_TYPE != null" >
+        CRI_TYPE = #{CRI_TYPE},
+      </if>
+      <if test="CRI_LINE_GL != null" >
+        CRI_LINE_GL = #{CRI_LINE_GL},
+      </if>
+      <if test="SMART_CODE != null" >
+        <choose >
+          <when test="SMART_CODE == emptyBigDecimalValue" >
+            SMART_CODE = NULL ,
+          </when>
+          <otherwise >
+            SMART_CODE = #{SMART_CODE},
+          </otherwise>
+        </choose>
+      </if>
+      DATE_UPDATED = 
+      <choose >
+        <when test="isSybase == 1" >
+           GETDATE(),
+        </when>
+        <otherwise >
+           SYSDATE,
+        </otherwise>
+      </choose>
+    </set>
+    where CODE = #{CODE}
+      and COMP_CODE = #{COMP_CODE}
+  </sql>
+  <update id="updateGLSTMPLT_CRITERIA" parameterType="com.path.dbmaps.vo.GLSTMPLT_CRITERIAVO" >
+    <include refid="sql_updateGLSTMPLT_CRITERIA" />
+    <if test="DATE_UPDATED != null" >
+      AND DATE_UPDATED = #{DATE_UPDATED}
+    </if>
+  </update>
+</mapper>

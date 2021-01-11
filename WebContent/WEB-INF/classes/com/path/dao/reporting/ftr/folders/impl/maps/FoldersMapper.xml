@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        
+<mapper namespace="folders">
+
+<resultMap id="loadFoldersListMap" type="irp_folderCO" >
+
+   <result column="FOLDER_CODE" property="FOLDER_CODE" />
+   <result column="FOLDER_REF" property="FOLDER_REF" />
+   <result column="PARENT_REF" property="PARENT_REF" />
+   <result column="BRIEF_NAME_ENG" property="BRIEF_NAME_ENG" />
+   <result column="BRIEF_NAME_ARAB" property="BRIEF_NAME_ARAB" />
+   <result column="DISP_ORDER" property="DISP_ORDER" />
+   <result column="PARENT_REF_STR" property="PARENT_REF_STR" /> 
+   <result column="DATE_UPDATED" property="DATE_UPDATED" /> 
+   <result column="APP_NAME" property="APP_NAME" /> 
+</resultMap>
+  
+  
+<sql id="loadFoldersListSql">
+  	SELECT I.FOLDER_CODE,
+  		I.FOLDER_REF     ,
+		I.PARENT_REF     ,
+		I.BRIEF_NAME_ENG ,
+		I.BRIEF_NAME_ARAB,
+		I.DISP_ORDER 	 , 
+		(CASE WHEN I.PARENT_REF = 'ROOT' THEN 
+			'ROOT' 
+		ELSE 
+			(SELECT 	OPT.PROG_DESC
+			FROM 	OPT 
+			WHERE 	OPT.APP_NAME = #{APP_NAME}
+			AND 	OPT.PROG_REF = I.PARENT_REF)
+		END) PARENT_REF_STR,
+		I.DATE_UPDATED,
+		I.APP_NAME
+		
+	FROM 	IRP_FOLDER I
+</sql>
+  	
+  	<select id="loadFoldersList"  resultMap="loadFoldersListMap" parameterType="irp_folderSC">
+		<include refid="servicesCommon.commonGridWrpBefFlip"/>
+		<include refid="loadFoldersListSql"/>
+		<include refid="servicesCommon.commonGridWrpAftFlip"/>
+		<include refid="servicesCommon.commmonGridWrpFlipClose"/>
+	</select>
+
+
+	<select id="retFoldersListCount" parameterType="irp_folderSC"  resultType="int" >
+		<include refid="servicesCommon.commonGridWrpBefCnt"/>
+		<include refid="loadFoldersListSql"/>
+		<include refid="servicesCommon.commonGridWrpAftCnt"/>
+		<include refid="servicesCommon.commonGridCountWrpClose"/>
+	</select>
+
+	<select id="checkProgRef" parameterType="commonDetailsSC" resultType="String">
+		SELECT 	PROG_DESC
+		FROM 	OPT
+		WHERE 	APP_NAME = #{appName}
+		AND 	PROG_REF = #{BRIEF_DESC_ENG} 
+	</select>
+
+	 <insert id="insertOpt" parameterType="irp_folderCO" >
+		 <selectKey resultType="java.math.BigDecimal" keyProperty="PROG_ORDER" order="BEFORE">
+		  	SELECT (CASE
+		           WHEN COUNT(TB1.PROG_ORDER) = 0 THEN
+		            1
+		           ELSE
+		            max(TB1.PROG_ORDER)
+		         END) as PROG_ORDER
+		    FROM (SELECT PROG_ORDER
+		            FROM OPT
+		           WHERE PROG_REF =  #{PARENT_REF}
+		             AND APP_NAME = #{APP_NAME}) TB1
+	     </selectKey>
+	   
+		 INSERT INTO OPT
+		  (PROG_REF,
+		  PROG_DESC,
+		  APP_NAME,
+		  ALLOW_ADD_OPTIONS,
+		  ADD_OPT_REF,
+		  AUDIT_SAVE,
+		  AUDIT_DELETE,
+		  AUDIT_RETRIEVE,
+		  MAIN_OPTION_1,
+		  MAIN_OPTION_2,
+		  PARENT_REF,
+		  PROG_TYPE,
+		  PROG_ORDER,
+		  MENU_TITLE_ENG,
+		  APP_VERSION,
+		  DISP_ORDER,
+		  DYNAMIC_OPT,
+		  MENU_TITLE_ARAB,
+		  MENU_TITLE_FR,
+		  PROG_DESC_FR,
+		  PROG_DESC_ARAB,
+		  MENU_TITLE_FA,
+		  PROG_DESC_FA,
+		  PROG_DESC_TK,
+		  PROG_DESC_RU,
+		  MENU_TITLE_TK,
+		  MENU_TITLE_RU
+		  <if test="CATEG_ID != null and CATEG_ID != emptyBigDecimalValue" >
+        	,CATEG_ID
+     	 </if>
+		  )
+		  
+		 VALUES
+		  (UPPER(#{FOLDER_REF}),
+		  #{BRIEF_NAME_ENG},
+		  #{APP_NAME},
+		  '0',
+		  NULL,
+		  '0',
+		  '0',
+		  '0',
+		  '0',
+		  '0',
+		  UPPER(#{PARENT_REF}),
+		  'R',
+		  #{PROG_ORDER},
+		  #{BRIEF_NAME_ENG},
+		  1,
+		  #{DISP_ORDER},
+		  '1',
+		  #{BRIEF_NAME_ARAB},
+		  #{BRIEF_NAME_ENG},
+		  #{BRIEF_NAME_ENG},
+		  #{BRIEF_NAME_ARAB},
+		  #{BRIEF_NAME_ARAB},
+		  #{BRIEF_NAME_ARAB}, 
+		  #{BRIEF_NAME_ENG},
+		  #{BRIEF_NAME_ENG},
+		  #{BRIEF_NAME_ENG},
+		  #{BRIEF_NAME_ENG}
+		   <if test="CATEG_ID != null and CATEG_ID != emptyBigDecimalValue" >
+      		  ,#{CATEG_ID}
+      		</if>
+		  )
+	 </insert>
+
+<select id="retProgOrder" parameterType="irp_folderCO" resultType="java.math.BigDecimal">
+	SELECT (CASE
+           WHEN COUNT(TB1.PROG_ORDER) = 0 THEN
+            1
+           ELSE
+            max(TB1.PROG_ORDER)
+         END) as PROG_ORDER
+    FROM (SELECT PROG_ORDER +1 as PROG_ORDER
+            FROM OPT
+           WHERE PROG_REF = #{PARENT_REF}
+             AND APP_NAME = #{APP_NAME}) TB1  
+</select>
+
+<select id="checkDetails" parameterType="irp_folderCO" resultType="int">
+	SELECT 	COUNT(1)
+	FROM   	OPT 
+	WHERE	APP_NAME =  #{APP_NAME}
+	AND		PARENT_REF = #{FOLDER_REF}
+</select>
+
+<update id="updateOpt" parameterType="irp_folderCO">
+	UPDATE OPT
+	SET PROG_DESC = #{BRIEF_NAME_ENG},
+	MENU_TITLE_ENG = #{BRIEF_NAME_ENG},
+	PARENT_REF = #{PARENT_REF},
+	DISP_ORDER = #{DISP_ORDER},
+	PROG_ORDER = #{PROG_ORDER} ,
+	MENU_TITLE_ARAB= #{BRIEF_NAME_ARAB},
+	MENU_TITLE_FR= #{BRIEF_NAME_ENG},
+	PROG_DESC_FR= #{BRIEF_NAME_ENG},
+	PROG_DESC_ARAB= #{BRIEF_NAME_ARAB},
+	MENU_TITLE_FA= #{BRIEF_NAME_ARAB},
+	PROG_DESC_FA= #{BRIEF_NAME_ARAB},
+	PROG_DESC_TK= #{BRIEF_NAME_ENG},
+	PROG_DESC_RU= #{BRIEF_NAME_ENG},
+	MENU_TITLE_TK= #{BRIEF_NAME_ENG},
+	MENU_TITLE_RU= #{BRIEF_NAME_ENG}
+	<if test="CATEG_ID != null">
+		<choose>
+			<when test="CATEG_ID == emptyBigDecimalValue">
+				,CATEG_ID = NULL 
+          </when>
+			<otherwise>
+				,CATEG_ID = #{CATEG_ID}
+          </otherwise>
+		</choose>
+	</if>
+	WHERE APP_NAME = #{APP_NAME}
+	AND PROG_REF = #{FOLDER_REF}
+</update>
+
+
+<delete id="deleteOpt" parameterType="irp_folderCO">
+	DELETE 	FROM OPT 
+	WHERE  	APP_NAME 	= #{APP_NAME} 
+	AND 	PROG_REF =  #{FOLDER_REF}
+</delete>
+
+<select id="retrieveFolder" parameterType="irp_folderVO" resultMap="loadFoldersListMap">
+	<include refid="loadFoldersListSql"/>
+	WHERE I.FOLDER_CODE=#{FOLDER_CODE}
+</select>
+
+<update id="updateFolder" parameterType="irp_folderVO">
+    <include refid="IRP_FOLDER.sql_updateIRP_FOLDER" />
+    <if test="DATE_UPDATED != null" > AND DATE_UPDATED = #{DATE_UPDATED} </if>
+</update>
+
+
+
+
+<resultMap id="retAllFoldersLstMap" type="irp_folderSC" >
+
+   <result column="FOLDER_CODE" property="FOLDER_CODE" />
+   <result column="FOLDER_REF" property="FOLDER_REF" />
+   <result column="PARENT_REF" property="PARENT_REF" />
+   <result column="BRIEF_NAME_ENG" property="BRIEF_NAME_ENG" />
+   <result column="BRIEF_NAME_ARAB" property="BRIEF_NAME_ARAB" />
+   <result column="DISP_ORDER" property="DISP_ORDER" />
+   <result column="DATE_UPDATED" property="DATE_UPDATED" /> 
+   <result column="APP_NAME" property="APP_NAME" /> 
+</resultMap>
+  
+  
+
+<select id="retAllFoldersLst"  resultMap="retAllFoldersLstMap" parameterType="irp_folderSC">
+ SELECT I.FOLDER_CODE,
+  		I.FOLDER_REF     ,
+		I.PARENT_REF     ,
+		I.BRIEF_NAME_ENG ,
+		I.BRIEF_NAME_ARAB,
+		I.DISP_ORDER 	 , 
+		I.DATE_UPDATED,
+		I.APP_NAME
+		
+ FROM 	IRP_FOLDER I
+WHERE I.FOLDER_REF = #{FOLDER_REF}
+  AND I.APP_NAME = #{APP_NAME} 
+    
+</select>
+	
+	
+</mapper>

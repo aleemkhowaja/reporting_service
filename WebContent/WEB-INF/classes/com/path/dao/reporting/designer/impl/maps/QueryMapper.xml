@@ -1,0 +1,317 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        
+<mapper namespace="query">
+
+<resultMap type="fieldCO"  id="getDBFieldsMap">    
+     <result column="FIELD_ALIAS" property="FIELD_ALIAS" />
+     <result column="ENTITY_DB_NAME" property="ENTITY_DB_NAME" />
+     <result column="ENTITY_ALIAS" property="ENTITY_ALIAS" />
+     <result column="FIELD_DB_NAME" property="FIELD_DB_NAME" />
+     <result column="FIELD_DATA_TYPE" property="FIELD_DATA_TYPE" />
+     <result column="PARENT_INDEX" property="PARENT_INDEX" />
+</resultMap>
+ 
+<resultMap type="entityCO"  id="getDBEntitiesMap">      
+   
+     <result column="ENTITY_DB_NAME" property="ENTITY_DB_NAME" />
+     <result column="ENTITY_ALIAS" property="ENTITY_ALIAS" />
+</resultMap>
+
+<resultMap id="BaseResultMap" type="irp_ad_hoc_queryCO" >
+    <id column="QUERY_ID" property="QUERY_ID" />
+    <result column="QUERY_NAME" property="QUERY_NAME" />
+    <result column="DATE_UPDATED" property="DATE_UPDATED" />
+</resultMap>
+
+<resultMap id="ResultMapWithBLOBs" type="irp_ad_hoc_queryCO" extends="BaseResultMap" >
+    <result column="QUERY_OBJECT" property="QUERY_OBJECT" />
+    <result column="isQryArg" 	  property="isQryArg" />
+</resultMap>
+
+<resultMap id="queryResultMap" type="irp_ad_hoc_queryCO" >
+    <id column="QUERY_ID" property="QUERY_ID" />
+    <result column="QUERY_NAME" property="QUERY_NAME" />
+    <result column="QUERY_OBJECT" property="QUERY_OBJECT" />
+    <result column="CONN_ID" property="CONN_ID" />
+    <association property="reportQueryVO" column="QUERY_ID" javaType="IRP_REPORT_QUERYVOKey"
+		resultMap="reportQryResult"/>
+</resultMap>
+
+<resultMap id="reportQryResult" type="IRP_REPORT_QUERYVOKey">
+	<id column="QUERY_ID" property="QUERY_ID" />
+	<id column="REPORT_ID" property="REPORT_ID" />
+</resultMap>
+
+<sql id="getDBEntitiesSql">
+	SELECT  ENTITY_DB_NAME, ENTITY_ALIAS FROM IRP_ENTITIES
+</sql>
+
+<select id="selectQueriesByReportId" resultMap="queryResultMap" parameterType="java.math.BigDecimal">
+    SELECT 
+    AHQ.QUERY_ID, AHQ.QUERY_NAME, AHQ.QUERY_OBJECT, CONN_ID , RQ.REPORT_ID
+    FROM IRP_AD_HOC_QUERY AHQ, IRP_REPORT_QUERY RQ
+    WHERE AHQ.QUERY_ID = RQ.QUERY_ID
+    AND RQ.REPORT_ID = #{reportId}
+    ORDER BY RQ.QUERY_ID
+</select>
+
+<select id="selectQueries" resultMap="BaseResultMap" parameterType="irp_ad_hoc_querySC" >
+	<include refid="servicesCommon.commonGridWrpBefFlip"/>
+    SELECT QUERY_ID, QUERY_NAME
+    FROM IRP_AD_HOC_QUERY
+    WHERE QUERY_ID NOT IN (SELECT QUERY_ID FROM IRP_REPORT_QUERY)
+    <include refid="servicesCommon.commonGridWrpAftFlip"/>
+    <include refid="servicesCommon.commmonGridWrpFlipClose"/>
+</select>
+
+<select id="queriesCnt" resultType="int" parameterType="irp_ad_hoc_querySC"> 
+	<include refid="servicesCommon.commonGridWrpBefCnt"/>
+	SELECT QUERY_ID, QUERY_NAME
+    FROM IRP_AD_HOC_QUERY
+    WHERE QUERY_ID NOT IN (SELECT QUERY_ID FROM IRP_REPORT_QUERY)
+	<include refid="servicesCommon.commonGridWrpAftCnt"/>
+	<include refid="servicesCommon.commonGridCountWrpClose"/> 
+</select>
+
+
+<select id="checkIfIsQryArg" resultType="int" parameterType="java.util.List" >
+	SELECT COUNT(1) 
+	FROM IRP_QUERY_ARG_MAPPING 
+	WHERE QUERY_ID IN
+    <foreach item="item" index="index" collection="list"
+		open="(" separator="," close=")">
+		#{item}
+	</foreach>
+</select>
+
+
+
+<select id="selectQueriesId" resultMap="reportQryResult" parameterType="java.util.List" >
+    SELECT REPORT_ID, QUERY_ID
+    FROM IRP_REPORT_QUERY
+    WHERE REPORT_ID IN 
+    <foreach item="item" index="index" collection="list"
+		open="(" separator="," close=")">
+		#{item}
+	</foreach>
+</select>
+
+<delete id="deleteReportQuery" parameterType="java.util.List">
+	DELETE FROM IRP_REPORT_QUERY  	
+	WHERE REPORT_ID IN
+	<foreach item="item" index="index" collection="list"
+		open="(" separator="," close=")">
+		#{item}
+	</foreach>
+</delete>
+
+<sql id="getDBFieldsSql">
+SELECT 
+       F.ENTITY_DB_NAME,
+       F.FIELD_DB_NAME,
+       F.FIELD_ALIAS,
+       F.FIELD_DATA_TYPE,
+       E.ENTITY_ALIAS,
+       <choose>
+	       <when test="PARENT_ID == null or PARENT_ID == ''"> null</when>
+	       <otherwise>${PARENT_ID}</otherwise>
+	   </choose>
+	   AS PARENT_INDEX 
+	   
+   <!--     <if test="PARENT_ID !=null and PARENT_ID !='' ">
+       		,${PARENT_ID} AS PARENT_INDEX 
+       </if> -->
+  FROM IRP_FIELDS F, IRP_ENTITIES E
+ WHERE F.ENTITY_DB_NAME = E.ENTITY_DB_NAME
+ AND F.ENTITY_DB_NAME=#{ENTITY_DB_NAME}
+ <if test="FIELD_NAME!=null and FIELD_NAME!=''">
+ AND F.FIELD_DB_NAME=#{FIELD_NAME}
+ </if>
+</sql>
+
+<select id="selectQueryById" resultMap="ResultMapWithBLOBs" parameterType="java.math.BigDecimal">
+	SELECT QUERY_ID, QUERY_NAME, QUERY_OBJECT,DATE_UPDATED, CONN_ID
+		   ,(SELECT COUNT(1) FROM IRP_QUERY_ARG_MAPPING  WHERE QUERY_ID =  #{queryId} )isQryArg
+    FROM IRP_AD_HOC_QUERY
+    WHERE QUERY_ID = #{queryId}
+</select>
+
+<select id="selectQueryByDep" resultType="String" parameterType="java.math.BigDecimal">
+	SELECT QUERY_NAME
+    FROM IRP_AD_HOC_QUERY
+    WHERE QUERY_ID = #{queryIdLkp}
+</select>
+
+<insert id="insertQuery" parameterType="irp_ad_hoc_queryVO">
+    insert into IRP_AD_HOC_QUERY
+    	(QUERY_ID,QUERY_NAME,QUERY_OBJECT, 
+    	<if test="CONN_ID != null and CONN_ID != emptyBigDecimalValue" >
+        	CONN_ID,
+      	</if>
+      	DATE_UPDATED
+     )
+    values (#{QUERY_ID},#{QUERY_NAME},#{QUERY_OBJECT}, 
+    	<if test="CONN_ID != null and CONN_ID != emptyBigDecimalValue" >
+	    	#{CONN_ID},
+	    </if>
+     	<choose >
+	        <when test="isSybase == 1">
+	           GETDATE()
+	        </when>
+	        <otherwise>
+	           SYSDATE
+	        </otherwise>
+      	</choose>
+   )
+</insert>
+
+<delete id="delete" parameterType="java.util.List">
+	delete from IRP_AD_HOC_QUERY  	
+	WHERE QUERY_ID in
+	<foreach item="item" index="index" collection="list"
+		open="(" separator="," close=")">
+		#{item}
+	</foreach>
+</delete>
+
+<select id="getDBEntities" parameterType="qryGridSC" resultMap="getDBEntitiesMap">
+	<include refid="servicesCommon.commonGridWrpBefFlip"/>
+	<include refid="getDBEntitiesSql"/>
+	<include refid="servicesCommon.commonGridWrpAftFlip"/>
+	<include refid="servicesCommon.commmonGridWrpFlipClose"/>
+</select>
+
+<select id="getDBEntitiesCnt" parameterType="qryGridSC" resultType="int">
+	<include refid="servicesCommon.commonGridWrpBefCnt"/>
+	<include refid="getDBEntitiesSql"/>
+	<include refid="servicesCommon.commonGridWrpAftCnt"/>
+	<include refid="servicesCommon.commonGridCountWrpClose"/>
+</select>
+
+<select id="getDBFields" parameterType="qryGridSC" resultMap="getDBFieldsMap">
+	<include refid="servicesCommon.commonGridWrpBefFlip"/>
+	<include refid="getDBFieldsSql"/>
+	<include refid="servicesCommon.commonGridWrpAftFlip"/>
+	<include refid="servicesCommon.commmonGridWrpFlipClose"/>
+</select>
+
+<select id="getDBFieldsCnt" parameterType="qryGridSC" resultType="int">
+	<include refid="servicesCommon.commonGridWrpBefCnt"/>
+	<include refid="getDBFieldsSql"/>
+	<include refid="servicesCommon.commonGridWrpAftCnt"/>
+	<include refid="servicesCommon.commonGridCountWrpClose"/>
+</select>
+
+<select id="testQuery" parameterType="java.lang.String" resultType="java.lang.String">
+	<include refid="queryExt.testQry"/>
+</select>
+
+<select id="checkQryName" parameterType="java.lang.String" resultType="java.lang.String">
+	SELECT QUERY_NAME FROM IRP_AD_HOC_QUERY WHERE QUERY_NAME = #{VALUE}
+</select>
+
+<select id="testSqbQuery" parameterType="java.lang.String" resultType="java.lang.String">
+	SELECT MAX(1) FROM ( ${value} )TBL
+</select>
+
+<update id="updateQuery" parameterType="irp_ad_hoc_queryVO">
+	 <include refid="IRP_AD_HOC_QUERY.sql_updateIRP_AD_HOC_QUERY" />
+     <if test="DATE_UPDATED != null" > AND DATE_UPDATED = #{DATE_UPDATED} </if>
+</update>
+
+<insert id="insertQueryExecLog" parameterType="com.path.dbmaps.vo.IRP_QUERY_EXEC_LOGVO" >
+    <selectKey resultType="java.math.BigDecimal" keyProperty="QUERY_EXEC_LOG_ID" order="BEFORE" >
+		<if test="isOracle == 1">
+			SELECT IRP_QUERY_EXEC_LOG_SEQ.NEXTVAL FROM dual
+		</if>
+		<if test="isSybase == 1 and isSQLServer != 1 " >
+			SELECT next_identity('IRP_QUERY_EXEC_LOG')
+		</if>
+	</selectKey>
+    insert into IRP_QUERY_EXEC_LOG
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="isOracle == 1" >
+        QUERY_EXEC_LOG_ID,
+      </if>
+      <if test="USER_ID != null and !&quot;&quot;.equals(USER_ID)" >
+        USER_ID,
+      </if>
+      <if test="COMP_CODE != null and COMP_CODE != emptyBigDecimalValue" >
+        COMP_CODE,
+      </if>
+      <if test="BRANCH_CODE != null and BRANCH_CODE != emptyBigDecimalValue" >
+        BRANCH_CODE,
+      </if>
+      <if test="APP_NAME != null and !&quot;&quot;.equals(APP_NAME)" >
+        APP_NAME,
+      </if>
+      <if test="HTTP_SESSION != null and !&quot;&quot;.equals(HTTP_SESSION)" >
+        HTTP_SESSION,
+      </if>
+      <if test="EXEC_START_TIME != null" >
+        EXEC_START_TIME,
+      </if>
+      <if test="EXEC_END_TIME != null" >
+        EXEC_END_TIME,
+      </if>
+      <if test="QUERY_EXCEPTION != null and !&quot;&quot;.equals(QUERY_EXCEPTION)" >
+        QUERY_EXCEPTION,
+      </if>
+      <if test="QUERY_ID != null and QUERY_ID != emptyBigDecimalValue" >
+        QUERY_ID,
+      </if>
+      <if test="SOURCE_ID != null and SOURCE_ID != emptyBigDecimalValue" >
+        SOURCE_ID,
+      </if>
+      <if test="COUNT_LIST_YN != null and !&quot;&quot;.equals(COUNT_LIST_YN)" >
+        COUNT_LIST_YN,
+      </if>
+      <if test="CONN_ID != null and CONN_ID != emptyBigDecimalValue" >
+        CONN_ID,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="isOracle == 1" >
+        #{QUERY_EXEC_LOG_ID},
+      </if>
+      <if test="USER_ID != null and !&quot;&quot;.equals(USER_ID)" >
+        #{USER_ID},
+      </if>
+      <if test="COMP_CODE != null and COMP_CODE != emptyBigDecimalValue" >
+        #{COMP_CODE},
+      </if>
+      <if test="BRANCH_CODE != null and BRANCH_CODE != emptyBigDecimalValue" >
+        #{BRANCH_CODE},
+      </if>
+      <if test="APP_NAME != null and !&quot;&quot;.equals(APP_NAME)" >
+        #{APP_NAME},
+      </if>
+      <if test="HTTP_SESSION != null and !&quot;&quot;.equals(HTTP_SESSION)" >
+        #{HTTP_SESSION},
+      </if>
+      <if test="EXEC_START_TIME != null" >
+        #{EXEC_START_TIME},
+      </if>
+      <if test="EXEC_END_TIME != null" >
+        #{EXEC_END_TIME},
+      </if>
+      <if test="QUERY_EXCEPTION != null and !&quot;&quot;.equals(QUERY_EXCEPTION)" >
+        #{QUERY_EXCEPTION},
+      </if>
+      <if test="QUERY_ID != null and QUERY_ID != emptyBigDecimalValue" >
+        #{QUERY_ID},
+      </if>
+      <if test="SOURCE_ID != null and SOURCE_ID != emptyBigDecimalValue" >
+        #{SOURCE_ID},
+      </if>
+      <if test="COUNT_LIST_YN != null and !&quot;&quot;.equals(COUNT_LIST_YN)" >
+        #{COUNT_LIST_YN},
+      </if>
+      <if test="CONN_ID != null and CONN_ID != emptyBigDecimalValue" >
+        #{CONN_ID},
+      </if>
+    </trim>
+</insert>  
+</mapper>

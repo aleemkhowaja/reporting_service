@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+    
+	<bean id="filterCriteriaDAO" class="com.path.dao.reporting.ftr.filterCriteria.impl.FilterCriteriaDAOImpl" parent="baseDAO">
+	</bean>
+	
+	<bean id="templateDAO" class="com.path.dao.reporting.ftr.template.impl.TemplateDAOImpl" parent="baseDAO">
+	</bean>
+	
+	<bean id="columnTemplateDAO" class="com.path.dao.reporting.ftr.columntemplate.impl.ColumnTemplateDAOImpl" parent="baseDAO">
+	</bean>
+	
+	<bean id="columnTemplateDetDAO" class="com.path.dao.reporting.ftr.columntemplate.impl.ColumnTemplateDetDAOImpl" parent="baseDAO">
+	</bean>
+	
+	<bean id="templateProcDAO" class="com.path.dao.reporting.ftr.templateProcess.impl.TemplateProcessDAOImpl" parent="baseDAO"></bean>
+	
+	<bean id="fcrDAO" class="com.path.dao.reporting.ftr.fcr.impl.FcrDAOImpl" parent="baseDAO"></bean>
+	
+	<bean id="foldersDAO" class="com.path.dao.reporting.ftr.folders.impl.FoldersDAOImpl" parent="baseDAO"></bean>
+	
+	<bean id="connectionDAO" class="com.path.dao.reporting.connection.impl.ConnectionDAOImpl" parent="baseDAO"></bean>
+	<bean id="cbParamDAO" class="com.path.dao.reporting.ftr.cbParam.impl.CbParamDAOImpl" parent="baseDAO">
+	</bean>
+	<bean id="controlRecordDAO" class="com.path.dao.reporting.ftr.controlRecord.impl.ControlRecordDAOImpl" parent="baseDAO"></bean>							 
+
+	<bean id="templateHeaderDAO" class="com.path.dao.reporting.ftr.templateHeader.impl.TemplateHeaderDAOImpl" parent="baseDAO"></bean>							 
+					 
+	<bean id="timeBucketsDAO" class="com.path.dao.reporting.ftr.timeBuckets.impl.TimeBucketsDAOImpl" parent="baseDAO">
+	</bean>
+	
+</beans>

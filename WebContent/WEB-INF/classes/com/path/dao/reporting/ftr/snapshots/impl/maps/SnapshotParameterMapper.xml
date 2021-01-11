@@ -1,0 +1,326 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+        "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="snapshotParameterMapper">
+
+<resultMap type="REP_SNAPSHOT_PARAMCO"  						id="getSnapshotsParametersMap">     
+  <result property="repSnapshotParamVO.REP_ID" 					column="REP_ID"/>
+  <result property="repSnapshotParamVO.COMP_CODE" 				column="COMP_CODE"/>
+  <result property="repSnapshotParamVO.REP_REFERENCE" 			column="REP_REFERENCE"/>
+  <result property="repSnapshotParamVO.SNAPSHOT_FREQUENCY" 		column="SNAPSHOT_FREQUENCY"/>
+  <result property="repSnapshotParamVO.ADDITIONAL_REFERENCE" 	column="ADDITIONAL_REFERENCE"/>
+  <result property="repSnapshotParamVO.SAVE_REP_YN" 			column="SAVE_REP_YN"/>
+  <result property="repSnapshotParamVO.REP_TYPE" 				column="REP_TYPE"/>
+  <result property="repSnapshotParamVO.CREATED_BY" 				column="CREATED_BY"/>
+  <result property="repSnapshotParamVO.CREATED_DATE" 			column="CREATED_DATE"/>
+  <result property="repSnapshotParamVO.SITCOM_ENABLE_YN" 		column="SITCOM_ENABLE_YN"/>
+  <result property="repSnapshotParamVO.SITCOM_ORDER" 			column="SITCOM_ORDER"/>
+  <result property="repSnapshotParamVO.SAVE_REP_DETAILS_YN" 	column="SAVE_REP_DETAILS_YN"/>
+  <result property="repSnapshotParamVO.REP_MODIFY_ENABLE_YN" 	column="REP_MODIFY_ENABLE_YN"/>
+  <result property="formula"						 			column="formula"/>
+  <result property="repSnapshotParamVO.REP_AUDIT_YN" 			column="REP_AUDIT_YN"/>
+  <result property="COLUMN_DRILLDOWN" 							column="COLUMN_DRILLDOWN"/>
+  <result property="COLUMN_MODIFY" 								column="COLUMN_MODIFY"/>
+  <result property="repSnapshotParamVO.REP_COMMENTS_YN" 		column="REP_COMMENTS_YN"/>
+  <result property="modCol" 									column="modCol"/>
+  <result property="modDril" 									column="modDril"/>
+  <result property="progRefOld" 								column="progRefOld"/>
+  <result property="freqOld" 									column="freqOld"/>
+  <result property="PARAM_NAME"									column="PARAM_NAME"/>
+  <result property="repSnapshotParamVO.DATE_UPDATED"			column="DATE_UPDATED"/>
+  <result property="IS_FTR_FCR"									column="IS_FTR_FCR"/>
+  <result property="repSnapshotParamVO.SITCOM_FORMULA" 			column="SITCOM_FORMULA"/>
+  <result property="repSnapshotParamVO.SITCOM_FORMULA_HEADER" 	column="SITCOM_FORMULA_HEADER"/>
+  <result property="repSnapshotParamVO.SITCOM_FORMULA_FOOTER" 	column="SITCOM_FORMULA_FOOTER"/>
+  <result property="AS_OF_DATE_PARAM_NAME" 						column="AS_OF_DATE_PARAM_NAME"/>
+  <result property="appName" 									column="APP_NAME"/>
+</resultMap>
+
+<resultMap type="REP_SNAPSHOT_MODIFY_COLUMNCO"  						id="getModifiedColumnMap">     
+  <result property="repSnapshotModifyColumnVO.COLUMN_MODIFY" 			column="COLUMN_MODIFY"/>
+  <result property="repSnapshotModifyColumnVO.REP_ID" 					column="REP_ID"/>
+  <result property="repSnapshotModifyColumnVO.COLUMN_TYPE" 				column="COLUMN_TYPE"/>
+  <result property="colTechName" 										column="colTechName"/>
+</resultMap>
+
+<resultMap type="REP_SNAPSHOT_DRILLDOWN_COLUMNCO"  						id="getDrilldownColumnMap">     
+  <result property="repSnapshotDrilColVO.COLUMN_DRILLDOWN" 			column="COLUMN_DRILLDOWN"/>
+  <result property="repSnapshotDrilColVO.REP_ID" 					column="REP_ID"/>
+  <result property="repSnapshotDrilColVO.COLUMN_TYPE" 				column="COLUMN_TYPE"/>
+  <result property="TECH_COL_NAME" 									column="TECH_COL_NAME"/>
+</resultMap>
+
+<resultMap type="irp_rep_argumentsCO"  id="dynParamMap">     
+  <result property="ARGUMENT_LABEL" 			column="ARGUMENT_LABEL"/>
+  <result property="ARGUMENT_NAME"	 			column="ARGUMENT_NAME"/>
+</resultMap>
+
+<resultMap type="REP_SNAPSHOT_INFORMATIONCO"  id="retSnapshotMainReportDetailsMap">     
+  <result property="repSnapshotInfoVO.DESCRIPTION"			column="GENERATED_FILE_NAME"/>
+</resultMap>
+
+<sql id="getSnapshotsParametersListSql">
+SELECT REP_ID,
+       COMP_CODE,
+       REP_REFERENCE,
+       SNAPSHOT_FREQUENCY,
+       ADDITIONAL_REFERENCE,
+       SAVE_REP_YN,
+       SAVE_REP_DETAILS_YN,
+       REP_TYPE,
+       CREATED_BY,
+       CREATED_DATE,
+       SITCOM_ENABLE_YN,
+       SITCOM_ORDER,
+       SITCOM_FORMULA,
+       SITCOM_FORMULA_HEADER,
+       SITCOM_FORMULA_FOOTER,
+       REP_MODIFY_ENABLE_YN,
+       (SELECT MAX(1)
+          FROM REP_SNAPSHOT_MODIFY_COLUMN
+         WHERE REP_SNAPSHOT_MODIFY_COLUMN.REP_ID = REP_SNAPSHOT_PARAM.REP_ID) COLUMN_MODIFY,
+       (SELECT MAX(1)
+          FROM REP_SNAPSHOT_DRILLDOWN_COLUMN
+         WHERE REP_SNAPSHOT_DRILLDOWN_COLUMN.REP_ID =
+               REP_SNAPSHOT_PARAM.REP_ID) COLUMN_DRILLDOWN,
+       REP_AUDIT_YN,
+       REP_COMMENTS_YN,
+       '' AS modCol,
+       '' AS modDril,
+       '' AS formula,
+       REP_REFERENCE AS progRefOld,
+       SNAPSHOT_FREQUENCY AS freqOld,
+       (SELECT PARAM_NAME FROM IRP_SNAPSHOT_PARAM_MAPPING P WHERE P.REP_ID = REP_SNAPSHOT_PARAM.REP_ID) AS PARAM_NAME,
+       (CASE WHEN EXISTS (SELECT 1 FROM 
+       					 FTR_OPT FO 
+                  WHERE  FO.PROG_REF = REP_SNAPSHOT_PARAM.REP_REFERENCE AND FO.APP_NAME='REP') 
+         THEN 0 ELSE 1 END) AS IS_FTR_FCR,
+       (SELECT MAX(APP_NAME) FROM IRP_AD_HOC_REPORT I WHERE I.PROG_REF = REP_SNAPSHOT_PARAM.REP_REFERENCE) APP_NAME
+  FROM REP_SNAPSHOT_PARAM
+ WHERE COMP_CODE = #{COMP_CODE}
+</sql>
+
+
+<select id="getSnapshotsParametersList"  resultMap="getSnapshotsParametersMap" parameterType="snapshotParameterSC">
+	<include refid="servicesCommon.commonGridWrpBefFlip"/>
+	<include refid="getSnapshotsParametersListSql"/>
+	<include refid="servicesCommon.commonGridWrpAftFlip"/>
+	<include refid="servicesCommon.commmonGridWrpFlipClose"/>
+</select>
+
+
+<select id="getSnapshotsParametersListCount"   resultType="int" parameterType="snapshotParameterSC">
+	<include refid="servicesCommon.commonGridWrpBefCnt"/>
+	<include refid="getSnapshotsParametersListSql"/>
+	<include refid="servicesCommon.commonGridWrpAftCnt"/>
+	<include refid="servicesCommon.commonGridCountWrpClose"/>
+</select>
+
+
+
+<sql id="modifiedColumnListSql">
+	SELECT COLUMN_MODIFY
+			,REP_ID
+			,COLUMN_TYPE ,
+			COLUMN_MODIFY as colTechName
+	FROM REP_SNAPSHOT_MODIFY_COLUMN 
+	WHERE REP_ID=(SELECT REP_ID FROM REP_SNAPSHOT_PARAM P WHERE P.REP_REFERENCE = #{REP_REFERENCE}
+	AND P.SNAPSHOT_FREQUENCY  = #{SNAPSHOT_FREQUENCY})
+</sql>
+
+<select id="getModifiedColumnList"  resultMap="getModifiedColumnMap" parameterType="snapshotParameterSC">
+	<include refid="modifiedColumnListSql"/>
+</select>
+
+
+<select id="getModifiedColumnListCount"   resultType="int" parameterType="snapshotParameterSC">
+	<include refid="servicesCommon.commonGridWrpBefCnt"/>
+	<include refid="modifiedColumnListSql"/>
+	<include refid="servicesCommon.commonGridWrpAftCnt"/>
+	<include refid="servicesCommon.commonGridCountWrpClose"/>
+</select>
+
+
+<sql id="drilldownColumnListSql">
+	SELECT COLUMN_DRILLDOWN
+			,REP_ID
+			,COLUMN_TYPE 
+			,COLUMN_DRILLDOWN as TECH_COL_NAME
+	FROM REP_SNAPSHOT_DRILLDOWN_COLUMN 
+	WHERE REP_ID=(SELECT REP_ID FROM REP_SNAPSHOT_PARAM P WHERE P.REP_REFERENCE = #{REP_REFERENCE}
+	AND P.SNAPSHOT_FREQUENCY  = #{SNAPSHOT_FREQUENCY})
+</sql>
+
+<select id="getDrilldownColumnList"  resultMap="getDrilldownColumnMap" parameterType="snapshotParameterSC">
+	<include refid="drilldownColumnListSql"/>
+</select>
+
+
+<select id="getDrilldownColumnListCount"   resultType="int" parameterType="snapshotParameterSC">
+	<include refid="servicesCommon.commonGridWrpBefCnt"/>
+	<include refid="drilldownColumnListSql"/>
+	<include refid="servicesCommon.commonGridWrpAftCnt"/>
+	<include refid="servicesCommon.commonGridCountWrpClose"/>
+</select>
+	
+
+<delete id="deleteModColById" parameterType="SnapshotParameterSC">
+	  DELETE FROM REP_SNAPSHOT_MODIFY_COLUMN
+	   WHERE REP_ID = #{REP_ID}
+	    <if test="dateUpdated != null" >
+	     AND #{dateUpdated} = (SELECT DATE_UPDATED
+	                             FROM REP_SNAPSHOT_PARAM P
+	                            WHERE P.REP_ID = #{REP_ID})
+	    </if>
+</delete>
+
+
+<delete id="deleteDrilColById" parameterType="SnapshotParameterSC">
+		DELETE FROM REP_SNAPSHOT_DRILLDOWN_COLUMN 
+		 WHERE REP_ID = #{REP_ID}
+		   <if test="dateUpdated != null" >
+      			AND  #{dateUpdated} = (SELECT DATE_UPDATED
+	                 FROM REP_SNAPSHOT_PARAM P
+	                 WHERE P.REP_ID = #{REP_ID})
+	       </if>
+</delete>
+
+<delete id="deleteSnParamById" parameterType="SnapshotParameterSC">
+		DELETE FROM REP_SNAPSHOT_PARAM WHERE REP_ID = #{REP_ID}
+</delete>
+
+<select id="getRepIdByRefFreq" parameterType="SnapshotParameterSC" resultType="java.math.BigDecimal">
+	SELECT REP_ID FROM REP_SNAPSHOT_PARAM WHERE REP_REFERENCE = #{REP_REFERENCE} AND SNAPSHOT_FREQUENCY=#{SNAPSHOT_FREQUENCY}
+</select>
+ 
+<select id="checkSnInformation" resultType="int" parameterType="snapshotParameterSC">
+	SELECT COUNT(1) FROM REP_SNAPSHOT_INFO WHERE REP_ID = #{REP_ID}
+</select> 
+
+<select id="fillInitMap" parameterType="snapshotParameterSC" resultMap="getSnapshotsParametersMap">
+SELECT REP_REFERENCE
+		<choose>
+		    <when test="isSQLServer == 1">
+		    +'~'+
+		    </when>
+		    <otherwise>
+			 ||'~'||
+		    </otherwise>
+		</choose>
+ 	   SNAPSHOT_FREQUENCY AS CONCAT_KEY, 
+ 	   REP_ID,
+       COMP_CODE,
+       REP_REFERENCE,
+       SNAPSHOT_FREQUENCY,
+       ADDITIONAL_REFERENCE,
+       SAVE_REP_YN,
+       SAVE_REP_DETAILS_YN,
+       REP_TYPE,
+       CREATED_BY,
+       CREATED_DATE,
+       SITCOM_ENABLE_YN,
+       SITCOM_ORDER,
+       REP_MODIFY_ENABLE_YN,
+       REP_AUDIT_YN,
+       REP_COMMENTS_YN,
+       SITCOM_FORMULA,
+       DATE_UPDATED,
+       (SELECT PARAM_NAME FROM IRP_SNAPSHOT_PARAM_MAPPING P WHERE P.REP_ID = REP_SNAPSHOT_PARAM.REP_ID) AS PARAM_NAME,
+       1 AS MAPPING_CODE
+  FROM REP_SNAPSHOT_PARAM
+ WHERE COMP_CODE = #{COMP_CODE}
+</select>
+
+<sql id="retSnpFrequenciesLstSql"> 
+   SELECT P.REP_ID,
+       P.REP_REFERENCE,
+       P.SNAPSHOT_FREQUENCY,
+       (SELECT PARAM_NAME
+          FROM IRP_SNAPSHOT_PARAM_MAPPING M
+         WHERE M.REP_ID = P.REP_ID
+           AND MAPPING_CODE = #{AOD_TYPE}) AS AS_OF_DATE_PARAM_NAME
+  FROM REP_SNAPSHOT_PARAM P
+ WHERE P.COMP_CODE = #{COMP_CODE}
+   AND P.REP_REFERENCE = #{REP_REFERENCE}
+   AND P.SAVE_REP_YN = 'Y'
+   
+   
+ </sql>
+ 
+ <select id="retSnpFrequenciesLst" parameterType="SnapshotParameterSC" resultMap="getSnapshotsParametersMap">
+ 	<include refid="servicesCommon.commonGridWrpBefFlip"/>
+	<include refid="retSnpFrequenciesLstSql"/>
+	<include refid="servicesCommon.commonGridWrpAftFlip"/>
+	<include refid="servicesCommon.commmonGridWrpFlipClose"/>
+ </select>
+
+<select id="retGvSystemDate"  resultType="date">
+SELECT RUN_DATE 
+FROM   S_RUNDTE 
+WHERE            S_RUNDTE.COMP_CODE = #{COMPANY_CODE}
+AND    S_RUNDTE.BRANCH_CODE = #{BRCH_CODE}
+AND     S_RUNDTE.APP_NAME  = #{APPL_NAME}
+</select>
+
+
+<select id="checkRepHasEnableSnpParam" resultType="java.math.BigDecimal" parameterType="SnapshotParameterSC">
+SELECT MAX(REP_ID)
+FROM REP_SNAPSHOT_PARAM
+WHERE REP_REFERENCE = #{REP_REFERENCE}
+AND COMP_CODE =  #{COMP_CODE}
+AND SAVE_REP_YN =  #{SAVE_REP_YN}
+</select>
+  
+ <select id="retModifiedColToEdit" parameterType="SnapshotParameterSC" resultMap="getModifiedColumnMap">
+SELECT '$F{'||COLUMN_MODIFY||'}' AS COLUMN_MODIFY
+			,REP_ID
+			,COLUMN_TYPE 
+	FROM REP_SNAPSHOT_MODIFY_COLUMN 
+	WHERE REP_ID= #{REP_ID}
+</select>
+
+<update id="updateRepSnpDrillDownRepId" parameterType="SnapshotParameterSC">
+	UPDATE REP_SNAPSHOT_DRILLDOWN_COLUMN SET REP_ID =#{REP_ID} WHERE REP_ID =#{REP_SNAPSHOT_ID}
+</update>
+
+<update id="updateRepSnpModColRepId" parameterType="SnapshotParameterSC">
+	UPDATE REP_SNAPSHOT_MODIFY_COLUMN SET REP_ID =#{REP_ID} WHERE REP_ID =#{REP_SNAPSHOT_ID}
+</update>
+
+<select id="retAdditionalRepIds" parameterType="SnapshotParameterSC" resultType="java.math.BigDecimal">
+	SELECT *
+  	FROM REP_SNAPSHOT_PARAM WHERE REP_REFERENCE=#{REP_REFERENCE}
+  	AND REP_ID NOT IN 
+  	<foreach item="item" index="index" collection="REP_ID_LST" open="(" separator="," close=")">
+		#{item}
+	</foreach>
+  	
+</select>
+<select id="loadDynamicParams" parameterType="java.lang.String" resultMap="dynParamMap">
+	SELECT ARGUMENT_LABEL,ARGUMENT_NAME
+	  FROM IRP_REP_ARGUMENTS
+	 WHERE REPORT_ID = (SELECT T.REPORT_ID
+	                      FROM IRP_AD_HOC_REPORT T
+	                     WHERE T.PROG_REF = #{VALUE})
+	   AND DISPLAY_FLAG = 'Y'
+</select>
+
+<update id="updateIrpSnpParamMapping" parameterType="SnapshotParameterSC">
+	UPDATE IRP_SNAPSHOT_PARAM_MAPPING SET REP_ID =#{REP_ID} WHERE REP_ID =#{REP_SNAPSHOT_ID}
+</update>
+
+<select id="checkTextFormulaExist" resultType="int" parameterType="snapshotParameterSC">
+	SELECT COUNT(1) 
+    FROM REP_SNAPSHOT_PARAM B 
+    WHERE B.REP_REFERENCE = #{REP_REFERENCE}
+</select>
+
+<select id="retSnapshotMainReportDetails" parameterType="REP_SNAPSHOT_INFOVO" resultMap="retSnapshotMainReportDetailsMap">
+SELECT  R.GENERATED_FILE_NAME
+  FROM REP_SNAPSHOT_PARAM P, REP_SNAPSHOT_INFO I, IRP_AD_HOC_REPORT R
+ WHERE P.REP_ID = I.REP_ID
+   AND P.REP_REFERENCE = R.PROG_REF
+   AND I.REP_SNAPSHOT_ID=#{REP_SNAPSHOT_ID}
+</select>
+
+</mapper>

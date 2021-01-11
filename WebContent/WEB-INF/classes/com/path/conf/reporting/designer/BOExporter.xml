@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+	
+	<bean name="/designerBOService" factory-bean="pathBeanFactoryExporter"  factory-method="export" >
+		<constructor-arg name="serviceName" value="designerBOService" />
+		<constructor-arg name="service" ref="designerBO" />
+		<constructor-arg name="serviceInterface" value="com.path.bo.reporting.designer.DesignerBO" />		
+	</bean>
+	
+	<bean name="/queryBOService" factory-bean="pathBeanFactoryExporter"  factory-method="export" >
+		<constructor-arg name="serviceName" value="queryBOService" />
+		<constructor-arg name="service" ref="queryBO" />
+		<constructor-arg name="serviceInterface" value="com.path.bo.reporting.designer.QueryBO" />		
+	</bean>
+	
+	<bean name="/snapShotBOService" factory-bean="pathBeanFactoryExporter"  factory-method="export" >
+		<constructor-arg name="serviceName" value="snapShotBOService" />
+		<constructor-arg name="service" ref="snapShotBO" />
+		<constructor-arg name="serviceInterface" value="com.path.bo.reporting.designer.SnapShotBO" />		
+	</bean>
+	
+	<!-- Mira 04-Jun-2012 Entities' Screen -->
+	<bean name="/entitiesBOService" factory-bean="pathBeanFactoryExporter"  factory-method="export" >
+		<constructor-arg name="serviceName" value="entitiesBOService" />
+		<constructor-arg name="service" ref="entitiesBO" />
+		<constructor-arg name="serviceInterface" value="com.path.bo.reporting.designer.EntitiesBO" />		
+	</bean>
+	<!-- END Mira 04-Jun-2012 -->
+	
+	<bean name="/proceduresBOService" factory-bean="pathBeanFactoryExporter"  factory-method="export" >
+		<constructor-arg name="serviceName" value="proceduresBOService" />
+		<constructor-arg name="service" ref="procBO" />
+		<constructor-arg name="serviceInterface" value="com.path.bo.reporting.designer.ProceduresBO" />		
+	</bean>
+	
+	<bean name="/hyperlinksBOService" factory-bean="pathBeanFactoryExporter"  factory-method="export" >
+		<constructor-arg name="serviceName" value="hyperlinksBOService" />
+		<constructor-arg name="service" ref="hyperlinksBO" />
+		<constructor-arg name="serviceInterface" value="com.path.bo.reporting.designer.HyperlinksBO" />		
+	</bean>
+	
+	
+	<bean name="/uploadImageBOService" factory-bean="pathBeanFactoryExporter"  factory-method="export" >
+		<constructor-arg name="serviceName" value="uploadImageBOService" />
+		<constructor-arg name="service" ref="uploadImageBO" />
+		<constructor-arg name="serviceInterface" value="com.path.bo.reporting.designer.UploadImageBO" />		
+	</bean>
+	
+		
+	<bean name="/ImageBOService" factory-bean="pathBeanFactoryExporter"  factory-method="export" >
+		<constructor-arg name="serviceName" value="ImageBOService" />
+		<constructor-arg name="service" ref="ImageBO" />
+		<constructor-arg name="serviceInterface" value="com.path.bo.reporting.designer.ImageBO" />		
+	</bean>
+</beans>

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        
+<mapper namespace="templateMismatch">
+
+<resultMap id="getMismatchListMap" type="FTR_MISMATCH_REPORTCO" >
+    <id 	column="concatKey" 		property="concatKey" />
+    <result column="COMP_CODE" 		property="ftrMissRepVO.COMP_CODE"/>
+    <result column="TMPLT_CODE" 	property="ftrMissRepVO.TMPLT_CODE"/>
+    <result column="LINE_NO" 		property="ftrMissRepVO.LINE_NO"/>
+    <result column="SUB_LINE_NO" 	property="ftrMissRepVO.SUB_LINE_NO"/>
+    <result column="TMPLT_CODE1" 	property="ftrMissRepVO.TMPLT_CODE1"/>
+    <result column="TMPLT_NAME" 	property="TMPLT_NAME"/>
+    <result column="LINE_NAME" 		property="LINE_NAME"/>
+    <result column="LINE_NO" 		property="newLineNumber"/>    
+</resultMap>
+ 
+ 
+<select id="getMismatchList"  resultMap="getMismatchListMap" parameterType="tmplGridSC">
+	<include refid="servicesCommon.commonGridWrpBefFlip"/>
+	<include refid="misExt.getMismatchListSql"/>
+	<include refid="servicesCommon.commonGridWrpAftFlip"/>
+	<include refid="servicesCommon.commmonGridWrpFlipClose"/>
+</select>
+  
+<select id="getMismatchListCount"  resultType="int" parameterType="tmplGridSC">
+	<include refid="servicesCommon.commonGridWrpBefCnt"/>
+	<include refid="misExt.getMismatchListSql"/>
+	<include refid="servicesCommon.commonGridWrpAftCnt"/>
+	<include refid="servicesCommon.commonGridCountWrpClose"/>
+</select>
+
+
+ 
+ 
+<select id="getTemplateNameDependency"  resultType="java.lang.String" parameterType="tmplGridSC">
+	<include refid="misExt.getTemplateNameDependency"/>
+</select>
+
+<select id="getLineNameDependency"  resultType="java.lang.String" parameterType="tmplGridSC">
+	<include refid="misExt.getLineNameDependency"/>
+</select>
+
+<delete id="deleteMismatchesByTemplate" parameterType="GLSTMPLTVO">
+     DELETE FROM FTR_MISMATCH_REPORT
+     WHERE COMP_CODE = #{COMP_CODE}
+     AND TMPLT_CODE = #{CODE}
+</delete>
+ 
+
+</mapper>

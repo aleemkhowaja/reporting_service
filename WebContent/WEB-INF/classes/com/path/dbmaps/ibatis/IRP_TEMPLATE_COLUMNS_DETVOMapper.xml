@@ -1,0 +1,304 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="IRP_TEMPLATE_COLUMNS_DET" >
+  <resultMap id="BaseResultMap" type="com.path.dbmaps.vo.IRP_TEMPLATE_COLUMNS_DETVO" >
+    <id column="COMP_CODE" property="COMP_CODE" />
+    <id column="TEMPLATE_CODE" property="TEMPLATE_CODE" />
+    <id column="TEMPLATE_COL_NO" property="TEMPLATE_COL_NO" />
+    <result column="COL_TYPE" property="COL_TYPE" />
+    <result column="FROM_DATE" property="FROM_DATE" />
+    <result column="TO_DATE" property="TO_DATE" />
+    <result column="CREATED_BY" property="CREATED_BY" />
+    <result column="DATE_CREATED" property="DATE_CREATED" />
+    <result column="MODIFIED_BY" property="MODIFIED_BY" />
+    <result column="DATE_MODIFIED" property="DATE_MODIFIED" />
+    <result column="COL_COMP_CODE" property="COL_COMP_CODE" />
+    <result column="FROM_BRANCH" property="FROM_BRANCH" />
+    <result column="TO_BRANCH" property="TO_BRANCH" />
+    <result column="FROM_CY" property="FROM_CY" />
+    <result column="TO_CY" property="TO_CY" />
+    <result column="FROM_DIV" property="FROM_DIV" />
+    <result column="TO_DIV" property="TO_DIV" />
+    <result column="FROM_DEPT" property="FROM_DEPT" />
+    <result column="TO_DEPT" property="TO_DEPT" />
+    <result column="FROM_UNIT" property="FROM_UNIT" />
+    <result column="TO_UNIT" property="TO_UNIT" />
+    <result column="IS_BOLD" property="IS_BOLD" />
+    <result column="DISP_COL_TOT_ZERO" property="DISP_COL_TOT_ZERO" />
+    <result column="EXPRESSION_LINES" property="EXPRESSION_LINES" />
+    <result column="EXPRESSION" property="EXPRESSION" />
+    <result column="ALL_CRITERIA" property="ALL_CRITERIA" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    COMP_CODE, TEMPLATE_CODE, TEMPLATE_COL_NO, COL_TYPE, FROM_DATE, TO_DATE, CREATED_BY, 
+    DATE_CREATED, MODIFIED_BY, DATE_MODIFIED, COL_COMP_CODE, FROM_BRANCH, TO_BRANCH, 
+    FROM_CY, TO_CY, FROM_DIV, TO_DIV, FROM_DEPT, TO_DEPT, FROM_UNIT, TO_UNIT, IS_BOLD, 
+    DISP_COL_TOT_ZERO, EXPRESSION_LINES, EXPRESSION, ALL_CRITERIA
+  </sql>
+  <select id="selectIRP_TEMPLATE_COLUMNS_DET" resultMap="BaseResultMap" parameterType="com.path.dbmaps.vo.IRP_TEMPLATE_COLUMNS_DETVOKey" >
+    select 
+    <include refid="Base_Column_List" />
+    from IRP_TEMPLATE_COLUMNS_DET
+    where COMP_CODE = #{COMP_CODE}
+      and TEMPLATE_CODE = #{TEMPLATE_CODE}
+      and TEMPLATE_COL_NO = #{TEMPLATE_COL_NO}
+  </select>
+  <delete id="deleteIRP_TEMPLATE_COLUMNS_DET" parameterType="com.path.dbmaps.vo.IRP_TEMPLATE_COLUMNS_DETVOKey" >
+    delete from IRP_TEMPLATE_COLUMNS_DET
+    where COMP_CODE = #{COMP_CODE}
+      and TEMPLATE_CODE = #{TEMPLATE_CODE}
+      and TEMPLATE_COL_NO = #{TEMPLATE_COL_NO}
+  </delete>
+  <insert id="insertIRP_TEMPLATE_COLUMNS_DET" parameterType="com.path.dbmaps.vo.IRP_TEMPLATE_COLUMNS_DETVO" >
+    insert into IRP_TEMPLATE_COLUMNS_DET
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="COMP_CODE != null" >
+        COMP_CODE,
+      </if>
+      <if test="TEMPLATE_CODE != null" >
+        TEMPLATE_CODE,
+      </if>
+      <if test="TEMPLATE_COL_NO != null" >
+        TEMPLATE_COL_NO,
+      </if>
+      <if test="COL_TYPE != null" >
+        COL_TYPE,
+      </if>
+      <if test="FROM_DATE != null" >
+        FROM_DATE,
+      </if>
+      <if test="TO_DATE != null" >
+        TO_DATE,
+      </if>
+      <if test="CREATED_BY != null" >
+        CREATED_BY,
+      </if>
+      <if test="DATE_CREATED != null" >
+        DATE_CREATED,
+      </if>
+      <if test="MODIFIED_BY != null" >
+        MODIFIED_BY,
+      </if>
+      <if test="DATE_MODIFIED != null" >
+        DATE_MODIFIED,
+      </if>
+      <if test="COL_COMP_CODE != null" >
+        COL_COMP_CODE,
+      </if>
+      <if test="FROM_BRANCH != null" >
+        FROM_BRANCH,
+      </if>
+      <if test="TO_BRANCH != null" >
+        TO_BRANCH,
+      </if>
+      <if test="FROM_CY != null" >
+        FROM_CY,
+      </if>
+      <if test="TO_CY != null" >
+        TO_CY,
+      </if>
+      <if test="FROM_DIV != null" >
+        FROM_DIV,
+      </if>
+      <if test="TO_DIV != null" >
+        TO_DIV,
+      </if>
+      <if test="FROM_DEPT != null" >
+        FROM_DEPT,
+      </if>
+      <if test="TO_DEPT != null" >
+        TO_DEPT,
+      </if>
+      <if test="FROM_UNIT != null" >
+        FROM_UNIT,
+      </if>
+      <if test="TO_UNIT != null" >
+        TO_UNIT,
+      </if>
+      <if test="IS_BOLD != null" >
+        IS_BOLD,
+      </if>
+      <if test="DISP_COL_TOT_ZERO != null" >
+        DISP_COL_TOT_ZERO,
+      </if>
+      <if test="EXPRESSION_LINES != null" >
+        EXPRESSION_LINES,
+      </if>
+      <if test="EXPRESSION != null" >
+        EXPRESSION,
+      </if>
+      <if test="ALL_CRITERIA != null" >
+        ALL_CRITERIA,
+      </if>
+      <if test="TEMPLATE_COL_DESC1 != null" >
+        TEMPLATE_COL_DESC1,
+      </if>
+      <if test="TEMPLATE_COL_DESC2 != null" >
+        TEMPLATE_COL_DESC2,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="COMP_CODE != null" >
+        #{COMP_CODE},
+      </if>
+      <if test="TEMPLATE_CODE != null" >
+        #{TEMPLATE_CODE},
+      </if>
+      <if test="TEMPLATE_COL_NO != null" >
+        #{TEMPLATE_COL_NO},
+      </if>
+      <if test="COL_TYPE != null" >
+        #{COL_TYPE},
+      </if>
+      <if test="FROM_DATE != null" >
+        #{FROM_DATE},
+      </if>
+      <if test="TO_DATE != null" >
+        #{TO_DATE},
+      </if>
+      <if test="CREATED_BY != null" >
+        #{CREATED_BY},
+      </if>
+      <if test="DATE_CREATED != null" >
+        #{DATE_CREATED},
+      </if>
+      <if test="MODIFIED_BY != null" >
+        #{MODIFIED_BY},
+      </if>
+      <if test="DATE_MODIFIED != null" >
+        #{DATE_MODIFIED},
+      </if>
+      <if test="COL_COMP_CODE != null" >
+        #{COL_COMP_CODE},
+      </if>
+      <if test="FROM_BRANCH != null" >
+        #{FROM_BRANCH},
+      </if>
+      <if test="TO_BRANCH != null" >
+        #{TO_BRANCH},
+      </if>
+      <if test="FROM_CY != null" >
+        #{FROM_CY},
+      </if>
+      <if test="TO_CY != null" >
+        #{TO_CY},
+      </if>
+      <if test="FROM_DIV != null" >
+        #{FROM_DIV},
+      </if>
+      <if test="TO_DIV != null" >
+        #{TO_DIV},
+      </if>
+      <if test="FROM_DEPT != null" >
+        #{FROM_DEPT},
+      </if>
+      <if test="TO_DEPT != null" >
+        #{TO_DEPT},
+      </if>
+      <if test="FROM_UNIT != null" >
+        #{FROM_UNIT},
+      </if>
+      <if test="TO_UNIT != null" >
+        #{TO_UNIT},
+      </if>
+      <if test="IS_BOLD != null" >
+        #{IS_BOLD},
+      </if>
+      <if test="DISP_COL_TOT_ZERO != null" >
+        #{DISP_COL_TOT_ZERO},
+      </if>
+      <if test="EXPRESSION_LINES != null" >
+        #{EXPRESSION_LINES},
+      </if>
+      <if test="EXPRESSION != null" >
+        #{EXPRESSION},
+      </if>
+      <if test="ALL_CRITERIA != null" >
+        #{ALL_CRITERIA},
+      </if>
+      <if test="TEMPLATE_COL_DESC1 != null" >
+        #{TEMPLATE_COL_DESC1},
+      </if>
+      <if test="TEMPLATE_COL_DESC2 != null" >
+        #{TEMPLATE_COL_DESC2},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateIRP_TEMPLATE_COLUMNS_DET" parameterType="com.path.dbmaps.vo.IRP_TEMPLATE_COLUMNS_DETVO" >
+    update IRP_TEMPLATE_COLUMNS_DET
+    <set >
+      <if test="COL_TYPE != null" >
+        COL_TYPE = #{COL_TYPE},
+      </if>
+      <if test="FROM_DATE != null" >
+        FROM_DATE = #{FROM_DATE},
+      </if>
+      <if test="TO_DATE != null" >
+        TO_DATE = #{TO_DATE},
+      </if>
+      <if test="CREATED_BY != null" >
+        CREATED_BY = #{CREATED_BY},
+      </if>
+      <if test="DATE_CREATED != null" >
+        DATE_CREATED = #{DATE_CREATED},
+      </if>
+      <if test="MODIFIED_BY != null" >
+        MODIFIED_BY = #{MODIFIED_BY},
+      </if>
+      <if test="DATE_MODIFIED != null" >
+        DATE_MODIFIED = #{DATE_MODIFIED},
+      </if>
+      <if test="COL_COMP_CODE != null" >
+        COL_COMP_CODE = #{COL_COMP_CODE},
+      </if>
+      <if test="FROM_BRANCH != null" >
+        FROM_BRANCH = #{FROM_BRANCH},
+      </if>
+      <if test="TO_BRANCH != null" >
+        TO_BRANCH = #{TO_BRANCH},
+      </if>
+      <if test="FROM_CY != null" >
+        FROM_CY = #{FROM_CY},
+      </if>
+      <if test="TO_CY != null" >
+        TO_CY = #{TO_CY},
+      </if>
+      <if test="FROM_DIV != null" >
+        FROM_DIV = #{FROM_DIV},
+      </if>
+      <if test="TO_DIV != null" >
+        TO_DIV = #{TO_DIV},
+      </if>
+      <if test="FROM_DEPT != null" >
+        FROM_DEPT = #{FROM_DEPT},
+      </if>
+      <if test="TO_DEPT != null" >
+        TO_DEPT = #{TO_DEPT},
+      </if>
+      <if test="FROM_UNIT != null" >
+        FROM_UNIT = #{FROM_UNIT},
+      </if>
+      <if test="TO_UNIT != null" >
+        TO_UNIT = #{TO_UNIT},
+      </if>
+      <if test="IS_BOLD != null" >
+        IS_BOLD = #{IS_BOLD},
+      </if>
+      <if test="DISP_COL_TOT_ZERO != null" >
+        DISP_COL_TOT_ZERO = #{DISP_COL_TOT_ZERO},
+      </if>
+      <if test="EXPRESSION_LINES != null" >
+        EXPRESSION_LINES = #{EXPRESSION_LINES},
+      </if>
+      <if test="EXPRESSION != null" >
+        EXPRESSION = #{EXPRESSION},
+      </if>
+      <if test="ALL_CRITERIA != null" >
+        ALL_CRITERIA = #{ALL_CRITERIA},
+      </if>
+    </set>
+    where COMP_CODE = #{COMP_CODE}
+      and TEMPLATE_CODE = #{TEMPLATE_CODE}
+      and TEMPLATE_COL_NO = #{TEMPLATE_COL_NO}
+  </update>
+</mapper>

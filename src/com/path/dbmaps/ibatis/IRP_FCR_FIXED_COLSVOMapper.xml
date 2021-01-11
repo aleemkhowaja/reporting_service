@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="IRP_FCR_FIXED_COLS" >
+  <resultMap id="BaseResultMap" type="com.path.dbmaps.vo.IRP_FCR_FIXED_COLSVO" >
+    <id column="COL_NAME" property="COL_NAME" />
+    <id column="PROG_REF" property="PROG_REF" />
+    <result column="COL_TYPE" property="COL_TYPE" />
+    <result column="COL_HEADER" property="COL_HEADER" />
+    <result column="COL_ORDER" property="COL_ORDER" />
+    <result column="COL_SHOW_HIDE_YN" property="COL_SHOW_HIDE_YN" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    COL_NAME, PROG_REF, COL_TYPE, COL_HEADER, COL_ORDER, COL_SHOW_HIDE_YN
+  </sql>
+  <select id="selectIRP_FCR_FIXED_COLS" resultMap="BaseResultMap" parameterType="com.path.dbmaps.vo.IRP_FCR_FIXED_COLSVO" >
+    select 
+    <include refid="Base_Column_List" />
+    from IRP_FCR_FIXED_COLS
+    where COL_NAME = #{COL_NAME}
+      and PROG_REF = #{PROG_REF}
+  </select>
+  <delete id="deleteIRP_FCR_FIXED_COLS" parameterType="com.path.dbmaps.vo.IRP_FCR_FIXED_COLSVO" >
+    delete from IRP_FCR_FIXED_COLS
+    where COL_NAME = #{COL_NAME}
+      and PROG_REF = #{PROG_REF}
+  </delete>
+  <insert id="insertIRP_FCR_FIXED_COLS" parameterType="com.path.dbmaps.vo.IRP_FCR_FIXED_COLSVO" >
+    insert into IRP_FCR_FIXED_COLS
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="COL_NAME != null" >
+        COL_NAME,
+      </if>
+      <if test="PROG_REF != null" >
+        PROG_REF,
+      </if>
+      <if test="COL_TYPE != null" >
+        COL_TYPE,
+      </if>
+      <if test="COL_HEADER != null" >
+        COL_HEADER,
+      </if>
+      <if test="COL_ORDER != null and COL_ORDER != emptyBigDecimalValue" >
+        COL_ORDER,
+      </if>
+      <if test="COL_SHOW_HIDE_YN != null and COL_SHOW_HIDE_YN != emptyBigDecimalValue" >
+        COL_SHOW_HIDE_YN,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="COL_NAME != null" >
+        #{COL_NAME},
+      </if>
+      <if test="PROG_REF != null" >
+        #{PROG_REF},
+      </if>
+      <if test="COL_TYPE != null" >
+        #{COL_TYPE},
+      </if>
+      <if test="COL_HEADER != null" >
+        #{COL_HEADER},
+      </if>
+      <if test="COL_ORDER != null and COL_ORDER != emptyBigDecimalValue" >
+        #{COL_ORDER},
+      </if>
+      <if test="COL_SHOW_HIDE_YN != null and COL_SHOW_HIDE_YN != emptyBigDecimalValue" >
+        #{COL_SHOW_HIDE_YN},
+      </if>
+    </trim>
+  </insert>
+  <sql id="sql_updateIRP_FCR_FIXED_COLS" >
+    update IRP_FCR_FIXED_COLS
+    <set >
+      <if test="COL_TYPE != null" >
+        COL_TYPE = #{COL_TYPE},
+      </if>
+      <if test="COL_HEADER != null" >
+        COL_HEADER = #{COL_HEADER},
+      </if>
+      <if test="COL_ORDER != null" >
+        <choose >
+          <when test="COL_ORDER == emptyBigDecimalValue" >
+            COL_ORDER = NULL ,
+          </when>
+          <otherwise >
+            COL_ORDER = #{COL_ORDER},
+          </otherwise>
+        </choose>
+      </if>
+      <if test="COL_SHOW_HIDE_YN != null" >
+        <choose >
+          <when test="COL_SHOW_HIDE_YN == emptyBigDecimalValue" >
+            COL_SHOW_HIDE_YN = NULL ,
+          </when>
+          <otherwise >
+            COL_SHOW_HIDE_YN = #{COL_SHOW_HIDE_YN},
+          </otherwise>
+        </choose>
+      </if>
+    </set>
+    where COL_NAME = #{COL_NAME}
+      and PROG_REF = #{PROG_REF}
+  </sql>
+  <update id="updateIRP_FCR_FIXED_COLS" parameterType="com.path.dbmaps.vo.IRP_FCR_FIXED_COLSVO" >
+    <include refid="sql_updateIRP_FCR_FIXED_COLS" />
+  </update>
+</mapper>

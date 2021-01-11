@@ -1,0 +1,285 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="IRP_REPORT_EXEC_LOG" >
+  <resultMap id="BaseResultMap" type="com.path.dbmaps.vo.IRP_REPORT_EXEC_LOGVO" >
+    <id column="REPORT_EXEC_LOG_ID" property="REPORT_EXEC_LOG_ID" />
+    <result column="USER_ID" property="USER_ID" />
+    <result column="COMP_CODE" property="COMP_CODE" />
+    <result column="BRANCH_CODE" property="BRANCH_CODE" />
+    <result column="REPORT_APP_NAME" property="REPORT_APP_NAME" />
+    <result column="APP_NAME" property="APP_NAME" />
+    <result column="REPORT_PROG_REF" property="REPORT_PROG_REF" />
+    <result column="REPORT_PARAMS" property="REPORT_PARAMS" />
+    <result column="HTTP_SESSION" property="HTTP_SESSION" />
+    <result column="EXEC_START_TIME" property="EXEC_START_TIME" />
+    <result column="EXEC_END_TIME" property="EXEC_END_TIME" />
+    <result column="REPORT_EXCEPTION" property="REPORT_EXCEPTION" />
+    <result column="REPORT_ID" property="REPORT_ID" />
+    <result column="SOURCE_ID" property="SOURCE_ID" />
+    <result column="CONN_ID" property="CONN_ID" />
+    <result column="REPORT_SIZE" property="REPORT_SIZE" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    REPORT_EXEC_LOG_ID, USER_ID, COMP_CODE, BRANCH_CODE, REPORT_APP_NAME, APP_NAME, REPORT_PROG_REF, 
+    REPORT_PARAMS, HTTP_SESSION, EXEC_START_TIME, EXEC_END_TIME, REPORT_EXCEPTION, REPORT_ID, 
+    SOURCE_ID, CONN_ID, REPORT_SIZE
+  </sql>
+  <select id="selectIRP_REPORT_EXEC_LOG" resultMap="BaseResultMap" parameterType="com.path.dbmaps.vo.IRP_REPORT_EXEC_LOGVO" >
+    select 
+    <include refid="Base_Column_List" />
+    from IRP_REPORT_EXEC_LOG
+    where REPORT_EXEC_LOG_ID = #{REPORT_EXEC_LOG_ID}
+  </select>
+  <delete id="deleteIRP_REPORT_EXEC_LOG" parameterType="com.path.dbmaps.vo.IRP_REPORT_EXEC_LOGVO" >
+    delete from IRP_REPORT_EXEC_LOG
+    where REPORT_EXEC_LOG_ID = #{REPORT_EXEC_LOG_ID}
+  </delete>
+  <insert id="insertIRP_REPORT_EXEC_LOG" parameterType="com.path.dbmaps.vo.IRP_REPORT_EXEC_LOGVO" >
+    insert into IRP_REPORT_EXEC_LOG
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="REPORT_EXEC_LOG_ID != null and REPORT_EXEC_LOG_ID != emptyBigDecimalValue" >
+        REPORT_EXEC_LOG_ID,
+      </if>
+      <if test="USER_ID != null and !&quot;&quot;.equals(USER_ID)" >
+        USER_ID,
+      </if>
+      <if test="COMP_CODE != null and COMP_CODE != emptyBigDecimalValue" >
+        COMP_CODE,
+      </if>
+      <if test="BRANCH_CODE != null and BRANCH_CODE != emptyBigDecimalValue" >
+        BRANCH_CODE,
+      </if>
+      <if test="REPORT_APP_NAME != null and !&quot;&quot;.equals(REPORT_APP_NAME)" >
+        REPORT_APP_NAME,
+      </if>
+      <if test="APP_NAME != null and !&quot;&quot;.equals(APP_NAME)" >
+        APP_NAME,
+      </if>
+      <if test="REPORT_PROG_REF != null and !&quot;&quot;.equals(REPORT_PROG_REF)" >
+        REPORT_PROG_REF,
+      </if>
+      <if test="REPORT_PARAMS != null and !&quot;&quot;.equals(REPORT_PARAMS)" >
+        REPORT_PARAMS,
+      </if>
+      <if test="HTTP_SESSION != null and !&quot;&quot;.equals(HTTP_SESSION)" >
+        HTTP_SESSION,
+      </if>
+      <if test="EXEC_START_TIME != null" >
+        EXEC_START_TIME,
+      </if>
+      <if test="EXEC_END_TIME != null" >
+        EXEC_END_TIME,
+      </if>
+      <if test="REPORT_EXCEPTION != null and !&quot;&quot;.equals(REPORT_EXCEPTION)" >
+        REPORT_EXCEPTION,
+      </if>
+      <if test="REPORT_ID != null and REPORT_ID != emptyBigDecimalValue" >
+        REPORT_ID,
+      </if>
+      <if test="SOURCE_ID != null and SOURCE_ID != emptyBigDecimalValue" >
+        SOURCE_ID,
+      </if>
+      <if test="CONN_ID != null and CONN_ID != emptyBigDecimalValue" >
+        CONN_ID,
+      </if>
+      <if test="REPORT_SIZE != null and REPORT_SIZE != emptyBigDecimalValue" >
+        REPORT_SIZE,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="REPORT_EXEC_LOG_ID != null and REPORT_EXEC_LOG_ID != emptyBigDecimalValue" >
+        #{REPORT_EXEC_LOG_ID},
+      </if>
+      <if test="USER_ID != null and !&quot;&quot;.equals(USER_ID)" >
+        #{USER_ID},
+      </if>
+      <if test="COMP_CODE != null and COMP_CODE != emptyBigDecimalValue" >
+        #{COMP_CODE},
+      </if>
+      <if test="BRANCH_CODE != null and BRANCH_CODE != emptyBigDecimalValue" >
+        #{BRANCH_CODE},
+      </if>
+      <if test="REPORT_APP_NAME != null and !&quot;&quot;.equals(REPORT_APP_NAME)" >
+        #{REPORT_APP_NAME},
+      </if>
+      <if test="APP_NAME != null and !&quot;&quot;.equals(APP_NAME)" >
+        #{APP_NAME},
+      </if>
+      <if test="REPORT_PROG_REF != null and !&quot;&quot;.equals(REPORT_PROG_REF)" >
+        #{REPORT_PROG_REF},
+      </if>
+      <if test="REPORT_PARAMS != null and !&quot;&quot;.equals(REPORT_PARAMS)" >
+        #{REPORT_PARAMS},
+      </if>
+      <if test="HTTP_SESSION != null and !&quot;&quot;.equals(HTTP_SESSION)" >
+        #{HTTP_SESSION},
+      </if>
+      <if test="EXEC_START_TIME != null" >
+        #{EXEC_START_TIME},
+      </if>
+      <if test="EXEC_END_TIME != null" >
+        #{EXEC_END_TIME},
+      </if>
+      <if test="REPORT_EXCEPTION != null and !&quot;&quot;.equals(REPORT_EXCEPTION)" >
+        #{REPORT_EXCEPTION},
+      </if>
+      <if test="REPORT_ID != null and REPORT_ID != emptyBigDecimalValue" >
+        #{REPORT_ID},
+      </if>
+      <if test="SOURCE_ID != null and SOURCE_ID != emptyBigDecimalValue" >
+        #{SOURCE_ID},
+      </if>
+      <if test="CONN_ID != null and CONN_ID != emptyBigDecimalValue" >
+        #{CONN_ID},
+      </if>
+      <if test="REPORT_SIZE != null and REPORT_SIZE != emptyBigDecimalValue" >
+        #{REPORT_SIZE},
+      </if>
+    </trim>
+  </insert>
+  <sql id="sql_updateIRP_REPORT_EXEC_LOG" >
+    update IRP_REPORT_EXEC_LOG
+    <set >
+      <if test="USER_ID != null" >
+        <choose >
+          <when test="USER_ID.equals(&quot;&quot;)" >
+            USER_ID = NULL ,
+          </when>
+          <otherwise >
+            USER_ID = #{USER_ID},
+          </otherwise>
+        </choose>
+      </if>
+      <if test="COMP_CODE != null" >
+        <choose >
+          <when test="COMP_CODE == emptyBigDecimalValue" >
+            COMP_CODE = NULL ,
+          </when>
+          <otherwise >
+            COMP_CODE = #{COMP_CODE},
+          </otherwise>
+        </choose>
+      </if>
+      <if test="BRANCH_CODE != null" >
+        <choose >
+          <when test="BRANCH_CODE == emptyBigDecimalValue" >
+            BRANCH_CODE = NULL ,
+          </when>
+          <otherwise >
+            BRANCH_CODE = #{BRANCH_CODE},
+          </otherwise>
+        </choose>
+      </if>
+      <if test="REPORT_APP_NAME != null" >
+        <choose >
+          <when test="REPORT_APP_NAME.equals(&quot;&quot;)" >
+            REPORT_APP_NAME = NULL ,
+          </when>
+          <otherwise >
+            REPORT_APP_NAME = #{REPORT_APP_NAME},
+          </otherwise>
+        </choose>
+      </if>
+      <if test="APP_NAME != null" >
+        <choose >
+          <when test="APP_NAME.equals(&quot;&quot;)" >
+            APP_NAME = NULL ,
+          </when>
+          <otherwise >
+            APP_NAME = #{APP_NAME},
+          </otherwise>
+        </choose>
+      </if>
+      <if test="REPORT_PROG_REF != null" >
+        <choose >
+          <when test="REPORT_PROG_REF.equals(&quot;&quot;)" >
+            REPORT_PROG_REF = NULL ,
+          </when>
+          <otherwise >
+            REPORT_PROG_REF = #{REPORT_PROG_REF},
+          </otherwise>
+        </choose>
+      </if>
+      <if test="REPORT_PARAMS != null" >
+        <choose >
+          <when test="REPORT_PARAMS.equals(&quot;&quot;)" >
+            REPORT_PARAMS = NULL ,
+          </when>
+          <otherwise >
+            REPORT_PARAMS = #{REPORT_PARAMS},
+          </otherwise>
+        </choose>
+      </if>
+      <if test="HTTP_SESSION != null" >
+        <choose >
+          <when test="HTTP_SESSION.equals(&quot;&quot;)" >
+            HTTP_SESSION = NULL ,
+          </when>
+          <otherwise >
+            HTTP_SESSION = #{HTTP_SESSION},
+          </otherwise>
+        </choose>
+      </if>
+      <if test="EXEC_START_TIME != null" >
+        EXEC_START_TIME = #{EXEC_START_TIME},
+      </if>
+      <if test="EXEC_END_TIME != null" >
+        EXEC_END_TIME = #{EXEC_END_TIME},
+      </if>
+      <if test="REPORT_EXCEPTION != null" >
+        <choose >
+          <when test="REPORT_EXCEPTION.equals(&quot;&quot;)" >
+            REPORT_EXCEPTION = NULL ,
+          </when>
+          <otherwise >
+            REPORT_EXCEPTION = #{REPORT_EXCEPTION},
+          </otherwise>
+        </choose>
+      </if>
+      <if test="REPORT_ID != null" >
+        <choose >
+          <when test="REPORT_ID == emptyBigDecimalValue" >
+            REPORT_ID = NULL ,
+          </when>
+          <otherwise >
+            REPORT_ID = #{REPORT_ID},
+          </otherwise>
+        </choose>
+      </if>
+      <if test="SOURCE_ID != null" >
+        <choose >
+          <when test="SOURCE_ID == emptyBigDecimalValue" >
+            SOURCE_ID = NULL ,
+          </when>
+          <otherwise >
+            SOURCE_ID = #{SOURCE_ID},
+          </otherwise>
+        </choose>
+      </if>
+      <if test="CONN_ID != null" >
+        <choose >
+          <when test="CONN_ID == emptyBigDecimalValue" >
+            CONN_ID = NULL ,
+          </when>
+          <otherwise >
+            CONN_ID = #{CONN_ID},
+          </otherwise>
+        </choose>
+      </if>
+      <if test="REPORT_SIZE != null" >
+        <choose >
+          <when test="REPORT_SIZE == emptyBigDecimalValue" >
+            REPORT_SIZE = NULL ,
+          </when>
+          <otherwise >
+            REPORT_SIZE = #{REPORT_SIZE},
+          </otherwise>
+        </choose>
+      </if>
+    </set>
+    where REPORT_EXEC_LOG_ID = #{REPORT_EXEC_LOG_ID}
+  </sql>
+  <update id="updateIRP_REPORT_EXEC_LOG" parameterType="com.path.dbmaps.vo.IRP_REPORT_EXEC_LOGVO" >
+    <include refid="sql_updateIRP_REPORT_EXEC_LOG" />
+  </update>
+</mapper>

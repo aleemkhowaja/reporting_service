@@ -1,0 +1,792 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="snapShot" >
+
+  <resultMap type="irp_snapShotsCO" id="retSnapshotListMap">
+    <result column="REPORT_NAME" property="REPORT_NAME" />
+    <result column="APP_NAME" property="APP_NAME" />
+    <result column="SNAPSHOT_ID" property="SNAPSHOT_ID" />
+    <result column="EXECUTION_DATE_STR" property="EXECUTION_DATE_STR" />
+    <result column="REPORT_FORMAT" property="REPORT_FORMAT" />
+    <result column="EXECUTED_BY" property="EXECUTED_BY" />
+    <result column="IS_DB" property="IS_DB" />
+    <result column="FILE_NAME" property="FILE_NAME" />
+    <result column="EXECUTED_BY" property="EXECUTED_BY" />
+    <result column="REPORT_FORMAT_TRANS" property="REPORT_FORMAT_TRANS" />
+    <result column="SNAPSHOT_REF" property="SNAPSHOT_REF" />
+    
+  </resultMap>
+  
+   <resultMap type="irp_snapShotsCO" id="retReportContentMap">
+    <result column="REPORT_CONTENT" property="REPORT_CONTENT" />
+    <result column="SNAPSHOT_ID"	property="SNAPSHOT_ID"/>
+  </resultMap>
+  
+  <resultMap type="irp_snapShotsCO" id="retUserAccessSnpListMap">
+    <result column="REPORT_NAME" property="REPORT_NAME" />
+    <result column="REPORT_FORMAT_TRANS"	property="REPORT_FORMAT_TRANS"/>
+    <result column="BRANCH_CODE"	property="BRANCH_CODE"/>
+  </resultMap>
+  
+  <insert id="insertSnapShots" parameterType="irp_snapShotsCO">
+  	  INSERT INTO IRP_SNAPSHOTS( SNAPSHOT_ID, EXECUTION_DATE, REPORT_FORMAT, REPORT_NAME,EXECUTED_BY,IS_DB,FILE_NAME,COMP_CODE,BRANCH_CODE
+  	   <if test="REPORT_CONTENT != null" >
+  		  ,REPORT_CONTENT
+  	  </if>
+  	  <if test="SNAPSHOT_REF != null and SNAPSHOT_REF != emptyBigDecimalValue" >
+        ,SNAPSHOT_REF
+      </if>
+       <if test="APP_NAME != null" >
+        ,APP_NAME
+      </if>
+  	  )
+  	  VALUES( #{SNAPSHOT_ID}, #{EXECUTION_DATE}, #{REPORT_FORMAT},#{REPORT_NAME},#{EXECUTED_BY},#{IS_DB},#{FILE_NAME},#{COMP_CODE},#{BRANCH_CODE}
+  	   <if test="REPORT_CONTENT != null" >
+  	  	,#{REPORT_CONTENT}
+  	  </if>
+  	  <if test="SNAPSHOT_REF != null and SNAPSHOT_REF != emptyBigDecimalValue" >
+        ,#{SNAPSHOT_REF}
+      </if>
+       <if test="APP_NAME != null" >
+        ,#{APP_NAME}
+      </if>
+  	  )
+  </insert>
+  
+  <sql id="retSnapshotListSql">
+  		<include refid="snapShotExt.retSnapshotListSql"/>
+  </sql>
+  
+  <select id="retSnapshotList" resultMap="retSnapshotListMap" parameterType="irp_snapShotsSC">
+  	<include refid="servicesCommon.commonGridWrpBefFlip"/>
+ 	<include refid="retSnapshotListSql"/>
+	<include refid="servicesCommon.commonGridWrpAftFlip"/>
+	<include refid="servicesCommon.commmonGridWrpFlipClose"/>
+  </select>
+  
+   <select id="retSnapshotListCount" resultType="int" parameterType="irp_snapShotsSC"> 
+	<include refid="servicesCommon.commonGridWrpBefCnt"/>
+	<include refid="retSnapshotListSql"/>
+	<include refid="servicesCommon.commonGridWrpAftCnt"/>
+	<include refid="servicesCommon.commonGridCountWrpClose"/>
+  </select>
+  
+  
+  <sql id="retUserAccessSnpListSql">
+	SELECT S.REPORT_NAME,
+       S.REPORT_FORMAT,
+       S.BRANCH_CODE,
+       (SELECT VALUE_DESC
+          FROM SYS_PARAM_LOV_TRANS
+         WHERE VALUE_CODE = S.REPORT_FORMAT
+           AND LOV_TYPE_ID = #{FILE_FORMAT_LOV_TYPE_ID}
+           AND LANG_CODE = #{LANG_CODE}) AS REPORT_FORMAT_TRANS
+  FROM IRP_SNAPSHOTS S
+ WHERE S.EXECUTED_BY = #{EXECUTED_BY}
+   AND S.COMP_CODE = #{compCode}  
+  </sql>
+  
+  <select id="retUserAccessSnpList" resultMap="retUserAccessSnpListMap" parameterType="irp_snapShotsSC">
+  	<include refid="servicesCommon.commonGridWrpBefFlip"/>
+ 	<include refid="retUserAccessSnpListSql"/>
+	<include refid="servicesCommon.commonGridWrpAftFlip"/>
+	<include refid="servicesCommon.commmonGridWrpFlipClose"/>
+  </select>
+  
+   <select id="retUserAccessSnpCount" resultType="int" parameterType="irp_snapShotsSC"> 
+	<include refid="servicesCommon.commonGridWrpBefCnt"/>
+	<include refid="retUserAccessSnpListSql"/>
+	<include refid="servicesCommon.commonGridWrpAftCnt"/>
+	<include refid="servicesCommon.commonGridCountWrpClose"/>
+  </select>
+  
+  <select id="retReportContent" parameterType="irp_snapShotsSC" resultMap="retReportContentMap">
+  
+    <if test="IS_DB == 1">
+  		SELECT SNAPSHOT_ID,REPORT_CONTENT FROM IRP_SNAPSHOTS WHERE SNAPSHOT_ID=#{SNAPSHOT_ID}
+  	</if>
+  	 <if test="IS_DB == 2">
+  		SELECT SNAPSHOT_ID,REPORT_CONTENT FROM IRP_SNAPSHOTS_ARCHIVE WHERE SNAPSHOT_ID=#{SNAPSHOT_ID}
+  	</if>
+  	
+  </select>
+  
+  
+   <resultMap type="irp_snapShotsCO" id="retRepoSnapshotForArchiveListMap">
+    <result column="SNAPSHOT_ID" property="SNAPSHOT_ID" />
+    <result column="EXECUTION_DATE_STR" property="EXECUTION_DATE_STR" />
+    <result column="EXECUTION_DATE" property="EXECUTION_DATE" />
+    <result column="REPORT_FORMAT" property="REPORT_FORMAT" />
+    <result column="EXECUTED_BY" property="EXECUTED_BY" />
+    <result column="IS_DB" property="IS_DB" />
+    <result column="FILE_NAME" property="FILE_NAME" />
+    <result column="REPORT_CONTENT" property="REPORT_CONTENT" />
+    <result column="REPORT_NAME" property="REPORT_NAME" />
+    <result column="SNAPSHOT_REF" property="SNAPSHOT_REF" />
+  </resultMap>
+  
+    <sql id="retRepoSnapshotForArchiveListSql">
+    
+    
+     <choose>
+ 		<when test="isSybase == 0">
+	  		 SELECT S.SNAPSHOT_ID,
+	  		  TO_CHAR(S.EXECUTION_DATE, 'DD-MM-YYYY HH-MI-SS AM') AS EXECUTION_DATE_STR,
+	  		  trunc(S.EXECUTION_DATE) AS EXECUTION_DATE,
+	          S.REPORT_FORMAT,
+	          S.EXECUTED_BY,
+	          S.IS_DB,
+	          S.FILE_NAME,
+	          S.REPORT_CONTENT,
+	          S.REPORT_NAME,
+	          S.SNAPSHOT_REF
+	   		 FROM IRP_SNAPSHOTS S
+	   		 WHERE IS_DB=1
+	   		 <if test="startRangeDate != null and endRangeDate != null">
+	   		 	AND TRUNC(EXECUTION_DATE) between TRUNC(#{startRangeDate}) and TRUNC(#{endRangeDate}) 
+	   		 </if>
+	   		 <if test="startRangeDate == null and endRangeDate == null">
+	   		 	<if test="selDate == 1">
+	   		 		AND TRUNC(EXECUTION_DATE)>= (SELECT TRUNC (SYSDATE -7) FROM DUAL)
+	   		 	</if>
+	   		 
+	   		 	<if test="selDate == 2">
+	   		 		AND TRUNC(EXECUTION_DATE)>= (SELECT TRUNC (SYSDATE -15) FROM DUAL)
+	   		 	</if>
+	   		 	
+	   		 	<if test="selDate == 3">
+	   		 		AND TRUNC(EXECUTION_DATE)>= (SELECT TRUNC (SYSDATE -30) FROM DUAL)
+	   		 	</if>
+	   		 </if>
+	   		<if test="userList != null">
+	   			AND S.EXECUTED_BY IN
+	   			
+	   			<foreach item="item" index="index" collection="userList"
+					open="(" separator="," close=")">
+					#{item}
+				</foreach>
+	   		</if> 
+	   		
+	   		<choose>
+	   			 <when test="reportSnapshot == true and reportScheduler == true">
+	   			 	AND S.SNAPSHOT_REF IN(1,0)	
+	   			 </when>
+	   			 <when test="reportSnapshot == true and reportScheduler == false">
+	   			 	AND S.SNAPSHOT_REF = 0	
+	   			 </when>
+	   			 <when test="reportSnapshot == false and reportScheduler == true">
+	   			 	AND S.SNAPSHOT_REF = 1	
+	   			 </when>
+	   			 <otherwise>
+	   			 		AND S.SNAPSHOT_REF = 1111	
+	   			 </otherwise>
+	   		</choose>
+   		</when>
+   		
+   		
+   		
+   		 <otherwise>
+   		 
+   		 	  SELECT S.SNAPSHOT_ID,
+	  		  CONVERT(CHAR(10),S.EXECUTION_DATE,103) + ' ' + convert(CHAR(8),S.EXECUTION_DATE,19) + ' ' + right(convert(CHAR(14),S.EXECUTION_DATE,19),2)  AS EXECUTION_DATE_STR,
+	  		  CONVERT(DATE,S.EXECUTION_DATE,103) AS EXECUTION_DATE,
+	          S.REPORT_FORMAT,
+	          S.EXECUTED_BY,
+	          S.IS_DB,
+	          S.FILE_NAME,
+	          S.REPORT_CONTENT,
+	          S.REPORT_NAME,
+	          S.SNAPSHOT_REF
+	   		 FROM IRP_SNAPSHOTS S
+	   		 WHERE IS_DB=1
+	   		 <if test="startRangeDate != null and endRangeDate != null">
+	   		 	AND CONVERT(DATE,EXECUTION_DATE,103) between CONVERT(DATETIME,#{startRangeDate},103) and  CONVERT(DATETIME,#{endRangeDate},103) 
+	   		 </if>
+	   		 <if test="startRangeDate == null and endRangeDate == null">
+	   		 	<if test="selDate == 1">
+	   		 		AND CONVERT(DATE,EXECUTION_DATE,103)>= (select convert(date, dateadd(dd, -7, getdate()),103) from DUMMY1)
+	   		 	</if>
+	   		 
+	   		 	<if test="selDate == 2">
+	   		 		AND CONVERT(DATE,EXECUTION_DATE,103)>= (select convert(date, dateadd(dd, -15, getdate()),103) from DUMMY1)
+	   		 	</if>
+	   		 	
+	   		 	<if test="selDate == 3">
+	   		 		AND CONVERT(DATE,EXECUTION_DATE,103)>= (select convert(date, dateadd(dd, -30, getdate()),103) from DUMMY1)
+	   		 	</if>
+	   		 </if>
+	   		<if test="userList != null">
+	   			AND S.EXECUTED_BY IN
+	   			
+	   			<foreach item="item" index="index" collection="userList"
+					open="(" separator="," close=")">
+					#{item}
+				</foreach>
+	   		</if> 
+	   		
+	   		<choose>
+	   			 <when test="reportSnapshot == true and reportScheduler == true">
+	   			 	AND S.SNAPSHOT_REF IN(1,0)	
+	   			 </when>
+	   			 <when test="reportSnapshot == true and reportScheduler == false">
+	   			 	AND S.SNAPSHOT_REF = 0	
+	   			 </when>
+	   			 <when test="reportSnapshot == false and reportScheduler == true">
+	   			 	AND S.SNAPSHOT_REF = 1	
+	   			 </when>
+	   			 <otherwise>
+	   			 		AND S.SNAPSHOT_REF = 1111	
+	   			 </otherwise>
+	   		</choose>
+   		 	
+   		 </otherwise>
+   	</choose>	
+  
+   		 
+  </sql> 		 
+  
+   <select id="retRepoSnapshotForArchiveList" resultMap="retRepoSnapshotForArchiveListMap" parameterType="archiveCO">
+ 	<include refid="retRepoSnapshotForArchiveListSql"/>
+  </select>
+
+
+   <resultMap type="irp_snapShotsCO" id="retSnapshotIdsForArchiveListMap">
+    <result column="SNAPSHOT_ID" property="SNAPSHOT_ID" />
+  </resultMap>
+  
+    <sql id="retSnapshotIdsForArchiveListSql">
+    
+     <choose>
+ 		<when test="isSybase == 0">
+	  		 SELECT S.SNAPSHOT_ID
+	   		 FROM IRP_SNAPSHOTS S
+	   		 WHERE IS_DB=1
+	   		 <if test="startRangeDate != null and endRangeDate != null">
+	   		 	AND TRUNC(EXECUTION_DATE) between TRUNC(#{startRangeDate}) and TRUNC(#{endRangeDate}) 
+	   		 </if>
+	   		 <if test="startRangeDate == null and endRangeDate == null">
+	   		 	<if test="selDate == 1">
+	   		 		AND TRUNC(EXECUTION_DATE)>= (SELECT TRUNC (SYSDATE -7) FROM DUAL)
+	   		 	</if>
+	   		 
+	   		 	<if test="selDate == 2">
+	   		 		AND TRUNC(EXECUTION_DATE)>= (SELECT TRUNC (SYSDATE -15) FROM DUAL)
+	   		 	</if>
+	   		 	
+	   		 	<if test="selDate == 3">
+	   		 		AND TRUNC(EXECUTION_DATE)>= (SELECT TRUNC (SYSDATE -30) FROM DUAL)
+	   		 	</if>
+	   		 </if>
+	   		<if test="userList != null">
+	   			AND S.EXECUTED_BY IN
+	   			
+	   			<foreach item="item" index="index" collection="userList"
+					open="(" separator="," close=")">
+					#{item}
+				</foreach>
+	   		</if> 
+	   		
+	   		<choose>
+	   			 <when test="reportSnapshot == true and reportScheduler == true">
+	   			 	AND S.SNAPSHOT_REF IN(1,0)	
+	   			 </when>
+	   			 <when test="reportSnapshot == true and reportScheduler == false">
+	   			 	AND S.SNAPSHOT_REF = 0	
+	   			 </when>
+	   			 <when test="reportSnapshot == false and reportScheduler == true">
+	   			 	AND S.SNAPSHOT_REF = 1	
+	   			 </when>
+	   			 <otherwise>
+	   			 		AND S.SNAPSHOT_REF = 1111	
+	   			 </otherwise>
+	   		</choose>
+	   			AND S.REPORT_CONTENT IS NOT NULL
+   		</when>
+   		
+   		
+   		
+   		 <otherwise>
+   		 
+   		 	  SELECT S.SNAPSHOT_ID
+	   		 FROM IRP_SNAPSHOTS S
+	   		 WHERE IS_DB=1
+	   		 <if test="startRangeDate != null and endRangeDate != null">
+	   		 	AND CONVERT(DATE,EXECUTION_DATE,103) between CONVERT(DATETIME,#{startRangeDate},103) and  CONVERT(DATETIME,#{endRangeDate},103) 
+	   		 </if>
+	   		 <if test="startRangeDate == null and endRangeDate == null">
+	   		 	<if test="selDate == 1">
+	   		 		AND CONVERT(DATE,EXECUTION_DATE,103)>= (select convert(date, dateadd(dd, -7, getdate()),103) from DUMMY1)
+	   		 	</if>
+	   		 
+	   		 	<if test="selDate == 2">
+	   		 		AND CONVERT(DATE,EXECUTION_DATE,103)>= (select convert(date, dateadd(dd, -15, getdate()),103) from DUMMY1)
+	   		 	</if>
+	   		 	
+	   		 	<if test="selDate == 3">
+	   		 		AND CONVERT(DATE,EXECUTION_DATE,103)>= (select convert(date, dateadd(dd, -30, getdate()),103) from DUMMY1)
+	   		 	</if>
+	   		 </if>
+	   		<if test="userList != null">
+	   			AND S.EXECUTED_BY IN
+	   			
+	   			<foreach item="item" index="index" collection="userList"
+					open="(" separator="," close=")">
+					#{item}
+				</foreach>
+	   		</if> 
+	   		
+	   		<choose>
+	   			 <when test="reportSnapshot == true and reportScheduler == true">
+	   			 	AND S.SNAPSHOT_REF IN(1,0)	
+	   			 </when>
+	   			 <when test="reportSnapshot == true and reportScheduler == false">
+	   			 	AND S.SNAPSHOT_REF = 0	
+	   			 </when>
+	   			 <when test="reportSnapshot == false and reportScheduler == true">
+	   			 	AND S.SNAPSHOT_REF = 1	
+	   			 </when>
+	   			 <otherwise>
+	   			 		AND S.SNAPSHOT_REF = 1111	
+	   			 </otherwise>
+	   		</choose>
+   		 	AND S.REPORT_CONTENT IS NOT NULL
+   		 </otherwise>
+   	</choose>	
+  
+   		 
+  </sql> 		 
+  
+   <select id="retSnapshotIdsForArchiveList" resultMap="retSnapshotIdsForArchiveListMap" parameterType="archiveCO">
+ 	<include refid="retSnapshotIdsForArchiveListSql"/>
+  </select>
+
+   <resultMap type="irp_snapShotsCO" id="retSnapshotReportForArchiveListMap">
+    <result column="SNAPSHOT_ID" property="SNAPSHOT_ID" />
+    <result column="EXECUTION_DATE_STR" property="EXECUTION_DATE_STR" />
+    <result column="EXECUTION_DATE" property="EXECUTION_DATE" />
+    <result column="REPORT_FORMAT" property="REPORT_FORMAT" />
+    <result column="EXECUTED_BY" property="EXECUTED_BY" />
+    <result column="IS_DB" property="IS_DB" />
+    <result column="FILE_NAME" property="FILE_NAME" />
+    <result column="REPORT_CONTENT" property="REPORT_CONTENT" />
+    <result column="REPORT_NAME" property="REPORT_NAME" />
+    <result column="SNAPSHOT_REF" property="SNAPSHOT_REF" />
+  </resultMap>
+  
+    <sql id="retSnapshotReportForArchiveListSql">
+    
+     <choose>
+ 		<when test="isSybase == 0">
+	  		 SELECT S.SNAPSHOT_ID,
+	  		  TO_CHAR(S.EXECUTION_DATE, 'DD-MM-YYYY HH-MI-SS AM') AS EXECUTION_DATE_STR,
+	  		  trunc(S.EXECUTION_DATE) AS EXECUTION_DATE,
+	          S.REPORT_FORMAT,
+	          S.EXECUTED_BY,
+	          S.IS_DB,
+	          S.FILE_NAME,
+	          S.REPORT_CONTENT,
+	          S.REPORT_NAME,
+	          S.SNAPSHOT_REF
+	   		 FROM IRP_SNAPSHOTS S
+	   		 WHERE S.SNAPSHOT_ID=#{irpSnapshotsVO.SNAPSHOT_ID}
+   		</when>
+   		
+   		<otherwise>
+   		 
+   		 	  SELECT S.SNAPSHOT_ID,
+	  		  CONVERT(CHAR(10),S.EXECUTION_DATE,103) + ' ' + convert(CHAR(8),S.EXECUTION_DATE,19) + ' ' + right(convert(CHAR(14),S.EXECUTION_DATE,19),2)  AS EXECUTION_DATE_STR,
+	  		  CONVERT(DATE,S.EXECUTION_DATE,103) AS EXECUTION_DATE,
+	          S.REPORT_FORMAT,
+	          S.EXECUTED_BY,
+	          S.IS_DB,
+	          S.FILE_NAME,
+	          S.REPORT_CONTENT,
+	          S.REPORT_NAME,
+	          S.SNAPSHOT_REF
+	   		 FROM IRP_SNAPSHOTS S
+	   		 WHERE S.SNAPSHOT_ID=#{irpSnapshotsVO.SNAPSHOT_ID}
+   		 	
+   		 </otherwise>
+   	</choose>	
+  
+   		 
+  </sql> 		 
+  
+   <select id="retSnapshotReportForArchiveList" resultMap="retSnapshotReportForArchiveListMap" parameterType="archiveCO">
+ 	<include refid="retSnapshotReportForArchiveListSql"/>
+  </select>
+
+  <insert id="insertSnapshotForArchiveList" parameterType="irp_snapShotsCO">
+  	  INSERT INTO IRP_SNAPSHOTS_ARCHIVE(SNAPSHOT_ID,
+                                    EXECUTION_DATE,
+                                    REPORT_NAME,
+                                    REPORT_FORMAT,
+                                    EXECUTED_BY,
+                                    FILE_NAME,
+                                    IS_DB,
+                                    REPORT_CONTENT,
+                                    SNAPSHOT_REF
+                                    )
+                             VALUES( #{SNAPSHOT_ID}, 
+                                     #{EXECUTION_DATE}, 
+                                     #{REPORT_NAME},
+                                     #{REPORT_FORMAT},
+                                     #{EXECUTED_BY},
+                                     #{FILE_NAME},
+                                     #{IS_DB},
+                                     #{REPORT_CONTENT},
+                                     #{SNAPSHOT_REF}
+                                     )
+                                          
+  </insert> 
+  
+  <update id="updateSnapshotForArchiveList" parameterType="irp_snapShotsCO">
+      UPDATE IRP_SNAPSHOTS
+         SET IS_DB =2
+       		,REPORT_CONTENT=null
+     WHERE SNAPSHOT_ID =  #{SNAPSHOT_ID}   
+  </update>
+
+  <update id="updateArchiveOtherDBList" parameterType="archiveCO">
+      UPDATE IRP_SNAPSHOTS
+         SET IS_DB =3
+       	  	,CONN_ID = #{connection}
+       	  	,REPORT_CONTENT=null
+     WHERE SNAPSHOT_ID =  #{irpSnapshotsVO.SNAPSHOT_ID}   
+  </update>
+
+   <update id="updateArchiveRepoList" parameterType="archiveCO">
+      UPDATE IRP_SNAPSHOTS
+         SET IS_DB =0
+       	  	,FILE_NAME = #{irpSnapshotsVO.FILE_NAME} 
+       	  	,REPORT_CONTENT=null
+     WHERE SNAPSHOT_ID = #{irpSnapshotsVO.SNAPSHOT_ID}   
+  </update>
+ 
+   <insert id="insertSnapshotArchiveLogsList" parameterType="irp_snapShotsCO">
+   
+      <choose>
+ 		<when test="isSybase == 0">
+	  	  INSERT INTO IRP_SNAPSHOTS_LOGS(SNAPSHOT_ID,
+	                                    ARCHIVE_DATE,
+	                                    STATUS
+	                                    )
+	                             VALUES( #{SNAPSHOT_ID}, 
+	                                     sysdate, 
+	                                     #{status} 
+	                                     )
+	     </when>
+	     <otherwise>
+    INSERT INTO IRP_SNAPSHOTS_LOGS(SNAPSHOT_ID,
+                                   ARCHIVE_DATE,
+                                   STATUS
+                                   )
+                            VALUES( #{SNAPSHOT_ID}, 
+                                    getdate(), 
+                                    #{status} 
+                                    )
+	     </otherwise>
+	  </choose>                                
+                                          
+  </insert>  
+ 
+ 
+  <resultMap type="irp_snapshots_logsCO" id="retArchiveLogsListMap">
+    <result column="SNAPSHOT_ID" property="irpSnapshotsLogsVO.SNAPSHOT_ID" />
+    <result column="ARCHIVE_DATE" property="irpSnapshotsLogsVO.ARCHIVE_DATE" />
+    <result column="STATUS" property="irpSnapshotsLogsVO.STATUS" />
+    <result column="REPORT_NAME" property="irpSnapShotsCO.REPORT_NAME" />
+    <result column="EXECUTED_BY" property="irpSnapShotsCO.EXECUTED_BY" />
+    <result column="EXECUTION_DATE_STR" property="irpSnapShotsCO.EXECUTION_DATE_STR" />
+  </resultMap>
+ 
+ <sql id="retArchiveLogsListSql">
+
+	  SELECT  L.SNAPSHOT_ID
+	         ,L.ARCHIVE_DATE
+	  	     ,L.STATUS
+	         ,S.REPORT_NAME
+	         ,S.EXECUTED_BY
+	    <choose>
+ 			<when test="isSybase == 0">
+		         ,TO_CHAR(S.EXECUTION_DATE, 'DD-MM-YYYY HH-MI-SS AM') AS EXECUTION_DATE_STR
+	        </when>
+	    	<otherwise>
+	    	  	,
+				<choose> 
+			  <when test="isSQLServer == 1">
+	             CONVERT(varchar(10),S.EXECUTION_DATE, 101) + left(right(convert(varchar(32),S.EXECUTION_DATE,100),8),6) + ' ' + right(convert(varchar(32),S.EXECUTION_DATE,100),2) AS EXECUTION_DATE_STR
+		      </when>
+			   <otherwise>
+			      CONVERT(CHAR(10),S.EXECUTION_DATE,103) + ' ' + convert(CHAR(8),S.EXECUTION_DATE,19) + ' ' + right(convert(CHAR(14),S.EXECUTION_DATE,19),2)  AS EXECUTION_DATE_STR
+			   </otherwise>
+			</choose>
+	    	</otherwise>
+	    </choose>	     
+		FROM  IRP_SNAPSHOTS_LOGS L,IRP_SNAPSHOTS S
+		WHERE L.SNAPSHOT_ID = S.SNAPSHOT_ID 	
+	 	
+ </sql>
+  
+  
+  <select id="retArchiveLogsList" resultMap="retArchiveLogsListMap" parameterType="archiveSC">
+  	<include refid="servicesCommon.commonGridWrpBefFlip"/>
+ 	<include refid="retArchiveLogsListSql"/>
+	<include refid="servicesCommon.commonGridWrpAftFlip"/>
+	<include refid="servicesCommon.commmonGridWrpFlipClose"/>
+  </select>
+  
+   <select id="retArchiveLogsListCount" resultType="int" parameterType="archiveSC"> 
+	<include refid="servicesCommon.commonGridWrpBefCnt"/>
+	<include refid="retArchiveLogsListSql"/>
+	<include refid="servicesCommon.commonGridWrpAftCnt"/>
+	<include refid="servicesCommon.commonGridCountWrpClose"/>
+  </select>
+  
+  
+  
+  
+  
+ 
+ 
+  <resultMap type="archiveCO" id="retUserListMap">
+    <result column="userId" property="userId" />
+  </resultMap>
+ 
+ <sql id="retUserListSql">
+ 	
+ 	SELECT DISTINCT REP_INFO.USERID AS userId
+	  FROM REP_INFO
+     WHERE USERID IS NOT NULL
+
+	UNION
+
+	SELECT DISTINCT REP_INFO_HST.USERID AS userId
+      FROM REP_INFO_HST
+ 	 WHERE USERID IS NOT NULL
+ 	
+ </sql>
+  
+  
+  <select id="retUserList" resultMap="retUserListMap" parameterType="archiveSC">
+  	<include refid="servicesCommon.commonGridWrpBefFlip"/>
+ 	<include refid="retUserListSql"/>
+	<include refid="servicesCommon.commonGridWrpAftFlip"/>
+	<include refid="servicesCommon.commmonGridWrpFlipClose"/>
+  </select>
+  
+   <select id="retUserListCount" resultType="int" parameterType="archiveSC"> 
+	<include refid="servicesCommon.commonGridWrpBefCnt"/>
+	<include refid="retUserListSql"/>
+	<include refid="servicesCommon.commonGridWrpAftCnt"/>
+	<include refid="servicesCommon.commonGridCountWrpClose"/>
+  </select>
+  
+  
+  
+  
+  
+  <resultMap type="userAccessCO" id="retUserAccessListMap">
+    <result column="USER_ID" property="USER_ID" />
+  </resultMap>
+ 
+ <sql id="retUserAccessListSql">
+
+	SELECT USER_ID 
+	FROM USR
+ 	
+ </sql>
+  
+  
+  <select id="retUserAccessList" resultMap="retViewedUserListMap" parameterType="usrSC">
+  	<include refid="servicesCommon.commonGridWrpBefFlip"/>
+ 	<include refid="retUserAccessListSql"/>
+	<include refid="servicesCommon.commonGridWrpAftFlip"/>
+	<include refid="servicesCommon.commmonGridWrpFlipClose"/>
+  </select>
+  
+   <select id="retUserAccessListCount" resultType="int" parameterType="usrSC"> 
+	<include refid="servicesCommon.commonGridWrpBefCnt"/>
+	<include refid="retUserAccessListSql"/>
+	<include refid="servicesCommon.commonGridWrpAftCnt"/>
+	<include refid="servicesCommon.commonGridCountWrpClose"/>
+  </select>
+  
+  
+  
+    <resultMap type="userAccessCO" id="retViewedUserListMap">
+    <result column="USER_ID" property="USER_ID" />
+  </resultMap>
+ 
+ <sql id="retViewedUserListSql">
+
+ 			SELECT USER_ID AS USER_ID
+		  		  ,0 AS intCheckBox
+	  		FROM USR
+	  	<if test="userId != null"> 
+	  		WHERE USER_ID  != #{userId}
+		</if>
+ </sql>
+  
+  
+  <select id="retViewedUserList" resultMap="retViewedUserListMap" parameterType="usrSC">
+  	<include refid="servicesCommon.commonGridWrpBefFlip"/>
+ 	<include refid="retViewedUserListSql"/>
+	<include refid="servicesCommon.commonGridWrpAftFlip"/>
+	<include refid="servicesCommon.commmonGridWrpFlipClose"/>
+  </select>
+  
+   <select id="retViewedUserListCount" resultType="int" parameterType="usrSC"> 
+	<include refid="servicesCommon.commonGridWrpBefCnt"/>
+	<include refid="retUserAccessListSql"/>
+	<include refid="servicesCommon.commonGridWrpAftCnt"/>
+	<include refid="servicesCommon.commonGridCountWrpClose"/>
+  </select>
+  
+  
+  
+   <resultMap type="userAccessCO" id="retAllViewedUserListMap">
+    <result column="USER_ID" property="USER_ID" />
+  </resultMap>
+ 
+ <sql id="retAllViewedUserListMapSql">
+
+	SELECT US.USERID_VIEWED AS USER_ID
+	       ,1 AS intCheckBox
+	       ,BRANCH_CODE AS EMP_BRANCH_CODE
+	       ,1 AS branchCheckBox
+	       ,(SELECT MAX(R.DATE_UPDATED) FROM  REP_USERS R WHERE USERID_VIEWER =  #{user_id})AS DATE_UPDATED
+	FROM REP_USERS US
+	WHERE US.USERID_VIEWER =  #{user_id}
+
+ </sql>
+  
+  
+  <select id="retAllViewedUserList" resultMap="retAllViewedUserListMap" parameterType="usrSC">
+ 	<include refid="retAllViewedUserListMapSql"/>
+  </select>
+  
+  
+   <resultMap type="userAccessCO" id="retSelectedBranchListMap">
+    <result column="EMP_BRANCH_CODE" property="EMP_BRANCH_CODE" />
+  </resultMap>
+ 
+ <sql id="retSelectedBranchListSql">
+
+	SELECT distinct BRANCH_CODE AS EMP_BRANCH_CODE
+	       ,1 AS branchCheckBox  
+	FROM REP_USERS US
+	WHERE US.USERID_VIEWER =  #{user_id}
+
+ </sql>
+  
+  
+  <select id="retSelectedBranchList" resultMap="retSelectedBranchListMap" parameterType="usrSC">
+ 	<include refid="retSelectedBranchListSql"/>
+  </select>
+   
+
+  <delete id="deleteUnusedBranch" parameterType="userAccessCO">
+	<choose>
+ 		<when test="isSybase == 0">
+  		 
+  		 DELETE FROM REP_USERS
+		  WHERE REP_USERS.USERID_VIEWER = #{USER_ID}
+		    AND REP_USERS.COMP_CODE = #{EMP_COMP_CODE}
+		    AND REP_USERS.USERID_VIEWER NOT IN
+		       (SELECT (S_LOC.USER_ID)
+		          FROM S_LOC
+		         WHERE S_LOC.COMP_CODE = REP_USERS.COMP_CODE
+		           AND S_LOC.BRANCH_CODE = REP_USERS.BRANCH_CODE)
+		  		 
+  	 	</when>
+  	 	<otherwise>
+  	 	
+  	 	DELETE FROM REP_USERS
+		 WHERE REP_USERS.USERID_VIEWER = #{USER_ID}
+		   AND REP_USERS.COMP_CODE = #{EMP_COMP_CODE}
+		   AND REP_USERS.USERID_VIEWER NOT IN
+		       (SELECT S_LOC.USER_ID
+		          FROM S_LOC
+		         WHERE S_LOC.COMP_CODE = REP_USERS.COMP_CODE
+		           AND S_LOC.BRANCH_CODE = REP_USERS.BRANCH_CODE)
+  	 	
+  	 	
+  	 	</otherwise>
+  	</choose>
+  </delete> 
+
+ <select id="retEodViewer" resultType="BigDecimal"> 
+	SELECT EOD_VIEWER
+	FROM PTH_CTRL1
+ </select>
+
+  <insert id="deleteUserAccess" parameterType="userAccessCO">
+  	 DELETE FROM REP_USERS  WHERE USERID_VIEWER = #{viewerUserId}
+  </insert>  
+  
+ <insert id="saveUserAccess" parameterType="userAccessCO">
+ 	<choose>
+ 		<when test="isSybase == 0">
+ 		INSERT INTO REP_USERS (USERID_VIEWER,USERID_VIEWED,COMP_CODE,BRANCH_CODE,DATE_UPDATED)
+	 	VALUES (#{viewerUserId},#{USER_ID},#{EMP_COMP_CODE},#{EMP_BRANCH_CODE}, sysdate)
+ 		</when>
+ 	
+ 		<otherwise>
+ 		INSERT INTO REP_USERS (USERID_VIEWER,USERID_VIEWED,COMP_CODE,BRANCH_CODE,DATE_UPDATED)
+	 	VALUES (#{viewerUserId},#{USER_ID},#{EMP_COMP_CODE},#{EMP_BRANCH_CODE}, GETDATE())
+ 		</otherwise>
+ 	</choose>
+ 
+
+  </insert>
+  
+  
+ 
+ 
+  <resultMap type="userAccessCO" id="retBranchGridListMap">
+    <result column="EMP_BRANCH_CODE" property="EMP_BRANCH_CODE" />
+    <result column="BRANCH_DESC" property="BRANCH_DESC" />
+  </resultMap>
+ 
+ <sql id="retBranchGridListSql">
+	 
+	SELECT DISTINCT (S.BRANCH_CODE )EMP_BRANCH_CODE  
+			 <choose>
+              <when test="isRTLDir == 1">                                 
+                   ,B.BRIEF_DESC_ARAB BRANCH_DESC
+              </when>
+            <otherwise>
+                  ,B.BRIEF_DESC_ENG BRANCH_DESC 
+             </otherwise>
+             </choose>
+				
+	  FROM S_LOC S,BRANCHES B
+	 WHERE S.BRANCH_CODE =B.BRANCH_CODE
+   	   AND S.COMP_CODE = #{compCode}
+       AND B.COMP_CODE = #{compCode}
+	 
+	  <if test="userId != null"> 
+	   AND USER_ID = #{userId}
+	</if>
+	
+ </sql>
+  
+  
+  <select id="retBranchGridList" resultMap="retBranchGridListMap" parameterType="usrSC">
+  	<include refid="servicesCommon.commonGridWrpBefFlip"/>
+ 	<include refid="retBranchGridListSql"/>
+	<include refid="servicesCommon.commonGridWrpAftFlip"/>
+	<include refid="servicesCommon.commmonGridWrpFlipClose"/>
+  </select>
+  
+   <select id="retBranchGridListCount" resultType="int" parameterType="usrSC"> 
+	<include refid="servicesCommon.commonGridWrpBefCnt"/>
+	<include refid="retBranchGridListSql"/>
+	<include refid="servicesCommon.commonGridWrpAftCnt"/>
+	<include refid="servicesCommon.commonGridCountWrpClose"/>
+  </select>
+  
+   
+  
+</mapper>

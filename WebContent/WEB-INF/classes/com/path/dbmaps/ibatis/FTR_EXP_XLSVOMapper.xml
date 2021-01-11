@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="FTR_EXP_XLS" >
+  <resultMap id="BaseResultMap" type="com.path.dbmaps.vo.FTR_EXP_XLSVO" >
+    <id column="COMP_CODE" property="COMP_CODE" />
+    <id column="REP_REF" property="REP_REF" />
+    <result column="XLS_PATH" property="XLS_PATH" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    COMP_CODE, REP_REF, XLS_PATH
+  </sql>
+  <select id="selectFTR_EXP_XLS" resultMap="BaseResultMap" parameterType="com.path.dbmaps.vo.FTR_EXP_XLSVO" >
+    select 
+    <include refid="Base_Column_List" />
+    from FTR_EXP_XLS
+    where COMP_CODE = #{COMP_CODE}
+      and REP_REF = #{REP_REF}
+  </select>
+  <delete id="deleteFTR_EXP_XLS" parameterType="com.path.dbmaps.vo.FTR_EXP_XLSVO" >
+    delete from FTR_EXP_XLS
+    where COMP_CODE = #{COMP_CODE}
+      and REP_REF = #{REP_REF}
+  </delete>
+  <insert id="insertFTR_EXP_XLS" parameterType="com.path.dbmaps.vo.FTR_EXP_XLSVO" >
+    insert into FTR_EXP_XLS
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="COMP_CODE != null and COMP_CODE != emptyBigDecimalValue" >
+        COMP_CODE,
+      </if>
+      <if test="REP_REF != null" >
+        REP_REF,
+      </if>
+      <if test="XLS_PATH != null" >
+        XLS_PATH,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="COMP_CODE != null and COMP_CODE != emptyBigDecimalValue" >
+        #{COMP_CODE},
+      </if>
+      <if test="REP_REF != null" >
+        #{REP_REF},
+      </if>
+      <if test="XLS_PATH != null" >
+        #{XLS_PATH},
+      </if>
+    </trim>
+  </insert>
+  <sql id="sql_updateFTR_EXP_XLS" >
+    update FTR_EXP_XLS
+    <set >
+      <if test="XLS_PATH != null" >
+        XLS_PATH = #{XLS_PATH},
+      </if>
+    </set>
+    where COMP_CODE = #{COMP_CODE}
+      and REP_REF = #{REP_REF}
+  </sql>
+  <update id="updateFTR_EXP_XLS" parameterType="com.path.dbmaps.vo.FTR_EXP_XLSVO" >
+    <include refid="sql_updateFTR_EXP_XLS" />
+  </update>
+</mapper>

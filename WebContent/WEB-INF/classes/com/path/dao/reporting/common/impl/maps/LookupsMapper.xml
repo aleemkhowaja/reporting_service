@@ -1,0 +1,374 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="Lookups" >
+ 
+ <resultMap type="commonDetailsVO"  id="getDependencyMap">     
+    <id column="CODE" property="CODE" />
+    <result column="BRIEF_DESC_ENG" property="BRIEF_DESC_ENG" />
+    <result column="LONG_DESC_ENG" property="LONG_DESC_ENG" />
+    <result column="BRIEF_DESC_ARAB" property="BRIEF_DESC_ARAB" />
+    <result column="LONG_DESC_ARAB" property="LONG_DESC_ARAB" />
+</resultMap>
+
+  <resultMap id="critTypesMap" type="irp_criteria_typeVO" >
+    <id column="CRITERIA_TYPE_CODE" property="CRITERIA_TYPE_CODE" />
+    <result column="CRITERIA_TYPE_DESCRIPTION" property="CRITERIA_TYPE_DESCRIPTION" />
+    <result column="COMPONENT" property="COMPONENT" />
+    <result column="LANG_CODE" property="LANG_CODE" />
+  </resultMap>
+  
+  <resultMap id="critDtlsMap" type="irp_crit_dtls_lookupVO" >
+    <id column="CODE" property="CODE" />
+    <id column="CRITERIA_TYPE_CODE" property="CRITERIA_TYPE_CODE" />
+    <result column="DESCRIPTION" property="DESCRIPTION" />
+    <result column="LANG_CODE" property="LANG_CODE" />
+  </resultMap>
+  
+  <resultMap id="paramLovTypeMap" type="sys_param_lov_typeVO" >
+    <id column="LOV_TYPE_ID" property="LOV_TYPE_ID" />
+    <result column="LOV_TYPE_DESCRIPTION" property="LOV_TYPE_DESCRIPTION" />
+  </resultMap>
+  
+  <resultMap id="paramLovMap" type="sys_param_lov_transVO" >
+    <id column="LOV_TYPE_ID" property="LOV_TYPE_ID" />
+    <id column="VALUE_CODE" property="VALUE_CODE" />
+    <result column="VALUE_DESC" property="VALUE_DESC" />
+  </resultMap>
+  
+   <resultMap id="getFilterCrtListMap" type="commonDetailsVO" >
+    <id column="COMP_CODE" property="COMP_CODE" />
+    <id column="CRITERIA_CODE" property="CRITERIA_CODE" />
+    <result column="CRITERIA_DESCRIPTION" property="CRITERIA_DESCRIPTION" />
+    <result column="CRITERIA_TYPE_CODE" property="CRITERIA_TYPE_CODE" />
+    <result column="COMPONENT" property="COMPONENT" />
+    <result column="TABLE_NAME1" property="TABLE_NAME1" />
+    <result column="TABLE_NAME2" property="TABLE_NAME2" />
+  </resultMap>
+  
+  <resultMap id="currencyDetResMap" type="currenciesCO" >
+    <result column="BASE_CURRENCY" property="BASE_CURRENCY" />
+    <result column="DECIMAL_POINTS" property="DECIMAL_POINTS" />
+  </resultMap>
+  
+  <resultMap type="irp_connectionsVO" id="connResultMap">
+  	<result column="CONN_ID" property="CONN_ID"/>
+  	<result column="CONN_DESC" property="CONN_DESC"/>
+  </resultMap>
+  
+  <resultMap type="irp_connectionsVO" id="connectionsResMap">
+  	<result column="CONN_ID" property="CONN_ID"/>
+  	<result column="CONN_DESC" property="CONN_DESC"/>
+  	<result column="DBMS" property="DBMS"/>
+  	<result column="URL" property="URL"/>
+  	<result column="DB_PASS" property="DB_PASS"/>
+  	<result column="USER_ID" property="USER_ID"/>
+  	<result column="AUTOCOMMIT" property="AUTOCOMMIT"/>
+  </resultMap>
+  
+  <resultMap type="sys_param_languagesVO" id="languagesResMap">
+  	<result column="LANG_CODE" property="LANG_CODE"/> 
+  	<result column="LANG_NAME" property="LANG_NAME"/>
+  </resultMap>
+  
+   <resultMap type="irp_ad_hoc_reportCO" 	id="retReportsListMap">
+    <result column="REPORT_NAME" 	property="REPORT_NAME" />
+    <result column="PROG_REF" 		property="PROG_REF" />
+    <result column="FTR_REP_YN" 	property="FTR_REP_YN" />
+    <result column="APP_NAME" 		property="APP_NAME" />
+  </resultMap>
+  
+  
+  <select id="selectIRP_CRITERIA_TYPE" resultMap="critTypesMap" parameterType="irp_criteria_typeVO">
+    select CRITERIA_TYPE_CODE, CRITERIA_TYPE_DESCRIPTION, COMPONENT, LANG_CODE
+    from IRP_CRITERIA_TYPE
+    WHERE LANG_CODE = #{LANG_CODE}
+  </select>
+
+  <select id="selectIRP_CRIT_DTLS_LOOKUP" resultMap="critDtlsMap" parameterType="irp_crit_dtls_lookupVO" >
+    select CODE, CRITERIA_TYPE_CODE, DESCRIPTION, LANG_CODE
+    from IRP_CRIT_DTLS_LOOKUP
+    where CRITERIA_TYPE_CODE = #{CRITERIA_TYPE_CODE}
+    and LANG_CODE = #{LANG_CODE}
+  </select>
+    
+  <select id="selectSYS_PARAM_LOV_TYPE" resultMap="paramLovTypeMap" parameterType="sys_param_lov_typeVO" >
+    select LOV_TYPE_ID, LOV_TYPE_DESCRIPTION
+    from SYS_PARAM_LOV_TYPE
+    where LOV_TYPE_ID = #{LOV_TYPE_ID}
+  </select>
+  
+  <select id="selectSYS_PARAM_LOV_TRANS" resultMap="paramLovMap" parameterType="sys_param_lov_transVO" >
+    select LOV_TYPE_ID, VALUE_CODE, VALUE_DESC
+    from SYS_PARAM_LOV_TRANS
+    where LOV_TYPE_ID = #{LOV_TYPE_ID}
+    and LANG_CODE = (  
+                      case when ( select count(*) 
+                      			  from SYS_PARAM_LOV_TRANS
+                                  where LANG_CODE = #{LANG_CODE}
+                                  and LOV_TYPE_ID = #{LOV_TYPE_ID}
+                                 ) > 0
+                      then #{LANG_CODE}
+                      else  'EN'
+                      end
+                    )
+    ORDER BY LOV_ORDER ,VALUE_DESC
+  </select>
+  
+  <sql id="getFilterCrtListSql">
+  SELECT F.COMP_CODE,
+       F.BRIEF_DESC_ENG AS CRITERIA_DESCRIPTION,
+       F.CRI_TYPE AS CRITERIA_TYPE_CODE,
+       F.CODE AS CRITERIA_CODE,
+       T.COMPONENT,
+       T.TABLE1 as TABLE_NAME1,
+       T.TABLE2 as TABLE_NAME2
+  FROM GLSTMPLT_CRITERIA F, IRP_CRITERIA_TYPE T
+  WHERE COMP_CODE = #{COMP_CODE}
+   AND F.CRI_TYPE = T.CRITERIA_TYPE_CODE
+   AND T.LANG_CODE = #{LANG_CODE}
+   
+  </sql>
+  
+  <select  id="getFilterCrtDependency" resultMap="getFilterCrtListMap" parameterType="tmplGridSC">
+  		 SELECT F.COMP_CODE,
+      	 F.BRIEF_DESC_ENG AS CRITERIA_DESCRIPTION,
+       	 F.CRI_TYPE AS CRITERIA_TYPE_CODE,
+         F.CODE AS CRITERIA_CODE,
+         T.COMPONENT,
+         T.TABLE1 as TABLE_NAME1,
+         T.TABLE2 as TABLE_NAME2
+ 		 FROM GLSTMPLT_CRITERIA F, IRP_CRITERIA_TYPE T
+  		 WHERE COMP_CODE = #{COMP_CODE}
+   		 AND F.CRI_TYPE = T.CRITERIA_TYPE_CODE
+   		 AND T.LANG_CODE = #{LANG_CODE}
+   	 	 AND CODE= #{CRITERIA_CODE}
+  </select>
+  
+  <select  id="getCompDependency" resultMap="getDependencyMap" parameterType="tmplGridSC">
+  		 SELECT C.COMP_CODE AS CODE,
+                 C.BRIEF_DESC_ENG AS BRIEF_DESC_ENG,
+                 C.BRIEF_DESC_ARAB AS BRIEF_DESC_ARAB,
+                 C.LONG_DESC_ENG AS LONG_DESC_ENG,
+                 C.LONG_DESC_ARAB AS LONG_DESC_ARAB
+            FROM COMPANIES C
+            WHERE C.COMP_CODE= #{COMP_CODE}
+  </select>
+  
+  <select id="getFilterCrtList"  resultMap="getFilterCrtListMap" parameterType="tmplGridSC">
+	<include refid="servicesCommon.commonGridWrpBefFlip"/>
+	<include refid="getFilterCrtListSql"/>
+	<include refid="servicesCommon.commonGridWrpAftFlip"/>
+	<include refid="servicesCommon.commmonGridWrpFlipClose"/>
+</select>
+
+<select id="getFilterCrtListCount"  resultType="int" parameterType="tmplGridSC">
+	<include refid="servicesCommon.commonGridWrpBefCnt"/>
+	<include refid="getFilterCrtListSql"/>
+	<include refid="servicesCommon.commonGridWrpAftCnt"/>
+	<include refid="servicesCommon.commonGridCountWrpClose"/>
+</select>
+
+<select id="returnCompCurrencyDet" resultMap="currencyDetResMap" parameterType="java.math.BigDecimal">
+	SELECT CO.BASE_CURRENCY, CU.DECIMAL_POINTS
+	FROM COMPANIES CO, CURRENCIES CU
+	WHERE CO.COMP_CODE = CU.COMP_CODE
+	AND CO.BASE_CURRENCY = CU.CURRENCY_CODE
+	AND CO.COMP_CODE = #{companyCode}
+</select>
+
+<select id="selectConnectionId" parameterType="java.lang.String" resultType="BigDecimal">
+    SELECT CON_ID FROM IRP_APP_CONNECTION
+	WHERE APP_NAME = #{appName}
+</select>
+
+<select id="selectAllConnections" resultMap="connResultMap">
+    SELECT CONN_ID, CONN_DESC FROM IRP_CONNECTIONS
+</select>
+
+
+<select id="returnConnectionsListByApp" resultMap="connResultMap" parameterType="irp_connectionsSC">
+              <choose >
+		        <when test="isSybase == 1" >
+		            SELECT CONN_ID, CONN_DESC  FROM IRP_CONNECTIONS WHERE LOWER(DBMS) LIKE '%sybase%'
+		        </when>
+		        <otherwise >
+		            SELECT CONN_ID, CONN_DESC FROM IRP_CONNECTIONS WHERE LOWER(DBMS) LIKE '%oracle%'
+		        </otherwise>
+	      </choose>
+</select>
+
+
+<select id="selectConnById" resultMap="connectionsResMap" parameterType="java.math.BigDecimal">
+    SELECT CONN_ID, CONN_DESC, DBMS, URL, DB_PASS, USER_ID, AUTOCOMMIT  
+    FROM IRP_CONNECTIONS
+    WHERE CONN_ID = #{dbConn}
+</select>
+
+<select id="selectLanguages" resultMap="languagesResMap">
+	SELECT LANG_CODE, LANG_NAME   
+	FROM SYS_PARAM_LANGUAGES
+</select>
+  
+<select id="returnQryResultCnt"  resultType="int" parameterType="dynLookupSC" > 
+		<include refid="servicesCommon.commonGridWrpBefCnt"/>
+		${sqlStr}
+		<include refid="servicesCommon.commonGridWrpAftCnt"/>
+	    <include refid="servicesCommon.commonGridCountWrpClose"/>	
+</select>
+
+<select id="returnQryResult" parameterType="dynLookupSC" resultType ="java.util.LinkedHashMap">
+		<include refid="servicesCommon.commonGridWrpBefFlip"/>
+		${sqlStr}
+		<include refid="servicesCommon.commonGridWrpAftFlip"/>
+	    <include refid="servicesCommon.commmonGridWrpFlipClose"/>
+</select>
+
+<resultMap id="additionsOptionsMap" type="S_ADDITIONS_OPTIONSVO" >
+    <result column="OPTION_CODE" 	property="OPTION_CODE" />
+    <result column="BRIEF_NAME_ENG" property="BRIEF_NAME_ENG" />
+    <result column="LONG_NAME_ENG" 	property="LONG_NAME_ENG" />
+</resultMap>
+
+<select id="getAdditionsOptionsDependency"  resultMap="additionsOptionsMap" parameterType="S_ADDITIONS_OPTIONSVO">
+  SELECT OPTION_CODE, BRIEF_NAME_ENG, LONG_NAME_ENG
+  FROM S_ADDITIONS_OPTIONS WHERE  S_ADDITIONS_OPTIONS.OPTION_SERIAL  = 0
+  AND OPTION_CODE = #{OPTION_CODE}
+</select>
+
+<sql id="getAdditionsOptionsListSql">
+    SELECT OPTION_CODE, BRIEF_NAME_ENG, LONG_NAME_ENG
+    FROM S_ADDITIONS_OPTIONS WHERE  S_ADDITIONS_OPTIONS.OPTION_SERIAL  = 0
+ <!--  <if test="AL_OPTION_TYPE != 99" >
+       AND	S_ADDITIONS_OPTIONS.OPTION_TYPE  = ${AL_OPTION_TYPE}
+  </if>-->
+</sql>
+
+<select id="getAdditionsOptionsListCount"    resultType="int" parameterType="s_additions_optionssc">
+	<include refid="servicesCommon.commonGridWrpBefCnt"/>
+	<include refid="getAdditionsOptionsListSql"/>
+	<include refid="servicesCommon.commonGridWrpAftCnt"/>
+	<include refid="servicesCommon.commonGridCountWrpClose"/>
+</select>
+
+<select id="getAdditionsOptionsList"  resultMap="additionsOptionsMap" parameterType="s_additions_optionssc">
+	<include refid="servicesCommon.commonGridWrpBefFlip"/>
+	<include refid="getAdditionsOptionsListSql"/>
+	<include refid="servicesCommon.commonGridWrpAftFlip"/>
+	<include refid="servicesCommon.commmonGridWrpFlipClose"/>
+</select>
+
+
+<select id="getSmartText" resultType="String" parameterType="s_additions_optionssc">
+	SELECT SA.BRIEF_NAME_ENG
+	          FROM S_ADDITIONS_OPTIONS SA
+	         WHERE SA.OPTION_CODE = #{OPTION_CODE}
+	           AND SA.OPTION_SERIAL = 0
+</select>
+
+<select id="getCountryDesc" resultType="String" parameterType="COUNTRYSC">
+	SELECT BRIEF_DESC_ENG FROM COUNTRY WHERE COMP_CODE = #{COMP_CODE} AND COUNTRY_CODE = #{COUNTRY_CODE}
+</select>
+   
+<resultMap id="returnTemplateHeaderValMap" type="GLSHEADERVO" >
+    <result column="CODE" 	property="CODE" />
+    <result column="BRIEF_NAME_ENG" property="BRIEF_NAME_ENG" />
+    <result column="BRIEF_NAME_ARAB" property="BRIEF_NAME_ARAB" />
+    <result column="LEFT1" property="LEFT1" />
+    <result column="LEFT2" property="LEFT2" />
+    <result column="LEFT3" property="LEFT3" />
+    <result column="LEFT4" property="LEFT4" />
+    <result column="CENTER1" property="CENTER1" />
+    <result column="CENTER2" property="CENTER2" />
+    <result column="CENTER3" property="CENTER3" />
+    <result column="RIGHT1" property="RIGHT1" />
+    <result column="RIGHT2" property="RIGHT2" />
+    <result column="RIGHT3" property="RIGHT3" />
+    <result column="RIGHT4" property="RIGHT4" />
+</resultMap>
+
+<select id="returnTemplateHeaderVal"  resultMap="returnTemplateHeaderValMap" parameterType="java.math.BigDecimal">
+
+	SELECT CODE
+	       ,BRIEF_NAME_ENG
+	       ,BRIEF_NAME_ARAB
+	       ,LEFT1
+	       ,LEFT2
+	       ,LEFT3
+	       ,LEFT4
+	       ,CENTER1
+	       ,CENTER2
+	       ,CENTER3
+	       ,RIGHT1
+	       ,RIGHT2
+	       ,RIGHT3
+	       ,RIGHT4
+	FROM GLSHEADER GH
+	WHERE CODE =  #{tempHeaderCode}
+
+</select>
+  
+  <sql id="retReportsListSql">
+	SELECT  IR.REPORT_NAME
+	       ,IR.PROG_REF
+	       ,CASE WHEN IR.REPORT_TYPE = '1' THEN '1' ELSE '0' END AS FTR_REP_YN
+	       ,IR.APP_NAME
+	FROM IRP_AD_HOC_REPORT IR
+	<if test="FROM_SNP != 'true'">
+       WHERE IR.REPORT_TYPE = '1'
+     </if>	
+	
+	UNION
+	
+	SELECT  FO.BRIEF_NAME_ENG REPORT_NAME
+	       ,FO.PROG_REF 	  PROG_REF
+		   ,'1' AS 			  FTR_REP_YN
+		   ,FO.APP_NAME		  APP_NAME
+	FROM FTR_OPT FO
+	WHERE FO.STANDARD_FLAG_YN ='N'
+	AND FO.APP_NAME =#{appName}
+</sql>
+
+  <select id="retReportsList" resultMap="retReportsListMap" parameterType="csvItemsSC">
+  	<include refid="servicesCommon.commonGridWrpBefFlip"/>
+ 	<include refid="retReportsListSql"/>
+	<include refid="servicesCommon.commonGridWrpAftFlip"/>
+	<include refid="servicesCommon.commmonGridWrpFlipClose"/>
+  </select>
+
+  <select id="retReportsCount" resultType="int" parameterType="csvItemsSC">
+	<include refid="servicesCommon.commonGridWrpBefCnt"/>
+	<include refid="retReportsListSql"/>
+	<include refid="servicesCommon.commonGridWrpAftCnt"/>
+	<include refid="servicesCommon.commonGridCountWrpClose"/>
+  </select>
+  
+  <select id="retIfIsFcrReport" parameterType="ftr_optCO" resultMap="FTR_OPT.BaseResultMap">
+  	SELECT * FROM FTR_OPT T WHERE T.PROG_REF =#{ftrOptVO.PROG_REF} and T.APP_NAME=#{ftrOptVO.APP_NAME}
+  </select>
+
+
+<select id="getRegionList" resultMap="getDependencyMap" parameterType="commonDetailsSC">
+  	<include refid="servicesCommon.commonGridWrpBefFlip"/>
+ 	<include refid="getRegionListSql"/>
+	<include refid="servicesCommon.commonGridWrpAftFlip"/>
+	<include refid="servicesCommon.commmonGridWrpFlipClose"/>
+</select>  
+
+<select id="getRegionListCount" resultType="int" parameterType="commonDetailsSC">
+	<include refid="servicesCommon.commonGridWrpBefCnt"/>
+	<include refid="getRegionListSql"/>
+	<include refid="servicesCommon.commonGridWrpAftCnt"/>
+	<include refid="servicesCommon.commonGridCountWrpClose"/>
+</select>
+
+<sql id="getRegionListSql">
+	SELECT REGION_CODE, REGION_CODE AS CODE, BRIEF_DESC_ENG, LONG_DESC_ENG,BRIEF_DESC_AR AS BRIEF_DESC_ARAB,LONG_DESC_AR
+	AS LONG_DESC_ARAB
+  	FROM REGIONS
+  	 <if test="CODE != null">
+       WHERE REGION_CODE = #{CODE} 
+     </if>
+</sql>  
+
+
+</mapper>

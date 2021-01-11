@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        
+<mapper namespace="templateHeader">
+
+<resultMap type="GLSHEADERCO"  							id="templateHeaderMap">     
+  	<id		column="CODE" 				property="glsheaderVO.CODE" />
+    <result	column="BRIEF_NAME_ENG" 	property="glsheaderVO.BRIEF_NAME_ENG" />
+    <result column="BRIEF_NAME_ARAB" 	property="glsheaderVO.BRIEF_NAME_ARAB" />
+    <result column="LEFT1" 				property="glsheaderVO.LEFT1" />
+    <result column="LEFT2"				property="glsheaderVO.LEFT2" />
+    <result column="LEFT3"  			property="glsheaderVO.LEFT3" />
+    <result column="LEFT4"  			property="glsheaderVO.LEFT4" />
+    <result column="CENTER1"  			property="glsheaderVO.CENTER1" />
+    <result column="CENTER2"  			property="glsheaderVO.CENTER2" />
+    <result column="CENTER3"  			property="glsheaderVO.CENTER3" />
+    <result column="RIGHT1"  			property="glsheaderVO.RIGHT1" />
+    <result column="RIGHT2"  			property="glsheaderVO.RIGHT2" />
+    <result column="RIGHT3"  			property="glsheaderVO.RIGHT3" />
+    <result column="RIGHT4"  			property="glsheaderVO.RIGHT4" />
+    <result column="DATE_UPDATED"  		property="glsheaderVO.DATE_UPDATED" />
+    <result column="TEMPLATE_TYPE" 		property="glsheaderVO.TEMPLATE_TYPE"/>
+    <result column="TEMPLATE_TYPE_STR"  property="TEMPLATE_TYPE_STR"/>
+</resultMap>
+
+<sql id="templateHeaderSql">
+	SELECT CODE,
+       BRIEF_NAME_ENG,
+       BRIEF_NAME_ARAB,
+       CASE
+         WHEN EXISTS (SELECT 1
+                 FROM SYS_PARAM_LOV_TRANS S
+                WHERE S.VALUE_CODE = GLSHEADER.LEFT1
+                  AND S.LOV_TYPE_ID IN (#{lovTypeId}, #{repLovTypeID})
+                  AND S.LANG_CODE = #{preferredLanguage}) THEN
+          (SELECT VALUE_DESC
+             FROM SYS_PARAM_LOV_TRANS SS
+            WHERE SS.VALUE_CODE = GLSHEADER.LEFT1
+              AND SS.LOV_TYPE_ID IN (#{lovTypeId}, #{repLovTypeID})
+              AND SS.LANG_CODE = #{preferredLanguage})
+         ELSE
+          LEFT1
+       END AS LEFT1,
+       CASE
+         WHEN EXISTS (SELECT 1
+                 FROM SYS_PARAM_LOV_TRANS S
+                WHERE S.VALUE_CODE = GLSHEADER.LEFT2
+                  AND S.LOV_TYPE_ID IN (#{lovTypeId}, #{repLovTypeID})
+                  AND S.LANG_CODE = #{preferredLanguage}) THEN
+          (SELECT VALUE_DESC
+             FROM SYS_PARAM_LOV_TRANS SS
+            WHERE SS.VALUE_CODE = GLSHEADER.LEFT2
+              AND SS.LOV_TYPE_ID IN (#{lovTypeId}, #{repLovTypeID})
+              AND SS.LANG_CODE = #{preferredLanguage})
+         ELSE
+          LEFT2
+       END AS LEFT2,
+       CASE
+         WHEN EXISTS (SELECT 1
+                 FROM SYS_PARAM_LOV_TRANS S
+                WHERE S.VALUE_CODE = GLSHEADER.LEFT3
+                  AND S.LOV_TYPE_ID IN (#{lovTypeId}, #{repLovTypeID})
+                  AND S.LANG_CODE = #{preferredLanguage}) THEN
+          (SELECT VALUE_DESC
+             FROM SYS_PARAM_LOV_TRANS SS
+            WHERE SS.VALUE_CODE = GLSHEADER.LEFT3
+              AND SS.LOV_TYPE_ID IN (#{lovTypeId}, #{repLovTypeID})
+              AND SS.LANG_CODE = #{preferredLanguage})
+         ELSE
+          LEFT3
+       END AS LEFT3,
+       CASE
+         WHEN EXISTS (SELECT 1
+                 FROM SYS_PARAM_LOV_TRANS S
+                WHERE S.VALUE_CODE = GLSHEADER.LEFT4
+                  AND S.LOV_TYPE_ID IN (#{lovTypeId}, #{repLovTypeID})
+                  AND S.LANG_CODE = #{preferredLanguage}) THEN
+          (SELECT VALUE_DESC
+             FROM SYS_PARAM_LOV_TRANS SS
+            WHERE SS.VALUE_CODE = GLSHEADER.LEFT4
+              AND SS.LOV_TYPE_ID IN (#{lovTypeId}, #{repLovTypeID})
+              AND SS.LANG_CODE = #{preferredLanguage})
+         ELSE
+          LEFT4
+       END AS LEFT4,
+       CASE
+         WHEN EXISTS (SELECT 1
+                 FROM SYS_PARAM_LOV_TRANS S
+                WHERE S.VALUE_CODE = GLSHEADER.CENTER1
+                  AND S.LOV_TYPE_ID IN (#{lovTypeId}, #{repLovTypeID})
+                  AND S.LANG_CODE = #{preferredLanguage}) THEN
+          (SELECT VALUE_DESC
+             FROM SYS_PARAM_LOV_TRANS SS
+            WHERE SS.VALUE_CODE = GLSHEADER.CENTER1
+              AND SS.LOV_TYPE_ID IN (#{lovTypeId}, #{repLovTypeID})
+              AND SS.LANG_CODE = #{preferredLanguage})
+         ELSE
+          CENTER1
+       END AS CENTER1,
+       CASE
+         WHEN EXISTS (SELECT 1
+                 FROM SYS_PARAM_LOV_TRANS S
+                WHERE S.VALUE_CODE = GLSHEADER.CENTER2
+                  AND S.LOV_TYPE_ID IN (#{lovTypeId}, #{repLovTypeID})
+                  AND S.LANG_CODE = #{preferredLanguage}) THEN
+          (SELECT VALUE_DESC
+             FROM SYS_PARAM_LOV_TRANS SS
+            WHERE SS.VALUE_CODE = GLSHEADER.CENTER2
+              AND SS.LOV_TYPE_ID IN (#{lovTypeId}, #{repLovTypeID})
+              AND SS.LANG_CODE = #{preferredLanguage})
+         ELSE
+          CENTER2
+       END AS CENTER2,
+       CASE
+         WHEN EXISTS (SELECT 1
+                 FROM SYS_PARAM_LOV_TRANS S
+                WHERE S.VALUE_CODE = GLSHEADER.CENTER3
+                  AND S.LOV_TYPE_ID IN (#{lovTypeId}, #{repLovTypeID})
+                  AND S.LANG_CODE = #{preferredLanguage}) THEN
+          (SELECT VALUE_DESC
+             FROM SYS_PARAM_LOV_TRANS SS
+            WHERE SS.VALUE_CODE = GLSHEADER.CENTER3
+              AND SS.LOV_TYPE_ID IN (#{lovTypeId}, #{repLovTypeID})
+              AND SS.LANG_CODE = #{preferredLanguage})
+         ELSE
+          CENTER3
+       END AS CENTER3,
+       CASE
+         WHEN EXISTS (SELECT 1
+                 FROM SYS_PARAM_LOV_TRANS S
+                WHERE S.VALUE_CODE = GLSHEADER.RIGHT1
+                  AND S.LOV_TYPE_ID IN (#{lovTypeId}, #{repLovTypeID})
+                  AND S.LANG_CODE = #{preferredLanguage}) THEN
+          (SELECT VALUE_DESC
+             FROM SYS_PARAM_LOV_TRANS SS
+            WHERE SS.VALUE_CODE = GLSHEADER.RIGHT1
+              AND SS.LOV_TYPE_ID IN (#{lovTypeId}, #{repLovTypeID})
+              AND SS.LANG_CODE = #{preferredLanguage})
+         ELSE
+          RIGHT1
+       END AS RIGHT1,
+       CASE
+         WHEN EXISTS (SELECT 1
+                 FROM SYS_PARAM_LOV_TRANS S
+                WHERE S.VALUE_CODE = GLSHEADER.RIGHT2
+                  AND S.LOV_TYPE_ID IN (#{lovTypeId}, #{repLovTypeID})
+                  AND S.LANG_CODE = #{preferredLanguage}) THEN
+          (SELECT VALUE_DESC
+             FROM SYS_PARAM_LOV_TRANS SS
+            WHERE SS.VALUE_CODE = GLSHEADER.RIGHT2
+              AND SS.LOV_TYPE_ID IN (#{lovTypeId}, #{repLovTypeID})
+              AND SS.LANG_CODE = #{preferredLanguage})
+         ELSE
+          RIGHT2
+       END AS RIGHT2,
+       CASE
+         WHEN EXISTS (SELECT 1
+                 FROM SYS_PARAM_LOV_TRANS S
+                WHERE S.VALUE_CODE = GLSHEADER.RIGHT3
+                  AND S.LOV_TYPE_ID IN (#{lovTypeId}, #{repLovTypeID})
+                  AND S.LANG_CODE = #{preferredLanguage}) THEN
+          (SELECT VALUE_DESC
+             FROM SYS_PARAM_LOV_TRANS SS
+            WHERE SS.VALUE_CODE = GLSHEADER.RIGHT3
+              AND SS.LOV_TYPE_ID IN (#{lovTypeId}, #{repLovTypeID})
+              AND SS.LANG_CODE = #{preferredLanguage})
+         ELSE
+          RIGHT3
+       END AS RIGHT3,
+       CASE
+         WHEN EXISTS (SELECT 1
+                 FROM SYS_PARAM_LOV_TRANS S
+                WHERE S.VALUE_CODE = GLSHEADER.RIGHT4
+                  AND S.LOV_TYPE_ID IN (#{lovTypeId}, #{repLovTypeID})
+                  AND S.LANG_CODE = #{preferredLanguage}) THEN
+          (SELECT VALUE_DESC
+             FROM SYS_PARAM_LOV_TRANS SS
+            WHERE SS.VALUE_CODE = GLSHEADER.RIGHT4
+              AND SS.LOV_TYPE_ID IN (#{lovTypeId}, #{repLovTypeID})
+              AND SS.LANG_CODE = #{preferredLanguage})
+         ELSE
+          RIGHT4
+       END AS RIGHT4,
+       DATE_UPDATED, 
+       GLSHEADER.TEMPLATE_TYPE,
+         (SELECT VALUE_DESC FROM SYS_PARAM_LOV_TRANS P 
+       			WHERE P.LOV_TYPE_ID = #{templateTypeID} AND LANG_CODE = #{preferredLanguage}
+       			AND P.VALUE_CODE = GLSHEADER.TEMPLATE_TYPE) AS TEMPLATE_TYPE_STR     
+  FROM GLSHEADER
+	
+</sql>
+
+<select id="retrieveTemplateHeader"  resultMap="templateHeaderMap" parameterType="GLSHEADERSC" resultType="GLSHEADERCO"> 
+	<include refid="templateHeaderSql"/>
+	WHERE GLSHEADER.CODE = #{CODE}
+</select>
+
+
+<select id="templateHeaderList"  resultMap="templateHeaderMap" parameterType="GLSHEADERSC">
+	<include refid="servicesCommon.commonGridWrpBefFlip"/>
+	<include refid="templateHeaderSql"/>
+	<include refid="servicesCommon.commonGridWrpAftFlip"/>
+	<include refid="servicesCommon.commmonGridWrpFlipClose"/>
+</select>
+
+<select id="templateHeaderCount"  resultType="int" parameterType="GLSHEADERSC"> 
+	<include refid="servicesCommon.commonGridWrpBefCnt"/>
+	<include refid="templateHeaderSql"/>
+	<include refid="servicesCommon.commonGridWrpAftCnt"/>
+	<include refid="servicesCommon.commonGridCountWrpClose"/>  
+</select>
+
+<select id="getTextFieldsAutoComplete" parameterType="GLSHEADERSC"   resultType="string"> 
+SELECT ${columnName}
+  FROM GLSHEADER
+ WHERE ${columnName} IS NOT NULL
+   AND NOT EXISTS
+ (SELECT 1
+          FROM SYS_PARAM_LOV_TRANS SS
+         WHERE SS.VALUE_CODE = GLSHEADER.${columnName}
+           AND SS.LOV_TYPE_ID IN (#{lovTypeId}, #{repLovTypeID})
+           AND SS.LANG_CODE = #{preferredLanguage})
+
+</select>
+
+<select id="checkIdAvailability" resultType="int" parameterType="GLSHEADERVO">
+	SELECT COUNT(*)
+	FROM GLSHEADER
+	WHERE CODE=#{CODE}
+</select>
+
+</mapper>

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="IRP_SNAPSHOTS_LOGS" >
+  <resultMap id="BaseResultMap" type="com.path.dbmaps.vo.IRP_SNAPSHOTS_LOGSVO" >
+    <result column="SNAPSHOT_ID" property="SNAPSHOT_ID" />
+    <result column="ARCHIVE_DATE" property="ARCHIVE_DATE" />
+    <result column="STATUS" property="STATUS" />
+  </resultMap>
+  <insert id="insertIRP_SNAPSHOTS_LOGS" parameterType="com.path.dbmaps.vo.IRP_SNAPSHOTS_LOGSVO" >
+    insert into IRP_SNAPSHOTS_LOGS
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="SNAPSHOT_ID != null and SNAPSHOT_ID != emptyBigDecimalValue" >
+        SNAPSHOT_ID,
+      </if>
+      <if test="ARCHIVE_DATE != null" >
+        ARCHIVE_DATE,
+      </if>
+      <if test="STATUS != null" >
+        STATUS,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="SNAPSHOT_ID != null and SNAPSHOT_ID != emptyBigDecimalValue" >
+        #{SNAPSHOT_ID},
+      </if>
+      <if test="ARCHIVE_DATE != null" >
+        #{ARCHIVE_DATE},
+      </if>
+      <if test="STATUS != null" >
+        #{STATUS},
+      </if>
+    </trim>
+  </insert>
+</mapper>

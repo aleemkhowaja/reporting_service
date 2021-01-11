@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        
+<mapper namespace="entExt">
+  
+<sql id="loadTableViewListSql">
+  	SELECT 	name OBJECT_DB_NAME, (CASE WHEN type = 'V' THEN 'VIEW' ELSE 'TABLE' END) OBJECT_TYPE
+  	FROM 	sysobjects 
+  	WHERE 	type IN ('V','U') 
+ 	<if test="OBJECT_DB_NAME != null" >
+ 		AND name =  #{OBJECT_DB_NAME}
+ 	</if>
+ 	AND NOT EXISTS (SELECT 	1
+					FROM 	IRP_ENTITIES 
+					WHERE 	ENTITY_DB_NAME = sysobjects.name)
+</sql>
+  	
+  	
+  
+<sql id="loadFieldLkpListSql">
+SELECT sc.name COLUMN_NAME,
+       CASE (SELECT UPPER(st.name)
+           FROM systypes st
+          WHERE <choose> <when test="isSQLServer == 1">
+			   sc.xusertype = st.xusertype
+			   </when>
+			    <otherwise>
+			    sc.usertype = st.usertype
+			    </otherwise>
+			    </choose>)
+         WHEN 'VARCHAR' THEN
+          'java.lang.String'
+         WHEN 'UNIVARCHAR' THEN
+          'java.lang.String'
+         WHEN 'NUMERIC' THEN
+          'java.math.BigDecimal'
+         WHEN 'DECIMAL' THEN
+          'java.math.BigDecimal'
+         WHEN 'DATETIME' THEN
+          'java.util.Date'
+         WHEN 'DATE' THEN
+          'java.util.Date'
+        WHEN 'DATETIME2' THEN 
+		'java.util.Date'
+         ELSE
+          'UNDEFINED'
+       END COLUMN_TYPE
+  FROM syscolumns sc
+ where id = OBJECT_ID(#{ENTITY_DB_NAME})
+   AND sc.name NOT IN (SELECT F.FIELD_DB_NAME
+                         FROM IRP_FIELDS F
+                        WHERE ENTITY_DB_NAME = #{ENTITY_DB_NAME}
+                          AND FIELD_DB_NAME = sc.name)
+	<if test="addedFieldsListStr != null" >
+			 AND sc.name NOT IN
+			  <foreach item="item" index="index" collection="addedFieldsListStr"  open="(" separator="," close=")" >
+		 	 	#{item}
+		 	 </foreach>
+	</if>
+	<if test="delFieldsList != null">
+	
+	UNION
+		SELECT S.FIELD_DB_NAME, UPPER(S.FIELD_DATA_TYPE)
+		FROM IRP_FIELDS S
+	 	WHERE S.ENTITY_DB_NAME =  #{ENTITY_DB_NAME}
+	 	 AND S.FIELD_DB_NAME IN 
+	 	 <foreach item="item" index="index" collection="delFieldsList"  open="(" separator="," close=")" >
+	 	 	#{item}
+	 	 </foreach>
+	</if> 		
+		
+	 	
+</sql>
+  	
+  	
+  
+<sql id="loadAllFieldsListSql">
+ 	SELECT 	#{ENTITY_DB_NAME} ENTITY_DB_NAME,
+ 			sc.name FIELD_DB_NAME ,
+ 			'' FIELD_ALIAS,
+ 			CASE (	SELECT 	UPPER(st.name) 
+		 			FROM 	systypes st 
+		 			WHERE <choose>	<when test="isSQLServer == 1">
+				   sc.xusertype = st.xusertype
+				   </when>
+				    <otherwise>
+				    sc.usertype = st.usertype
+				    </otherwise>
+				    </choose>) 
+ 			WHEN 'VARCHAR' THEN 
+ 				'java.lang.String' 
+ 			WHEN 'UNIVARCHAR' THEN 
+ 				'java.lang.String' 
+ 			WHEN 'NUMERIC' THEN 
+ 				'java.math.BigDecimal' 
+ 			WHEN 'DECIMAL' THEN 
+ 				'java.math.BigDecimal' 
+ 			WHEN 'DATETIME' THEN 
+ 				'java.util.Date' 
+ 			WHEN 'DATE' THEN 
+ 				'java.util.Date' 
+ 			WHEN 'DATETIME2' THEN 
+				'java.util.Date'
+ 			ELSE 'UNDEFINED'
+ 			END FIELD_DATA_TYPE 
+ 	FROM 	syscolumns sc 
+ 	<where>
+	 	<if test="ENTITY_DB_NAME != null" >
+	 		id = OBJECT_ID(#{ENTITY_DB_NAME})
+	 	</if>
+ 	</where>
+</sql>
+  	
+  	
+
+</mapper>

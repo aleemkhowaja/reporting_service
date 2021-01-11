@@ -1,0 +1,336 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+        "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="snapshotInformationMapper">
+
+<resultMap type="REP_SNAPSHOT_INFORMATIONCO"  						id="snapshotInformationMap">     
+  <result property="repSnapshotParamVO.REP_ID" 					column="REP_ID"/>
+  <result property="repSnapshotParamVO.COMP_CODE" 				column="COMP_CODE"/>
+  <result property="repSnapshotParamVO.REP_REFERENCE" 			column="REP_REFERENCE"/>
+  <result property="repSnapshotParamVO.ADDITIONAL_REFERENCE" 	column="ADDITIONAL_REFERENCE"/>
+  <result property="repSnapshotInfoVO.DESCRIPTION" 				column="DESCRIPTION"/>
+  <result property="repSnapshotParamVO.SNAPSHOT_FREQUENCY" 		column="SNAPSHOT_FREQUENCY"/> 
+  <result property="repSnapshotInfoVO.SNAPSHOT_USER" 			column="SNAPSHOT_USER"/>
+  <result property="repSnapshotParamVO.CREATED_DATE" 			column="CREATED_DATE"/>
+  <result property="repSnapshotInfoVO.RETREIVE_DATE" 			column="RETREIVE_DATE"/>
+  <result property="repSnapshotInfoVO.DECLARED_BY" 				column="DECLARED_BY"/>
+  <result property="repSnapshotInfoVO.DECLARED_DATE" 			column="DECLARED_DATE"/>
+  <result property="repSnapshotInfoVO.DECLARED_YN" 				column="DECLARED_YN"/>
+  <result property="repSnapshotInfoVO.SITCOM_FILE_ID" 			column="SITCOM_FILE_ID"/>
+  <result property="repSnapshotParamVO.SAVE_REP_YN" 			column="SAVE_REP_YN"/>
+  <result property="repSnapshotParamVO.REP_TYPE" 				column="REP_TYPE"/>
+  <result property="repSnapshotParamVO.SITCOM_ENABLE_YN" 		column="SITCOM_ENABLE_YN"/>
+  <result property="repSnapshotParamVO.SITCOM_ORDER" 			column="SITCOM_ORDER"/>
+  <result property="repSnapshotParamVO.SITCOM_FORMULA" 			column="SITCOM_FORMULA"/>
+  <result property="repSnapshotParamVO.SITCOM_FORMULA_HEADER"	column="SITCOM_FORMULA_HEADER"/>
+  <result property="repSnapshotParamVO.SITCOM_FORMULA_FOOTER"	column="SITCOM_FORMULA_FOOTER"/>
+  <result property="repSnapshotParamVO.REP_MODIFY_ENABLE_YN" 	column="REP_MODIFY_ENABLE_YN"/>
+  <result property="repSnapshotParamVO.REP_COMMENTS_YN" 		column="REP_COMMENTS_YN"/>
+  <result property="repSnapshotParamVO.REP_AUDIT_YN" 			column="REP_AUDIT_YN"/>
+  <result property="repSnapshotInfoVO.REP_SNAPSHOT_ID" 			column="REP_SNAPSHOT_ID"/>
+  <result property="repSnapshotParamVO.CREATED_BY" 				column="CREATED_BY"/>
+  <result property="repSnapshotInfoVO.SNAPSHOT_DATE" 			column="SNAPSHOT_DATE"/>
+  <result property="SNP_FRQ" 									column="SNP_FRQ"/>
+  <result property="repSnapshotInfoVO.DATE_UPDATED" 			column="DATE_UPDATED"/>  
+  <result property="SNP_FORMAT" 								column="SNP_FORMAT"/>
+  <result property="CSV_SEPARATOR" 								column="CSV_SEPARATOR"/>
+  <result property="SHOW_HEAD_FOOT" 							column="SHOW_HEAD_FOOT"/>
+  <result property="REPORT_TYPE" 								column="REPORT_TYPE"/>
+  <result property="repSnapshotInfoVO.REP_BLOB"					column="REP_BLOB"/>
+  
+</resultMap>
+
+<resultMap type="REP_SNAPSHOT_INFORMATIONCO"  						id="snapshotInformationRepMap">
+  <result property="APPL_NAME" 									column="APP_NAME"/>  
+  <result property="repSnapshotInfoVO.DESCRIPTION" 				column="DESCRIPTION"/>
+  <result property="repSnapshotParamVO.REP_REFERENCE" 			column="REP_REFERENCE"/>
+</resultMap>
+
+<sql id="getSnapshotInformationListSql">
+SELECT PARAM.REP_ID,
+	    (CASE
+         WHEN (SELECT 1
+                 FROM IRP_AD_HOC_REPORT RR
+                WHERE RR.PROG_REF = PARAM.REP_REFERENCE AND RR.APP_NAME=#{currAppName}) IS NULL THEN
+          '1'
+         ELSE
+          '0'
+       END) AS REPORT_TYPE,
+       PARAM.COMP_CODE,
+       PARAM.REP_REFERENCE,
+       (SELECT VALUE_DESC FROM SYS_PARAM_LOV_TRANS P 
+       			WHERE P.LOV_TYPE_ID = 430 AND LANG_CODE = #{languageCode}
+       			AND P.VALUE_CODE = PARAM.SNAPSHOT_FREQUENCY) AS SNAPSHOT_FREQUENCY,
+       PARAM.SNAPSHOT_FREQUENCY AS SNP_FRQ,
+       PARAM.ADDITIONAL_REFERENCE,
+       PARAM.SAVE_REP_YN,
+       PARAM.REP_TYPE,
+       PARAM.CREATED_BY,
+       PARAM.CREATED_DATE,
+       PARAM.SITCOM_ENABLE_YN,
+       PARAM.SITCOM_ORDER,
+       PARAM.SITCOM_FORMULA,
+       PARAM.REP_MODIFY_ENABLE_YN,
+       PARAM.REP_COMMENTS_YN,
+       PARAM.REP_AUDIT_YN,
+       INFO.REP_SNAPSHOT_ID,
+       INFO.DESCRIPTION,
+       INFO.SNAPSHOT_USER,
+       INFO.SNAPSHOT_DATE,
+       INFO.DECLARED_YN,
+       INFO.DECLARED_BY,
+       INFO.DECLARED_DATE,
+       INFO.DATE_UPDATED,
+       INFO.RETREIVE_DATE,
+       'false' ENABLE_SITCOM_YN,
+       INFO.SITCOM_FILE_ID
+  FROM REP_SNAPSHOT_PARAM PARAM, REP_SNAPSHOT_INFO INFO
+ WHERE PARAM.COMP_CODE = #{COMP_CODE}
+   AND PARAM.REP_ID = INFO.REP_ID
+</sql>
+
+<sql id="selectSnInformationRepRef">
+	SELECT IR.APP_NAME, P.REP_REFERENCE, IR.REPORT_NAME AS DESCRIPTION
+  		FROM REP_SNAPSHOT_PARAM P, IRP_AD_HOC_REPORT IR
+ 		WHERE P.REP_REFERENCE = IR.PROG_REF
+</sql>
+
+<sql id="selectSnapshotUserSql">
+SELECT
+	USR.USER_ID,
+	USR.USER_GRP_ID,
+	USR.USER_GRP_DESC,
+	USR.USER_VALID_DT,
+	USR.USER_STS,
+	USR.DATE_AUTHORIZED,
+	USR.RESIGNED
+FROM  USR 
+WHERE  USR.USER_ID  IS NOT NULL
+   	   AND (USR.PATH_STS  <![CDATA[ <> ]]>  '1')
+
+</sql>
+
+
+<select id="selectSnapshotUser"  resultMap="USR.BaseResultMap" parameterType="snapshotParameterSC">
+	<include refid="servicesCommon.commonGridWrpBefFlip"/>
+	<include refid="selectSnapshotUserSql"/>
+	<include refid="servicesCommon.commonGridWrpAftFlip"/>
+	<include refid="servicesCommon.commmonGridWrpFlipClose"/>
+</select>
+
+<select id="selectSnapshotUserCount"  resultType="int" parameterType="snapshotParameterSC">
+	<include refid="servicesCommon.commonGridWrpBefCnt"/>
+	<include refid="selectSnapshotUserSql"/>
+	<include refid="servicesCommon.commonGridWrpAftCnt"/>
+	<include refid="servicesCommon.commonGridCountWrpClose"/>
+</select>
+
+<select id="selectSnapshotParameterReports"  resultMap="snapshotInformationRepMap" parameterType="snapshotParameterSC">
+	<include refid="servicesCommon.commonGridWrpBefFlip"/>
+	<include refid="selectSnInformationRepRef"/>
+	<include refid="servicesCommon.commonGridWrpAftFlip"/>
+	<include refid="servicesCommon.commmonGridWrpFlipClose"/>
+</select>
+
+<select id="selectSnapshotParameterReportsCount"   resultType="int" parameterType="snapshotParameterSC">
+	<include refid="servicesCommon.commonGridWrpBefCnt"/>
+	<include refid="selectSnInformationRepRef"/>
+	<include refid="servicesCommon.commonGridWrpAftCnt"/>
+	<include refid="servicesCommon.commonGridCountWrpClose"/>
+</select>
+
+
+<select id="retSnapshotInformationList"  resultMap="snapshotInformationMap" parameterType="snapshotParameterSC">
+	<include refid="servicesCommon.commonGridWrpBefFlip"/>
+	<include refid="getSnapshotInformationListSql"/>
+	<include refid="servicesCommon.commonGridWrpAftFlip"/>
+	<include refid="servicesCommon.commmonGridWrpFlipClose"/>
+</select>
+
+
+<select id="retSnapshotInformationListCount"   resultType="int" parameterType="snapshotParameterSC">
+	<include refid="servicesCommon.commonGridWrpBefCnt"/>
+	<include refid="getSnapshotInformationListSql"/>
+	<include refid="servicesCommon.commonGridWrpAftCnt"/>
+	<include refid="servicesCommon.commonGridCountWrpClose"/>
+</select>
+
+<sql id="sql_updateREP_SNAPSHOT_INFO">
+    update REP_SNAPSHOT_INFO
+    <set >
+      <if test="REP_ID != null" >
+        <choose >
+          <when test="REP_ID == emptyBigDecimalValue" >
+            REP_ID = NULL ,
+          </when>
+          <otherwise >
+            REP_ID = #{REP_ID},
+          </otherwise>
+        </choose>
+      </if>
+      <if test="DESCRIPTION != null" >
+        DESCRIPTION = #{DESCRIPTION},
+      </if>
+      <if test="SNAPSHOT_USER != null" >
+        SNAPSHOT_USER = #{SNAPSHOT_USER},
+      </if>
+      <if test="SNAPSHOT_DATE != null" >
+        SNAPSHOT_DATE = #{SNAPSHOT_DATE},
+      </if>
+      <if test="DECLARED_YN != null" >
+        DECLARED_YN = #{DECLARED_YN},
+      </if>
+      <if test="DECLARED_BY != null" >
+        DECLARED_BY = #{DECLARED_BY},
+      </if>
+      <if test="DECLARED_DATE != null" >
+        DECLARED_DATE = #{DECLARED_DATE},
+      </if>
+       <if test="DECLARED_DATE == null" >
+        DECLARED_DATE = NULL,
+      </if>
+      <if test="RETREIVE_DATE != null" >
+        RETREIVE_DATE = #{RETREIVE_DATE},
+      </if>
+      <if test="SITCOM_FILE_ID != null" >
+        <choose >
+          <when test="SITCOM_FILE_ID == emptyBigDecimalValue" >
+            SITCOM_FILE_ID = NULL ,
+          </when>
+          <otherwise >
+            SITCOM_FILE_ID = #{SITCOM_FILE_ID},
+          </otherwise>
+        </choose>
+      </if>
+      DATE_UPDATED = 
+      <choose >
+        <when test="isSybase == 1" >
+           GETDATE(),
+        </when>
+        <otherwise >
+           SYSDATE,
+        </otherwise>
+      </choose>
+      <if test="REP_BLOB != null" >
+        REP_BLOB = #{REP_BLOB},
+      </if>
+      <if test="JRXML_FILE != null" >
+        JRXML_FILE = #{JRXML_FILE},
+      </if>
+    </set>
+    where REP_SNAPSHOT_ID = #{REP_SNAPSHOT_ID}
+</sql>
+
+<update id="updateRepSnapshotInfo" parameterType="com.path.dbmaps.vo.REP_SNAPSHOT_INFOVO" >
+    <include refid="sql_updateREP_SNAPSHOT_INFO" />
+    <if test="DATE_UPDATED != null" >
+      AND DATE_UPDATED = #{DATE_UPDATED}
+    </if>
+</update>
+
+<resultMap type="com.path.dbmaps.vo.REP_SNAPSHOT_INFOVO"  						id="snapshotInfoMap">     
+  <result property="REP_ID" 												column="REP_ID"/>
+  <result property="REP_SNAPSHOT_ID" 										column="REP_SNAPSHOT_ID"/>
+  <result property="DATE_UPDATED" 											column="DATE_UPDATED"/>  
+  <result property="DESCRIPTION" 											column="DESCRIPTION"/>
+  <result property="SNAPSHOT_USER" 			column="SNAPSHOT_USER"/>
+  <result property="RETREIVE_DATE" 			column="RETREIVE_DATE"/>
+  <result property="DECLARED_BY" 				column="DECLARED_BY"/>
+  <result property="DECLARED_DATE" 			column="DECLARED_DATE"/>
+  <result property="DECLARED_YN" 				column="DECLARED_YN"/>
+  <result property="SITCOM_FILE_ID" 			column="SITCOM_FILE_ID"/>
+  <result property="SNAPSHOT_DATE" 			column="SNAPSHOT_DATE"/>
+</resultMap>
+
+<select id="fillHashInfoInit" parameterType="reportsMismatchSC" resultMap="snapshotInfoMap">
+SELECT
+       INFO.REP_SNAPSHOT_ID,
+       INFO.DESCRIPTION,
+       INFO.REP_ID,
+       INFO.SNAPSHOT_USER,
+       INFO.SNAPSHOT_DATE,
+       INFO.DECLARED_YN,
+       INFO.DECLARED_BY,
+       INFO.DECLARED_DATE,
+       INFO.DATE_UPDATED,
+       INFO.RETREIVE_DATE,
+       INFO.DATE_UPDATED,
+       ' ' ENABLE_SITCOM_YN,
+       INFO.SITCOM_FILE_ID
+  FROM REP_SNAPSHOT_PARAM PARAM, REP_SNAPSHOT_INFO INFO
+ WHERE PARAM.COMP_CODE = #{COMP_CODE}
+   AND PARAM.REP_ID = INFO.REP_ID
+</select>
+
+<select id="retSnpListByRepIdAndFreq" parameterType="snapshotParameterSC" resultMap="snapshotInformationMap">
+SELECT I.REP_SNAPSHOT_ID,
+	   I.DESCRIPTION,
+       I.REP_ID,
+       I.RETREIVE_DATE,
+       I.DECLARED_YN,
+       P.SNAPSHOT_FREQUENCY
+  FROM REP_SNAPSHOT_INFO I, REP_SNAPSHOT_PARAM P
+ WHERE I.REP_ID = P.REP_ID
+   AND I.REP_ID =  #{REP_ID}
+   AND P.SNAPSHOT_FREQUENCY =  #{SNAPSHOT_FREQUENCY}
+</select>
+
+<select id="retFcrSnpFormatDetails" parameterType="SnapshotParameterSC" resultMap="snapshotInformationMap">
+SELECT R.PROG_REF,R.DEFAULT_FORMAT as SNP_FORMAT,R.SHOW_HEAD_FOOT,R.CSV_SEPARATOR FROM 
+(
+  <include refid="fcrRep.retFcrRepSql"/>
+) ZTBL , IRP_AD_HOC_REPORT R 
+WHERE R.PROG_REF=ZTBL.progRef
+
+</select>
+
+ 
+<select id="retSnpFormatDetails" parameterType="SnapshotParameterSC" resultMap="snapshotInformationMap">
+SELECT PROG_REF, DEFAULT_FORMAT as SNP_FORMAT, SHOW_HEAD_FOOT, CSV_SEPARATOR
+  FROM IRP_AD_HOC_REPORT 
+ where PROG_REF =  #{PROG_REF}
+</select>
+
+<delete id="deleteSnpSubReportByRepSnpId" parameterType="IRP_SNAPSHOT_SUB_REPORTVO">
+ 	DELETE FROM IRP_SNAPSHOT_SUB_REPORT
+    WHERE REP_SNAPSHOT_ID = #{REP_SNAPSHOT_ID}
+</delete>
+
+<select id="retSnapshotSubReportList" parameterType="IRP_SNAPSHOT_SUB_REPORTVO" resultMap="IRP_SNAPSHOT_SUB_REPORT.ResultMapWithBLOBs">
+    SELECT REP_SNAPSHOT_ID, SUB_REPORT_EXPRESSION ,JRXML_FILE
+      from IRP_SNAPSHOT_SUB_REPORT
+     where REP_SNAPSHOT_ID = #{REP_SNAPSHOT_ID}
+</select>
+
+
+
+<select id="checkIncludeFileConditions" resultType="int" parameterType="snapshotParameterSC">
+	SELECT CASE
+         WHEN (P.SITCOM_ENABLE_YN = 'Y' AND COALESCE(I.DECLARED_YN,'N') = 'N' AND
+              I.SITCOM_FILE_ID IS NULL) THEN
+          1 <!--NO MSG TO SHOW-->
+         WHEN (P.SITCOM_ENABLE_YN = 'Y' AND COALESCE(I.DECLARED_YN,'N') = 'N' AND
+              I.SITCOM_FILE_ID IS NOT NULL) THEN
+          2 <!--CASE WHERE THE SITCOM IS PREVIOUSLY GENERATED (INFORMATION MSG)-->
+         WHEN (P.SITCOM_ENABLE_YN = 'Y' AND I.DECLARED_YN = 'Y') THEN
+          3 <!--CANNOT SELECT AN ALREADY DECLARED SNAPSHOT-->
+       END AS RES
+  FROM REP_SNAPSHOT_PARAM P, REP_SNAPSHOT_INFO I
+ WHERE P.REP_ID = I.REP_ID
+   AND I.REP_SNAPSHOT_ID = #{REP_SNAPSHOT_ID}
+</select>
+
+<select id="retFormulaToApply" resultMap="snapshotInformationMap" parameterType="snapshotParameterSC">
+	SELECT SITCOM_FORMULA,SITCOM_FORMULA_HEADER,SITCOM_FORMULA_FOOTER FROM REP_SNAPSHOT_PARAM WHERE REP_ID = #{REP_ID}
+</select>
+
+<update id="updateRepSnpInfoRepId" parameterType="SnapshotParameterSC">
+	UPDATE REP_SNAPSHOT_INFO SET REP_ID =#{REP_ID} WHERE REP_ID =#{REP_SNAPSHOT_ID}
+</update>
+
+<delete id="deleteSnapshotInfByRepId" parameterType="SnapshotParameterSC">
+	DELETE FROM REP_SNAPSHOT_INFO WHERE REP_ID =#{REP_ID} 
+</delete>
+
+
+</mapper>

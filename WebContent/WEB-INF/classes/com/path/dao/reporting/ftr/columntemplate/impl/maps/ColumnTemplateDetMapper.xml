@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="IRP_TEMPLATE_COL_DET">
+	<resultMap id="DetResultMap" type="com.path.dbmaps.vo.IRP_TEMPLATE_COLUMNS_DETVO">
+		<id column="COMP_CODE" property="COMP_CODE" />
+		<id column="TEMPLATE_COL_NO" property="TEMPLATE_COL_NO" />
+		<id column="TEMPLATE_CODE" property="TEMPLATE_CODE" />
+		<result column="COL_TYPE" property="COL_TYPE" />
+		<result column="FROM_DATE" property="FROM_DATE" />
+		<result column="TO_DATE" property="TO_DATE" />
+		<result column="CREATED_BY" property="CREATED_BY" />
+		<result column="DATE_CREATED" property="DATE_CREATED" />
+		<result column="MODIFIED_BY" property="MODIFIED_BY" />
+		<result column="DATE_MODIFIED" property="DATE_MODIFIED" />
+		<result column="COL_COMP_CODE" property="COL_COMP_CODE" />
+		<result column="FROM_BRANCH" property="FROM_BRANCH" />
+		<result column="TO_BRANCH" property="TO_BRANCH" />
+		<result column="FROM_CY" property="FROM_CY" />
+		<result column="TO_CY" property="TO_CY" />
+		<result column="FROM_DIV" property="FROM_DIV" />
+		<result column="TO_DIV" property="TO_DIV" />
+		<result column="FROM_DEPT" property="FROM_DEPT" />
+		<result column="TO_DEPT" property="TO_DEPT" />
+		<result column="FROM_UNIT" property="FROM_UNIT" />
+		<result column="TO_UNIT" property="TO_UNIT" />
+		<result column="IS_BOLD" property="IS_BOLD" />
+		<result column="DISP_COL_TOT_ZERO" property="DISP_COL_TOT_ZERO" />
+		<result column="EXPRESSION_LINES" property="EXPRESSION_LINES" />
+		<result column="EXPRESSION" property="EXPRESSION" />
+		<result column="ALL_CRITERIA" property="ALL_CRITERIA" />
+	</resultMap>
+<resultMap type="commonDetailsVO"  id="getGLkupMap">     
+    <id column="CODE" property="CODE" />
+    <result column="BRIEF_DESC_ENG" property="BRIEF_DESC_ENG" />
+    <result column="LONG_DESC_ENG" property="LONG_DESC_ENG" />
+    <result column="BRIEF_DESC_ARAB" property="BRIEF_DESC_ARAB" />
+    <result column="LONG_DESC_ARAB" property="LONG_DESC_ARAB" />
+</resultMap>
+	<resultMap id="DetResultMapCO"
+		type="com.path.vo.reporting.ftr.columnTemplate.IRP_TEMPLATE_COLUMNS_DETCO">
+		<id column="COMP_CODE" property="COMP_CODE" />
+		<id column="TEMPLATE_COL_NO" property="TEMPLATE_COL_NO" />
+		<id column="TEMPLATE_CODE" property="TEMPLATE_CODE" />
+		<result column="COL_TYPE" property="COL_TYPE" />
+		<result column="FROM_DATE" property="FROM_DATE" />
+		<result column="TO_DATE" property="TO_DATE" />
+		<result column="CREATED_BY" property="CREATED_BY" />
+		<result column="DATE_CREATED" property="DATE_CREATED" />
+		<result column="MODIFIED_BY" property="MODIFIED_BY" />
+		<result column="DATE_MODIFIED" property="DATE_MODIFIED" />
+		<result column="COL_COMP_CODE" property="COL_COMP_CODE" />
+		<result column="FROM_BRANCH" property="FROM_BRANCH" />
+		<result column="TO_BRANCH" property="TO_BRANCH" />
+		<result column="FROM_CY" property="FROM_CY" />
+		<result column="TO_CY" property="TO_CY" />
+		<result column="FROM_DIV" property="FROM_DIV" />
+		<result column="TO_DIV" property="TO_DIV" />
+		<result column="FROM_DEPT" property="FROM_DEPT" />
+		<result column="TO_DEPT" property="TO_DEPT" />
+		<result column="FROM_UNIT" property="FROM_UNIT" />
+		<result column="TO_UNIT" property="TO_UNIT" />
+		<result column="IS_BOLD" property="IS_BOLD" />
+		<result column="DISP_COL_TOT_ZERO" property="DISP_COL_TOT_ZERO" />
+		<result column="EXPRESSION_LINES" property="EXPRESSION_LINES" />
+		<result column="EXPRESSION" property="EXPRESSION" />
+		<result column="ALL_CRITERIA" property="ALL_CRITERIA" />
+		<result column="TEMPLATE_COL_DESC1" property="TEMPLATE_COL_DESC1" />
+		<result column="TEMPLATE_COL_DESC2" property="TEMPLATE_COL_DESC2" />
+
+		<result column="COL_COMP_CODE_STR" property="COL_COMP_CODE_STR" />
+		<result column="FROM_BRANCH_STR" property="FROM_BRANCH_STR" />
+		<result column="TO_BRANCH_STR" property="TO_BRANCH_STR" />
+		<result column="FROM_CY_STR" property="FROM_CY_STR" />
+		<result column="TO_CY_STR" property="TO_CY_STR" />
+		<result column="FROM_DIV_STR" property="FROM_DIV_STR" />
+		<result column="TO_DIV_STR" property="TO_DIV_STR" />
+		<result column="FROM_DEPT_STR" property="FROM_DEPT_STR" />
+		<result column="TO_DEPT_STR" property="TO_DEPT_STR" />
+		<result column="FROM_UNIT_STR" property="FROM_UNIT_STR" />
+		<result column="TO_UNIT_STR" property="TO_UNIT_STR" />
+		<result column="COL_TYPE_STR" property="COL_TYPE_STR" />
+	</resultMap>
+	<sql id="Det_Column_List">
+		COMP_CODE, TEMPLATE_COL_NO, TEMPLATE_CODE, COL_TYPE, FROM_DATE, TO_DATE, CREATED_BY,
+		DATE_CREATED,
+		MODIFIED_BY, DATE_MODIFIED,
+		COL_COMP_CODE,
+		FROM_BRANCH,
+		TO_BRANCH,
+		FROM_CY,
+		TO_CY,
+		FROM_DIV,
+		TO_DIV,
+		FROM_DEPT,
+		TO_DEPT,
+		FROM_UNIT,
+		TO_UNIT,
+		IS_BOLD, DISP_COL_TOT_ZERO,
+		EXPRESSION_LINES, EXPRESSION, ALL_CRITERIA
+  </sql>
+	<sql id="Det_Column_List_det">
+		COMP_CODE,
+       TEMPLATE_COL_NO,
+       TEMPLATE_CODE,
+       COL_TYPE,
+       FROM_DATE,
+       TO_DATE,
+       CREATED_BY,
+       DATE_CREATED,
+       TEMPLATE_COL_DESC1,
+       TEMPLATE_COL_DESC2,
+       MODIFIED_BY,
+       DATE_MODIFIED,
+       COL_COMP_CODE,
+       (SELECT C.BRIEF_DESC_ENG
+          FROM COMPANIES C
+         WHERE C.COMP_CODE = OUTR.COL_COMP_CODE
+            ) AS COL_COMP_CODE_STR,
+       FROM_BRANCH,
+       (SELECT B.BRIEF_DESC_ENG
+          FROM BRANCHES B
+         WHERE B.BRANCH_CODE = OUTR.FROM_BRANCH
+           AND B.COMP_CODE = OUTR.COMP_CODE
+            ) AS FROM_BRANCH_STR,
+       TO_BRANCH,
+       (SELECT B.BRIEF_DESC_ENG
+          FROM BRANCHES B
+         WHERE B.BRANCH_CODE = OUTR.TO_BRANCH
+           AND B.COMP_CODE = OUTR.COMP_CODE
+            ) AS TO_BRANCH_STR,
+       FROM_CY,
+       (SELECT C.BRIEF_DESC_ENG
+          FROM CURRENCIES C
+         WHERE C.CURRENCY_CODE = OUTR.FROM_CY
+           AND C.COMP_CODE = OUTR.COMP_CODE
+            ) AS FROM_CY_STR,
+       TO_CY,
+       (SELECT C.BRIEF_DESC_ENG
+          FROM CURRENCIES C
+         WHERE C.CURRENCY_CODE = OUTR.TO_CY
+           AND C.COMP_CODE = OUTR.COMP_CODE
+            ) AS TO_CY_STR,
+       FROM_DIV,
+       (SELECT D.BRIEF_DESC_ENG
+          FROM DIVISIONS D
+         WHERE D.DIVISION_CODE = OUTR.FROM_DIV
+           AND D.COMP_CODE = OUTR.COMP_CODE
+            ) AS FROM_DIV_STR,
+       TO_DIV,
+       (SELECT D.BRIEF_DESC_ENG
+          FROM DIVISIONS D
+         WHERE D.DIVISION_CODE = OUTR.TO_DIV
+           AND D.COMP_CODE = OUTR.COMP_CODE
+            ) AS TO_DIV_STR,
+       FROM_DEPT,
+       (SELECT DEPT.BRIEF_DESC_ENG
+          FROM DEPARTMENTS DEPT
+         WHERE DEPT.DEPT_CODE = OUTR.FROM_DEPT
+           AND DEPT.COMP_CODE = OUTR.COMP_CODE
+           AND DEPT.DIVISION_CODE = OUTR.FROM_DIV
+            ) AS FROM_DEPT_STR,
+       TO_DEPT,
+       (SELECT DEPT.BRIEF_DESC_ENG
+          FROM DEPARTMENTS DEPT
+         WHERE DEPT.DEPT_CODE = OUTR.TO_DEPT
+           AND DEPT.COMP_CODE = OUTR.COMP_CODE
+           AND DEPT.DIVISION_CODE = OUTR.TO_DIV
+            ) AS TO_DEPT_STR,
+       FROM_UNIT,
+       (SELECT UN.BRIEF_DESC_ENG
+          FROM UNITS UN
+         WHERE UN.COMP_CODE = OUTR.COL_COMP_CODE
+           AND UN.DIVISION_CODE = OUTR.FROM_DIV
+           AND UN.DEPT_CODE = OUTR.FROM_DEPT
+           AND UN.UNIT_CODE=OUTR.FROM_UNIT
+            ) AS FROM_UNIT_STR,
+       TO_UNIT,
+       (SELECT UN.BRIEF_DESC_ENG
+          FROM UNITS UN
+         WHERE UN.COMP_CODE = OUTR.COL_COMP_CODE
+           AND UN.DIVISION_CODE = OUTR.TO_DIV
+           AND UN.DEPT_CODE = OUTR.TO_DEPT
+           AND UN.UNIT_CODE=OUTR.TO_UNIT
+            ) AS TO_UNIT_STR,
+       (SELECT UN.VALUE_DESC
+          FROM SYS_PARAM_LOV_TRANS UN
+         WHERE UN.LOV_TYPE_ID = 6
+           AND UN.VALUE_CODE = OUTR.COL_TYPE
+           AND UN.LANG_CODE = #{LANG_CODE}) AS COL_TYPE_STR,
+       IS_BOLD,
+       DISP_COL_TOT_ZERO,
+       EXPRESSION_LINES,
+       EXPRESSION,
+       ALL_CRITERIA
+  </sql>
+	<select id="select_COLUMNS_DET_template" resultMap="DetResultMapCO"
+		parameterType="irp_template_columns_detsc">
+		SELECT
+		<include refid="Det_Column_List_det" />
+		FROM IRP_TEMPLATE_COLUMNS_DET OUTR
+		where COMP_CODE = #{COMP_CODE}
+		and TEMPLATE_CODE = #{TEMPLATE_CODE}
+		ORDER BY TEMPLATE_COL_NO
+	</select>
+	<select id="find_single_COLUMN_DET" resultMap="DetResultMapCO"
+		parameterType="irp_template_columns_detsc">
+		SELECT
+		<include refid="Det_Column_List_det" />
+		FROM IRP_TEMPLATE_COLUMNS_DET OUTR
+		where COMP_CODE = #{COMP_CODE}
+		and TEMPLATE_CODE = #{TEMPLATE_CODE}
+		and TEMPLATE_COL_NO = #{TEMPLATE_COL_NO}
+	</select>
+	<select id="get_columnDetailsCount" resultType="int"
+		parameterType="irp_template_columns_detsc">
+		SELECT COUNT(*) FROM IRP_TEMPLATE_COLUMNS_DET
+		WHERE COMP_CODE=#{COMP_CODE}
+		AND TEMPLATE_CODE=#{TEMPLATE_CODE}
+		AND TEMPLATE_COL_NO=#{TEMPLATE_COL_NO}
+  </select>
+  
+  <sql id="get_currenciesSql">
+		SELECT CURRENCY_CODE AS CODE,
+             BRIEF_DESC_ENG AS BRIEF_DESC_ENG,
+             BRIEF_DESC_ARAB AS BRIEF_DESC_ARAB,
+             LONG_DESC_ENG AS LONG_DESC_ENG,
+             LONG_DESC_ARAB AS LONG_DESC_ARAB
+        FROM CURRENCIES
+        WHERE COMP_CODE=#{COMP_CODE} 
+  </sql>
+  
+  <select id="get_currencies" resultMap="getGLkupMap" parameterType="CommonDetailsSC">
+  	<include refid="servicesCommon.commonGridWrpBefFlip"/>
+	<include refid="get_currenciesSql"/>
+	<include refid="servicesCommon.commonGridWrpAftFlip"/>
+	<include refid="servicesCommon.commmonGridWrpFlipClose"/>
+  </select>
+ 
+  <select id="get_currencies_count" resultType="int" parameterType="CommonDetailsSC">
+	  	<include refid="servicesCommon.commonGridWrpBefCnt"/>
+		<include refid="get_currenciesSql"/>
+		<include refid="servicesCommon.commonGridWrpAftCnt"/>
+		<include refid="servicesCommon.commonGridCountWrpClose"/>
+  </select>
+    
+  <delete id="delete_lines" parameterType="IRP_TEMPLATE_COLUMNSVOKey">
+  	DELETE FROM IRP_TEMPLATE_COLUMNS_DET 
+  	WHERE COMP_CODE=#{COMP_CODE} 
+  	AND TEMPLATE_CODE=#{TEMPLATE_CODE}
+  </delete>
+  
+ </mapper>

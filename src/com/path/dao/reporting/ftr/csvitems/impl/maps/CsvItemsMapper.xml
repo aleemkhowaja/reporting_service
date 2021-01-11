@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+        "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="csvItemsMapper">
+
+
+ <resultMap type="csvItemsCO" id="retCsvItemsListMap">
+    <result column="REP_REF" 			property="cbkRptLineVO.REP_REF" />
+    <result column="reportName" 		property="reportName" />
+  </resultMap>
+  
+  <sql id="retCsvItemsListSql">
+	  
+	 SELECT TBL.REP_REF
+	 		,FO.BRIEF_NAME_ENG reportName
+     FROM (
+           
+           SELECT DISTINCT CR.REP_REF FROM CBK_RPT_LINE CR WHERE CR.COMP_CODE =  #{compCode}) TBL,
+           FTR_OPT FO
+    WHERE TBL.REP_REF = FO.PROG_REF
+    
+   UNION
+   
+   SELECT TBL.REP_REF
+   		 ,IR.REPORT_NAME reportName
+     FROM (
+           
+           SELECT DISTINCT CR.REP_REF FROM CBK_RPT_LINE CR WHERE CR.COMP_CODE = #{compCode}) TBL,
+          IRP_AD_HOC_REPORT IR
+    WHERE TBL.REP_REF = IR.PROG_REF
+    
+	
+</sql>
+
+  <select id="retCsvItemsList" resultMap="retCsvItemsListMap" parameterType="csvItemsSC">
+  	<include refid="servicesCommon.commonGridWrpBefFlip"/>
+ 	<include refid="retCsvItemsListSql"/>
+	<include refid="servicesCommon.commonGridWrpAftFlip"/>
+	<include refid="servicesCommon.commmonGridWrpFlipClose"/>
+  </select>
+
+  <select id="retCsvItemsListCount" resultType="int" parameterType="csvItemsSC">
+	<include refid="servicesCommon.commonGridWrpBefCnt"/>
+	<include refid="retCsvItemsListSql"/>
+	<include refid="servicesCommon.commonGridWrpAftCnt"/>
+	<include refid="servicesCommon.commonGridCountWrpClose"/>
+  </select>
+
+
+   <resultMap type="csvItemsCO" id="applyDependencyByRepRefMap">
+    <result column="reportName" 	property="reportName" />
+    <result column="REP_REF" 		property="cbkRptLineVO.REP_REF" />
+    <result column="DATE_UPDATED" 	property="cbkRptLineVO.DATE_UPDATED" />
+  </resultMap>
+  
+  <sql id="applyDependencyByRepRefSql">
+  
+	SELECT  IR.REPORT_NAME reportName
+	       ,IR.PROG_REF REP_REF
+	       ,(SELECT MAX(R.DATE_UPDATED) FROM  CBK_RPT_LINE R  WHERE R.REP_REF = #{REP_REF} AND R.COMP_CODE = #{compCode}) AS DATE_UPDATED 
+	 FROM IRP_AD_HOC_REPORT IR
+	WHERE IR.REPORT_TYPE = '1'
+	  AND IR.PROG_REF = #{REP_REF}
+	  AND IR.COMP_CODE = #{compCode}
+	
+	UNION
+	
+	SELECT  FO.BRIEF_NAME_ENG reportName
+	       ,FO.PROG_REF REP_REF
+		   ,(SELECT MAX(R.DATE_UPDATED) FROM  CBK_RPT_LINE R  WHERE R.REP_REF = #{REP_REF} AND R.COMP_CODE = #{compCode}) AS DATE_UPDATED 
+	FROM FTR_OPT FO
+	WHERE FO.PROG_REF = #{REP_REF}
+	
+</sql>
+
+  <select id="applyDependencyByRepRef" resultMap="applyDependencyByRepRefMap" parameterType="csvItemsSC">
+ 	<include refid="applyDependencyByRepRefSql"/>
+  </select>
+  
+  
+  
+  
+   <resultMap type="csvItemsCO" id="retCsvItemsByRepListMap">
+    <result column="COMP_CODE" 			property="cbkRptLineVO.COMP_CODE" />
+    <result column="REP_REF" 			property="cbkRptLineVO.REP_REF" />
+    <result column="LINE_NBR" 			property="cbkRptLineVO.LINE_NBR" />
+    <result column="CSV_ITEM_ID" 		property="cbkRptLineVO.CSV_ITEM_ID" />
+    <result column="DATE_UPDATED" 		property="cbkRptLineVO.DATE_UPDATED" />
+    <result column="oldCsvItemId" 		property="oldCsvItemId" />
+  </resultMap>
+  
+  <sql id="retCsvItemsByRepListSql">
+
+	SELECT CR.COMP_CODE,
+	       CR.REP_REF,
+	       CR.LINE_NBR,
+	       CR.CSV_ITEM_ID,
+	       CR.CSV_ITEM_ID AS oldCsvItemId ,
+	      (SELECT MAX(R.DATE_UPDATED) FROM  CBK_RPT_LINE R  WHERE R.REP_REF = #{REP_REF} AND R.COMP_CODE = #{compCode}) AS DATE_UPDATED 
+	  FROM CBK_RPT_LINE CR
+	  WHERE CR.REP_REF = #{REP_REF}
+	    AND CR.COMP_CODE = #{compCode}
+	  
+	  
+</sql>
+
+  <select id="retCsvItemsByRepList" resultMap="retCsvItemsByRepListMap" parameterType="csvItemsSC">
+  	<include refid="servicesCommon.commonGridWrpBefFlip"/>
+ 	<include refid="retCsvItemsByRepListSql"/>
+	<include refid="servicesCommon.commonGridWrpAftFlip"/>
+	<include refid="servicesCommon.commmonGridWrpFlipClose"/>
+  </select>
+
+  <select id="retCsvItemsByRepCount" resultType="int" parameterType="csvItemsSC">
+	<include refid="servicesCommon.commonGridWrpBefCnt"/>
+	<include refid="retCsvItemsByRepListSql"/>
+	<include refid="servicesCommon.commonGridWrpAftCnt"/>
+	<include refid="servicesCommon.commonGridCountWrpClose"/>
+  </select>
+  
+  
+  
+   <resultMap type="csvItemsCO" id="retrieveRepNameMap">
+    <result column="reportName" 	    property="reportName" />
+    <result column="REP_REF" 		    property="cbkRptLineVO.REP_REF" />
+    <result column="DATE_UPDATED" 		property="cbkRptLineVO.DATE_UPDATED" />
+  </resultMap>
+  
+  <sql id="retrieveRepNameSql">
+	   
+	   
+	SELECT  IR.REPORT_NAME reportName
+	       ,IR.PROG_REF REP_REF
+	       ,(SELECT MAX(R.DATE_UPDATED) FROM  CBK_RPT_LINE R  WHERE R.REP_REF = #{REP_REF} AND R.COMP_CODE = #{compCode}) AS DATE_UPDATED 
+	 FROM IRP_AD_HOC_REPORT IR
+	WHERE IR.REPORT_TYPE = '1'
+	  AND IR.PROG_REF = #{REP_REF}
+   	  AND IR.COMP_CODE = #{compCode}
+   	  
+	UNION
+	
+	SELECT  FO.BRIEF_NAME_ENG reportName
+	       ,FO.PROG_REF REP_REF
+		   ,(SELECT MAX(R.DATE_UPDATED) FROM  CBK_RPT_LINE R  WHERE R.REP_REF = #{REP_REF} AND R.COMP_CODE = #{compCode}) AS DATE_UPDATED 
+	FROM FTR_OPT FO
+	WHERE FO.PROG_REF = #{REP_REF}
+	   
+	  
+	  
+</sql>
+
+  <select id="retrieveRepName" resultMap="retrieveRepNameMap" parameterType="csvItemsSC">
+ 	<include refid="retrieveRepNameSql"/>
+  </select>
+  
+  <delete id="deleteCsvItems" parameterType="csvItemsCO">
+  	 DELETE FROM CBK_RPT_LINE  WHERE REP_REF = #{cbkRptLineVO.REP_REF} AND COMP_CODE =#{cbkRptLineVO.COMP_CODE}
+  </delete>  
+  
+   
+   <insert id="saveCsvItems" parameterType="csvItemsCO">
+ 		INSERT INTO CBK_RPT_LINE (COMP_CODE,REP_REF,LINE_NBR,CSV_ITEM_ID,DATE_UPDATED)
+	 	VALUES (#{cbkRptLineVO.COMP_CODE},#{cbkRptLineVO.REP_REF},#{cbkRptLineVO.LINE_NBR},#{cbkRptLineVO.CSV_ITEM_ID}, 
+	 	<choose>
+ 			<when test="isSybase == 0">
+	 			sysdate
+			</when>
+ 			<otherwise>
+ 				GETDATE()
+ 			</otherwise>
+	 	</choose>
+	 	)
+  </insert>
+  
+  
+</mapper>

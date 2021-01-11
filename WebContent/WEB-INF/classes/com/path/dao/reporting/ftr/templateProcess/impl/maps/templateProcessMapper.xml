@@ -1,0 +1,502 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        
+<mapper namespace="templProc">
+
+<resultMap type="commonDetailsVO"  id="getTemplProcLkupMap">     
+    <id column="CODE" property="CODE" />
+    <result column="BRIEF_DESC_ENG" property="BRIEF_DESC_ENG" />
+</resultMap>
+
+<resultMap type="GLSTMPLTCO" id="retFromToTemplatesMap">
+	<id column="CODE" property="glstmpltVO.CODE" />
+    <result column="BRIEF_NAME_ENG" property="glstmpltVO.BRIEF_NAME_ENG" />
+</resultMap>
+
+
+<resultMap type="COLMNTMPLTCO" id="retFromToColumnTemplatesMap">
+	<id column="CODE" property="colmnTmpltVO.CODE" />
+    <result column="BRIEF_NAME_ENG" property="colmnTmpltVO.BRIEF_NAME_ENG" />
+</resultMap>
+
+
+
+
+<sql id="retTemplatesListSql">
+	SELECT T.CODE AS CODE,
+           T.BRIEF_NAME_ENG  	AS BRIEF_DESC_ENG 
+	FROM   GLSTMPLT T
+	WHERE  T.COMP_CODE			= #{COMP_CODE}
+	AND	   T.LINE_NBR  			= 0 
+  <if test="TEMPLATE_CODE != null">
+	AND    T.CODE				= #{TEMPLATE_CODE} 
+  </if>
+ 
+</sql>
+
+<sql id="retColTemplatesListSql">
+	  SELECT T.CODE AS CODE,
+        	 T.BRIEF_NAME_ENG   AS BRIEF_DESC_ENG 
+ 	  FROM   COLMNTMPLT T
+  	  WHERE  T.COMP_CODE		= #{COMP_CODE}
+  	  AND	 T.LINE_NBR  		= 0  
+  <if test="TEMPLATE_CODE != null">
+	  AND T.CODE				= #{TEMPLATE_CODE} 
+  </if>
+ 
+</sql>
+
+<select id="retFromToTemplates" parameterType="templateProcSC" resultMap="retFromToTemplatesMap">
+	SELECT CODE CODE
+	<choose>
+	  <when test="IsRTL == 1">                                 
+		  ,BRIEF_NAME_ARAB 
+	  </when>
+	<otherwise>
+	      ,BRIEF_NAME_ENG
+	 </otherwise>
+	</choose>  	 BRIEF_NAME_ENG
+		FROM  	 GLSTMPLT 
+		WHERE	 GLSTMPLT.COMP_CODE  	= #{compCode}
+		AND		 GLSTMPLT.CODE  BETWEEN   #{fromTempl}  AND  #{toTempl}
+		AND		 GLSTMPLT.LINE_NBR  	= 0
+		ORDER BY CODE
+</select>
+
+
+<select id="retFromToColumnTemplates" parameterType="templateProcSC" resultMap="retFromToColumnTemplatesMap">
+	SELECT CODE CODE
+	<choose>
+	  <when test="IsRTL == 1">                                 
+		  ,BRIEF_NAME_ARAB 
+	  </when>
+	<otherwise>
+	      ,BRIEF_NAME_ENG
+	 </otherwise>
+	</choose>  	BRIEF_NAME_ENG
+		FROM  	COLMNTMPLT 
+		WHERE	COLMNTMPLT.COMP_CODE  	= #{compCode}
+		AND		COLMNTMPLT.CODE  BETWEEN  #{fromTempl} AND #{toTempl}
+		AND		COLMNTMPLT.LINE_NBR  	= 0
+		ORDER BY CODE
+</select>
+
+<select id="retTemplatesList"  resultMap="getTemplProcLkupMap" parameterType="commonDetailsSC">
+	<include refid="servicesCommon.commonGridWrpBefFlip"/>
+	<include refid="retTemplatesListSql"/>
+	<include refid="servicesCommon.commonGridWrpAftFlip"/>
+	<include refid="servicesCommon.commmonGridWrpFlipClose"/>
+</select>
+
+<select id="retTemplatesListCount"   resultType="int" parameterType="commonDetailsSC">
+	<include refid="servicesCommon.commonGridWrpBefCnt"/>
+	<include refid="retTemplatesListSql"/>
+	<include refid="servicesCommon.commonGridWrpAftCnt"/>
+	<include refid="servicesCommon.commonGridCountWrpClose"/>
+</select>
+
+<select id="retColTemplatesList"  resultMap="getTemplProcLkupMap" parameterType="commonDetailsSC">
+	<include refid="servicesCommon.commonGridWrpBefFlip"/>
+	<include refid="retColTemplatesListSql"/>
+	<include refid="servicesCommon.commonGridWrpAftFlip"/>
+	<include refid="servicesCommon.commmonGridWrpFlipClose"/>
+</select>
+
+<select id="retColTemplatesListCount"   resultType="int" parameterType="commonDetailsSC">
+	<include refid="servicesCommon.commonGridWrpBefCnt"/>
+	<include refid="retColTemplatesListSql"/>
+	<include refid="servicesCommon.commonGridWrpAftCnt"/>
+	<include refid="servicesCommon.commonGridCountWrpClose"/>
+</select>
+
+
+<parameterMap id="runTemplProcessMap" type="templateProcSC">
+        <parameter property="fromTempl"         mode="IN" 	jdbcType="NUMERIC"/>
+        <parameter property="compCode"      	mode="IN" 	jdbcType="NUMERIC"/>
+        <parameter property="userName"    		mode="IN" 	jdbcType="VARCHAR"/>
+        <parameter property="olError"    		mode="OUT" 	jdbcType="NUMERIC"/>
+        <parameter property="osMessage"    		mode="OUT" 	jdbcType="VARCHAR"/>
+</parameterMap>
+
+<parameterMap id="runColTemplProcessMap" type="templateProcSC">
+        <parameter property="fromTempl"    		mode="IN" 	jdbcType="NUMERIC"/>
+        <parameter property="compCode"    		mode="IN" 	jdbcType="NUMERIC"/>
+        <parameter property="olError"    		mode="OUT" 	jdbcType="NUMERIC"/>
+        <parameter property="osMessage"    		mode="OUT" 	jdbcType="VARCHAR"/>
+</parameterMap>
+
+ <update id="runTemplProcess"  statementType="CALLABLE" parameterMap="runTemplProcessMap">
+    {call P_FTR_FTR_TMP(?,?,?,?,?)}
+ </update>
+
+ <update id="runColTemplProcess"  parameterMap="runColTemplProcessMap" statementType="CALLABLE">
+   	{call P_FTR_FTR_TMP_COL(?,?,?,?)}
+ </update>
+ 
+ <update id="updateAllDateFromColTempl" parameterType="templateProcSC">		 
+		  UPDATE COLMNTMPLT SET FROM_DATE = 
+		  			 <choose> 
+		  				<when test="isSybase == 1" >
+		  					CONVERT(DATE,#{asOfDateStr},103)
+		  				</when>
+		  				<otherwise>
+		  					TO_DATE(#{asOfDateStr},'DD/MM/YYYY') 
+		  				</otherwise>
+		  		     </choose>
+			  WHERE COMP_CODE = #{compCode}
+			  AND CODE BETWEEN #{fromTempl} AND #{toTempl}
+			  AND FROM_DATE IS NOT NULL
+			  AND COL_TYPE IN ('AB','BB','ABF','AGC','AGF','CD', 'COA','COC') 
+ </update>
+ 
+ <update id="updateAllFromToDateColTempl" parameterType="templateProcSC">		
+		  UPDATE COLMNTMPLT SET FROM_DATE = 
+		  <choose> 
+		 	 <when test="isSybase == 1" >
+		 		CONVERT(DATE,#{fromDateStr},103),TO_DATE = CONVERT(DATE,#{toDateStr},103)
+		 	 </when>
+		 	<otherwise >
+		 		TO_DATE(#{fromDateStr},'DD/MM/YYYY') ,TO_DATE = TO_DATE(#{toDateStr},'DD/MM/YYYY')
+		 	 </otherwise>
+		 </choose>
+		 		WHERE COMP_CODE = #{compCode}
+			  AND CODE BETWEEN #{fromTempl} AND #{toTempl}
+			  AND FROM_DATE IS NOT NULL
+			  AND COL_TYPE IN ('AM','BM','VB','AMF','VBF','GM','GMF','MB','MBF')
+ </update>
+
+ <update id="updatePeriodicAllDateColTempl" parameterType="templateProcSC">		
+		  UPDATE COLMNTMPLT SET FROM_DATE = 
+		  <choose> 
+		 	 <when test="isSybase == 1" >
+		 	    (CASE WHEN #{periodType} ='M' THEN
+						 	        CASE WHEN  DATEPART(YY,FROM_DATE)=9999 THEN  
+						 	        	       CONVERT(DATE,'31/12/9999',103)   
+					 	    		ELSE 
+						 	    
+			   							  CASE WHEN DATEPART(mm, FROM_DATE) = 2 AND DATEPART(dd, FROM_DATE) = 28 and DATEPART(yy, FROM_DATE)%4 != 0 THEN  
+			   							  							CASE WHEN  DATEPART(YY,FROM_DATE) + #{periodicDate}/12 >9999 THEN
+			   							  									   CONVERT(DATE,'31/12/9999',103)
+			   							  							ELSE 
+			   							  									    dateadd(dd,-1 ,dateadd(mm,#{periodicDate}+1,dateadd(dd,-(day(FROM_DATE)-1),FROM_DATE)))
+			   							  							END 
+			    
+										       WHEN DATEPART(mm, FROM_DATE) = 2 AND DATEPART(dd, FROM_DATE) = 29 and  DATEPART(yy, FROM_DATE)%4 = 0 THEN 
+										     						CASE WHEN  DATEPART(YY,FROM_DATE) + #{periodicDate}/12 >9999 THEN
+			   							  									   CONVERT(DATE,'31/12/9999',103)
+			   							  							ELSE 
+			   							  									   dateadd(dd,-1 ,dateadd(mm,#{periodicDate}+1,dateadd(dd,-(day(FROM_DATE)-1),FROM_DATE)))
+			   							  							END 
+										     		
+			    						       WHEN DATEPART(mm, FROM_DATE) in(4,6,9,11) AND DATEPART(dd, FROM_DATE) = 30 THEN  
+			    						     							CASE WHEN  DATEPART(YY,FROM_DATE) + #{periodicDate}/12 >9999 THEN 
+			    						     								  CONVERT(DATE,'31/12/9999',103)
+			    						     							ELSE 
+			    						     								  dateadd(dd,-1 ,dateadd(mm,#{periodicDate}+1,dateadd(dd,-(day(FROM_DATE)-1),FROM_DATE)))
+			    						     							END
+			    							   ELSE 
+						    							CASE WHEN  DATEPART(YY,FROM_DATE) + #{periodicDate}/12 >9999 THEN
+						    									  CONVERT(DATE,'31/12/9999',103)
+						    							ELSE 
+						    							 		   dateadd(mm,#{periodicDate},FROM_DATE) 
+						    							END
+			    							 
+			    					        END 
+				    				END
+				    				
+                     WHEN #{periodType}='Y' THEN 
+                     
+                  			case when DATEPART(yy,FROM_DATE) + #{periodicDate} > 9999 then 
+                  				      CONVERT(DATE,'31/12/9999',103)  
+                  			else  
+                  					  dateadd(yy,#{periodicDate}, FROM_DATE)  
+                  			end
+
+   					 ELSE 
+   					    CASE WHEN  DATEPART(YY,FROM_DATE)=9999 THEN  
+   					    		   CONVERT(DATE,'31/12/9999',103)   
+	 	    		        ELSE 
+   					 			CASE WHEN  DATEPART(YY,FROM_DATE) + #{periodicDate}/365 >9999 THEN
+				   					 		      CONVERT(DATE,'31/12/9999',103)
+						   			 ELSE
+						   					  	dateadd(dd,#{periodicDate},FROM_DATE) 
+						   	     END 
+						 END
+   					 END 
+   					 ),
+   					 
+   			TO_DATE =  (CASE WHEN #{periodType} ='M' THEN
+   			
+   					   	 CASE WHEN  DATEPART(YY,FROM_DATE)=9999 THEN  
+   					   	      		  CONVERT(DATE,'31/12/9999',103)   
+	 	    				  ELSE 
+	 	    				  
+	   							  CASE WHEN DATEPART(mm, TO_DATE) = 2 AND DATEPART(dd, TO_DATE) = 28 and DATEPART(yy, TO_DATE)%4 != 0 THEN  
+	   							  							CASE WHEN  DATEPART(YY,FROM_DATE) + #{periodicDate}/12 >9999 THEN
+	   							  									   CONVERT(DATE,'31/12/9999',103)
+	   							  							ELSE 
+	   							  									dateadd(dd,-1 ,dateadd(mm,#{periodicDate}+1,dateadd(dd,-(day(TO_DATE)-1),TO_DATE)))
+	   							  							END 
+	    
+								      WHEN DATEPART(mm, TO_DATE) = 2 AND DATEPART(dd, TO_DATE) = 29 and  DATEPART(yy, TO_DATE)%4 = 0 THEN 
+								     						CASE WHEN  DATEPART(YY,FROM_DATE) + #{periodicDate}/12 >9999 THEN
+	   							  									   CONVERT(DATE,'31/12/9999',103)
+	   							  							ELSE 
+	   							  									  dateadd(dd,-1 ,dateadd(mm,#{periodicDate}+1,dateadd(dd,-(day(TO_DATE)-1),TO_DATE)))
+	   							  							END 
+								     		
+	    						      WHEN DATEPART(mm, TO_DATE) in(4,6,9,11) AND DATEPART(dd, TO_DATE) = 30 THEN  
+    						     							CASE WHEN  DATEPART(YY,FROM_DATE) + #{periodicDate}/12 >9999 THEN
+    						     								CONVERT(DATE,'31/12/9999',103)
+    						     							ELSE 
+    						     								dateadd(dd,-1 ,dateadd(mm,#{periodicDate}+1,dateadd(dd,-(day(TO_DATE)-1),TO_DATE)))
+    						     							END
+	    							  ELSE 
+				    							CASE WHEN  DATEPART(YY,FROM_DATE) + #{periodicDate}/12 >9999 THEN
+				    									  CONVERT(DATE,'31/12/9999',103)
+				    							ELSE 
+				    							 		 dateadd(mm,#{periodicDate},TO_DATE) 
+				    							END
+	    						  END 
+	    					END
+				            WHEN #{periodType}='Y' THEN 
+			                  			case when DATEPART(yy,TO_DATE) + #{periodicDate} > 9999 then 
+			                  				CONVERT(DATE,'31/12/9999',103)  
+			                  			else  
+			                  				dateadd(yy,#{periodicDate}, TO_DATE)  
+			                  			end
+				
+				   		     ELSE 
+				   					 	CASE WHEN  DATEPART(YY,FROM_DATE)=9999 THEN  
+				   					 			   CONVERT(DATE,'31/12/9999',103)   
+		 	    						 ELSE 
+								   					 CASE WHEN  DATEPART(YY,FROM_DATE) + #{periodicDate}/365 >9999 THEN 
+								   					 			CONVERT(DATE,'31/12/9999',103)
+										   			 ELSE
+										   					  	dateadd(dd,#{periodicDate},TO_DATE) 
+										   			 END 
+										 END
+				   			END 
+				   					 )
+   					 
+   					 
+   				
+		  	 </when>
+		 	<otherwise >
+		 	   (CASE WHEN #{periodType} ='M' THEN 
+		 	   
+		 	   			case when TO_NUMBER( TO_CHAR(FROM_DATE, 'YYYY')) =9999 then to_date('31/12/9999','dd/mm/yyyy')
+		 	   				 ELSE 
+							 	   	   	CASE WHEN  TO_NUMBER( TO_CHAR(FROM_DATE, 'YYYY')) + #{periodicDate}/12 >9999 THEN
+									    									to_date('31/12/9999','dd/mm/yyyy')
+									    							ELSE 
+									    							 	ADD_MONTHS(FROM_DATE,#{periodicDate})  
+									    							END
+						    END
+		 	   	   
+		 	   
+		 	   		WHEN #{periodType}='Y' THEN 
+		 	   				case when TO_NUMBER( TO_CHAR(FROM_DATE, 'YYYY')) =9999 then to_date('31/12/9999','dd/mm/yyyy') 
+		 	   				  ELSE 
+					 	   			    CASE WHEN  TO_NUMBER( TO_CHAR(FROM_DATE, 'YYYY')) + #{periodicDate} >9999 THEN
+					 	   			   											to_date('31/12/9999','dd/mm/yyyy')
+									    							ELSE 
+									    							 			ADD_MONTHS(FROM_DATE,#{periodicDate} * 12) 
+									    							END
+						   END
+
+		 	   		ELSE 
+		 	   		
+		 	   		
+		 	  
+		 	   		
+		 	   		case when TO_NUMBER( TO_CHAR(FROM_DATE, 'YYYY')) =9999 then to_date('31/12/9999','dd/mm/yyyy') 
+		 	   		    ELSE   
+
+		   					 CASE WHEN  TO_NUMBER( TO_CHAR(FROM_DATE, 'YYYY')) + #{periodicDate}/365 >9999 THEN 
+		   					 			to_date('31/12/9999','dd/mm/yyyy')
+				   			 ELSE
+				   					  		FROM_DATE + #{periodicDate} 
+				   			 END 
+					END
+										 
+		 	   		
+		 	   		
+		 	   	END )
+		 	   	
+		 	   	
+		 	   	
+		 	   	
+		 	   	
+			 	 ,TO_DATE =  (CASE WHEN #{periodType} ='M' THEN 
+		 	   
+		 	   			case when TO_NUMBER( TO_CHAR(TO_DATE, 'YYYY')) =9999 then to_date('31/12/9999','dd/mm/yyyy')
+		 	   				 ELSE 
+							 	   	   	CASE WHEN  TO_NUMBER( TO_CHAR(TO_DATE, 'YYYY')) + #{periodicDate}/12 >9999 THEN
+									    									to_date('31/12/9999','dd/mm/yyyy')
+									    							ELSE 
+									    							 	ADD_MONTHS(TO_DATE,#{periodicDate})  
+									    							END
+						    END
+		 	   	   
+		 	   
+		 	   		WHEN #{periodType}='Y' THEN 
+		 	   				case when TO_NUMBER( TO_CHAR(TO_DATE, 'YYYY')) =9999 then to_date('31/12/9999','dd/mm/yyyy') 
+		 	   				  ELSE 
+					 	   			    CASE WHEN  TO_NUMBER( TO_CHAR(TO_DATE, 'YYYY')) + #{periodicDate} >9999 THEN
+					 	   			   											to_date('31/12/9999','dd/mm/yyyy')
+									    							ELSE 
+									    							 			ADD_MONTHS(TO_DATE,#{periodicDate} * 12) 
+									    							END
+						   END
+
+		 	   		ELSE 
+		 	   		
+		 	   		
+		 	  
+		 	   		
+		 	   		case when TO_NUMBER( TO_CHAR(TO_DATE, 'YYYY')) =9999 then to_date('31/12/9999','dd/mm/yyyy') 
+		 	   		    ELSE   
+
+		   					 CASE WHEN  TO_NUMBER( TO_CHAR(TO_DATE, 'YYYY')) + #{periodicDate}/365 >9999 THEN 
+		   					 			to_date('31/12/9999','dd/mm/yyyy')
+				   			 ELSE
+				   					  		TO_DATE + #{periodicDate} 
+				   			 END 
+					END
+										 
+		 	   		
+		 	   		
+		 	   	END )
+		 	   	
+		 	   	
+				
+				
+				
+		 	 </otherwise>
+		 </choose>
+		 		WHERE COMP_CODE = #{compCode}
+			  AND CODE BETWEEN #{fromTempl} AND #{toTempl}
+			  AND FROM_DATE IS NOT NULL
+			  AND COL_TYPE IN ('AM','BM','VB','AMF','VBF', 'GM','GMF','MB','MBF')
+ </update>
+
+ <update id="updatePeriodicFromDateColTempl" parameterType="templateProcSC">		
+		  UPDATE COLMNTMPLT SET FROM_DATE = 
+		  <choose> 
+		 	 <when test="isSybase == 1" >
+    (CASE WHEN #{periodType} ='M' THEN
+						 	        CASE WHEN  DATEPART(YY,FROM_DATE)=9999 THEN  
+						 	        	       CONVERT(DATE,'31/12/9999',103)   
+					 	    		ELSE 
+						 	    
+			   							  CASE WHEN DATEPART(mm, FROM_DATE) = 2 AND DATEPART(dd, FROM_DATE) = 28 and DATEPART(yy, FROM_DATE)%4 != 0 THEN  
+			   							  							CASE WHEN  DATEPART(YY,FROM_DATE) + #{periodicDate}/12 >9999 THEN
+			   							  									   CONVERT(DATE,'31/12/9999',103)
+			   							  							ELSE 
+			   							  									    dateadd(dd,-1 ,dateadd(mm,#{periodicDate}+1,dateadd(dd,-(day(FROM_DATE)-1),FROM_DATE)))
+			   							  							END 
+			    
+										       WHEN DATEPART(mm, FROM_DATE) = 2 AND DATEPART(dd, FROM_DATE) = 29 and  DATEPART(yy, FROM_DATE)%4 = 0 THEN 
+										     						CASE WHEN  DATEPART(YY,FROM_DATE) + #{periodicDate}/12 >9999 THEN
+			   							  									   CONVERT(DATE,'31/12/9999',103)
+			   							  							ELSE 
+			   							  									   dateadd(dd,-1 ,dateadd(mm,#{periodicDate}+1,dateadd(dd,-(day(FROM_DATE)-1),FROM_DATE)))
+			   							  							END 
+										     		
+			    						       WHEN DATEPART(mm, FROM_DATE) in(4,6,9,11) AND DATEPART(dd, FROM_DATE) = 30 THEN  
+			    						     							CASE WHEN  DATEPART(YY,FROM_DATE) + #{periodicDate}/12 >9999 THEN 
+			    						     								  CONVERT(DATE,'31/12/9999',103)
+			    						     							ELSE 
+			    						     								  dateadd(dd,-1 ,dateadd(mm,#{periodicDate}+1,dateadd(dd,-(day(FROM_DATE)-1),FROM_DATE)))
+			    						     							END
+			    							   ELSE 
+						    							CASE WHEN  DATEPART(YY,FROM_DATE) + #{periodicDate}/12 >9999 THEN
+						    									  CONVERT(DATE,'31/12/9999',103)
+						    							ELSE 
+						    							 		   dateadd(mm,#{periodicDate},FROM_DATE) 
+						    							END
+			    							 
+			    					        END 
+				    				END
+				    				
+                     WHEN #{periodType}='Y' THEN 
+                     
+                  			case when DATEPART(yy,FROM_DATE) + #{periodicDate} > 9999 then 
+                  				      CONVERT(DATE,'31/12/9999',103)  
+                  			else  
+                  					  dateadd(yy,#{periodicDate}, FROM_DATE)  
+                  			end
+
+   					 ELSE 
+   					    CASE WHEN  DATEPART(YY,FROM_DATE)=9999 THEN  
+   					    		   CONVERT(DATE,'31/12/9999',103)   
+	 	    		        ELSE 
+   					 			CASE WHEN  DATEPART(YY,FROM_DATE) + #{periodicDate}/365 >9999 THEN
+				   					 		      CONVERT(DATE,'31/12/9999',103)
+						   			 ELSE
+						   					  	dateadd(dd,#{periodicDate},FROM_DATE) 
+						   	     END 
+						 END
+   					 END 
+   					 )
+   
+   
+   
+		  	 </when>
+		 	<otherwise >
+		 	   		  (CASE WHEN #{periodType} ='M' THEN 
+		 	   
+		 	   			case when TO_NUMBER( TO_CHAR(FROM_DATE, 'YYYY')) =9999 then to_date('31/12/9999','dd/mm/yyyy')
+		 	   				 ELSE 
+							 	   	   	CASE WHEN  TO_NUMBER( TO_CHAR(FROM_DATE, 'YYYY')) + #{periodicDate}/12 >9999 THEN
+									    									to_date('31/12/9999','dd/mm/yyyy')
+									    							ELSE 
+									    							 	ADD_MONTHS(FROM_DATE,#{periodicDate})  
+									    							END
+						    END
+		 	   	   
+		 	   
+		 	   		WHEN #{periodType}='Y' THEN 
+		 	   				case when TO_NUMBER( TO_CHAR(FROM_DATE, 'YYYY')) =9999 then to_date('31/12/9999','dd/mm/yyyy') 
+		 	   				  ELSE 
+					 	   			    CASE WHEN  TO_NUMBER( TO_CHAR(FROM_DATE, 'YYYY')) + #{periodicDate} >9999 THEN
+					 	   			   											to_date('31/12/9999','dd/mm/yyyy')
+									    							ELSE 
+									    							 			ADD_MONTHS(FROM_DATE,#{periodicDate} * 12) 
+									    							END
+						   END
+
+		 	   		ELSE 
+		 	   		
+		 	   		
+		 	  
+		 	   		
+		 	   		case when TO_NUMBER( TO_CHAR(FROM_DATE, 'YYYY')) =9999 then to_date('31/12/9999','dd/mm/yyyy') 
+		 	   		    ELSE   
+
+		   					 CASE WHEN  TO_NUMBER( TO_CHAR(FROM_DATE, 'YYYY')) + #{periodicDate}/365 >9999 THEN 
+		   					 			to_date('31/12/9999','dd/mm/yyyy')
+				   			 ELSE
+				   					  		FROM_DATE + #{periodicDate} 
+				   			 END 
+					END
+										 
+		 	   		
+		 	   		
+		 	   	END )	
+		 	   			
+		 	   			
+		 	   			
+		 	   			
+		 	   
+		 	 </otherwise>
+		 </choose>
+		 		WHERE COMP_CODE = #{compCode}
+			  AND CODE BETWEEN #{fromTempl} AND #{toTempl}
+			  AND FROM_DATE IS NOT NULL
+			  AND COL_TYPE IN ('AB','BB','ABF','AGC','AGF','CD', 'COA','COC')
+ </update>
+
+</mapper>

@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="IRP_FOLDER" >
+  <resultMap id="BaseResultMap" type="com.path.dbmaps.vo.IRP_FOLDERVO" >
+    <id column="FOLDER_CODE" property="FOLDER_CODE" />
+    <result column="FOLDER_REF" property="FOLDER_REF" />
+    <result column="PARENT_REF" property="PARENT_REF" />
+    <result column="DATE_UPDATED" property="DATE_UPDATED" />
+    <result column="DISP_ORDER" property="DISP_ORDER" />
+    <result column="BRIEF_NAME_ENG" property="BRIEF_NAME_ENG" />
+    <result column="BRIEF_NAME_ARAB" property="BRIEF_NAME_ARAB" />
+    <result column="APP_NAME" property="APP_NAME" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    FOLDER_CODE, FOLDER_REF, PARENT_REF, DATE_UPDATED, DISP_ORDER, BRIEF_NAME_ENG, BRIEF_NAME_ARAB, 
+    APP_NAME
+  </sql>
+  <select id="selectIRP_FOLDER" resultMap="BaseResultMap" parameterType="com.path.dbmaps.vo.IRP_FOLDERVO" >
+    select 
+    <include refid="Base_Column_List" />
+    from IRP_FOLDER
+    where FOLDER_CODE = #{FOLDER_CODE}
+  </select>
+  <delete id="deleteIRP_FOLDER" parameterType="com.path.dbmaps.vo.IRP_FOLDERVO" >
+    delete from IRP_FOLDER
+    where FOLDER_CODE = #{FOLDER_CODE}
+  </delete>
+  <insert id="insertIRP_FOLDER" parameterType="com.path.dbmaps.vo.IRP_FOLDERVO" >
+    insert into IRP_FOLDER
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="FOLDER_CODE != null and FOLDER_CODE != emptyBigDecimalValue" >
+        FOLDER_CODE,
+      </if>
+      <if test="FOLDER_REF != null" >
+        FOLDER_REF,
+      </if>
+      <if test="PARENT_REF != null" >
+        PARENT_REF,
+      </if>
+      DATE_UPDATED,
+      <if test="DISP_ORDER != null and DISP_ORDER != emptyBigDecimalValue" >
+        DISP_ORDER,
+      </if>
+      <if test="BRIEF_NAME_ENG != null" >
+        BRIEF_NAME_ENG,
+      </if>
+      <if test="BRIEF_NAME_ARAB != null" >
+        BRIEF_NAME_ARAB,
+      </if>
+      <if test="APP_NAME != null" >
+        APP_NAME,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="FOLDER_CODE != null and FOLDER_CODE != emptyBigDecimalValue" >
+        #{FOLDER_CODE},
+      </if>
+      <if test="FOLDER_REF != null" >
+        #{FOLDER_REF},
+      </if>
+      <if test="PARENT_REF != null" >
+        #{PARENT_REF},
+      </if>
+      <choose >
+        <when test="isSybase == 1" >
+           GETDATE(),
+        </when>
+        <otherwise >
+           SYSDATE,
+        </otherwise>
+      </choose>
+      <if test="DISP_ORDER != null and DISP_ORDER != emptyBigDecimalValue" >
+        #{DISP_ORDER},
+      </if>
+      <if test="BRIEF_NAME_ENG != null" >
+        #{BRIEF_NAME_ENG},
+      </if>
+      <if test="BRIEF_NAME_ARAB != null" >
+        #{BRIEF_NAME_ARAB},
+      </if>
+      <if test="APP_NAME != null" >
+        #{APP_NAME},
+      </if>
+    </trim>
+  </insert>
+  <sql id="sql_updateIRP_FOLDER" >
+    update IRP_FOLDER
+    <set >
+      <if test="FOLDER_REF != null" >
+        FOLDER_REF = #{FOLDER_REF},
+      </if>
+      <if test="PARENT_REF != null" >
+        PARENT_REF = #{PARENT_REF},
+      </if>
+      DATE_UPDATED = 
+      <choose >
+        <when test="isSybase == 1" >
+           GETDATE(),
+        </when>
+        <otherwise >
+           SYSDATE,
+        </otherwise>
+      </choose>
+      <if test="DISP_ORDER != null" >
+        <choose >
+          <when test="DISP_ORDER == emptyBigDecimalValue" >
+            DISP_ORDER = NULL ,
+          </when>
+          <otherwise >
+            DISP_ORDER = #{DISP_ORDER},
+          </otherwise>
+        </choose>
+      </if>
+      <if test="BRIEF_NAME_ENG != null" >
+        BRIEF_NAME_ENG = #{BRIEF_NAME_ENG},
+      </if>
+      <if test="BRIEF_NAME_ARAB != null" >
+        BRIEF_NAME_ARAB = #{BRIEF_NAME_ARAB},
+      </if>
+      <if test="APP_NAME != null" >
+        APP_NAME = #{APP_NAME},
+      </if>
+    </set>
+    where FOLDER_CODE = #{FOLDER_CODE}
+  </sql>
+  <update id="updateIRP_FOLDER" parameterType="com.path.dbmaps.vo.IRP_FOLDERVO" >
+    <include refid="sql_updateIRP_FOLDER" />
+    <if test="DATE_UPDATED != null" >
+      AND DATE_UPDATED = #{DATE_UPDATED}
+    </if>
+  </update>
+</mapper>

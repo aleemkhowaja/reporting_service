@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="GLSHEADER" >
+  <resultMap id="BaseResultMap" type="com.path.dbmaps.vo.GLSHEADERVO" >
+    <id column="CODE" property="CODE" />
+    <result column="BRIEF_NAME_ENG" property="BRIEF_NAME_ENG" />
+    <result column="BRIEF_NAME_ARAB" property="BRIEF_NAME_ARAB" />
+    <result column="LEFT1" property="LEFT1" />
+    <result column="LEFT2" property="LEFT2" />
+    <result column="LEFT3" property="LEFT3" />
+    <result column="LEFT4" property="LEFT4" />
+    <result column="CENTER1" property="CENTER1" />
+    <result column="CENTER2" property="CENTER2" />
+    <result column="CENTER3" property="CENTER3" />
+    <result column="RIGHT1" property="RIGHT1" />
+    <result column="RIGHT2" property="RIGHT2" />
+    <result column="RIGHT3" property="RIGHT3" />
+    <result column="RIGHT4" property="RIGHT4" />
+    <result column="DATE_UPDATED" property="DATE_UPDATED" />
+    <result column="TEMPLATE_TYPE" property="TEMPLATE_TYPE" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    CODE, BRIEF_NAME_ENG, BRIEF_NAME_ARAB, LEFT1, LEFT2, LEFT3, LEFT4, CENTER1, CENTER2, 
+    CENTER3, RIGHT1, RIGHT2, RIGHT3, RIGHT4, DATE_UPDATED, TEMPLATE_TYPE
+  </sql>
+  <select id="selectGLSHEADER" resultMap="BaseResultMap" parameterType="com.path.dbmaps.vo.GLSHEADERVO" >
+    select 
+    <include refid="Base_Column_List" />
+    from GLSHEADER
+    where CODE = #{CODE}
+  </select>
+  <delete id="deleteGLSHEADER" parameterType="com.path.dbmaps.vo.GLSHEADERVO" >
+    delete from GLSHEADER
+    where CODE = #{CODE}
+  </delete>
+  <insert id="insertGLSHEADER" parameterType="com.path.dbmaps.vo.GLSHEADERVO" >
+    insert into GLSHEADER
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="CODE != null and CODE != emptyBigDecimalValue" >
+        CODE,
+      </if>
+      <if test="BRIEF_NAME_ENG != null" >
+        BRIEF_NAME_ENG,
+      </if>
+      <if test="BRIEF_NAME_ARAB != null" >
+        BRIEF_NAME_ARAB,
+      </if>
+      <if test="LEFT1 != null" >
+        LEFT1,
+      </if>
+      <if test="LEFT2 != null" >
+        LEFT2,
+      </if>
+      <if test="LEFT3 != null" >
+        LEFT3,
+      </if>
+      <if test="LEFT4 != null" >
+        LEFT4,
+      </if>
+      <if test="CENTER1 != null" >
+        CENTER1,
+      </if>
+      <if test="CENTER2 != null" >
+        CENTER2,
+      </if>
+      <if test="CENTER3 != null" >
+        CENTER3,
+      </if>
+      <if test="RIGHT1 != null" >
+        RIGHT1,
+      </if>
+      <if test="RIGHT2 != null" >
+        RIGHT2,
+      </if>
+      <if test="RIGHT3 != null" >
+        RIGHT3,
+      </if>
+      <if test="RIGHT4 != null" >
+        RIGHT4,
+      </if>
+      DATE_UPDATED,
+      <if test="TEMPLATE_TYPE != null" >
+        TEMPLATE_TYPE,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="CODE != null and CODE != emptyBigDecimalValue" >
+        #{CODE},
+      </if>
+      <if test="BRIEF_NAME_ENG != null" >
+        #{BRIEF_NAME_ENG},
+      </if>
+      <if test="BRIEF_NAME_ARAB != null" >
+        #{BRIEF_NAME_ARAB},
+      </if>
+      <if test="LEFT1 != null" >
+        #{LEFT1},
+      </if>
+      <if test="LEFT2 != null" >
+        #{LEFT2},
+      </if>
+      <if test="LEFT3 != null" >
+        #{LEFT3},
+      </if>
+      <if test="LEFT4 != null" >
+        #{LEFT4},
+      </if>
+      <if test="CENTER1 != null" >
+        #{CENTER1},
+      </if>
+      <if test="CENTER2 != null" >
+        #{CENTER2},
+      </if>
+      <if test="CENTER3 != null" >
+        #{CENTER3},
+      </if>
+      <if test="RIGHT1 != null" >
+        #{RIGHT1},
+      </if>
+      <if test="RIGHT2 != null" >
+        #{RIGHT2},
+      </if>
+      <if test="RIGHT3 != null" >
+        #{RIGHT3},
+      </if>
+      <if test="RIGHT4 != null" >
+        #{RIGHT4},
+      </if>
+      <choose >
+        <when test="isSybase == 1" >
+           GETDATE(),
+        </when>
+        <otherwise >
+           SYSDATE,
+        </otherwise>
+      </choose>
+      <if test="TEMPLATE_TYPE != null" >
+        #{TEMPLATE_TYPE},
+      </if>
+    </trim>
+  </insert>
+  <sql id="sql_updateGLSHEADER" >
+    update GLSHEADER
+    <set >
+      <if test="BRIEF_NAME_ENG != null" >
+        BRIEF_NAME_ENG = #{BRIEF_NAME_ENG},
+      </if>
+      <if test="BRIEF_NAME_ARAB != null" >
+        BRIEF_NAME_ARAB = #{BRIEF_NAME_ARAB},
+      </if>
+      <if test="LEFT1 != null" >
+        LEFT1 = #{LEFT1},
+      </if>
+      <if test="LEFT2 != null" >
+        LEFT2 = #{LEFT2},
+      </if>
+      <if test="LEFT3 != null" >
+        LEFT3 = #{LEFT3},
+      </if>
+      <if test="LEFT4 != null" >
+        LEFT4 = #{LEFT4},
+      </if>
+      <if test="CENTER1 != null" >
+        CENTER1 = #{CENTER1},
+      </if>
+      <if test="CENTER2 != null" >
+        CENTER2 = #{CENTER2},
+      </if>
+      <if test="CENTER3 != null" >
+        CENTER3 = #{CENTER3},
+      </if>
+      <if test="RIGHT1 != null" >
+        RIGHT1 = #{RIGHT1},
+      </if>
+      <if test="RIGHT2 != null" >
+        RIGHT2 = #{RIGHT2},
+      </if>
+      <if test="RIGHT3 != null" >
+        RIGHT3 = #{RIGHT3},
+      </if>
+      <if test="RIGHT4 != null" >
+        RIGHT4 = #{RIGHT4},
+      </if>
+      DATE_UPDATED = 
+      <choose >
+        <when test="isSybase == 1" >
+           GETDATE(),
+        </when>
+        <otherwise >
+           SYSDATE,
+        </otherwise>
+      </choose>
+      <if test="TEMPLATE_TYPE != null" >
+        TEMPLATE_TYPE = #{TEMPLATE_TYPE},
+      </if>
+    </set>
+    where CODE = #{CODE}
+  </sql>
+  <update id="updateGLSHEADER" parameterType="com.path.dbmaps.vo.GLSHEADERVO" >
+    <include refid="sql_updateGLSHEADER" />
+    <if test="DATE_UPDATED != null" >
+      AND DATE_UPDATED = #{DATE_UPDATED}
+    </if>
+  </update>
+</mapper>

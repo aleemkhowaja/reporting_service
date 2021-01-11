@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="IRP_QUERY_EXEC_LOG" >
+  <resultMap id="BaseResultMap" type="com.path.dbmaps.vo.IRP_QUERY_EXEC_LOGVO" >
+    <id column="QUERY_EXEC_LOG_ID" property="QUERY_EXEC_LOG_ID" />
+    <result column="USER_ID" property="USER_ID" />
+    <result column="COMP_CODE" property="COMP_CODE" />
+    <result column="BRANCH_CODE" property="BRANCH_CODE" />
+    <result column="APP_NAME" property="APP_NAME" />
+    <result column="HTTP_SESSION" property="HTTP_SESSION" />
+    <result column="EXEC_START_TIME" property="EXEC_START_TIME" />
+    <result column="EXEC_END_TIME" property="EXEC_END_TIME" />
+    <result column="QUERY_EXCEPTION" property="QUERY_EXCEPTION" />
+    <result column="QUERY_ID" property="QUERY_ID" />
+    <result column="SOURCE_ID" property="SOURCE_ID" />
+    <result column="COUNT_LIST_YN" property="COUNT_LIST_YN" />
+    <result column="CONN_ID" property="CONN_ID" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    QUERY_EXEC_LOG_ID, USER_ID, COMP_CODE, BRANCH_CODE, APP_NAME, HTTP_SESSION, EXEC_START_TIME, 
+    EXEC_END_TIME, QUERY_EXCEPTION, QUERY_ID, SOURCE_ID, COUNT_LIST_YN, CONN_ID
+  </sql>
+  <select id="selectIRP_QUERY_EXEC_LOG" resultMap="BaseResultMap" parameterType="com.path.dbmaps.vo.IRP_QUERY_EXEC_LOGVO" >
+    select 
+    <include refid="Base_Column_List" />
+    from IRP_QUERY_EXEC_LOG
+    where QUERY_EXEC_LOG_ID = #{QUERY_EXEC_LOG_ID}
+  </select>
+  <delete id="deleteIRP_QUERY_EXEC_LOG" parameterType="com.path.dbmaps.vo.IRP_QUERY_EXEC_LOGVO" >
+    delete from IRP_QUERY_EXEC_LOG
+    where QUERY_EXEC_LOG_ID = #{QUERY_EXEC_LOG_ID}
+  </delete>
+  <insert id="insertIRP_QUERY_EXEC_LOG" parameterType="com.path.dbmaps.vo.IRP_QUERY_EXEC_LOGVO" >
+    insert into IRP_QUERY_EXEC_LOG
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="QUERY_EXEC_LOG_ID != null and QUERY_EXEC_LOG_ID != emptyBigDecimalValue" >
+        QUERY_EXEC_LOG_ID,
+      </if>
+      <if test="USER_ID != null and !&quot;&quot;.equals(USER_ID)" >
+        USER_ID,
+      </if>
+      <if test="COMP_CODE != null and COMP_CODE != emptyBigDecimalValue" >
+        COMP_CODE,
+      </if>
+      <if test="BRANCH_CODE != null and BRANCH_CODE != emptyBigDecimalValue" >
+        BRANCH_CODE,
+      </if>
+      <if test="APP_NAME != null and !&quot;&quot;.equals(APP_NAME)" >
+        APP_NAME,
+      </if>
+      <if test="HTTP_SESSION != null and !&quot;&quot;.equals(HTTP_SESSION)" >
+        HTTP_SESSION,
+      </if>
+      <if test="EXEC_START_TIME != null" >
+        EXEC_START_TIME,
+      </if>
+      <if test="EXEC_END_TIME != null" >
+        EXEC_END_TIME,
+      </if>
+      <if test="QUERY_EXCEPTION != null and !&quot;&quot;.equals(QUERY_EXCEPTION)" >
+        QUERY_EXCEPTION,
+      </if>
+      <if test="QUERY_ID != null and QUERY_ID != emptyBigDecimalValue" >
+        QUERY_ID,
+      </if>
+      <if test="SOURCE_ID != null and SOURCE_ID != emptyBigDecimalValue" >
+        SOURCE_ID,
+      </if>
+      <if test="COUNT_LIST_YN != null and !&quot;&quot;.equals(COUNT_LIST_YN)" >
+        COUNT_LIST_YN,
+      </if>
+      <if test="CONN_ID != null and CONN_ID != emptyBigDecimalValue" >
+        CONN_ID,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="QUERY_EXEC_LOG_ID != null and QUERY_EXEC_LOG_ID != emptyBigDecimalValue" >
+        #{QUERY_EXEC_LOG_ID},
+      </if>
+      <if test="USER_ID != null and !&quot;&quot;.equals(USER_ID)" >
+        #{USER_ID},
+      </if>
+      <if test="COMP_CODE != null and COMP_CODE != emptyBigDecimalValue" >
+        #{COMP_CODE},
+      </if>
+      <if test="BRANCH_CODE != null and BRANCH_CODE != emptyBigDecimalValue" >
+        #{BRANCH_CODE},
+      </if>
+      <if test="APP_NAME != null and !&quot;&quot;.equals(APP_NAME)" >
+        #{APP_NAME},
+      </if>
+      <if test="HTTP_SESSION != null and !&quot;&quot;.equals(HTTP_SESSION)" >
+        #{HTTP_SESSION},
+      </if>
+      <if test="EXEC_START_TIME != null" >
+        #{EXEC_START_TIME},
+      </if>
+      <if test="EXEC_END_TIME != null" >
+        #{EXEC_END_TIME},
+      </if>
+      <if test="QUERY_EXCEPTION != null and !&quot;&quot;.equals(QUERY_EXCEPTION)" >
+        #{QUERY_EXCEPTION},
+      </if>
+      <if test="QUERY_ID != null and QUERY_ID != emptyBigDecimalValue" >
+        #{QUERY_ID},
+      </if>
+      <if test="SOURCE_ID != null and SOURCE_ID != emptyBigDecimalValue" >
+        #{SOURCE_ID},
+      </if>
+      <if test="COUNT_LIST_YN != null and !&quot;&quot;.equals(COUNT_LIST_YN)" >
+        #{COUNT_LIST_YN},
+      </if>
+      <if test="CONN_ID != null and CONN_ID != emptyBigDecimalValue" >
+        #{CONN_ID},
+      </if>
+    </trim>
+  </insert>
+  <sql id="sql_updateIRP_QUERY_EXEC_LOG" >
+    update IRP_QUERY_EXEC_LOG
+    <set >
+      <if test="USER_ID != null" >
+        <choose >
+          <when test="USER_ID.equals(&quot;&quot;)" >
+            USER_ID = NULL ,
+          </when>
+          <otherwise >
+            USER_ID = #{USER_ID},
+          </otherwise>
+        </choose>
+      </if>
+      <if test="COMP_CODE != null" >
+        <choose >
+          <when test="COMP_CODE == emptyBigDecimalValue" >
+            COMP_CODE = NULL ,
+          </when>
+          <otherwise >
+            COMP_CODE = #{COMP_CODE},
+          </otherwise>
+        </choose>
+      </if>
+      <if test="BRANCH_CODE != null" >
+        <choose >
+          <when test="BRANCH_CODE == emptyBigDecimalValue" >
+            BRANCH_CODE = NULL ,
+          </when>
+          <otherwise >
+            BRANCH_CODE = #{BRANCH_CODE},
+          </otherwise>
+        </choose>
+      </if>
+      <if test="APP_NAME != null" >
+        <choose >
+          <when test="APP_NAME.equals(&quot;&quot;)" >
+            APP_NAME = NULL ,
+          </when>
+          <otherwise >
+            APP_NAME = #{APP_NAME},
+          </otherwise>
+        </choose>
+      </if>
+      <if test="HTTP_SESSION != null" >
+        <choose >
+          <when test="HTTP_SESSION.equals(&quot;&quot;)" >
+            HTTP_SESSION = NULL ,
+          </when>
+          <otherwise >
+            HTTP_SESSION = #{HTTP_SESSION},
+          </otherwise>
+        </choose>
+      </if>
+      <if test="EXEC_START_TIME != null" >
+        EXEC_START_TIME = #{EXEC_START_TIME},
+      </if>
+      <if test="EXEC_END_TIME != null" >
+        EXEC_END_TIME = #{EXEC_END_TIME},
+      </if>
+      <if test="QUERY_EXCEPTION != null" >
+        <choose >
+          <when test="QUERY_EXCEPTION.equals(&quot;&quot;)" >
+            QUERY_EXCEPTION = NULL ,
+          </when>
+          <otherwise >
+            QUERY_EXCEPTION = #{QUERY_EXCEPTION},
+          </otherwise>
+        </choose>
+      </if>
+      <if test="QUERY_ID != null" >
+        <choose >
+          <when test="QUERY_ID == emptyBigDecimalValue" >
+            QUERY_ID = NULL ,
+          </when>
+          <otherwise >
+            QUERY_ID = #{QUERY_ID},
+          </otherwise>
+        </choose>
+      </if>
+      <if test="SOURCE_ID != null" >
+        <choose >
+          <when test="SOURCE_ID == emptyBigDecimalValue" >
+            SOURCE_ID = NULL ,
+          </when>
+          <otherwise >
+            SOURCE_ID = #{SOURCE_ID},
+          </otherwise>
+        </choose>
+      </if>
+      <if test="COUNT_LIST_YN != null" >
+        <choose >
+          <when test="COUNT_LIST_YN.equals(&quot;&quot;)" >
+            COUNT_LIST_YN = NULL ,
+          </when>
+          <otherwise >
+            COUNT_LIST_YN = #{COUNT_LIST_YN},
+          </otherwise>
+        </choose>
+      </if>
+      <if test="CONN_ID != null" >
+        <choose >
+          <when test="CONN_ID == emptyBigDecimalValue" >
+            CONN_ID = NULL ,
+          </when>
+          <otherwise >
+            CONN_ID = #{CONN_ID},
+          </otherwise>
+        </choose>
+      </if>
+    </set>
+    where QUERY_EXEC_LOG_ID = #{QUERY_EXEC_LOG_ID}
+  </sql>
+  <update id="updateIRP_QUERY_EXEC_LOG" parameterType="com.path.dbmaps.vo.IRP_QUERY_EXEC_LOGVO" >
+    <include refid="sql_updateIRP_QUERY_EXEC_LOG" />
+  </update>
+</mapper>

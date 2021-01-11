@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="FTR_MISMATCH_REPORT" >
+  <resultMap id="BaseResultMap" type="com.path.dbmaps.vo.FTR_MISMATCH_REPORTVO" >
+    <id column="COMP_CODE" property="COMP_CODE" />
+    <id column="LINE_NO" property="LINE_NO" />
+    <id column="SUB_LINE_NO" property="SUB_LINE_NO" />
+    <id column="TMPLT_CODE" property="TMPLT_CODE" />
+    <id column="TMPLT_CODE1" property="TMPLT_CODE1" />
+    <result column="DATE_UPDATED" property="DATE_UPDATED" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    COMP_CODE, LINE_NO, SUB_LINE_NO, TMPLT_CODE, TMPLT_CODE1, DATE_UPDATED
+  </sql>
+  <select id="selectFTR_MISMATCH_REPORT" resultMap="BaseResultMap" parameterType="com.path.dbmaps.vo.FTR_MISMATCH_REPORTVO" >
+    select 
+    <include refid="Base_Column_List" />
+    from FTR_MISMATCH_REPORT
+    where COMP_CODE = #{COMP_CODE}
+      and LINE_NO = #{LINE_NO}
+      and SUB_LINE_NO = #{SUB_LINE_NO}
+      and TMPLT_CODE = #{TMPLT_CODE}
+      and TMPLT_CODE1 = #{TMPLT_CODE1}
+  </select>
+  <delete id="deleteFTR_MISMATCH_REPORT" parameterType="com.path.dbmaps.vo.FTR_MISMATCH_REPORTVO" >
+    delete from FTR_MISMATCH_REPORT
+    where COMP_CODE = #{COMP_CODE}
+      and LINE_NO = #{LINE_NO}
+      and SUB_LINE_NO = #{SUB_LINE_NO}
+      and TMPLT_CODE = #{TMPLT_CODE}
+      and TMPLT_CODE1 = #{TMPLT_CODE1}
+  </delete>
+  <insert id="insertFTR_MISMATCH_REPORT" parameterType="com.path.dbmaps.vo.FTR_MISMATCH_REPORTVO" >
+    insert into FTR_MISMATCH_REPORT
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="COMP_CODE != null and COMP_CODE != emptyBigDecimalValue" >
+        COMP_CODE,
+      </if>
+      <if test="LINE_NO != null and LINE_NO != emptyBigDecimalValue" >
+        LINE_NO,
+      </if>
+      <if test="SUB_LINE_NO != null and SUB_LINE_NO != emptyBigDecimalValue" >
+        SUB_LINE_NO,
+      </if>
+      <if test="TMPLT_CODE != null and TMPLT_CODE != emptyBigDecimalValue" >
+        TMPLT_CODE,
+      </if>
+      <if test="TMPLT_CODE1 != null and TMPLT_CODE1 != emptyBigDecimalValue" >
+        TMPLT_CODE1,
+      </if>
+      DATE_UPDATED,
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="COMP_CODE != null and COMP_CODE != emptyBigDecimalValue" >
+        #{COMP_CODE},
+      </if>
+      <if test="LINE_NO != null and LINE_NO != emptyBigDecimalValue" >
+        #{LINE_NO},
+      </if>
+      <if test="SUB_LINE_NO != null and SUB_LINE_NO != emptyBigDecimalValue" >
+        #{SUB_LINE_NO},
+      </if>
+      <if test="TMPLT_CODE != null and TMPLT_CODE != emptyBigDecimalValue" >
+        #{TMPLT_CODE},
+      </if>
+      <if test="TMPLT_CODE1 != null and TMPLT_CODE1 != emptyBigDecimalValue" >
+        #{TMPLT_CODE1},
+      </if>
+      <choose >
+        <when test="isSybase == 1" >
+           GETDATE(),
+        </when>
+        <otherwise >
+           SYSDATE,
+        </otherwise>
+      </choose>
+    </trim>
+  </insert>
+  <sql id="sql_updateFTR_MISMATCH_REPORT" >
+    update FTR_MISMATCH_REPORT
+    <set >
+      DATE_UPDATED = 
+      <choose >
+        <when test="isSybase == 1" >
+           GETDATE(),
+        </when>
+        <otherwise >
+           SYSDATE,
+        </otherwise>
+      </choose>
+    </set>
+    where COMP_CODE = #{COMP_CODE}
+      and LINE_NO = #{LINE_NO}
+      and SUB_LINE_NO = #{SUB_LINE_NO}
+      and TMPLT_CODE = #{TMPLT_CODE}
+      and TMPLT_CODE1 = #{TMPLT_CODE1}
+  </sql>
+  <update id="updateFTR_MISMATCH_REPORT" parameterType="com.path.dbmaps.vo.FTR_MISMATCH_REPORTVO" >
+    <include refid="sql_updateFTR_MISMATCH_REPORT" />
+    <if test="DATE_UPDATED != null" >
+      AND DATE_UPDATED = #{DATE_UPDATED}
+    </if>
+  </update>
+</mapper>

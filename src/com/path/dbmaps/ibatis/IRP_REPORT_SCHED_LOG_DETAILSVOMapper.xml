@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="IRP_REPORT_SCHED_LOG_DETAILS" >
+  <resultMap id="BaseResultMap" type="com.path.dbmaps.vo.IRP_REPORT_SCHED_LOG_DETAILSVO" >
+    <id column="LINE_NBR" property="LINE_NBR" />
+    <id column="REPORT_ID" property="REPORT_ID" />
+    <id column="SCHEDULED_DATE" property="SCHEDULED_DATE" />
+    <id column="SCHED_ID" property="SCHED_ID" />
+    <id column="START_DATE" property="START_DATE" />
+    <result column="FROM_EMAIL_VAL" property="FROM_EMAIL_VAL" />
+    <result column="RECEIVER_TYPE" property="RECEIVER_TYPE" />
+    <result column="RECEIVER_EMAIL_VAL" property="RECEIVER_EMAIL_VAL" />
+    <result column="STATUS" property="STATUS" />
+    <result column="REMARKS" property="REMARKS" />
+    <result column="EMAIL_SUBJECT" property="EMAIL_SUBJECT" />
+    <result column="CIF_NO" property="CIF_NO" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    LINE_NBR, REPORT_ID, SCHEDULED_DATE, SCHED_ID, START_DATE, FROM_EMAIL_VAL, RECEIVER_TYPE, 
+    RECEIVER_EMAIL_VAL, STATUS, REMARKS, EMAIL_SUBJECT, CIF_NO
+  </sql>
+  <select id="selectIRP_REPORT_SCHED_LOG_DETAILS" resultMap="BaseResultMap" parameterType="com.path.dbmaps.vo.IRP_REPORT_SCHED_LOG_DETAILSVO" >
+    select 
+    <include refid="Base_Column_List" />
+    from IRP_REPORT_SCHED_LOG_DETAILS
+    where LINE_NBR = #{LINE_NBR}
+      and REPORT_ID = #{REPORT_ID}
+      and SCHEDULED_DATE = #{SCHEDULED_DATE}
+      and SCHED_ID = #{SCHED_ID}
+      and START_DATE = #{START_DATE}
+  </select>
+  <delete id="deleteIRP_REPORT_SCHED_LOG_DETAILS" parameterType="com.path.dbmaps.vo.IRP_REPORT_SCHED_LOG_DETAILSVO" >
+    delete from IRP_REPORT_SCHED_LOG_DETAILS
+    where LINE_NBR = #{LINE_NBR}
+      and REPORT_ID = #{REPORT_ID}
+      and SCHEDULED_DATE = #{SCHEDULED_DATE}
+      and SCHED_ID = #{SCHED_ID}
+      and START_DATE = #{START_DATE}
+  </delete>
+  <insert id="insertIRP_REPORT_SCHED_LOG_DETAILS" parameterType="com.path.dbmaps.vo.IRP_REPORT_SCHED_LOG_DETAILSVO" >
+    insert into IRP_REPORT_SCHED_LOG_DETAILS
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="LINE_NBR != null and LINE_NBR != emptyBigDecimalValue" >
+        LINE_NBR,
+      </if>
+      <if test="REPORT_ID != null and REPORT_ID != emptyBigDecimalValue" >
+        REPORT_ID,
+      </if>
+      <if test="SCHEDULED_DATE != null" >
+        SCHEDULED_DATE,
+      </if>
+      <if test="SCHED_ID != null and SCHED_ID != emptyBigDecimalValue" >
+        SCHED_ID,
+      </if>
+      <if test="START_DATE != null" >
+        START_DATE,
+      </if>
+      <if test="FROM_EMAIL_VAL != null" >
+        FROM_EMAIL_VAL,
+      </if>
+      <if test="RECEIVER_TYPE != null and RECEIVER_TYPE != emptyBigDecimalValue" >
+        RECEIVER_TYPE,
+      </if>
+      <if test="RECEIVER_EMAIL_VAL != null" >
+        RECEIVER_EMAIL_VAL,
+      </if>
+      <if test="STATUS != null" >
+        STATUS,
+      </if>
+      <if test="REMARKS != null" >
+        REMARKS,
+      </if>
+      <if test="EMAIL_SUBJECT != null" >
+        EMAIL_SUBJECT,
+      </if>
+      <if test="CIF_NO != null and CIF_NO != emptyBigDecimalValue" >
+        CIF_NO,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="LINE_NBR != null and LINE_NBR != emptyBigDecimalValue" >
+        #{LINE_NBR},
+      </if>
+      <if test="REPORT_ID != null and REPORT_ID != emptyBigDecimalValue" >
+        #{REPORT_ID},
+      </if>
+      <if test="SCHEDULED_DATE != null" >
+        #{SCHEDULED_DATE},
+      </if>
+      <if test="SCHED_ID != null and SCHED_ID != emptyBigDecimalValue" >
+        #{SCHED_ID},
+      </if>
+      <if test="START_DATE != null" >
+        #{START_DATE},
+      </if>
+      <if test="FROM_EMAIL_VAL != null" >
+        #{FROM_EMAIL_VAL},
+      </if>
+      <if test="RECEIVER_TYPE != null and RECEIVER_TYPE != emptyBigDecimalValue" >
+        #{RECEIVER_TYPE},
+      </if>
+      <if test="RECEIVER_EMAIL_VAL != null" >
+        #{RECEIVER_EMAIL_VAL},
+      </if>
+      <if test="STATUS != null" >
+        #{STATUS},
+      </if>
+      <if test="REMARKS != null" >
+        #{REMARKS},
+      </if>
+      <if test="EMAIL_SUBJECT != null" >
+        #{EMAIL_SUBJECT},
+      </if>
+      <if test="CIF_NO != null and CIF_NO != emptyBigDecimalValue" >
+        #{CIF_NO},
+      </if>
+    </trim>
+  </insert>
+  <sql id="sql_updateIRP_REPORT_SCHED_LOG_DETAILS" >
+    update IRP_REPORT_SCHED_LOG_DETAILS
+    <set >
+      <if test="FROM_EMAIL_VAL != null" >
+        FROM_EMAIL_VAL = #{FROM_EMAIL_VAL},
+      </if>
+      <if test="RECEIVER_TYPE != null" >
+        <choose >
+          <when test="RECEIVER_TYPE == emptyBigDecimalValue" >
+            RECEIVER_TYPE = NULL ,
+          </when>
+          <otherwise >
+            RECEIVER_TYPE = #{RECEIVER_TYPE},
+          </otherwise>
+        </choose>
+      </if>
+      <if test="RECEIVER_EMAIL_VAL != null" >
+        RECEIVER_EMAIL_VAL = #{RECEIVER_EMAIL_VAL},
+      </if>
+      <if test="STATUS != null" >
+        STATUS = #{STATUS},
+      </if>
+      <if test="REMARKS != null" >
+        REMARKS = #{REMARKS},
+      </if>
+      <if test="EMAIL_SUBJECT != null" >
+        EMAIL_SUBJECT = #{EMAIL_SUBJECT},
+      </if>
+      <if test="CIF_NO != null" >
+        <choose >
+          <when test="CIF_NO == emptyBigDecimalValue" >
+            CIF_NO = NULL ,
+          </when>
+          <otherwise >
+            CIF_NO = #{CIF_NO},
+          </otherwise>
+        </choose>
+      </if>
+    </set>
+    where LINE_NBR = #{LINE_NBR}
+      and REPORT_ID = #{REPORT_ID}
+      and SCHEDULED_DATE = #{SCHEDULED_DATE}
+      and SCHED_ID = #{SCHED_ID}
+      and START_DATE = #{START_DATE}
+  </sql>
+  <update id="updateIRP_REPORT_SCHED_LOG_DETAILS" parameterType="com.path.dbmaps.vo.IRP_REPORT_SCHED_LOG_DETAILSVO" >
+    <include refid="sql_updateIRP_REPORT_SCHED_LOG_DETAILS" />
+  </update>
+</mapper>

@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="IRP_TEMPLATE_COLUMNS" >
+  <resultMap id="BaseResultMap" type="com.path.dbmaps.vo.IRP_TEMPLATE_COLUMNSVO" >
+    <id column="COMP_CODE" property="COMP_CODE" />
+    <id column="TEMPLATE_CODE" property="TEMPLATE_CODE" />
+    <result column="BRIEF_NAME1" property="BRIEF_NAME1" />
+    <result column="BRIEF_NAME2" property="BRIEF_NAME2" />
+    <result column="CREATED_BY" property="CREATED_BY" />
+    <result column="DATE_CREATED" property="DATE_CREATED" />
+    <result column="MODIFIED_BY" property="MODIFIED_BY" />
+    <result column="DATE_MODIFIED" property="DATE_MODIFIED" />
+    <result column="PRINT_PAPER_SIZE" property="PRINT_PAPER_SIZE" />
+    <result column="PRINT_PAPER_ORIENTATION" property="PRINT_PAPER_ORIENTATION" />
+    <result column="DATE_UPDATED" property="DATE_UPDATED" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    COMP_CODE, TEMPLATE_CODE, BRIEF_NAME1, BRIEF_NAME2, CREATED_BY, DATE_CREATED, MODIFIED_BY, 
+    DATE_MODIFIED, PRINT_PAPER_SIZE, PRINT_PAPER_ORIENTATION, DATE_UPDATED
+  </sql>
+  <select id="selectIRP_TEMPLATE_COLUMNS" resultMap="BaseResultMap" parameterType="com.path.dbmaps.vo.IRP_TEMPLATE_COLUMNSVOKey" >
+    select 
+    <include refid="Base_Column_List" />
+    from IRP_TEMPLATE_COLUMNS
+    where COMP_CODE = #{COMP_CODE}
+      and TEMPLATE_CODE = #{TEMPLATE_CODE}
+  </select>
+  <delete id="deleteIRP_TEMPLATE_COLUMNS" parameterType="com.path.dbmaps.vo.IRP_TEMPLATE_COLUMNSVOKey" >
+    delete from IRP_TEMPLATE_COLUMNS
+    where COMP_CODE = #{COMP_CODE}
+      and TEMPLATE_CODE = #{TEMPLATE_CODE}
+  </delete>
+  <insert id="insertIRP_TEMPLATE_COLUMNS" parameterType="com.path.dbmaps.vo.IRP_TEMPLATE_COLUMNSVO" >
+    insert into IRP_TEMPLATE_COLUMNS
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="COMP_CODE != null and COMP_CODE != emptyBigDecimalValue" >
+        COMP_CODE,
+      </if>
+      <if test="TEMPLATE_CODE != null and TEMPLATE_CODE != emptyBigDecimalValue" >
+        TEMPLATE_CODE,
+      </if>
+      <if test="BRIEF_NAME1 != null" >
+        BRIEF_NAME1,
+      </if>
+      <if test="BRIEF_NAME2 != null" >
+        BRIEF_NAME2,
+      </if>
+      <if test="CREATED_BY != null" >
+        CREATED_BY,
+      </if>
+      <if test="DATE_CREATED != null" >
+        DATE_CREATED,
+      </if>
+      <if test="MODIFIED_BY != null" >
+        MODIFIED_BY,
+      </if>
+      <if test="DATE_MODIFIED != null" >
+        DATE_MODIFIED,
+      </if>
+      <if test="PRINT_PAPER_SIZE != null and PRINT_PAPER_SIZE != emptyBigDecimalValue" >
+        PRINT_PAPER_SIZE,
+      </if>
+      <if test="PRINT_PAPER_ORIENTATION != null and PRINT_PAPER_ORIENTATION != emptyBigDecimalValue" >
+        PRINT_PAPER_ORIENTATION,
+      </if>
+      DATE_UPDATED,
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="COMP_CODE != null and COMP_CODE != emptyBigDecimalValue" >
+        #{COMP_CODE},
+      </if>
+      <if test="TEMPLATE_CODE != null and TEMPLATE_CODE != emptyBigDecimalValue" >
+        #{TEMPLATE_CODE},
+      </if>
+      <if test="BRIEF_NAME1 != null" >
+        #{BRIEF_NAME1},
+      </if>
+      <if test="BRIEF_NAME2 != null" >
+        #{BRIEF_NAME2},
+      </if>
+      <if test="CREATED_BY != null" >
+        #{CREATED_BY},
+      </if>
+      <if test="DATE_CREATED != null" >
+        #{DATE_CREATED},
+      </if>
+      <if test="MODIFIED_BY != null" >
+        #{MODIFIED_BY},
+      </if>
+      <if test="DATE_MODIFIED != null" >
+        #{DATE_MODIFIED},
+      </if>
+      <if test="PRINT_PAPER_SIZE != null and PRINT_PAPER_SIZE != emptyBigDecimalValue" >
+        #{PRINT_PAPER_SIZE},
+      </if>
+      <if test="PRINT_PAPER_ORIENTATION != null and PRINT_PAPER_ORIENTATION != emptyBigDecimalValue" >
+        #{PRINT_PAPER_ORIENTATION},
+      </if>
+      <choose >
+        <when test="isSybase == 1" >
+           GETDATE(),
+        </when>
+        <otherwise >
+           SYSDATE,
+        </otherwise>
+      </choose>
+    </trim>
+  </insert>
+  <sql id="sql_updateIRP_TEMPLATE_COLUMNS" >
+    update IRP_TEMPLATE_COLUMNS
+    <set >
+      <if test="BRIEF_NAME1 != null" >
+        BRIEF_NAME1 = #{BRIEF_NAME1},
+      </if>
+      <if test="BRIEF_NAME2 != null" >
+        BRIEF_NAME2 = #{BRIEF_NAME2},
+      </if>
+      <if test="CREATED_BY != null" >
+        CREATED_BY = #{CREATED_BY},
+      </if>
+      <if test="DATE_CREATED != null" >
+        DATE_CREATED = #{DATE_CREATED},
+      </if>
+      <if test="MODIFIED_BY != null" >
+        MODIFIED_BY = #{MODIFIED_BY},
+      </if>
+      <if test="DATE_MODIFIED != null" >
+        DATE_MODIFIED = #{DATE_MODIFIED},
+      </if>
+      <if test="PRINT_PAPER_SIZE != null" >
+        <choose >
+          <when test="PRINT_PAPER_SIZE == emptyBigDecimalValue" >
+            PRINT_PAPER_SIZE = NULL ,
+          </when>
+          <otherwise >
+            PRINT_PAPER_SIZE = #{PRINT_PAPER_SIZE},
+          </otherwise>
+        </choose>
+      </if>
+      <if test="PRINT_PAPER_ORIENTATION != null" >
+        <choose >
+          <when test="PRINT_PAPER_ORIENTATION == emptyBigDecimalValue" >
+            PRINT_PAPER_ORIENTATION = NULL ,
+          </when>
+          <otherwise >
+            PRINT_PAPER_ORIENTATION = #{PRINT_PAPER_ORIENTATION},
+          </otherwise>
+        </choose>
+      </if>
+      DATE_UPDATED = 
+      <choose >
+        <when test="isSybase == 1" >
+           GETDATE(),
+        </when>
+        <otherwise >
+           SYSDATE,
+        </otherwise>
+      </choose>
+    </set>
+    where COMP_CODE = #{COMP_CODE}
+      and TEMPLATE_CODE = #{TEMPLATE_CODE}
+  </sql>
+  <update id="updateIRP_TEMPLATE_COLUMNS" parameterType="com.path.dbmaps.vo.IRP_TEMPLATE_COLUMNSVO" >
+    <include refid="sql_updateIRP_TEMPLATE_COLUMNS" />
+  </update>
+</mapper>

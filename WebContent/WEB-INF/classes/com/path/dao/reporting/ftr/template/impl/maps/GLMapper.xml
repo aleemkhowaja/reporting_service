@@ -1,0 +1,493 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        
+<mapper namespace="templateGL">
+
+<resultMap  type="GLSTMPLTGLSDETCO"  		id="getGLsByLineMap">     
+ 	<id 	column="concatKey" 				property="concatKey" />
+    <id 	column="COMP_CODE" 				property="glstmpltGlsDetVO.COMP_CODE" />
+    <id 	column="LINE_NBR_DET" 			property="glstmpltGlsDetVO.LINE_NBR_DET" />
+    <id 	column="CODE" 					property="glstmpltGlsDetVO.CODE" />
+    <id 	column="LINE_NBR"	 			property="glstmpltGlsDetVO.LINE_NBR" />
+    <result column="LINE_NBR" 				property="newLineNumber" />
+    <result column="FROM_GL" 				property="glstmpltGlsDetVO.FROM_GL" />
+    <result column="FROM_GLStr" 			property="FROM_GLStr" />
+    <result column="TO_GL" 					property="glstmpltGlsDetVO.TO_GL" />
+    <result column="TO_GLStr" 				property="TO_GLStr" />
+    <result column="GL_COMP" 				property="glstmpltGlsDetVO.GL_COMP" />
+    <result column="BRANCH_CODE" 			property="glstmpltGlsDetVO.BRANCH_CODE" />
+    <result column="DIV_CODE" 				property="glstmpltGlsDetVO.DIV_CODE" />
+    <result column="DEPT_CODE" 				property="glstmpltGlsDetVO.DEPT_CODE" />
+    <result column="PERCENTAGE" 			property="glstmpltGlsDetVO.PERCENTAGE" />
+    <result column="CALC_TYPE" 				property="glstmpltGlsDetVO.CALC_TYPE" />
+    <result column="GL_COMP_NAME" 			property="GL_COMP_NAME" />
+    <result column="BRANCH_NAME" 			property="BRANCH_NAME" />
+    <result column="DIV_NAME" 				property="DIV_NAME" />
+    <result column="DEPT_NAME" 				property="DEPT_NAME" />
+    <result column="CALC_TYPE_NAME" 		property="CALC_TYPE_NAME" />
+    <result column="EXCLUDE_CLOSING_ENTRY" 	property="glstmpltGlsDetVO.EXCLUDE_CLOSING_ENTRY" />
+</resultMap>
+
+
+<resultMap type="commonDetailsVO"  id="getGLkupMap">     
+    <id column="CODE" property="CODE" />
+    <result column="BRIEF_DESC_ENG" property="BRIEF_DESC_ENG" />
+    <result column="LONG_DESC_ENG" property="LONG_DESC_ENG" />
+    <result column="BRIEF_DESC_ARAB" property="BRIEF_DESC_ARAB" />
+    <result column="LONG_DESC_ARAB" property="LONG_DESC_ARAB" />
+    <result column="BASE_CURRENCY" property="BASE_CURRENCY" />
+    <result column="REMARK" property="REMARK" />
+    <result column="COMPANY_CODE" property="COMPANY_CODE" />
+    <result column="COMPANY_NAME" property="COMPANY_NAME" />  
+	<result column="DIVISION_CODE" property="DIVISION_CODE" />
+    <result column="DIVISION_NAME" property="DIVISION_NAME" />  
+    <result column="GL_TYPE" property="GL_TYPE" />    
+	<result column="GL_CATEGORY" property="GL_CATEGORY" />    
+</resultMap>
+
+
+  
+  <resultMap id="getMaxGLSubLineNbMap" type="GLSTMPLTGLSDETCO" >
+    <id column="LINE_NBR_DET" property="glstmpltGlsDetVO.LINE_NBR_DET" />
+  </resultMap>
+  
+<sql id="getFromGLListSql">
+    SELECT G.GL_CODE AS CODE,
+           G.BRIEF_DESC_ENG AS BRIEF_DESC_ENG,
+           G.GL_CATEGORY AS GL_CATEGORY ,
+           G.LONG_DESC_ENG AS LONG_DESC_ENG,
+           G.GL_TYPE AS GL_TYPE
+    FROM GEN_LEDGER G
+    WHERE G.COMP_CODE= #{COMP_CODE}
+</sql>
+
+<sql id="getCompaniesListSql">
+      SELECT 	 C.COMP_CODE AS CODE,
+                 C.BRIEF_DESC_ENG AS BRIEF_DESC_ENG,
+                 C.BRIEF_DESC_ARAB AS BRIEF_DESC_ARAB,
+                 C.LONG_DESC_ENG AS LONG_DESC_ENG,
+                 C.LONG_DESC_ARAB AS LONG_DESC_ARAB,
+                 C.BASE_CURRENCY AS BASE_CURRENCY,
+ 				 C.REMARK AS REMARK
+      FROM COMPANIES C
+</sql>
+
+<sql id="getBranchesListSql">
+     	  SELECT B.BRANCH_CODE AS CODE,
+                 B.BRIEF_DESC_ENG AS BRIEF_DESC_ENG,
+                 B.BRIEF_DESC_ARAB AS BRIEF_DESC_ARAB,
+                 B.LONG_DESC_ENG AS LONG_DESC_ENG,
+                 B.LONG_DESC_ARAB AS LONG_DESC_ARAB,
+                 B.BASE_CURRENCY AS BASE_CURRENCY,
+ 				 B.REMARK AS REMARK
+           FROM BRANCHES B
+           WHERE  COMP_CODE = #{COMP_CODE}
+           <if test="BRANCH_CODE != null">
+         	   AND B.BRANCH_CODE = #{BRANCH_CODE} 
+           </if>
+</sql>
+
+<sql id="getDivisonsListSql">
+     	  SELECT D.DIVISION_CODE AS CODE,
+                 D.BRIEF_DESC_ENG AS BRIEF_DESC_ENG,
+                 D.BRIEF_DESC_ARAB AS BRIEF_DESC_ARAB,
+                 D.LONG_DESC_ENG AS LONG_DESC_ENG,
+                 D.LONG_DESC_ARAB AS LONG_DESC_ARAB
+           FROM DIVISIONS D 
+           WHERE  D.COMP_CODE = #{COMP_CODE}
+           <if test="DIV_CODE != null">
+         	   AND D.DIVISION_CODE = #{DIV_CODE} 
+           </if>
+            <if test="FROM_COL ==null">  
+            UNION
+  			SELECT 0  AS CODE,
+        	#{BRIEF_DESC_ARAB}  AS BRIEF_DESC_ENG,
+        	#{BRIEF_DESC_ARAB}  AS BRIEF_DESC_ARAB,
+       		#{BRIEF_DESC_ARAB}   AS LONG_DESC_ENG,
+        	#{BRIEF_DESC_ARAB}  AS LONG_DESC_ARAB
+        	FROM DUAL
+        	</if>
+</sql>
+
+<sql id="getDepartmentsListSql">
+			SELECT D.DEPT_CODE AS CODE,
+				    D.BRIEF_DESC_ENG AS BRIEF_DESC_ENG,
+					D.COMP_CODE AS COMPANY_CODE,
+				    COMPANIES.BRIEF_DESC_ENG AS COMPANY_NAME   ,
+                    D.DIVISION_CODE AS DIVISION_CODE,
+					DIVISIONS.BRIEF_DESC_ENG  AS DIVISION_NAME     
+
+             FROM    DEPARTMENTS D, DIVISIONS , COMPANIES 
+          	 WHERE  D.COMP_CODE  = COMPANIES.COMP_CODE
+             AND    D.COMP_CODE  = DIVISIONS.COMP_CODE
+             AND    D.DIVISION_CODE  = DIVISIONS.DIVISION_CODE
+             AND    D.COMP_CODE  = #{COMP_CODE}
+             <if test="DIV_CODE != 0">
+             AND D.DIVISION_CODE=#{DIV_CODE}
+             </if>
+           <if test="DEPT_CODE != null">
+         	    AND D.DEPT_CODE = #{DEPT_CODE} 
+           </if>
+           <if test="isGrid == true">
+           UNION
+           SELECT 0  AS CODE,
+		    #{BRIEF_DESC_ENG} AS BRIEF_DESC_ENG,
+			#{COMP_CODE} AS COMPANY_CODE,
+		    (SELECT BRIEF_DESC_ENG FROM COMPANIES WHERE COMP_CODE = #{COMP_CODE}) AS COMPANY_NAME   ,
+            #{DIV_CODE}  AS DIVISION_CODE,
+			<choose >
+          		<when test="DIV_CODE == 0" >
+           			 #{BRIEF_DESC_ARAB}  AS DIVISION_NAME
+          		</when>
+         		 <otherwise >
+            		(SELECT BRIEF_DESC_ENG FROM DIVISIONS WHERE COMP_CODE = #{COMP_CODE} AND DIVISION_CODE= #{DIV_CODE})  AS DIVISION_NAME 
+         		 </otherwise>
+        	</choose>
+			FROM DUAL   
+           </if>
+</sql>
+
+<sql id="getAccountsListSql">
+    SELECT AMF.COMP_CODE || AMF.BRANCH_CODE || AMF.CURRENCY_CODE || AMF.GL_CODE || AMF.CIF_SUB_NO || AMF.SL_NO as concatKey,
+      	   AMF.COMP_CODE COMP_CODE,
+	       AMF.BRANCH_CODE BRANCH_CODE,
+	       AMF.CURRENCY_CODE CURRENCY_CODE,
+	       AMF.GL_CODE GL_CODE,
+	       AMF.CIF_SUB_NO CIF_SUB_NO,
+	       AMF.SL_NO SL_NO,
+	       'N' INCLUDE,
+	       ROUND(#{TEMPLATE_CODE}, 0) TEMP_CODE,
+	       ROUND(#{TEMPLATE_LINE_NO}, 0) TMPLT_LINE_NBR,
+	       ROUND(#{SUB_LINE_NO}, 0) SUB_LINE_NBR, 
+	       0 OLD_SUB_LINE_NBR
+	 FROM AMF
+	 WHERE AMF.COMP_CODE = #{COMP_CODE}
+		    AND AMF.GL_CODE BETWEEN #{FROM_GL} AND #{TO_GL}
+		    AND ((#{BRANCH_CODE} = 0) OR (AMF.BRANCH_CODE =#{BRANCH_CODE}))
+		    AND ((#{DIV_CODE} = 0) OR (AMF.DIV =#{DIV_CODE}))
+		    AND ((#{DEPT_CODE} = 0) OR (AMF.DEPT =#{DEPT_CODE}))
+		    AND AMF.STATUS NOT IN ('D', 'C', 'M')
+		    AND NOT EXISTS
+						 (SELECT 1
+						          FROM IRP_TEMPLATE_ACCOUNTS
+						         WHERE IRP_TEMPLATE_ACCOUNTS.TEMPLATE_CODE =#{TEMPLATE_CODE}
+						           AND IRP_TEMPLATE_ACCOUNTS.TEMPLATE_LINE_NO = #{TEMPLATE_LINE_NO}
+						           AND IRP_TEMPLATE_ACCOUNTS.SUB_LINE_NO =#{SUB_LINE_NO}
+						           AND IRP_TEMPLATE_ACCOUNTS.COMP_CODE = AMF.COMP_CODE
+						           AND IRP_TEMPLATE_ACCOUNTS.BRANCH_CODE = AMF.BRANCH_CODE
+						           AND IRP_TEMPLATE_ACCOUNTS.CURRENCY_CODE = AMF.CURRENCY_CODE
+						           AND IRP_TEMPLATE_ACCOUNTS.GL_CODE = AMF.GL_CODE
+						           AND IRP_TEMPLATE_ACCOUNTS.CIF_SUB_NO = AMF.CIF_SUB_NO
+						           AND IRP_TEMPLATE_ACCOUNTS.SL_NO = AMF.SL_NO)
+</sql>
+
+<select id="getGLsByLine"  resultMap="getGLsByLineMap" parameterType="GLSTMPLTGLSDETSC">
+	<include refid="servicesCommon.commonGridWrpBefFlip"/>
+	<include refid="glExt.getGLsByLineSql"/>
+	<include refid="servicesCommon.commonGridWrpAftFlip"/>
+	<include refid="servicesCommon.commmonGridWrpFlipClose"/>
+</select>
+
+<select id="getFromGLList"  resultMap="getGLkupMap" parameterType="commonDetailsSC">
+	<include refid="servicesCommon.commonGridWrpBefFlip"/>
+	<include refid="getFromGLListSql"/>
+	<include refid="servicesCommon.commonGridWrpAftFlip"/>
+	<include refid="servicesCommon.commmonGridWrpFlipClose"/>
+</select>
+
+<select id="getFromGLListCount"  resultType="int" parameterType="tmplGridSC">
+	<include refid="servicesCommon.commonGridWrpBefCnt"/>
+	<include refid="getFromGLListSql"/>
+	<include refid="servicesCommon.commonGridWrpAftCnt"/>
+	<include refid="servicesCommon.commonGridCountWrpClose"/>
+</select>
+
+<select id="getCompaniesList"  resultMap="getGLkupMap" parameterType="tmplGridSC">
+	<include refid="servicesCommon.commonGridWrpBefFlip"/>
+	<include refid="getCompaniesListSql"/>
+	<include refid="servicesCommon.commonGridWrpAftFlip"/>
+	<include refid="servicesCommon.commmonGridWrpFlipClose"/>
+</select>
+
+<select id="getCompaniesListCount"   resultType="int" parameterType="tmplGridSC">
+	<include refid="servicesCommon.commonGridWrpBefCnt"/>
+	<include refid="getCompaniesListSql"/>
+	<include refid="servicesCommon.commonGridWrpAftCnt"/>
+	<include refid="servicesCommon.commonGridCountWrpClose"/>
+</select>
+
+<select id="getBranchesList"  resultMap="getGLkupMap" parameterType="commonDetailsSC">
+	<include refid="servicesCommon.commonGridWrpBefFlip"/>
+	<include refid="getBranchesListSql"/>
+	<include refid="servicesCommon.commonGridWrpAftFlip"/>
+	<include refid="servicesCommon.commmonGridWrpFlipClose"/>
+</select>
+
+<select id="getBranchesListCount"  resultType="int" parameterType="commonDetailsSC">
+	<include refid="servicesCommon.commonGridWrpBefCnt"/>
+	<include refid="getBranchesListSql"/>
+	<include refid="servicesCommon.commonGridWrpAftCnt"/>
+	<include refid="servicesCommon.commonGridCountWrpClose"/>
+</select>
+
+<select id="getDivisonsList"  resultMap="getGLkupMap" parameterType="commonDetailsSC">
+	<include refid="servicesCommon.commonGridWrpBefFlip"/>
+	<include refid="getDivisonsListSql"/>
+	<include refid="servicesCommon.commonGridWrpAftFlip"/>
+	<include refid="servicesCommon.commmonGridWrpFlipClose"/>
+</select>
+
+<select id="getDivisonsListCount"  resultType="int" parameterType="commonDetailsSC">
+	<include refid="servicesCommon.commonGridWrpBefCnt"/>
+	<include refid="getDivisonsListSql"/>
+	<include refid="servicesCommon.commonGridWrpAftCnt"/>
+	<include refid="servicesCommon.commonGridCountWrpClose"/>
+</select>
+
+<select id="getDepartmentsList"  resultMap="getGLkupMap" parameterType="commonDetailsSC">
+	<include refid="servicesCommon.commonGridWrpBefFlip"/>
+	<include refid="getDepartmentsListSql"/>
+	<include refid="servicesCommon.commonGridWrpAftFlip"/>
+	<include refid="servicesCommon.commmonGridWrpFlipClose"/>
+</select>
+
+<select id="getDepartmentsListCount"  resultType="int" parameterType="commonDetailsSC">
+	<include refid="servicesCommon.commonGridWrpBefCnt"/>
+	<include refid="getDepartmentsListSql"/>
+	<include refid="servicesCommon.commonGridWrpAftCnt"/>
+	<include refid="servicesCommon.commonGridCountWrpClose"/>
+</select>
+
+<!-- <select id="getAccountsList"  resultMap="getAccountsMap" parameterType="GLSTMPLTGLSDETSC">
+	<include refid="servicesCommon.commonGridWrpBefFlip"/>
+	<include refid="getAccountsListSql"/>
+	<include refid="servicesCommon.commonGridWrpAftFlip"/>
+	<include refid="servicesCommon.commmonGridWrpFlipClose"/>
+</select>-->
+
+
+<select id="getFromGLDependency"  resultMap="getGLkupMap" parameterType="commonDetailsSC">
+ 
+          SELECT G.GL_CODE AS CODE,
+                 G.BRIEF_DESC_ENG AS BRIEF_DESC_ENG,
+                 G.BRIEF_DESC_ARAB AS BRIEF_DESC_ARAB,
+                 G.LONG_DESC_ENG AS LONG_DESC_ENG,
+                 G.LONG_DESC_ARAB AS LONG_DESC_ARAB
+            FROM GEN_LEDGER G
+            WHERE G.COMP_CODE=#{COMP_CODE} AND G.GL_CODE=#{GL_CODE} 
+</select>
+
+  <delete id="deleteGLsByTempl" parameterType="GLSTMPLTVO">
+   DELETE FROM GLSTMPLTGLSDET
+    WHERE COMP_CODE = #{COMP_CODE}
+    AND CODE = #{CODE}
+  </delete>
+  
+  <select id="getMaxGLSubLineNb" parameterType="GLSTMPLTSC" resultMap="getMaxGLSubLineNbMap">
+  	  SELECT CASE WHEN (MAX(LINE_NBR_DET) + 1) IS NULL THEN 1 ELSE (MAX(LINE_NBR_DET) + 1) END AS LINE_NBR_DET
+	  FROM GLSTMPLTGLSDET
+	  WHERE COMP_CODE = 		#{COMP_CODE}
+	  		AND CODE = 			#{CODE}
+      		AND LINE_NBR =  #{LINE_NBR}
+  </select>
+
+
+<!-- added by zahi 14 dec 2011 -->
+<select id="findMaxBranch" parameterType="tmplGridSC" resultMap="getGLkupMap">
+	SELECT UOUT.BRANCH_CODE as CODE, UOUT.LONG_DESC_ENG
+	FROM BRANCHES UOUT 
+	WHERE UOUT.BRANCH_CODE=
+	(SELECT MAX(BRANCH_CODE)  FROM BRANCHES UIN
+	WHERE UIN.COMP_CODE=#{COMP_CODE})
+	AND COMP_CODE=#{COMP_CODE}
+</select>
+
+<select id="findMinBranch" parameterType="tmplGridSC" resultMap="getGLkupMap">
+	SELECT UOUT.BRANCH_CODE as CODE, UOUT.LONG_DESC_ENG
+	FROM BRANCHES UOUT 
+	WHERE UOUT.BRANCH_CODE=
+	(SELECT MIN(BRANCH_CODE)  FROM BRANCHES UIN
+	WHERE UIN.COMP_CODE=#{COMP_CODE})
+	AND COMP_CODE=#{COMP_CODE}
+</select>
+
+<select id="findMaxDivision" parameterType="tmplGridSC" resultMap="getGLkupMap">
+	SELECT UOUT.DIVISION_CODE as CODE, UOUT.LONG_DESC_ENG
+	FROM DIVISIONS UOUT 
+	WHERE UOUT.DIVISION_CODE=
+	(SELECT MAX(DIVISION_CODE)  FROM DIVISIONS UIN
+	WHERE UIN.COMP_CODE=#{COMP_CODE})
+	AND COMP_CODE=#{COMP_CODE}
+</select>
+
+<select id="findMinDivision" parameterType="tmplGridSC" resultMap="getGLkupMap">
+	SELECT UOUT.DIVISION_CODE as CODE, UOUT.LONG_DESC_ENG
+	FROM DIVISIONS UOUT 
+	WHERE UOUT.DIVISION_CODE=
+	(SELECT MIN(DIVISION_CODE)  FROM DIVISIONS UIN
+	WHERE UIN.COMP_CODE=#{COMP_CODE})
+	AND COMP_CODE=#{COMP_CODE}
+</select>
+
+<select id="findMaxDepartment" parameterType="tmplGridSC" resultMap="getGLkupMap">
+SELECT DPT.DEPT_CODE AS CODE, MIN(DPT.BRIEF_DESC_ENG) AS LONG_DESC_ENG
+  FROM DEPARTMENTS DPT
+ WHERE DPT.DEPT_CODE =
+       (SELECT MAX(DEPT_CODE)
+          FROM DEPARTMENTS UIN
+         WHERE UIN.COMP_CODE = #{COMP_CODE})
+   AND COMP_CODE = #{COMP_CODE}
+   AND DPT.DIVISION_CODE BETWEEN
+       (SELECT UOUT.DIVISION_CODE as CODE
+          FROM DIVISIONS UOUT
+         WHERE UOUT.DIVISION_CODE =
+               (SELECT MIN(DIVISION_CODE)
+                  FROM DIVISIONS UIN
+                 WHERE UIN.COMP_CODE = #{COMP_CODE})
+           AND COMP_CODE = #{COMP_CODE})
+   AND (SELECT UOUT.DIVISION_CODE as CODE
+          FROM DIVISIONS UOUT
+         WHERE UOUT.DIVISION_CODE =
+               (SELECT MAX(DIVISION_CODE)
+                  FROM DIVISIONS UIN
+                 WHERE UIN.COMP_CODE = #{COMP_CODE})
+           AND COMP_CODE = #{COMP_CODE})
+ GROUP BY DEPT_CODE
+</select>
+
+<select id="findMinDepartment" parameterType="tmplGridSC" resultMap="getGLkupMap">
+SELECT DPT.DEPT_CODE AS CODE, MIN(DPT.BRIEF_DESC_ENG) AS LONG_DESC_ENG
+  FROM DEPARTMENTS DPT
+ WHERE DPT.DEPT_CODE =
+       (SELECT MIN(DEPT_CODE)
+          FROM DEPARTMENTS UIN
+         WHERE UIN.COMP_CODE = #{COMP_CODE})
+   AND COMP_CODE = #{COMP_CODE}
+   AND DPT.DIVISION_CODE BETWEEN
+       (SELECT UOUT.DIVISION_CODE as CODE
+          FROM DIVISIONS UOUT
+         WHERE UOUT.DIVISION_CODE =
+               (SELECT MIN(DIVISION_CODE)
+                  FROM DIVISIONS UIN
+                 WHERE UIN.COMP_CODE = #{COMP_CODE})
+           AND COMP_CODE = #{COMP_CODE})
+   AND (SELECT UOUT.DIVISION_CODE as CODE
+          FROM DIVISIONS UOUT
+         WHERE UOUT.DIVISION_CODE =
+               (SELECT MAX(DIVISION_CODE)
+                  FROM DIVISIONS UIN
+                 WHERE UIN.COMP_CODE = #{COMP_CODE})
+           AND COMP_CODE = #{COMP_CODE})
+ GROUP BY DEPT_CODE
+</select>
+
+<select id="findMaxUnit" parameterType="tmplGridSC" resultMap="getGLkupMap">
+	SELECT UOUT.UNIT_CODE as CODE, UOUT.LONG_DESC_ENG
+	FROM UNITS UOUT 
+	WHERE UOUT.UNIT_CODE=
+	(SELECT MAX(UNIT_CODE)  FROM UNITS UIN
+	WHERE UIN.COMP_CODE=#{COMP_CODE})
+	AND COMP_CODE=#{COMP_CODE}
+</select>
+
+<select id="findMinUnit" parameterType="tmplGridSC" resultMap="getGLkupMap">
+	SELECT UOUT.UNIT_CODE as CODE, UOUT.LONG_DESC_ENG
+	FROM UNITS UOUT 
+	WHERE UOUT.UNIT_CODE=
+	(SELECT MIN(UNIT_CODE)  FROM UNITS UIN
+	WHERE UIN.COMP_CODE=#{COMP_CODE})
+	AND COMP_CODE=#{COMP_CODE}
+</select>
+
+<select id="findMaxCurrency" parameterType="tmplGridSC" resultMap="getGLkupMap">
+	SELECT UOUT.CURRENCY_CODE as CODE, UOUT.LONG_DESC_ENG
+	FROM CURRENCIES UOUT 
+	WHERE UOUT.CURRENCY_CODE=
+	(SELECT MAX(CURRENCY_CODE)  FROM CURRENCIES UIN
+	WHERE UIN.COMP_CODE=#{COMP_CODE})
+	AND COMP_CODE=#{COMP_CODE}
+</select>
+
+<select id="findMinCurrency" parameterType="tmplGridSC" resultMap="getGLkupMap">
+	SELECT UOUT.CURRENCY_CODE as CODE, UOUT.LONG_DESC_ENG
+	FROM CURRENCIES UOUT 
+	WHERE UOUT.CURRENCY_CODE=
+	(SELECT MIN(CURRENCY_CODE)  FROM CURRENCIES UIN
+	WHERE UIN.COMP_CODE=#{COMP_CODE}
+	<if test="CURRENCY_CODE !=null">
+		AND CURRENCY_CODE!=#{CURRENCY_CODE}
+	</if>
+	)
+	AND COMP_CODE=#{COMP_CODE}
+</select>
+<!-- end added by zahi -->
+
+  <delete id="deleteGlsByLine" parameterType="GLSTMPLTGLSDETSC">
+      delete from GLSTMPLTGLSDET
+      where COMP_CODE = #{COMP_CODE}
+      and CODE = #{TEMPLATE_CODE}
+      and LINE_NBR = #{TEMPLATE_LINE_NO}
+  </delete>
+  
+<resultMap type="FTR_ACCOUNTSCO"  id="getAccountsMap">   
+	<result column="CONCATKEY" 		property="concatKey" />
+    <result column="COMP_CODE" 		property="ftrAccountVO.COMP_CODE" />
+    <result column="BRANCH_CODE" 	property="ftrAccountVO.BRANCH_CODE" />
+    <result column="CURRENCY_CODE" 	property="ftrAccountVO.CURRENCY_CODE" />
+    <result column="GL_CODE" 		property="ftrAccountVO.GL_CODE" />
+    <result column="CIF_SUB_NO" 	property="ftrAccountVO.CIF_SUB_NO" />
+    <result column="SL_NO" 			property="ftrAccountVO.SL_NO" />
+    <result column="TEMP_CODE" 		property="ftrAccountVO.TEMP_CODE" />
+    <result column="TMPLT_LINE_NBR" property="ftrAccountVO.TMPLT_LINE_NBR" />
+    <result column="SUB_LINE_NBR" 	property="ftrAccountVO.SUB_LINE_NBR" />
+    <result column="INCLUDE" 		property="ftrAccountVO.INCLUDE" />
+</resultMap>
+
+<sql id="selecAccSql">
+	<include refid="glExt.selecAccSql"/>
+</sql>
+
+
+<select id="getAccountsList"  resultMap="getAccountsMap" parameterType="FTR_ACCOUNTSSC">
+	<include refid="servicesCommon.commonGridWrpBefFlip"/>
+	<include refid="selecAccSql"/>
+	<include refid="servicesCommon.commonGridWrpAftFlip"/>
+	<include refid="servicesCommon.commmonGridWrpFlipClose"/>
+</select>
+
+<select id="getAccountsListCount"  resultType="int" parameterType="FTR_ACCOUNTSSC">
+	<include refid="servicesCommon.commonGridWrpBefCnt"/>
+	<include refid="selecAccSql"/>
+	<include refid="servicesCommon.commonGridWrpAftCnt"/>
+	<include refid="servicesCommon.commonGridCountWrpClose"/>
+</select>
+
+<select id="checkTemplateGLRecords" resultType="int" parameterType="GLSTMPLTGLSDETSC">  
+	SELECT COUNT(1)
+	FROM GLSTMPLTGLSDET
+	WHERE GLSTMPLTGLSDET.COMP_CODE =#{COMP_CODE}
+	AND GLSTMPLTGLSDET.CODE =#{CODE}
+	AND GLSTMPLTGLSDET.CALC_TYPE = #{CALC_TYPE}
+	AND NOT EXISTS (SELECT 1
+					FROM GLSTMPLTGLSDET P
+					WHERE P.COMP_CODE = GLSTMPLTGLSDET.COMP_CODE
+					AND   P.CODE =#{CODE}
+					AND   P.CALC_TYPE <![CDATA[<>]]> #{CALC_TYPE}
+					AND   P.LINE_NBR = GLSTMPLTGLSDET.LINE_NBR
+					AND   P.LINE_NBR_DET <![CDATA[<>]]> GLSTMPLTGLSDET.LINE_NBR_DET)
+</select> 
+
+<select id="findMaxRegion" parameterType="tmplGridSC" resultMap="getGLkupMap">
+ SELECT REGION_CODE as CODE, LONG_DESC_ENG
+   FROM REGIONS
+  WHERE REGION_CODE = (SELECT MAX(REGION_CODE) FROM REGIONS)
+</select>
+
+<select id="findMinRegion" parameterType="tmplGridSC" resultMap="getGLkupMap">
+ SELECT REGION_CODE as CODE, LONG_DESC_ENG
+   FROM REGIONS
+  WHERE REGION_CODE = (SELECT MIN(REGION_CODE) FROM REGIONS)
+</select>
+  
+</mapper>

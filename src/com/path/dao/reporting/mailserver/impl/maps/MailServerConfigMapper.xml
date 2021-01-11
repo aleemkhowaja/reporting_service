@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="mailServerConfig" >
+ 
+ 
+  <resultMap id="retMailServerListMap" type="irp_mailServerConfigCO">
+  	<id column="MAIL_SERVER_CODE" property="mailServerVO.MAIL_SERVER_CODE" />
+    <result column="HOST" property="mailServerVO.HOST" />
+    <result column="PORT" property="mailServerVO.PORT" />
+    <result column="SERVER_USER_NAME" property="mailServerVO.SERVER_USER_NAME" />
+    <result column="SERVER_PASS" property="mailServerVO.SERVER_PASS" />
+    <result column="DATE_UPDATED" property="mailServerVO.DATE_UPDATED" />
+    <result column="SERVER_OLD_PASS" property="SERVER_OLD_PASS" />
+    <result column="SERVER_CONF_PASS" property="SERVER_CONF_PASS" />
+    <result column="MAIL_FROM" property="mailServerVO.MAIL_FROM" />
+    <result column="SSL_ENABLE_YN" property="mailServerVO.SSL_ENABLE_YN" />
+    <result column="SSL_PORT_NBR" property="mailServerVO.SSL_PORT_NBR" />
+  </resultMap>
+  
+  <sql id="retMailServerListSql">
+  	 SELECT 
+   		 <include refid="IRP_MAIL_SERVER_CONFIG.Base_Column_List" /> ,SERVER_PASS  SERVER_OLD_PASS,SERVER_PASS SERVER_CONF_PASS
+     FROM IRP_MAIL_SERVER_CONFIG
+  </sql>
+  
+  <select id="retMailServerCount" resultType="int" parameterType="irp_mailServerConfigSC"> 
+	<include refid="servicesCommon.commonGridWrpBefCnt"/>
+	<include refid="retMailServerListSql"/>
+	<include refid="servicesCommon.commonGridWrpAftCnt"/>
+	<include refid="servicesCommon.commonGridCountWrpClose"/>
+  </select> 
+  
+   <select id="retMailServerList" resultMap="retMailServerListMap" parameterType="irp_mailServerConfigSC" >
+  	<include refid="servicesCommon.commonGridWrpBefFlip"/>
+	<include refid="retMailServerListSql"/>
+	<include refid="servicesCommon.commonGridWrpAftFlip"/>
+	<include refid="servicesCommon.commmonGridWrpFlipClose"/>
+  </select>
+
+<select id="retMailServerById" parameterType="irp_mailServerConfigSC" resultMap="retMailServerListMap">
+	<include refid="retMailServerListSql"/>
+    WHERE MAIL_SERVER_CODE = #{msCode}
+</select>
+
+<select id="retMailServerReportCount" resultType="int" parameterType="irp_mailServerConfigSC">
+    SELECT COUNT(1)
+	FROM  IRP_AD_HOC_REPORT R
+	WHERE R.MAIL_SERVER_CODE =#{msCode}
+</select>
+
+</mapper>

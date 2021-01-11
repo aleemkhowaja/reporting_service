@@ -1,0 +1,510 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="COLMNTMPLT" >
+  <resultMap id="BaseResultMap" type="com.path.dbmaps.vo.COLMNTMPLTVO" >
+    <id column="CODE" property="CODE" />
+    <id column="COMP_CODE" property="COMP_CODE" />
+    <id column="LINE_NBR" property="LINE_NBR" />
+    <result column="BRIEF_NAME_ENG" property="BRIEF_NAME_ENG" />
+    <result column="BRIEF_NAME_ARAB" property="BRIEF_NAME_ARAB" />
+    <result column="COL_TYPE" property="COL_TYPE" />
+    <result column="FROM_DATE" property="FROM_DATE" />
+    <result column="TO_DATE" property="TO_DATE" />
+    <result column="CREATED_BY" property="CREATED_BY" />
+    <result column="DATE_CREATED" property="DATE_CREATED" />
+    <result column="MODIFIED_BY" property="MODIFIED_BY" />
+    <result column="DATE_MODIFIED" property="DATE_MODIFIED" />
+    <result column="COMP" property="COMP" />
+    <result column="FROM_BRANCH" property="FROM_BRANCH" />
+    <result column="TO_BRANCH" property="TO_BRANCH" />
+    <result column="FROM_CY" property="FROM_CY" />
+    <result column="TO_CY" property="TO_CY" />
+    <result column="FROM_DIV" property="FROM_DIV" />
+    <result column="TO_DIV" property="TO_DIV" />
+    <result column="FROM_DEPT" property="FROM_DEPT" />
+    <result column="TO_DEPT" property="TO_DEPT" />
+    <result column="FROM_UNIT" property="FROM_UNIT" />
+    <result column="TO_UNIT" property="TO_UNIT" />
+    <result column="PRINT_PAPER_SIZE" property="PRINT_PAPER_SIZE" />
+    <result column="PRINT_PAPER_ORIENTATION" property="PRINT_PAPER_ORIENTATION" />
+    <result column="BOLD" property="BOLD" />
+    <result column="DISP_COL_TOT_ZERO" property="DISP_COL_TOT_ZERO" />
+    <result column="EXPRESSION_LINES" property="EXPRESSION_LINES" />
+    <result column="ALL_CRITERIA" property="ALL_CRITERIA" />
+    <result column="FROM_REGION" property="FROM_REGION" />
+    <result column="TO_REGION" property="TO_REGION" />
+    <result column="DATE_UPDATED" property="DATE_UPDATED" />
+    <result column="SPECIFY_DAY" property="SPECIFY_DAY" />
+    <result column="SPECIFY_MONTH" property="SPECIFY_MONTH" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.path.dbmaps.vo.COLMNTMPLTVO" extends="BaseResultMap" >
+    <result column="EXPRESSION" property="EXPRESSION" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    CODE, COMP_CODE, LINE_NBR, BRIEF_NAME_ENG, BRIEF_NAME_ARAB, COL_TYPE, FROM_DATE, 
+    TO_DATE, CREATED_BY, DATE_CREATED, MODIFIED_BY, DATE_MODIFIED, COMP, FROM_BRANCH, 
+    TO_BRANCH, FROM_CY, TO_CY, FROM_DIV, TO_DIV, FROM_DEPT, TO_DEPT, FROM_UNIT, TO_UNIT, 
+    PRINT_PAPER_SIZE, PRINT_PAPER_ORIENTATION, BOLD, DISP_COL_TOT_ZERO, EXPRESSION_LINES, 
+    ALL_CRITERIA, FROM_REGION, TO_REGION, DATE_UPDATED, SPECIFY_DAY, SPECIFY_MONTH
+  </sql>
+  <sql id="Blob_Column_List" >
+    EXPRESSION
+  </sql>
+  <select id="selectCOLMNTMPLT" resultMap="ResultMapWithBLOBs" parameterType="com.path.dbmaps.vo.COLMNTMPLTVO" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from COLMNTMPLT
+    where CODE = #{CODE}
+      and COMP_CODE = #{COMP_CODE}
+      and LINE_NBR = #{LINE_NBR}
+  </select>
+  <delete id="deleteCOLMNTMPLT" parameterType="com.path.dbmaps.vo.COLMNTMPLTVO" >
+    delete from COLMNTMPLT
+    where CODE = #{CODE}
+      and COMP_CODE = #{COMP_CODE}
+      and LINE_NBR = #{LINE_NBR}
+  </delete>
+  <insert id="insertCOLMNTMPLT" parameterType="com.path.dbmaps.vo.COLMNTMPLTVO" >
+    insert into COLMNTMPLT
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="CODE != null and CODE != emptyBigDecimalValue" >
+        CODE,
+      </if>
+      <if test="COMP_CODE != null and COMP_CODE != emptyBigDecimalValue" >
+        COMP_CODE,
+      </if>
+      <if test="LINE_NBR != null and LINE_NBR != emptyBigDecimalValue" >
+        LINE_NBR,
+      </if>
+      <if test="BRIEF_NAME_ENG != null" >
+        BRIEF_NAME_ENG,
+      </if>
+      <if test="BRIEF_NAME_ARAB != null" >
+        BRIEF_NAME_ARAB,
+      </if>
+      <if test="COL_TYPE != null" >
+        COL_TYPE,
+      </if>
+      <if test="FROM_DATE != null" >
+        FROM_DATE,
+      </if>
+      <if test="TO_DATE != null" >
+        TO_DATE,
+      </if>
+      <if test="CREATED_BY != null" >
+        CREATED_BY,
+      </if>
+      <if test="DATE_CREATED != null" >
+        DATE_CREATED,
+      </if>
+      <if test="MODIFIED_BY != null" >
+        MODIFIED_BY,
+      </if>
+      <if test="DATE_MODIFIED != null" >
+        DATE_MODIFIED,
+      </if>
+      <if test="COMP != null and COMP != emptyBigDecimalValue" >
+        COMP,
+      </if>
+      <if test="FROM_BRANCH != null and FROM_BRANCH != emptyBigDecimalValue" >
+        FROM_BRANCH,
+      </if>
+      <if test="TO_BRANCH != null and TO_BRANCH != emptyBigDecimalValue" >
+        TO_BRANCH,
+      </if>
+      <if test="FROM_CY != null and FROM_CY != emptyBigDecimalValue" >
+        FROM_CY,
+      </if>
+      <if test="TO_CY != null and TO_CY != emptyBigDecimalValue" >
+        TO_CY,
+      </if>
+      <if test="FROM_DIV != null and FROM_DIV != emptyBigDecimalValue" >
+        FROM_DIV,
+      </if>
+      <if test="TO_DIV != null and TO_DIV != emptyBigDecimalValue" >
+        TO_DIV,
+      </if>
+      <if test="FROM_DEPT != null and FROM_DEPT != emptyBigDecimalValue" >
+        FROM_DEPT,
+      </if>
+      <if test="TO_DEPT != null and TO_DEPT != emptyBigDecimalValue" >
+        TO_DEPT,
+      </if>
+      <if test="FROM_UNIT != null and FROM_UNIT != emptyBigDecimalValue" >
+        FROM_UNIT,
+      </if>
+      <if test="TO_UNIT != null and TO_UNIT != emptyBigDecimalValue" >
+        TO_UNIT,
+      </if>
+      <if test="PRINT_PAPER_SIZE != null and PRINT_PAPER_SIZE != emptyBigDecimalValue" >
+        PRINT_PAPER_SIZE,
+      </if>
+      <if test="PRINT_PAPER_ORIENTATION != null and PRINT_PAPER_ORIENTATION != emptyBigDecimalValue" >
+        PRINT_PAPER_ORIENTATION,
+      </if>
+      <if test="BOLD != null" >
+        BOLD,
+      </if>
+      <if test="DISP_COL_TOT_ZERO != null" >
+        DISP_COL_TOT_ZERO,
+      </if>
+      <if test="EXPRESSION_LINES != null" >
+        EXPRESSION_LINES,
+      </if>
+      <if test="ALL_CRITERIA != null" >
+        ALL_CRITERIA,
+      </if>
+      <if test="FROM_REGION != null and FROM_REGION != emptyBigDecimalValue" >
+        FROM_REGION,
+      </if>
+      <if test="TO_REGION != null and TO_REGION != emptyBigDecimalValue" >
+        TO_REGION,
+      </if>
+      DATE_UPDATED,
+      <if test="SPECIFY_DAY != null" >
+        SPECIFY_DAY,
+      </if>
+      <if test="SPECIFY_MONTH != null" >
+        SPECIFY_MONTH,
+      </if>
+      <if test="EXPRESSION != null" >
+        EXPRESSION,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="CODE != null and CODE != emptyBigDecimalValue" >
+        #{CODE},
+      </if>
+      <if test="COMP_CODE != null and COMP_CODE != emptyBigDecimalValue" >
+        #{COMP_CODE},
+      </if>
+      <if test="LINE_NBR != null and LINE_NBR != emptyBigDecimalValue" >
+        #{LINE_NBR},
+      </if>
+      <if test="BRIEF_NAME_ENG != null" >
+        #{BRIEF_NAME_ENG},
+      </if>
+      <if test="BRIEF_NAME_ARAB != null" >
+        #{BRIEF_NAME_ARAB},
+      </if>
+      <if test="COL_TYPE != null" >
+        #{COL_TYPE},
+      </if>
+      <if test="FROM_DATE != null" >
+        #{FROM_DATE},
+      </if>
+      <if test="TO_DATE != null" >
+        #{TO_DATE},
+      </if>
+      <if test="CREATED_BY != null" >
+        #{CREATED_BY},
+      </if>
+      <if test="DATE_CREATED != null" >
+        #{DATE_CREATED},
+      </if>
+      <if test="MODIFIED_BY != null" >
+        #{MODIFIED_BY},
+      </if>
+      <if test="DATE_MODIFIED != null" >
+        #{DATE_MODIFIED},
+      </if>
+      <if test="COMP != null and COMP != emptyBigDecimalValue" >
+        #{COMP},
+      </if>
+      <if test="FROM_BRANCH != null and FROM_BRANCH != emptyBigDecimalValue" >
+        #{FROM_BRANCH},
+      </if>
+      <if test="TO_BRANCH != null and TO_BRANCH != emptyBigDecimalValue" >
+        #{TO_BRANCH},
+      </if>
+      <if test="FROM_CY != null and FROM_CY != emptyBigDecimalValue" >
+        #{FROM_CY},
+      </if>
+      <if test="TO_CY != null and TO_CY != emptyBigDecimalValue" >
+        #{TO_CY},
+      </if>
+      <if test="FROM_DIV != null and FROM_DIV != emptyBigDecimalValue" >
+        #{FROM_DIV},
+      </if>
+      <if test="TO_DIV != null and TO_DIV != emptyBigDecimalValue" >
+        #{TO_DIV},
+      </if>
+      <if test="FROM_DEPT != null and FROM_DEPT != emptyBigDecimalValue" >
+        #{FROM_DEPT},
+      </if>
+      <if test="TO_DEPT != null and TO_DEPT != emptyBigDecimalValue" >
+        #{TO_DEPT},
+      </if>
+      <if test="FROM_UNIT != null and FROM_UNIT != emptyBigDecimalValue" >
+        #{FROM_UNIT},
+      </if>
+      <if test="TO_UNIT != null and TO_UNIT != emptyBigDecimalValue" >
+        #{TO_UNIT},
+      </if>
+      <if test="PRINT_PAPER_SIZE != null and PRINT_PAPER_SIZE != emptyBigDecimalValue" >
+        #{PRINT_PAPER_SIZE},
+      </if>
+      <if test="PRINT_PAPER_ORIENTATION != null and PRINT_PAPER_ORIENTATION != emptyBigDecimalValue" >
+        #{PRINT_PAPER_ORIENTATION},
+      </if>
+      <if test="BOLD != null" >
+        #{BOLD},
+      </if>
+      <if test="DISP_COL_TOT_ZERO != null" >
+        #{DISP_COL_TOT_ZERO},
+      </if>
+      <if test="EXPRESSION_LINES != null" >
+        #{EXPRESSION_LINES},
+      </if>
+      <if test="ALL_CRITERIA != null" >
+        #{ALL_CRITERIA},
+      </if>
+      <if test="FROM_REGION != null and FROM_REGION != emptyBigDecimalValue" >
+        #{FROM_REGION},
+      </if>
+      <if test="TO_REGION != null and TO_REGION != emptyBigDecimalValue" >
+        #{TO_REGION},
+      </if>
+      <choose >
+        <when test="isSybase == 1" >
+           GETDATE(),
+        </when>
+        <otherwise >
+           SYSDATE,
+        </otherwise>
+      </choose>
+      <if test="SPECIFY_DAY != null" >
+        #{SPECIFY_DAY},
+      </if>
+      <if test="SPECIFY_MONTH != null" >
+        #{SPECIFY_MONTH},
+      </if>
+      <if test="EXPRESSION != null" >
+        #{EXPRESSION},
+      </if>
+    </trim>
+  </insert>
+  <sql id="sql_updateCOLMNTMPLT" >
+    update COLMNTMPLT
+    <set >
+      <if test="BRIEF_NAME_ENG != null" >
+        BRIEF_NAME_ENG = #{BRIEF_NAME_ENG},
+      </if>
+      <if test="BRIEF_NAME_ARAB != null" >
+        BRIEF_NAME_ARAB = #{BRIEF_NAME_ARAB},
+      </if>
+      <if test="COL_TYPE != null" >
+        COL_TYPE = #{COL_TYPE},
+      </if>
+      <if test="FROM_DATE != null" >
+        FROM_DATE = #{FROM_DATE},
+      </if>
+      <if test="TO_DATE != null" >
+        TO_DATE = #{TO_DATE},
+      </if>
+      <if test="CREATED_BY != null" >
+        CREATED_BY = #{CREATED_BY},
+      </if>
+      <if test="DATE_CREATED != null" >
+        DATE_CREATED = #{DATE_CREATED},
+      </if>
+      <if test="MODIFIED_BY != null" >
+        MODIFIED_BY = #{MODIFIED_BY},
+      </if>
+      <if test="DATE_MODIFIED != null" >
+        DATE_MODIFIED = #{DATE_MODIFIED},
+      </if>
+      <if test="COMP != null" >
+        <choose >
+          <when test="COMP == emptyBigDecimalValue" >
+            COMP = NULL ,
+          </when>
+          <otherwise >
+            COMP = #{COMP},
+          </otherwise>
+        </choose>
+      </if>
+      <if test="FROM_BRANCH != null" >
+        <choose >
+          <when test="FROM_BRANCH == emptyBigDecimalValue" >
+            FROM_BRANCH = NULL ,
+          </when>
+          <otherwise >
+            FROM_BRANCH = #{FROM_BRANCH},
+          </otherwise>
+        </choose>
+      </if>
+      <if test="TO_BRANCH != null" >
+        <choose >
+          <when test="TO_BRANCH == emptyBigDecimalValue" >
+            TO_BRANCH = NULL ,
+          </when>
+          <otherwise >
+            TO_BRANCH = #{TO_BRANCH},
+          </otherwise>
+        </choose>
+      </if>
+      <if test="FROM_CY != null" >
+        <choose >
+          <when test="FROM_CY == emptyBigDecimalValue" >
+            FROM_CY = NULL ,
+          </when>
+          <otherwise >
+            FROM_CY = #{FROM_CY},
+          </otherwise>
+        </choose>
+      </if>
+      <if test="TO_CY != null" >
+        <choose >
+          <when test="TO_CY == emptyBigDecimalValue" >
+            TO_CY = NULL ,
+          </when>
+          <otherwise >
+            TO_CY = #{TO_CY},
+          </otherwise>
+        </choose>
+      </if>
+      <if test="FROM_DIV != null" >
+        <choose >
+          <when test="FROM_DIV == emptyBigDecimalValue" >
+            FROM_DIV = NULL ,
+          </when>
+          <otherwise >
+            FROM_DIV = #{FROM_DIV},
+          </otherwise>
+        </choose>
+      </if>
+      <if test="TO_DIV != null" >
+        <choose >
+          <when test="TO_DIV == emptyBigDecimalValue" >
+            TO_DIV = NULL ,
+          </when>
+          <otherwise >
+            TO_DIV = #{TO_DIV},
+          </otherwise>
+        </choose>
+      </if>
+      <if test="FROM_DEPT != null" >
+        <choose >
+          <when test="FROM_DEPT == emptyBigDecimalValue" >
+            FROM_DEPT = NULL ,
+          </when>
+          <otherwise >
+            FROM_DEPT = #{FROM_DEPT},
+          </otherwise>
+        </choose>
+      </if>
+      <if test="TO_DEPT != null" >
+        <choose >
+          <when test="TO_DEPT == emptyBigDecimalValue" >
+            TO_DEPT = NULL ,
+          </when>
+          <otherwise >
+            TO_DEPT = #{TO_DEPT},
+          </otherwise>
+        </choose>
+      </if>
+      <if test="FROM_UNIT != null" >
+        <choose >
+          <when test="FROM_UNIT == emptyBigDecimalValue" >
+            FROM_UNIT = NULL ,
+          </when>
+          <otherwise >
+            FROM_UNIT = #{FROM_UNIT},
+          </otherwise>
+        </choose>
+      </if>
+      <if test="TO_UNIT != null" >
+        <choose >
+          <when test="TO_UNIT == emptyBigDecimalValue" >
+            TO_UNIT = NULL ,
+          </when>
+          <otherwise >
+            TO_UNIT = #{TO_UNIT},
+          </otherwise>
+        </choose>
+      </if>
+      <if test="PRINT_PAPER_SIZE != null" >
+        <choose >
+          <when test="PRINT_PAPER_SIZE == emptyBigDecimalValue" >
+            PRINT_PAPER_SIZE = NULL ,
+          </when>
+          <otherwise >
+            PRINT_PAPER_SIZE = #{PRINT_PAPER_SIZE},
+          </otherwise>
+        </choose>
+      </if>
+      <if test="PRINT_PAPER_ORIENTATION != null" >
+        <choose >
+          <when test="PRINT_PAPER_ORIENTATION == emptyBigDecimalValue" >
+            PRINT_PAPER_ORIENTATION = NULL ,
+          </when>
+          <otherwise >
+            PRINT_PAPER_ORIENTATION = #{PRINT_PAPER_ORIENTATION},
+          </otherwise>
+        </choose>
+      </if>
+      <if test="BOLD != null" >
+        BOLD = #{BOLD},
+      </if>
+      <if test="DISP_COL_TOT_ZERO != null" >
+        DISP_COL_TOT_ZERO = #{DISP_COL_TOT_ZERO},
+      </if>
+      <if test="EXPRESSION_LINES != null" >
+        EXPRESSION_LINES = #{EXPRESSION_LINES},
+      </if>
+      <if test="ALL_CRITERIA != null" >
+        ALL_CRITERIA = #{ALL_CRITERIA},
+      </if>
+      <if test="FROM_REGION != null" >
+        <choose >
+          <when test="FROM_REGION == emptyBigDecimalValue" >
+            FROM_REGION = NULL ,
+          </when>
+          <otherwise >
+            FROM_REGION = #{FROM_REGION},
+          </otherwise>
+        </choose>
+      </if>
+      <if test="TO_REGION != null" >
+        <choose >
+          <when test="TO_REGION == emptyBigDecimalValue" >
+            TO_REGION = NULL ,
+          </when>
+          <otherwise >
+            TO_REGION = #{TO_REGION},
+          </otherwise>
+        </choose>
+      </if>
+      DATE_UPDATED = 
+      <choose >
+        <when test="isSybase == 1" >
+           GETDATE(),
+        </when>
+        <otherwise >
+           SYSDATE,
+        </otherwise>
+      </choose>
+      <if test="SPECIFY_DAY != null" >
+        SPECIFY_DAY = #{SPECIFY_DAY},
+      </if>
+      <if test="SPECIFY_MONTH != null" >
+        SPECIFY_MONTH = #{SPECIFY_MONTH},
+      </if>
+      <if test="EXPRESSION != null" >
+        EXPRESSION = #{EXPRESSION},
+      </if>
+    </set>
+    where CODE = #{CODE}
+      and COMP_CODE = #{COMP_CODE}
+      and LINE_NBR = #{LINE_NBR}
+  </sql>
+  <update id="updateCOLMNTMPLT" parameterType="com.path.dbmaps.vo.COLMNTMPLTVO" >
+    <include refid="sql_updateCOLMNTMPLT" />
+    <if test="DATE_UPDATED != null" >
+      AND DATE_UPDATED = #{DATE_UPDATED}
+    </if>
+  </update>
+</mapper>

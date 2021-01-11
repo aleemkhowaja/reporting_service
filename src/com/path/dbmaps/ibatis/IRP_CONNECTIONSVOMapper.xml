@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="IRP_CONNECTIONS" >
+  <resultMap id="BaseResultMap" type="com.path.dbmaps.vo.IRP_CONNECTIONSVO" >
+    <id column="CONN_ID" property="CONN_ID" />
+    <result column="CONN_DESC" property="CONN_DESC" />
+    <result column="DBMS" property="DBMS" />
+    <result column="URL" property="URL" />
+    <result column="DB_PASS" property="DB_PASS" />
+    <result column="USER_ID" property="USER_ID" />
+    <result column="AUTOCOMMIT" property="AUTOCOMMIT" />
+    <result column="DATE_UPDATED" property="DATE_UPDATED" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    CONN_ID, CONN_DESC, DBMS, URL, DB_PASS, USER_ID, AUTOCOMMIT, DATE_UPDATED
+  </sql>
+  <select id="selectIRP_CONNECTIONS" resultMap="BaseResultMap" parameterType="com.path.dbmaps.vo.IRP_CONNECTIONSVO" >
+    select 
+    <include refid="Base_Column_List" />
+    from IRP_CONNECTIONS
+    where CONN_ID = #{CONN_ID}
+  </select>
+  <delete id="deleteIRP_CONNECTIONS" parameterType="com.path.dbmaps.vo.IRP_CONNECTIONSVO" >
+    delete from IRP_CONNECTIONS
+    where CONN_ID = #{CONN_ID}
+  </delete>
+  <insert id="insertIRP_CONNECTIONS" parameterType="com.path.dbmaps.vo.IRP_CONNECTIONSVO" >
+    insert into IRP_CONNECTIONS
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="CONN_ID != null and CONN_ID != emptyBigDecimalValue" >
+        CONN_ID,
+      </if>
+      <if test="CONN_DESC != null" >
+        CONN_DESC,
+      </if>
+      <if test="DBMS != null" >
+        DBMS,
+      </if>
+      <if test="URL != null" >
+        URL,
+      </if>
+      <if test="DB_PASS != null" >
+        DB_PASS,
+      </if>
+      <if test="USER_ID != null" >
+        USER_ID,
+      </if>
+      <if test="AUTOCOMMIT != null and AUTOCOMMIT != emptyBigDecimalValue" >
+        AUTOCOMMIT,
+      </if>
+      DATE_UPDATED,
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="CONN_ID != null and CONN_ID != emptyBigDecimalValue" >
+        #{CONN_ID},
+      </if>
+      <if test="CONN_DESC != null" >
+        #{CONN_DESC},
+      </if>
+      <if test="DBMS != null" >
+        #{DBMS},
+      </if>
+      <if test="URL != null" >
+        #{URL},
+      </if>
+      <if test="DB_PASS != null" >
+        #{DB_PASS},
+      </if>
+      <if test="USER_ID != null" >
+        #{USER_ID},
+      </if>
+      <if test="AUTOCOMMIT != null and AUTOCOMMIT != emptyBigDecimalValue" >
+        #{AUTOCOMMIT},
+      </if>
+      <choose >
+        <when test="isSybase == 1" >
+           GETDATE(),
+        </when>
+        <otherwise >
+           SYSDATE,
+        </otherwise>
+      </choose>
+    </trim>
+  </insert>
+  <sql id="sql_updateIRP_CONNECTIONS" >
+    update IRP_CONNECTIONS
+    <set >
+      <if test="CONN_DESC != null" >
+        CONN_DESC = #{CONN_DESC},
+      </if>
+      <if test="DBMS != null" >
+        DBMS = #{DBMS},
+      </if>
+      <if test="URL != null" >
+        URL = #{URL},
+      </if>
+      <if test="DB_PASS != null" >
+        DB_PASS = #{DB_PASS},
+      </if>
+      <if test="USER_ID != null" >
+        USER_ID = #{USER_ID},
+      </if>
+      <if test="AUTOCOMMIT != null" >
+        <choose >
+          <when test="AUTOCOMMIT == emptyBigDecimalValue" >
+            AUTOCOMMIT = NULL ,
+          </when>
+          <otherwise >
+            AUTOCOMMIT = #{AUTOCOMMIT},
+          </otherwise>
+        </choose>
+      </if>
+      DATE_UPDATED = 
+      <choose >
+        <when test="isSybase == 1" >
+           GETDATE(),
+        </when>
+        <otherwise >
+           SYSDATE,
+        </otherwise>
+      </choose>
+    </set>
+    where CONN_ID = #{CONN_ID}
+  </sql>
+  <update id="updateIRP_CONNECTIONS" parameterType="com.path.dbmaps.vo.IRP_CONNECTIONSVO" >
+    <include refid="sql_updateIRP_CONNECTIONS" />
+  </update>
+</mapper>

@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="IRP_QUERY_ARG_MAPPING" >
+  <resultMap id="BaseResultMap" type="com.path.dbmaps.vo.IRP_QUERY_ARG_MAPPINGVO" >
+    <id column="DEFAULT_SOURCE" property="DEFAULT_SOURCE" />
+    <id column="QUERY_ARG_NAME" property="QUERY_ARG_NAME" />
+    <id column="QUERY_ID" property="QUERY_ID" />
+    <id column="REPORT_ARGUMENT_ID" property="REPORT_ARGUMENT_ID" />
+    <id column="REPORT_ID" property="REPORT_ID" />
+    <result column="REPORT_MAPPED_ARG_NAME" property="REPORT_MAPPED_ARG_NAME" />
+    <result column="STATIC_VALUE" property="STATIC_VALUE" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    DEFAULT_SOURCE, QUERY_ARG_NAME, QUERY_ID, REPORT_ARGUMENT_ID, REPORT_ID, REPORT_MAPPED_ARG_NAME, 
+    STATIC_VALUE
+  </sql>
+  <select id="selectIRP_QUERY_ARG_MAPPING" resultMap="BaseResultMap" parameterType="com.path.dbmaps.vo.IRP_QUERY_ARG_MAPPINGVOKey" >
+    select 
+    <include refid="Base_Column_List" />
+    from IRP_QUERY_ARG_MAPPING
+    where DEFAULT_SOURCE = #{DEFAULT_SOURCE}
+      and QUERY_ARG_NAME = #{QUERY_ARG_NAME}
+      and QUERY_ID = #{QUERY_ID}
+      and REPORT_ARGUMENT_ID = #{REPORT_ARGUMENT_ID}
+      and REPORT_ID = #{REPORT_ID}
+  </select>
+  <delete id="deleteIRP_QUERY_ARG_MAPPING" parameterType="com.path.dbmaps.vo.IRP_QUERY_ARG_MAPPINGVOKey" >
+    delete from IRP_QUERY_ARG_MAPPING
+    where DEFAULT_SOURCE = #{DEFAULT_SOURCE}
+      and QUERY_ARG_NAME = #{QUERY_ARG_NAME}
+      and QUERY_ID = #{QUERY_ID}
+      and REPORT_ARGUMENT_ID = #{REPORT_ARGUMENT_ID}
+      and REPORT_ID = #{REPORT_ID}
+  </delete>
+  <insert id="insertIRP_QUERY_ARG_MAPPING" parameterType="com.path.dbmaps.vo.IRP_QUERY_ARG_MAPPINGVO" >
+    insert into IRP_QUERY_ARG_MAPPING
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="DEFAULT_SOURCE != null and DEFAULT_SOURCE != emptyBigDecimalValue" >
+        DEFAULT_SOURCE,
+      </if>
+      <if test="QUERY_ARG_NAME != null" >
+        QUERY_ARG_NAME,
+      </if>
+      <if test="QUERY_ID != null and QUERY_ID != emptyBigDecimalValue" >
+        QUERY_ID,
+      </if>
+      <if test="REPORT_ARGUMENT_ID != null and REPORT_ARGUMENT_ID != emptyBigDecimalValue" >
+        REPORT_ARGUMENT_ID,
+      </if>
+      <if test="REPORT_ID != null and REPORT_ID != emptyBigDecimalValue" >
+        REPORT_ID,
+      </if>
+      <if test="REPORT_MAPPED_ARG_NAME != null and !&quot;&quot;.equals(REPORT_MAPPED_ARG_NAME)" >
+        REPORT_MAPPED_ARG_NAME,
+      </if>
+      <if test="STATIC_VALUE != null and !&quot;&quot;.equals(STATIC_VALUE)" >
+        STATIC_VALUE,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="DEFAULT_SOURCE != null and DEFAULT_SOURCE != emptyBigDecimalValue" >
+        #{DEFAULT_SOURCE},
+      </if>
+      <if test="QUERY_ARG_NAME != null" >
+        #{QUERY_ARG_NAME},
+      </if>
+      <if test="QUERY_ID != null and QUERY_ID != emptyBigDecimalValue" >
+        #{QUERY_ID},
+      </if>
+      <if test="REPORT_ARGUMENT_ID != null and REPORT_ARGUMENT_ID != emptyBigDecimalValue" >
+        #{REPORT_ARGUMENT_ID},
+      </if>
+      <if test="REPORT_ID != null and REPORT_ID != emptyBigDecimalValue" >
+        #{REPORT_ID},
+      </if>
+      <if test="REPORT_MAPPED_ARG_NAME != null and !&quot;&quot;.equals(REPORT_MAPPED_ARG_NAME)" >
+        #{REPORT_MAPPED_ARG_NAME},
+      </if>
+      <if test="STATIC_VALUE != null and !&quot;&quot;.equals(STATIC_VALUE)" >
+        #{STATIC_VALUE},
+      </if>
+    </trim>
+  </insert>
+  <sql id="sql_updateIRP_QUERY_ARG_MAPPING" >
+    update IRP_QUERY_ARG_MAPPING
+    <set >
+      <if test="REPORT_MAPPED_ARG_NAME != null" >
+        <choose >
+          <when test="REPORT_MAPPED_ARG_NAME.equals(&quot;&quot;)" >
+            REPORT_MAPPED_ARG_NAME = NULL ,
+          </when>
+          <otherwise >
+            REPORT_MAPPED_ARG_NAME = #{REPORT_MAPPED_ARG_NAME},
+          </otherwise>
+        </choose>
+      </if>
+      <if test="STATIC_VALUE != null" >
+        <choose >
+          <when test="STATIC_VALUE.equals(&quot;&quot;)" >
+            STATIC_VALUE = NULL ,
+          </when>
+          <otherwise >
+            STATIC_VALUE = #{STATIC_VALUE},
+          </otherwise>
+        </choose>
+      </if>
+    </set>
+    where DEFAULT_SOURCE = #{DEFAULT_SOURCE}
+      and QUERY_ARG_NAME = #{QUERY_ARG_NAME}
+      and QUERY_ID = #{QUERY_ID}
+      and REPORT_ARGUMENT_ID = #{REPORT_ARGUMENT_ID}
+      and REPORT_ID = #{REPORT_ID}
+  </sql>
+  <update id="updateIRP_QUERY_ARG_MAPPING" parameterType="com.path.dbmaps.vo.IRP_QUERY_ARG_MAPPINGVO" >
+    <include refid="sql_updateIRP_QUERY_ARG_MAPPING" />
+  </update>
+</mapper>

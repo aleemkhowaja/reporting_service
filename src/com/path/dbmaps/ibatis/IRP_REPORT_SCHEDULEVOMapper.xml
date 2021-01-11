@@ -1,0 +1,463 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="IRP_REPORT_SCHEDULE" >
+  <resultMap id="BaseResultMap" type="com.path.dbmaps.vo.IRP_REPORT_SCHEDULEVO" >
+    <id column="REPORT_ID" property="REPORT_ID" />
+    <id column="REPORT_REF" property="REPORT_REF" />
+    <id column="SCHED_ID" property="SCHED_ID" />
+    <result column="REPORT_FORMAT" property="REPORT_FORMAT" />
+    <result column="IS_ACTIVE" property="IS_ACTIVE" />
+    <result column="PRINTER_NAME" property="PRINTER_NAME" />
+    <result column="DATA_ONLY" property="DATA_ONLY" />
+    <result column="CSV_SEPARATOR" property="CSV_SEPARATOR" />
+    <result column="SHOW_HEAD_FOOT" property="SHOW_HEAD_FOOT" />
+    <result column="REPORT_LANGUAGE" property="REPORT_LANGUAGE" />
+    <result column="ATTACH_FILE_NAME" property="ATTACH_FILE_NAME" />
+    <result column="BCC_EMAIL_TYPE" property="BCC_EMAIL_TYPE" />
+    <result column="BCC_EMAIL_VAL" property="BCC_EMAIL_VAL" />
+    <result column="CC_EMAIL_TYPE" property="CC_EMAIL_TYPE" />
+    <result column="CC_EMAIL_VAL" property="CC_EMAIL_VAL" />
+    <result column="EMAIL_BODY" property="EMAIL_BODY" />
+    <result column="EMAIL_SUBJECT" property="EMAIL_SUBJECT" />
+    <result column="FROM_EMAIL_TYPE" property="FROM_EMAIL_TYPE" />
+    <result column="FROM_EMAIL_VAL" property="FROM_EMAIL_VAL" />
+    <result column="MAIL_SERVER_CODE" property="MAIL_SERVER_CODE" />
+    <result column="PRINT_IF_NO_DATA_YN" property="PRINT_IF_NO_DATA_YN" />
+    <result column="SEND_IF_NO_DATA_YN" property="SEND_IF_NO_DATA_YN" />
+    <result column="TO_EMAIL_TYPE" property="TO_EMAIL_TYPE" />
+    <result column="TO_EMAIL_VAL" property="TO_EMAIL_VAL" />
+    <result column="EMAIL_CONSOLIDATED_YN" property="EMAIL_CONSOLIDATED_YN" />
+    <result column="DATE_TYPE" property="DATE_TYPE" />
+    <result column="SAVE_DATA_TYPE" property="SAVE_DATA_TYPE" />
+    <result column="IS_FCR_YN" property="IS_FCR_YN" />
+    <result column="SECURED_FILE_YN" property="SECURED_FILE_YN" />
+    <result column="SECURED_PWD_FIELD_NAME" property="SECURED_PWD_FIELD_NAME" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    REPORT_ID, REPORT_REF, SCHED_ID, REPORT_FORMAT, IS_ACTIVE, PRINTER_NAME, DATA_ONLY, 
+    CSV_SEPARATOR, SHOW_HEAD_FOOT, REPORT_LANGUAGE, ATTACH_FILE_NAME, BCC_EMAIL_TYPE, 
+    BCC_EMAIL_VAL, CC_EMAIL_TYPE, CC_EMAIL_VAL, EMAIL_BODY, EMAIL_SUBJECT, FROM_EMAIL_TYPE, 
+    FROM_EMAIL_VAL, MAIL_SERVER_CODE, PRINT_IF_NO_DATA_YN, SEND_IF_NO_DATA_YN, TO_EMAIL_TYPE, 
+    TO_EMAIL_VAL, EMAIL_CONSOLIDATED_YN, DATE_TYPE, SAVE_DATA_TYPE, IS_FCR_YN, SECURED_FILE_YN, 
+    SECURED_PWD_FIELD_NAME
+  </sql>
+  <select id="selectIRP_REPORT_SCHEDULE" resultMap="BaseResultMap" parameterType="com.path.dbmaps.vo.IRP_REPORT_SCHEDULEVO" >
+    select 
+    <include refid="Base_Column_List" />
+    from IRP_REPORT_SCHEDULE
+    where REPORT_ID = #{REPORT_ID}
+      and REPORT_REF = #{REPORT_REF}
+      and SCHED_ID = #{SCHED_ID}
+  </select>
+  <delete id="deleteIRP_REPORT_SCHEDULE" parameterType="com.path.dbmaps.vo.IRP_REPORT_SCHEDULEVO" >
+    delete from IRP_REPORT_SCHEDULE
+    where REPORT_ID = #{REPORT_ID}
+      and REPORT_REF = #{REPORT_REF}
+      and SCHED_ID = #{SCHED_ID}
+  </delete>
+  <insert id="insertIRP_REPORT_SCHEDULE" parameterType="com.path.dbmaps.vo.IRP_REPORT_SCHEDULEVO" >
+    insert into IRP_REPORT_SCHEDULE
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="REPORT_ID != null and REPORT_ID != emptyBigDecimalValue" >
+        REPORT_ID,
+      </if>
+      <if test="REPORT_REF != null" >
+        REPORT_REF,
+      </if>
+      <if test="SCHED_ID != null and SCHED_ID != emptyBigDecimalValue" >
+        SCHED_ID,
+      </if>
+      <if test="REPORT_FORMAT != null and !&quot;&quot;.equals(REPORT_FORMAT)" >
+        REPORT_FORMAT,
+      </if>
+      <if test="IS_ACTIVE != null" >
+        IS_ACTIVE,
+      </if>
+      <if test="PRINTER_NAME != null and !&quot;&quot;.equals(PRINTER_NAME)" >
+        PRINTER_NAME,
+      </if>
+      <if test="DATA_ONLY != null" >
+        DATA_ONLY,
+      </if>
+      <if test="CSV_SEPARATOR != null and !&quot;&quot;.equals(CSV_SEPARATOR)" >
+        CSV_SEPARATOR,
+      </if>
+      <if test="SHOW_HEAD_FOOT != null" >
+        SHOW_HEAD_FOOT,
+      </if>
+      <if test="REPORT_LANGUAGE != null" >
+        REPORT_LANGUAGE,
+      </if>
+      <if test="ATTACH_FILE_NAME != null and !&quot;&quot;.equals(ATTACH_FILE_NAME)" >
+        ATTACH_FILE_NAME,
+      </if>
+      <if test="BCC_EMAIL_TYPE != null and BCC_EMAIL_TYPE != emptyBigDecimalValue" >
+        BCC_EMAIL_TYPE,
+      </if>
+      <if test="BCC_EMAIL_VAL != null and !&quot;&quot;.equals(BCC_EMAIL_VAL)" >
+        BCC_EMAIL_VAL,
+      </if>
+      <if test="CC_EMAIL_TYPE != null and CC_EMAIL_TYPE != emptyBigDecimalValue" >
+        CC_EMAIL_TYPE,
+      </if>
+      <if test="CC_EMAIL_VAL != null and !&quot;&quot;.equals(CC_EMAIL_VAL)" >
+        CC_EMAIL_VAL,
+      </if>
+      <if test="EMAIL_BODY != null and !&quot;&quot;.equals(EMAIL_BODY)" >
+        EMAIL_BODY,
+      </if>
+      <if test="EMAIL_SUBJECT != null and !&quot;&quot;.equals(EMAIL_SUBJECT)" >
+        EMAIL_SUBJECT,
+      </if>
+      <if test="FROM_EMAIL_TYPE != null and FROM_EMAIL_TYPE != emptyBigDecimalValue" >
+        FROM_EMAIL_TYPE,
+      </if>
+      <if test="FROM_EMAIL_VAL != null and !&quot;&quot;.equals(FROM_EMAIL_VAL)" >
+        FROM_EMAIL_VAL,
+      </if>
+      <if test="MAIL_SERVER_CODE != null and MAIL_SERVER_CODE != emptyBigDecimalValue" >
+        MAIL_SERVER_CODE,
+      </if>
+      <if test="PRINT_IF_NO_DATA_YN != null" >
+        PRINT_IF_NO_DATA_YN,
+      </if>
+      <if test="SEND_IF_NO_DATA_YN != null" >
+        SEND_IF_NO_DATA_YN,
+      </if>
+      <if test="TO_EMAIL_TYPE != null and TO_EMAIL_TYPE != emptyBigDecimalValue" >
+        TO_EMAIL_TYPE,
+      </if>
+      <if test="TO_EMAIL_VAL != null and !&quot;&quot;.equals(TO_EMAIL_VAL)" >
+        TO_EMAIL_VAL,
+      </if>
+      <if test="EMAIL_CONSOLIDATED_YN != null" >
+        EMAIL_CONSOLIDATED_YN,
+      </if>
+      <if test="DATE_TYPE != null" >
+        DATE_TYPE,
+      </if>
+      <if test="SAVE_DATA_TYPE != null and SAVE_DATA_TYPE != emptyBigDecimalValue" >
+        SAVE_DATA_TYPE,
+      </if>
+      <if test="IS_FCR_YN != null and IS_FCR_YN != emptyBigDecimalValue" >
+        IS_FCR_YN,
+      </if>
+      <if test="SECURED_FILE_YN != null" >
+        SECURED_FILE_YN,
+      </if>
+      <if test="SECURED_PWD_FIELD_NAME != null and !&quot;&quot;.equals(SECURED_PWD_FIELD_NAME)" >
+        SECURED_PWD_FIELD_NAME,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="REPORT_ID != null and REPORT_ID != emptyBigDecimalValue" >
+        #{REPORT_ID},
+      </if>
+      <if test="REPORT_REF != null" >
+        #{REPORT_REF},
+      </if>
+      <if test="SCHED_ID != null and SCHED_ID != emptyBigDecimalValue" >
+        #{SCHED_ID},
+      </if>
+      <if test="REPORT_FORMAT != null and !&quot;&quot;.equals(REPORT_FORMAT)" >
+        #{REPORT_FORMAT},
+      </if>
+      <if test="IS_ACTIVE != null" >
+        #{IS_ACTIVE},
+      </if>
+      <if test="PRINTER_NAME != null and !&quot;&quot;.equals(PRINTER_NAME)" >
+        #{PRINTER_NAME},
+      </if>
+      <if test="DATA_ONLY != null" >
+        #{DATA_ONLY},
+      </if>
+      <if test="CSV_SEPARATOR != null and !&quot;&quot;.equals(CSV_SEPARATOR)" >
+        #{CSV_SEPARATOR},
+      </if>
+      <if test="SHOW_HEAD_FOOT != null" >
+        #{SHOW_HEAD_FOOT},
+      </if>
+      <if test="REPORT_LANGUAGE != null" >
+        #{REPORT_LANGUAGE},
+      </if>
+      <if test="ATTACH_FILE_NAME != null and !&quot;&quot;.equals(ATTACH_FILE_NAME)" >
+        #{ATTACH_FILE_NAME},
+      </if>
+      <if test="BCC_EMAIL_TYPE != null and BCC_EMAIL_TYPE != emptyBigDecimalValue" >
+        #{BCC_EMAIL_TYPE},
+      </if>
+      <if test="BCC_EMAIL_VAL != null and !&quot;&quot;.equals(BCC_EMAIL_VAL)" >
+        #{BCC_EMAIL_VAL},
+      </if>
+      <if test="CC_EMAIL_TYPE != null and CC_EMAIL_TYPE != emptyBigDecimalValue" >
+        #{CC_EMAIL_TYPE},
+      </if>
+      <if test="CC_EMAIL_VAL != null and !&quot;&quot;.equals(CC_EMAIL_VAL)" >
+        #{CC_EMAIL_VAL},
+      </if>
+      <if test="EMAIL_BODY != null and !&quot;&quot;.equals(EMAIL_BODY)" >
+        #{EMAIL_BODY},
+      </if>
+      <if test="EMAIL_SUBJECT != null and !&quot;&quot;.equals(EMAIL_SUBJECT)" >
+        #{EMAIL_SUBJECT},
+      </if>
+      <if test="FROM_EMAIL_TYPE != null and FROM_EMAIL_TYPE != emptyBigDecimalValue" >
+        #{FROM_EMAIL_TYPE},
+      </if>
+      <if test="FROM_EMAIL_VAL != null and !&quot;&quot;.equals(FROM_EMAIL_VAL)" >
+        #{FROM_EMAIL_VAL},
+      </if>
+      <if test="MAIL_SERVER_CODE != null and MAIL_SERVER_CODE != emptyBigDecimalValue" >
+        #{MAIL_SERVER_CODE},
+      </if>
+      <if test="PRINT_IF_NO_DATA_YN != null" >
+        #{PRINT_IF_NO_DATA_YN},
+      </if>
+      <if test="SEND_IF_NO_DATA_YN != null" >
+        #{SEND_IF_NO_DATA_YN},
+      </if>
+      <if test="TO_EMAIL_TYPE != null and TO_EMAIL_TYPE != emptyBigDecimalValue" >
+        #{TO_EMAIL_TYPE},
+      </if>
+      <if test="TO_EMAIL_VAL != null and !&quot;&quot;.equals(TO_EMAIL_VAL)" >
+        #{TO_EMAIL_VAL},
+      </if>
+      <if test="EMAIL_CONSOLIDATED_YN != null" >
+        #{EMAIL_CONSOLIDATED_YN},
+      </if>
+      <if test="DATE_TYPE != null" >
+        #{DATE_TYPE},
+      </if>
+      <if test="SAVE_DATA_TYPE != null and SAVE_DATA_TYPE != emptyBigDecimalValue" >
+        #{SAVE_DATA_TYPE},
+      </if>
+      <if test="IS_FCR_YN != null and IS_FCR_YN != emptyBigDecimalValue" >
+        #{IS_FCR_YN},
+      </if>
+      <if test="SECURED_FILE_YN != null" >
+        #{SECURED_FILE_YN},
+      </if>
+      <if test="SECURED_PWD_FIELD_NAME != null and !&quot;&quot;.equals(SECURED_PWD_FIELD_NAME)" >
+        #{SECURED_PWD_FIELD_NAME},
+      </if>
+    </trim>
+  </insert>
+  <sql id="sql_updateIRP_REPORT_SCHEDULE" >
+    update IRP_REPORT_SCHEDULE
+    <set >
+      <if test="REPORT_FORMAT != null" >
+        <choose >
+          <when test="REPORT_FORMAT.equals(&quot;&quot;)" >
+            REPORT_FORMAT = NULL ,
+          </when>
+          <otherwise >
+            REPORT_FORMAT = #{REPORT_FORMAT},
+          </otherwise>
+        </choose>
+      </if>
+      <if test="IS_ACTIVE != null" >
+        IS_ACTIVE = #{IS_ACTIVE},
+      </if>
+      <if test="PRINTER_NAME != null" >
+        <choose >
+          <when test="PRINTER_NAME.equals(&quot;&quot;)" >
+            PRINTER_NAME = NULL ,
+          </when>
+          <otherwise >
+            PRINTER_NAME = #{PRINTER_NAME},
+          </otherwise>
+        </choose>
+      </if>
+      <if test="DATA_ONLY != null" >
+        DATA_ONLY = #{DATA_ONLY},
+      </if>
+      <if test="CSV_SEPARATOR != null" >
+        <choose >
+          <when test="CSV_SEPARATOR.equals(&quot;&quot;)" >
+            CSV_SEPARATOR = NULL ,
+          </when>
+          <otherwise >
+            CSV_SEPARATOR = #{CSV_SEPARATOR},
+          </otherwise>
+        </choose>
+      </if>
+      <if test="SHOW_HEAD_FOOT != null" >
+        SHOW_HEAD_FOOT = #{SHOW_HEAD_FOOT},
+      </if>
+      <if test="REPORT_LANGUAGE != null" >
+        REPORT_LANGUAGE = #{REPORT_LANGUAGE},
+      </if>
+      <if test="ATTACH_FILE_NAME != null" >
+        <choose >
+          <when test="ATTACH_FILE_NAME.equals(&quot;&quot;)" >
+            ATTACH_FILE_NAME = NULL ,
+          </when>
+          <otherwise >
+            ATTACH_FILE_NAME = #{ATTACH_FILE_NAME},
+          </otherwise>
+        </choose>
+      </if>
+      <if test="BCC_EMAIL_TYPE != null" >
+        <choose >
+          <when test="BCC_EMAIL_TYPE == emptyBigDecimalValue" >
+            BCC_EMAIL_TYPE = NULL ,
+          </when>
+          <otherwise >
+            BCC_EMAIL_TYPE = #{BCC_EMAIL_TYPE},
+          </otherwise>
+        </choose>
+      </if>
+      <if test="BCC_EMAIL_VAL != null" >
+        <choose >
+          <when test="BCC_EMAIL_VAL.equals(&quot;&quot;)" >
+            BCC_EMAIL_VAL = NULL ,
+          </when>
+          <otherwise >
+            BCC_EMAIL_VAL = #{BCC_EMAIL_VAL},
+          </otherwise>
+        </choose>
+      </if>
+      <if test="CC_EMAIL_TYPE != null" >
+        <choose >
+          <when test="CC_EMAIL_TYPE == emptyBigDecimalValue" >
+            CC_EMAIL_TYPE = NULL ,
+          </when>
+          <otherwise >
+            CC_EMAIL_TYPE = #{CC_EMAIL_TYPE},
+          </otherwise>
+        </choose>
+      </if>
+      <if test="CC_EMAIL_VAL != null" >
+        <choose >
+          <when test="CC_EMAIL_VAL.equals(&quot;&quot;)" >
+            CC_EMAIL_VAL = NULL ,
+          </when>
+          <otherwise >
+            CC_EMAIL_VAL = #{CC_EMAIL_VAL},
+          </otherwise>
+        </choose>
+      </if>
+      <if test="EMAIL_BODY != null" >
+        <choose >
+          <when test="EMAIL_BODY.equals(&quot;&quot;)" >
+            EMAIL_BODY = NULL ,
+          </when>
+          <otherwise >
+            EMAIL_BODY = #{EMAIL_BODY},
+          </otherwise>
+        </choose>
+      </if>
+      <if test="EMAIL_SUBJECT != null" >
+        <choose >
+          <when test="EMAIL_SUBJECT.equals(&quot;&quot;)" >
+            EMAIL_SUBJECT = NULL ,
+          </when>
+          <otherwise >
+            EMAIL_SUBJECT = #{EMAIL_SUBJECT},
+          </otherwise>
+        </choose>
+      </if>
+      <if test="FROM_EMAIL_TYPE != null" >
+        <choose >
+          <when test="FROM_EMAIL_TYPE == emptyBigDecimalValue" >
+            FROM_EMAIL_TYPE = NULL ,
+          </when>
+          <otherwise >
+            FROM_EMAIL_TYPE = #{FROM_EMAIL_TYPE},
+          </otherwise>
+        </choose>
+      </if>
+      <if test="FROM_EMAIL_VAL != null" >
+        <choose >
+          <when test="FROM_EMAIL_VAL.equals(&quot;&quot;)" >
+            FROM_EMAIL_VAL = NULL ,
+          </when>
+          <otherwise >
+            FROM_EMAIL_VAL = #{FROM_EMAIL_VAL},
+          </otherwise>
+        </choose>
+      </if>
+      <if test="MAIL_SERVER_CODE != null" >
+        <choose >
+          <when test="MAIL_SERVER_CODE == emptyBigDecimalValue" >
+            MAIL_SERVER_CODE = NULL ,
+          </when>
+          <otherwise >
+            MAIL_SERVER_CODE = #{MAIL_SERVER_CODE},
+          </otherwise>
+        </choose>
+      </if>
+      <if test="PRINT_IF_NO_DATA_YN != null" >
+        PRINT_IF_NO_DATA_YN = #{PRINT_IF_NO_DATA_YN},
+      </if>
+      <if test="SEND_IF_NO_DATA_YN != null" >
+        SEND_IF_NO_DATA_YN = #{SEND_IF_NO_DATA_YN},
+      </if>
+      <if test="TO_EMAIL_TYPE != null" >
+        <choose >
+          <when test="TO_EMAIL_TYPE == emptyBigDecimalValue" >
+            TO_EMAIL_TYPE = NULL ,
+          </when>
+          <otherwise >
+            TO_EMAIL_TYPE = #{TO_EMAIL_TYPE},
+          </otherwise>
+        </choose>
+      </if>
+      <if test="TO_EMAIL_VAL != null" >
+        <choose >
+          <when test="TO_EMAIL_VAL.equals(&quot;&quot;)" >
+            TO_EMAIL_VAL = NULL ,
+          </when>
+          <otherwise >
+            TO_EMAIL_VAL = #{TO_EMAIL_VAL},
+          </otherwise>
+        </choose>
+      </if>
+      <if test="EMAIL_CONSOLIDATED_YN != null" >
+        EMAIL_CONSOLIDATED_YN = #{EMAIL_CONSOLIDATED_YN},
+      </if>
+      <if test="DATE_TYPE != null" >
+        DATE_TYPE = #{DATE_TYPE},
+      </if>
+      <if test="SAVE_DATA_TYPE != null" >
+        <choose >
+          <when test="SAVE_DATA_TYPE == emptyBigDecimalValue" >
+            SAVE_DATA_TYPE = NULL ,
+          </when>
+          <otherwise >
+            SAVE_DATA_TYPE = #{SAVE_DATA_TYPE},
+          </otherwise>
+        </choose>
+      </if>
+      <if test="IS_FCR_YN != null" >
+        <choose >
+          <when test="IS_FCR_YN == emptyBigDecimalValue" >
+            IS_FCR_YN = NULL ,
+          </when>
+          <otherwise >
+            IS_FCR_YN = #{IS_FCR_YN},
+          </otherwise>
+        </choose>
+      </if>
+      <if test="SECURED_FILE_YN != null" >
+        SECURED_FILE_YN = #{SECURED_FILE_YN},
+      </if>
+      <if test="SECURED_PWD_FIELD_NAME != null" >
+        <choose >
+          <when test="SECURED_PWD_FIELD_NAME.equals(&quot;&quot;)" >
+            SECURED_PWD_FIELD_NAME = NULL ,
+          </when>
+          <otherwise >
+            SECURED_PWD_FIELD_NAME = #{SECURED_PWD_FIELD_NAME},
+          </otherwise>
+        </choose>
+      </if>
+    </set>
+    where REPORT_ID = #{REPORT_ID}
+      and REPORT_REF = #{REPORT_REF}
+      and SCHED_ID = #{SCHED_ID}
+  </sql>
+  <update id="updateIRP_REPORT_SCHEDULE" parameterType="com.path.dbmaps.vo.IRP_REPORT_SCHEDULEVO" >
+    <include refid="sql_updateIRP_REPORT_SCHEDULE" />
+  </update>
+</mapper>

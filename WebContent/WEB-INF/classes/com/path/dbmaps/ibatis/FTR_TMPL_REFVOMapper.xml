@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="FTR_TMPL_REF" >
+  <resultMap id="BaseResultMap" type="com.path.dbmaps.vo.FTR_TMPL_REFVO" >
+    <id column="APP_NAME" property="APP_NAME" />
+    <id column="COMP_CODE" property="COMP_CODE" />
+    <id column="REPORT_REF" property="REPORT_REF" />
+    <id column="TEMPLATE_CODE" property="TEMPLATE_CODE" />
+    <result column="TEMPLATE_ORDER" property="TEMPLATE_ORDER" />
+    <result column="DATE_UPDATED" property="DATE_UPDATED" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    APP_NAME, COMP_CODE, REPORT_REF, TEMPLATE_CODE, TEMPLATE_ORDER, DATE_UPDATED
+  </sql>
+  <select id="selectFTR_TMPL_REF" resultMap="BaseResultMap" parameterType="com.path.dbmaps.vo.FTR_TMPL_REFVO" >
+    select 
+    <include refid="Base_Column_List" />
+    from FTR_TMPL_REF
+    where APP_NAME = #{APP_NAME}
+      and COMP_CODE = #{COMP_CODE}
+      and REPORT_REF = #{REPORT_REF}
+      and TEMPLATE_CODE = #{TEMPLATE_CODE}
+  </select>
+  <delete id="deleteFTR_TMPL_REF" parameterType="com.path.dbmaps.vo.FTR_TMPL_REFVO" >
+    delete from FTR_TMPL_REF
+    where APP_NAME = #{APP_NAME}
+      and COMP_CODE = #{COMP_CODE}
+      and REPORT_REF = #{REPORT_REF}
+      and TEMPLATE_CODE = #{TEMPLATE_CODE}
+  </delete>
+  <insert id="insertFTR_TMPL_REF" parameterType="com.path.dbmaps.vo.FTR_TMPL_REFVO" >
+    insert into FTR_TMPL_REF
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="APP_NAME != null" >
+        APP_NAME,
+      </if>
+      <if test="COMP_CODE != null and COMP_CODE != emptyBigDecimalValue" >
+        COMP_CODE,
+      </if>
+      <if test="REPORT_REF != null" >
+        REPORT_REF,
+      </if>
+      <if test="TEMPLATE_CODE != null and TEMPLATE_CODE != emptyBigDecimalValue" >
+        TEMPLATE_CODE,
+      </if>
+      <if test="TEMPLATE_ORDER != null and TEMPLATE_ORDER != emptyBigDecimalValue" >
+        TEMPLATE_ORDER,
+      </if>
+      DATE_UPDATED,
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="APP_NAME != null" >
+        #{APP_NAME},
+      </if>
+      <if test="COMP_CODE != null and COMP_CODE != emptyBigDecimalValue" >
+        #{COMP_CODE},
+      </if>
+      <if test="REPORT_REF != null" >
+        #{REPORT_REF},
+      </if>
+      <if test="TEMPLATE_CODE != null and TEMPLATE_CODE != emptyBigDecimalValue" >
+        #{TEMPLATE_CODE},
+      </if>
+      <if test="TEMPLATE_ORDER != null and TEMPLATE_ORDER != emptyBigDecimalValue" >
+        #{TEMPLATE_ORDER},
+      </if>
+      <choose >
+        <when test="isSybase == 1" >
+           GETDATE(),
+        </when>
+        <otherwise >
+           SYSDATE,
+        </otherwise>
+      </choose>
+    </trim>
+  </insert>
+  <sql id="sql_updateFTR_TMPL_REF" >
+    update FTR_TMPL_REF
+    <set >
+      <if test="TEMPLATE_ORDER != null" >
+        <choose >
+          <when test="TEMPLATE_ORDER == emptyBigDecimalValue" >
+            TEMPLATE_ORDER = NULL ,
+          </when>
+          <otherwise >
+            TEMPLATE_ORDER = #{TEMPLATE_ORDER},
+          </otherwise>
+        </choose>
+      </if>
+      DATE_UPDATED = 
+      <choose >
+        <when test="isSybase == 1" >
+           GETDATE(),
+        </when>
+        <otherwise >
+           SYSDATE,
+        </otherwise>
+      </choose>
+    </set>
+    where APP_NAME = #{APP_NAME}
+      and COMP_CODE = #{COMP_CODE}
+      and REPORT_REF = #{REPORT_REF}
+      and TEMPLATE_CODE = #{TEMPLATE_CODE}
+  </sql>
+  <update id="updateFTR_TMPL_REF" parameterType="com.path.dbmaps.vo.FTR_TMPL_REFVO" >
+    <include refid="sql_updateFTR_TMPL_REF" />
+    <if test="DATE_UPDATED != null" >
+      AND DATE_UPDATED = #{DATE_UPDATED}
+    </if>
+  </update>
+</mapper>

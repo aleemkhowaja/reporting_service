@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        
+<mapper namespace="ExprExt">
+	<sql id="getExprListSql">
+	   CONVERT(VARCHAR,COMP_CODE) + CONVERT(VARCHAR, CODE)+CONVERT(VARCHAR, TMPLT_LINE_NO)+CONVERT(VARCHAR,LINE_NO) as concatKey,
+	   COMP_CODE, 
+	   LINE_NO,
+	   CODE, 
+	   TMPLT_LINE_NO,
+	   EXP_LINE,
+	   EXP_TYPE,
+	   EXP_VALUE, 
+	   OPERATOR,
+	   LEFT_OPERATOR,
+	   RIGHT_OPERATOR
+	</sql>
+
+
+</mapper>

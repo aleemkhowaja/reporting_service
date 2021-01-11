@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        
+<mapper namespace="timeBuckets">
+
+<resultMap type="ftr_time_bucketsCO" id="timeBucketsMap">     
+  	<result	column="COMP_CODE" 				property="ftrtimebucketsVO.COMP_CODE" />
+    <result	column="REP_REF" 				property="ftrtimebucketsVO.REP_REF" />
+    <result column="CURRENCY_CODE" 			property="ftrtimebucketsVO.CURRENCY_CODE" />
+    <result column="LINE_NO" 				property="ftrtimebucketsVO.LINE_NO" />
+    <result column="RATE_DESC"				property="ftrtimebucketsVO.RATE_DESC" />
+    <result column="LIMIT"  				property="ftrtimebucketsVO.LIMIT" />
+    <result column="NO_OF_DAYS"  			property="ftrtimebucketsVO.NO_OF_DAYS" />
+    <result column="DATE_UPDATED"  			property="ftrtimebucketsVO.DATE_UPDATED" />
+    <result column="BRIEF_DESC_ENG"  		property="BRIEF_DESC_ENG" />
+</resultMap>
+
+  
+  <resultMap type="ftr_time_bucketsCO" id="retrieveReportRefMap" >
+	  <result	column="PROG_REF" 				property="ftrtimebucketsVO.REP_REF" />
+	    <result	column="REPORT_NAME" 				property="reportName" />
+  </resultMap>
+
+<sql id="timeBucketsSql">
+	SELECT DISTINCT COMP_CODE, REP_REF, CURRENCY_CODE , ( SELECT CURRENCIES.BRIEF_DESC_ENG FROM CURRENCIES WHERE  CURRENCIES.CURRENCY_CODE =FTR_TIME_BUCKETS.CURRENCY_CODE AND  CURRENCIES.COMP_CODE = FTR_TIME_BUCKETS.COMP_CODE )BRIEF_DESC_ENG
+	FROM FTR_TIME_BUCKETS
+</sql>
+
+<sql id="timeBucketsDetailsSql">
+	SELECT COMP_CODE, REP_REF, CURRENCY_CODE, LINE_NO, RATE_DESC, NO_OF_DAYS, LIMIT,  ( SELECT CURRENCIES.BRIEF_DESC_ENG FROM CURRENCIES WHERE  CURRENCIES.CURRENCY_CODE =FTR_TIME_BUCKETS.CURRENCY_CODE AND  CURRENCIES.COMP_CODE = FTR_TIME_BUCKETS.COMP_CODE )BRIEF_DESC_ENG
+	FROM FTR_TIME_BUCKETS
+	WHERE FTR_TIME_BUCKETS.COMP_CODE = #{COMP_CODE}
+	AND FTR_TIME_BUCKETS.REP_REF = #{REP_REF}
+	AND FTR_TIME_BUCKETS.CURRENCY_CODE = #{CURRENCY_CODE}
+</sql>
+
+<delete id="deleteTimeBuckets" parameterType="ftr_time_bucketsVO" >
+    DELETE FROM FTR_TIME_BUCKETS
+    WHERE COMP_CODE = #{COMP_CODE}
+    AND CURRENCY_CODE = #{CURRENCY_CODE}
+    AND REP_REF = #{REP_REF}
+</delete>
+
+<delete id="deleteTimeBucketsDetails" parameterType="ftr_time_bucketsVO" >
+    DELETE FROM FTR_TIME_BUCKETS
+    WHERE COMP_CODE = #{COMP_CODE}
+    AND CURRENCY_CODE = #{CURRENCY_CODE}
+    AND REP_REF = #{REP_REF}
+    AND LINE_NO = #{LINE_NO}
+</delete>
+
+<insert id="insertTimeBucketsSql" parameterType="ftr_time_bucketsVO">
+	
+	<selectKey resultType="java.math.BigDecimal" keyProperty="LINE_NO" order="BEFORE">
+	     SELECT (CASE
+	            WHEN COUNT(LINE_NO) = 0 THEN
+	             0
+	            ELSE
+	             MAX(LINE_NO)
+	          END) + 1
+	      FROM (SELECT MAX(LINE_NO) AS LINE_NO FROM FTR_TIME_BUCKETS 
+	      WHERE COMP_CODE=#{COMP_CODE} AND CURRENCY_CODE=#{CURRENCY_CODE} AND REP_REF=#{REP_REF} ) TB1
+   	</selectKey>
+	
+    INSERT INTO FTR_TIME_BUCKETS
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="COMP_CODE != null and COMP_CODE != emptyBigDecimalValue" >
+        COMP_CODE,
+      </if>
+      <if test="CURRENCY_CODE != null and CURRENCY_CODE != emptyBigDecimalValue" >
+        CURRENCY_CODE,
+      </if>
+        LINE_NO,
+      <if test="REP_REF != null" >
+        REP_REF,
+      </if>
+      <if test="RATE_DESC != null" >
+        RATE_DESC,
+      </if>
+      <if test="LIMIT != null and LIMIT != emptyBigDecimalValue" >
+        LIMIT,
+      </if>
+      <if test="RATE != null and RATE != emptyBigDecimalValue" >
+        RATE,
+      </if>
+      <if test="NO_OF_DAYS != null and NO_OF_DAYS != emptyBigDecimalValue" >
+        NO_OF_DAYS,
+      </if>
+      DATE_UPDATED,
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="COMP_CODE != null and COMP_CODE != emptyBigDecimalValue" >
+        #{COMP_CODE},
+      </if>
+      <if test="CURRENCY_CODE != null and CURRENCY_CODE != emptyBigDecimalValue" >
+        #{CURRENCY_CODE},
+      </if>
+        #{LINE_NO},
+      <if test="REP_REF != null" >
+        #{REP_REF},
+      </if>
+      <if test="RATE_DESC != null" >
+        #{RATE_DESC},
+      </if>
+      <if test="LIMIT != null and LIMIT != emptyBigDecimalValue" >
+        #{LIMIT},
+      </if>
+      <if test="RATE != null and RATE != emptyBigDecimalValue" >
+        #{RATE},
+      </if>
+      <if test="NO_OF_DAYS != null and NO_OF_DAYS != emptyBigDecimalValue" >
+        #{NO_OF_DAYS},
+      </if>
+      <choose >
+        <when test="isSybase == 1" >
+           GETDATE(),
+        </when>
+        <otherwise >
+           SYSDATE,
+        </otherwise>
+      </choose>
+    </trim>
+</insert>
+  
+<select id="retrieveTimeBuckets"  resultMap="timeBucketsMap" parameterType="ftr_time_bucketsSC"> 
+	<include refid="timeBucketsSql"/>
+	WHERE FTR_TIME_BUCKETS.COMP_CODE = #{COMP_CODE}
+	AND FTR_TIME_BUCKETS.REP_REF = #{REP_REF}
+	AND FTR_TIME_BUCKETS.CURRENCY_CODE = #{CURRENCY_CODE}
+</select>
+
+<select id="timeBucketsList"  resultMap="timeBucketsMap" parameterType="ftr_time_bucketsSC">
+	<include refid="servicesCommon.commonGridWrpBefFlip"/>
+	<include refid="timeBucketsSql"/>
+	<include refid="servicesCommon.commonGridWrpAftFlip"/>
+	<include refid="servicesCommon.commmonGridWrpFlipClose"/>
+</select>
+
+<select id="timeBucketsListDetails"  resultMap="timeBucketsMap" parameterType="ftr_time_bucketsSC">
+	<include refid="servicesCommon.commonGridWrpBefFlip"/>
+	<include refid="timeBucketsDetailsSql"/>
+	<include refid="servicesCommon.commonGridWrpAftFlip"/>
+	<include refid="servicesCommon.commmonGridWrpFlipClose"/>
+</select>
+
+<select id="timeBucketsCount"  resultType="int" parameterType="ftr_time_bucketsSC"> 
+	<include refid="servicesCommon.commonGridWrpBefCnt"/>
+	<include refid="timeBucketsSql"/>
+	<include refid="servicesCommon.commonGridWrpAftCnt"/>
+	<include refid="servicesCommon.commonGridCountWrpClose"/>  
+</select>
+
+<select id="timeBucketsDetailsCount"  resultType="int" parameterType="ftr_time_bucketsSC"> 
+	<include refid="servicesCommon.commonGridWrpBefCnt"/>
+	<include refid="timeBucketsDetailsSql"/>
+	<include refid="servicesCommon.commonGridWrpAftCnt"/>
+	<include refid="servicesCommon.commonGridCountWrpClose"/>  
+</select>
+
+
+<select id="retrieveReportRef"  resultMap="retrieveReportRefMap" parameterType="ftr_time_bucketsSC"> 
+	SELECT PROG_REF,
+	REPORT_NAME
+	FROM IRP_AD_HOC_REPORT
+	WHERE PROG_REF =#{REP_REF}
+	AND APP_NAME = #{APP_NAME}
+</select>
+
+
+</mapper>

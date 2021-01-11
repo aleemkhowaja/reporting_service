@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        
+<mapper namespace="relatedReportsExt">	
+<sql id="getRelatedReportsSql">
+	  SELECT COMP_CODE || TEMPLATE_CODE || REPORT_REF || APP_NAME AS CONCATKEY,
+         COMP_CODE,
+         TEMPLATE_CODE,
+         REPORT_REF,
+         APP_NAME,
+         TEMPLATE_ORDER,
+         (SELECT IR.REPORT_NAME
+            FROM IRP_AD_HOC_REPORT IR
+           WHERE IR.REPORT_TYPE = '1'
+             AND PROG_REF = FTR_TMPL_REF.REPORT_REF
+          
+          UNION
+          
+          SELECT FO.BRIEF_NAME_ENG REPORT_NAME
+            FROM FTR_OPT FO
+           WHERE FO.STANDARD_FLAG_YN = 'N'
+             AND FO.APP_NAME = 'REP'
+             AND PROG_REF = FTR_TMPL_REF.REPORT_REF) REPORT_NAME
+    FROM FTR_TMPL_REF
+   WHERE FTR_TMPL_REF.TEMPLATE_CODE = #{relatedRepCodeParam}
+</sql>
+</mapper>

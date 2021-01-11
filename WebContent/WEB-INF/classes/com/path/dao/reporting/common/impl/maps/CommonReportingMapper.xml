@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<!-- 
+	This mapper is used as common for all iMAL applications  
+    and therefore the content should not be application specific 
+-->
+<mapper namespace="commonReports" >
+ 
+<resultMap type="sys_param_languagesVO" id="languagesResMap">
+  	<result column="LANG_CODE" property="LANG_CODE"/> 
+  	<result column="LANG_NAME" property="LANG_NAME"/>
+</resultMap>
+   
+<resultMap id="queryResultMap" type="irp_ad_hoc_queryVO" >
+    <result column="QUERY_OBJECT" property="QUERY_OBJECT" />
+</resultMap>
+   
+<select id="selectLanguages" resultMap="languagesResMap">
+	SELECT LANG_CODE, LANG_NAME   
+	FROM SYS_PARAM_LANGUAGES
+</select>
+   
+<select id="selectQueriesByReport" resultMap="queryResultMap" parameterType="irp_ad_hoc_reportSC">
+    SELECT AHQ.QUERY_OBJECT
+    FROM IRP_AD_HOC_QUERY AHQ, IRP_REPORT_QUERY RQ, IRP_AD_HOC_REPORT R
+    WHERE AHQ.QUERY_ID = RQ.QUERY_ID
+    AND RQ.REPORT_ID = R.REPORT_ID
+    <if test="REPORT_ID != null">
+		AND R.REPORT_ID = #{REPORT_ID}
+	</if>
+	<if test="PROG_REF != null">
+		AND R.PROG_REF = #{PROG_REF}
+	</if>
+</select>
+
+<insert id="verifyReport" parameterType="IRP_VERIFIED_REPORTSVO">
+	INSERT INTO IRP_VERIFIED_REPORTS (BRANCH_CODE,USER_ID,VERIFICATION_DATE,REP_ID,PAGES_NUMBER,VERIFICATION_ID,REP_TITLE,PROG_REF,APP_NAME)
+	VALUES(#{BRANCH_CODE},#{USER_ID},
+	<choose>
+        <when test="isSybase == 1" >
+           GETDATE()
+        </when>
+        <otherwise >
+           SYSDATE
+        </otherwise>
+    </choose>,	
+	#{REP_ID},#{PAGES_NUMBER},#{VERIFICATION_ID},#{REP_TITLE},#{PROG_REF},#{APP_NAME})
+</insert> 
+
+
+
+<resultMap type="IRP_REP_FILTERSVO" id="filtersListMap">
+  	<result column="FILTER_ID" 		property="FILTER_ID"/> 
+  	<result column="CREATED_BY" 	property="CREATED_BY"/>
+  	<result column="FILTER_NAME" 	property="FILTER_NAME"/> 
+  	<result column="PUBLIC_YN" 		property="PUBLIC_YN"/>
+  	<result column="DEFAULT_YN" 	property="DEFAULT_YN"/>
+</resultMap>
+
+<sql id="retFiltersList">
+	SELECT FILTER_ID,CREATED_BY,FILTER_NAME,PUBLIC_YN,DEFAULT_YN FROM IRP_REP_FILTERS TT WHERE ((TT.PUBLIC_YN=1 OR TT.CREATED_BY =  #{CREATED_BY}) 
+	AND EXISTS (SELECT 1 FROM IRP_REP_ARGUMENTS_FILTERS T WHERE T.REPORT_ID = #{REPORT_ID} AND T.FILTER_ID = TT.FILTER_ID))
+</sql>
+
+<select id="retFiltersList"  resultMap="filtersListMap" parameterType="IRP_REP_FILTERSSC">
+	<include refid="servicesCommon.commonGridWrpBefFlip"/>
+	<include refid="retFiltersList"/>
+	<include refid="servicesCommon.commonGridWrpAftFlip"/>
+	<include refid="servicesCommon.commmonGridWrpFlipClose"/>
+</select>
+
+<select id="retFiltersListCount"   resultType="int" parameterType="IRP_REP_FILTERSSC">
+	<include refid="servicesCommon.commonGridWrpBefCnt"/>
+	<include refid="retFiltersList"/>
+	<include refid="servicesCommon.commonGridWrpAftCnt"/>
+	<include refid="servicesCommon.commonGridCountWrpClose"/>
+</select>
+
+<select id="selectMaxFilterId" resultType="java.math.BigDecimal">
+	SELECT (CASE
+           WHEN COUNT(FILTER_ID) = 0 THEN
+            0
+           ELSE
+            MAX(FILTER_ID)
+         END) + 1
+       FROM (SELECT MAX(FILTER_ID) AS FILTER_ID FROM IRP_REP_FILTERS) TB1
+</select>
+
+<select id="retFilterArgumentsValues" parameterType="IRP_REP_FILTERSSC"   resultType="java.util.HashMap">
+	SELECT * FROM IRP_REP_ARGUMENTS_FILTERS WHERE FILTER_ID = #{FILTER_ID} AND REPORT_ID = #{REPORT_ID}
+</select>
+
+<delete id="deleteFilterArgumentsById" parameterType="java.math.BigDecimal">
+	DELETE FROM IRP_REP_ARGUMENTS_FILTERS WHERE FILTER_ID = #{VALUE}
+</delete>	
+
+<select id="checkFilterNameUnique" parameterType="IRP_REP_FILTERSSC" resultType="java.util.HashMap">
+	SELECT * FROM IRP_REP_FILTERS WHERE FILTER_NAME = #{FILTER_NAME}
+  	 		AND FILTER_ID IN (SELECT FILTER_ID FROM IRP_REP_ARGUMENTS_FILTERS WHERE REPORT_ID = #{REPORT_ID} AND FILTER_ID != #{FILTER_ID})
+</select>
+
+<select id="retDefaultFilter" parameterType="IRP_REP_FILTERSSC" resultType="java.math.BigDecimal">
+  	SELECT FILTER_ID  
+      FROM IRP_REP_FILTERS 
+  	 WHERE DEFAULT_YN = 1 
+  	   AND FILTER_ID IN (SELECT FILTER_ID 
+  						   FROM IRP_REP_ARGUMENTS_FILTERS 
+  					   	  WHERE REPORT_ID = #{REPORT_ID})
+</select>
+      
+<select id="returnOversizeLimit" resultType="java.math.BigDecimal">
+  	SELECT OVERSIZE_LIMIT
+    FROM IRP_CTRL
+</select>
+
+<delete id="deletePagination" parameterType="com.path.vo.reporting.IRP_AD_HOC_REPORTSC">
+	DELETE FROM IRP_REPORT_PAGINATION 
+	WHERE USER_ID = #{USER_ID}
+	AND APP_NAME  = #{APP_NAME}
+	AND PROG_REF  = #{PROG_REF}
+</delete>
+
+<select id="returnReportByteArrayCurrentPage" parameterType="com.path.vo.reporting.IRP_AD_HOC_REPORTSC" resultType ="_byte[]">
+  	SELECT  REPORT_CONTENT 
+    FROM IRP_REPORT_PAGINATION 
+    WHERE PAGE_COUNTER = #{currentPage}
+    AND USER_ID = #{USER_ID} 
+    AND APP_NAME = #{APP_NAME}
+    AND PROG_REF = #{PROG_REF}
+</select>
+
+<delete id="deleteSorting" parameterType="com.path.vo.reporting.IRP_AD_HOC_REPORTSC">
+	DELETE FROM IRP_REP_SORT
+	WHERE REPORT_ID = #{REPORT_ID}
+	AND USER_ID = #{USER_ID}
+</delete>
+
+<resultMap  id="sortListMap" type="com.path.vo.reporting.IRP_FIELDSCO">
+  	<result column="FIELD_DESC" 		property="FIELD_ALIAS"/> 
+  	<result column="FIELD_ORDER" 		property="order"/> 
+</resultMap>
+
+<sql id="retSortList">
+	SELECT FIELD_DESC,
+		   FIELD_ORDER 
+	FROM IRP_REP_SORT
+	WHERE REPORT_ID = #{REPORT_ID}
+	AND USER_ID = #{USER_ID}
+</sql>
+
+<select id="retSortingListFromIrpRepSort"  resultMap="sortListMap" parameterType="com.path.vo.reporting.IRP_AD_HOC_REPORTSC">
+	<include refid="retSortList"/>
+</select>
+
+</mapper>

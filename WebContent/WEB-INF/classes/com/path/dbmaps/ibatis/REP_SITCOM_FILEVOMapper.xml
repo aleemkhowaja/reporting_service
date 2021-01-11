@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="REP_SITCOM_FILE" >
+  <resultMap id="BaseResultMap" type="com.path.dbmaps.vo.REP_SITCOM_FILEVO" >
+    <id column="SITCOM_FILE_ID" property="SITCOM_FILE_ID" />
+    <result column="COMP_CODE" property="COMP_CODE" />
+    <result column="SITCOM_DATE" property="SITCOM_DATE" />
+    <result column="SITCOM_FREQUENCY" property="SITCOM_FREQUENCY" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.path.dbmaps.vo.REP_SITCOM_FILEVO" extends="BaseResultMap" >
+    <result column="SITCOM_FILE" property="SITCOM_FILE" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    SITCOM_FILE_ID, COMP_CODE, SITCOM_DATE, SITCOM_FREQUENCY
+  </sql>
+  <sql id="Blob_Column_List" >
+    SITCOM_FILE
+  </sql>
+  <select id="selectREP_SITCOM_FILE" resultMap="ResultMapWithBLOBs" parameterType="com.path.dbmaps.vo.REP_SITCOM_FILEVO" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from REP_SITCOM_FILE
+    where SITCOM_FILE_ID = #{SITCOM_FILE_ID}
+  </select>
+  <delete id="deleteREP_SITCOM_FILE" parameterType="com.path.dbmaps.vo.REP_SITCOM_FILEVO" >
+    delete from REP_SITCOM_FILE
+    where SITCOM_FILE_ID = #{SITCOM_FILE_ID}
+  </delete>
+  <insert id="insertREP_SITCOM_FILE" parameterType="com.path.dbmaps.vo.REP_SITCOM_FILEVO" >
+    insert into REP_SITCOM_FILE
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="SITCOM_FILE_ID != null and SITCOM_FILE_ID != emptyBigDecimalValue" >
+        SITCOM_FILE_ID,
+      </if>
+      <if test="COMP_CODE != null and COMP_CODE != emptyBigDecimalValue" >
+        COMP_CODE,
+      </if>
+      <if test="SITCOM_DATE != null" >
+        SITCOM_DATE,
+      </if>
+      <if test="SITCOM_FREQUENCY != null" >
+        SITCOM_FREQUENCY,
+      </if>
+      <if test="SITCOM_FILE != null" >
+        SITCOM_FILE,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="SITCOM_FILE_ID != null and SITCOM_FILE_ID != emptyBigDecimalValue" >
+        #{SITCOM_FILE_ID},
+      </if>
+      <if test="COMP_CODE != null and COMP_CODE != emptyBigDecimalValue" >
+        #{COMP_CODE},
+      </if>
+      <if test="SITCOM_DATE != null" >
+        #{SITCOM_DATE},
+      </if>
+      <if test="SITCOM_FREQUENCY != null" >
+        #{SITCOM_FREQUENCY},
+      </if>
+      <if test="SITCOM_FILE != null" >
+        #{SITCOM_FILE},
+      </if>
+    </trim>
+  </insert>
+  <sql id="sql_updateREP_SITCOM_FILE" >
+    update REP_SITCOM_FILE
+    <set >
+      <if test="COMP_CODE != null" >
+        <choose >
+          <when test="COMP_CODE == emptyBigDecimalValue" >
+            COMP_CODE = NULL ,
+          </when>
+          <otherwise >
+            COMP_CODE = #{COMP_CODE},
+          </otherwise>
+        </choose>
+      </if>
+      <if test="SITCOM_DATE != null" >
+        SITCOM_DATE = #{SITCOM_DATE},
+      </if>
+      <if test="SITCOM_FREQUENCY != null" >
+        SITCOM_FREQUENCY = #{SITCOM_FREQUENCY},
+      </if>
+      <if test="SITCOM_FILE != null" >
+        SITCOM_FILE = #{SITCOM_FILE},
+      </if>
+    </set>
+    where SITCOM_FILE_ID = #{SITCOM_FILE_ID}
+  </sql>
+  <update id="updateREP_SITCOM_FILE" parameterType="com.path.dbmaps.vo.REP_SITCOM_FILEVO" >
+    <include refid="sql_updateREP_SITCOM_FILE" />
+  </update>
+</mapper>

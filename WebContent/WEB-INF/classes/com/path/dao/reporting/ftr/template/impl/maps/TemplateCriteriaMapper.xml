@@ -1,0 +1,283 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        
+<mapper namespace="templateCrt">
+<resultMap id="getCrtListMap" type="GLSTMPLT_PARAM_LINKCO" >
+    <id column="concatKey" property="concatKey" />
+    <result column="COMP_CODE" 				property="glstmpltParamLinkVO.COMP_CODE" />
+    <result column="SUB_LINE_NO" 			property="glstmpltParamLinkVO.SUB_LINE_NO" />
+    <result column="TEMP_CODE" 				property="glstmpltParamLinkVO.TEMP_CODE" />
+    <result column="LINE_NO" 				property="glstmpltParamLinkVO.LINE_NO" />
+    <result column="CRITERIA_CODE" 			property="glstmpltParamLinkVO.CRITERIA_CODE" />
+    <result column="CODE1" 					property="CODE1" />
+    <result column="CODE2" 				    property="glstmpltParamLinkVO.CODE2" />
+    <result column="VALUE1"				    property="VALUE1" />
+    <result column="VALUE2" 				property="VALUE2" />
+    <result column="OPERATOR" 				property="glstmpltParamLinkVO.OPERATOR" />
+    <result column="OPERATOR1" 				property="glstmpltParamLinkVO.OPERATOR1" />
+    <result column="INCLUDE" 				property="glstmpltParamLinkVO.INCLUDE" />
+    <result column="CRITERIA_NAME" 			property="CRITERIA_NAME" />
+    <result column="OPERATOR_NAME" 			property="OPERATOR_NAME" />
+    <result column="CRITERIA_TYPE_CODE" 	property="CRITERIA_TYPE_CODE" />
+	<result column="TABLE_NAME1" 			property="TABLE_NAME1" />
+    <result column="TABLE_NAME2" 			property="TABLE_NAME2" />
+    <result column="COMPONENT" 				property="COMPONENT" />
+    <result column="CRI_TYPE" 				property="CRI_TYPE" />
+    <result column="CRI_LINE_GL" 			property="CRI_LINE_GL" />
+    <result column="LINE_NO" 				property="newLineNumber" />
+    <result column="DATE_TYPE" 				property="glstmpltParamLinkVO.DATE_TYPE" />
+    <result column="GENDER" 				property="glstmpltParamLinkVO.GENDER" />
+    <result column="SECURITY_CLASS" 		property="glstmpltParamLinkVO.SECURITY_CLASS" />
+    <result column="SECURITY_CODE1" 		property="glstmpltParamLinkVO.SECURITY_CODE1" />
+  </resultMap>
+  
+  <resultMap type="commonDetailsVO"  id="getFilterCrtDetMap">     
+    <id 	column="CODE_STR" 					property="CODE_STR" />
+    <result column="BRIEF_DESC_ENG" 			property="BRIEF_DESC_ENG" />
+    <result column="LONG_DESC_ARAB" 			property="LONG_DESC_ARAB" />
+    <result column="SECTOR_CODE" 				property="SECTOR_CODE" />
+    <result column="ADDITIONAL_REFERENCE" 		property="ADDITIONAL_REFERENCE" />
+    <result column="BAS_EXPRESSION_CLASS_CODE" 	property="BAS_EXPRESSION_CLASS_CODE" />
+    <result column="BAS_EXPRESSION_CLASS_DESC" 	property="BAS_EXPRESSION_CLASS_DESC" />
+    <result column="BASE_CURRENCY" 				property="BASE_CURRENCY" />
+    <result column="BRIEF_DESC_ARAB" 			property="BRIEF_DESC_ARAB" />
+    <result column="CATEGORY" 					property="CATEGORY" />
+    <result column="CONTINENT" 					property="CONTINENT" />
+    <result column="FROM_BRANCH" 				property="FROM_BRANCH" />
+    <result column="FROM_CIF" 					property="FROM_CIF" />
+    <result column="FROM_CY" 					property="FROM_CY" />
+    <result column="FROM_GL" 					property="FROM_GL" />
+    <result column="FROM_SL" 					property="FROM_SL" />
+    <result column="LONG_DESC_ENG" 				property="LONG_DESC_ENG" />
+    <result column="SECURITY_TYPE" 				property="SECURITY_TYPE" />
+    <result column="SERIAL" 					property="SERIAL" />
+    <result column="STATUS" 					property="STATUS" />
+    <result column="TRADING_COMPANY" 			property="TRADING_COMPANY" />
+    <result column="USEFUL_LIFE" 				property="USEFUL_LIFE" />
+    <result column="TO_BRANCH" 					property="TO_BRANCH" />
+    <result column="TO_CIF" 					property="TO_CIF" />
+    <result column="TO_CY" 						property="TO_CY" />
+    <result column="TO_GL" 						property="TO_GL" />
+    <result column="TYPE" 						property="TYPE" />
+    <result column="DEPRECIATION_METHOD" 		property="DEPRECIATION_METHOD" />
+  </resultMap>
+  
+  <resultMap type="commonDetailsVO" id="getMaxCrtSubLineNbMap">
+  	  <id column="SUB_LINE_NO" property="SUB_LINE_NO" />
+  </resultMap>
+
+  <select id="getCrtList" resultMap="getCrtListMap" parameterType="tmplGridSC" >
+    SELECT 
+    <include refid="crtExt.getCrtListSql" />
+    FROM GLSTMPLT_PARAM_LINK T, GLSTMPLT_CRITERIA FF, IRP_CRITERIA_TYPE CT
+    WHERE T.COMP_CODE = FF.COMP_CODE 
+	AND T.CRITERIA_CODE = FF.CODE
+	AND FF.CRI_TYPE = CT.CRITERIA_TYPE_CODE
+	AND CT.LANG_CODE = #{LANG_CODE}
+	<if test="COMP_CODE !=null">  
+    AND T.COMP_CODE = #{COMP_CODE}
+    </if>
+    AND T.TEMP_CODE = #{CODE}
+    AND T.LINE_NO = #{LINE_NBR}
+    ORDER BY T.SUB_LINE_NO
+  </select>
+  
+  <select id="getMaxCrtSubLineNb" parameterType="commonDetailsSC" resultMap="getMaxCrtSubLineNbMap">
+		  SELECT MAX(SUB_LINE_NO)+1 AS SUB_LINE_NO
+		  FROM GLSTMPLT_PARAM_LINK 
+		   WHERE COMP_CODE =  #{COMP_CODE}
+		      AND TEMP_CODE = #{TEMPLATE_CODE}
+		      AND LINE_NO =  #{TEMPLATE_LINE_NO}
+  </select>
+  
+  
+  
+  <sql id="getFilterCrtDetListSql">
+     SELECT L.CODE AS CODE_STR, L.DESCRIPTION AS BRIEF_DESC_ENG,'' AS LONG_DESC_ARAB,null AS SECTOR_CODE
+     FROM  ${TABLE_NAME} L
+ 	WHERE 1=1
+ 	 <if test="CRITERIA_TYPE_CODE != null">
+ 		 AND L.CRITERIA_TYPE_CODE= #{CRITERIA_TYPE_CODE} 
+ 	  </if>
+     <if test="CODE_STR != null">
+         AND  L.CODE = #{CODE_STR} 
+     </if>
+     <if test="LANG_CODE != null">
+ 		 AND L.LANG_CODE= #{LANG_CODE} 
+ 	 </if>
+ 	 <if test="TABLE_NAME=='V_IRP_SEC1'">
+	  	<if test="CODE1 !=null">
+	  		AND L.CODE1=#{CODE1}
+	  	</if>
+	  </if>
+  </sql>
+  
+<sql id="getFilterCrtDetLListSql">
+		  SELECT ADDITIONAL_REFERENCE,
+		      	BAS_EXPRESSION_CLASS_CODE,
+		      	BAS_EXPRESSION_CLASS_DESC,
+				BASE_CURRENCY,
+				BRIEF_DESC_ENG,
+				BRIEF_DESC_ARAB,
+				CATEGORY,
+				CODE AS CODE_STR,
+				COMP_CODE,
+				CONTINENT,
+				FROM_BRANCH,
+				FROM_CIF,
+				FROM_CY,
+				FROM_GL,
+				FROM_SL,
+				LONG_DESC_ENG,
+				LONG_DESC_ARAB,
+				SECURITY_TYPE,
+				SERIAL,
+				STATUS,
+				TRADING_COMPANY,
+				USEFUL_LIFE,
+				DEPRECIATION_METHOD,
+				TO_BRANCH,
+				TO_CIF,
+				TO_CY,
+				TO_GL,
+				TO_SL,
+				TYPE    
+      <if test="SECTOR_CODE != null">
+ 		,L.SECTOR_CODE  AS SECTOR_CODE
+ 	  </if>
+ 	  <if test="TABLE_NAME == 'V_IRP_CSI'">
+ 		,CB_NO
+ 	  </if>
+ 	   <if test="SECTOR_CODE == null">
+ 		,null  AS SECTOR_CODE
+ 	  </if>
+     FROM  ${TABLE_NAME} L
+ 	 <where>  
+ 	  <choose>
+        <when test="CODE_STR != null and TABLE_NAME=='V_IRP_GLT'" >
+ 	  		L.CODE=#{CODE_STR}
+ 	  	</when>
+ 	  	<otherwise>
+ 	  	  <if test="CODE != null">
+            L.CODE= #{CODE} 
+      	  </if>
+ 	  	</otherwise>
+ 	  </choose>
+ 	  <if test="TABLE_NAME=='V_IRP_SMT' and OPTION_CODE != null">
+ 	  	AND L.OPTION_CODE = (SELECT SMART_CODE FROM GLSTMPLT_CRITERIA WHERE CODE = #{OPTION_CODE})
+ 	  </if>
+ 	  
+	  <if test="(TABLE_NAME=='V_IRP_SEC1' || TABLE_NAME=='V_IRP_DES_SUB' || TABLE_NAME=='V_IRP_COUNTRIES') and CODE1!=null">
+	  		AND L.CODE1=#{CODE1}
+	  </if>
+ 	  <if test="BRIEF_DESC_ENG != null">
+ 	  	AND BRIEF_DESC_ENG=#{BRIEF_DESC_ENG}
+ 	  </if>
+ 	  <choose >
+        <when test="TABLE_NAME=='V_IRP_SEC' or TABLE_NAME=='V_IRP_SEC1'" >
+           AND (COMP_CODE = #{COMP_CODE} 
+	       OR COMP_CODE IN (SELECT COMP_CODE FROM PMSFUNDCIF WHERE FUND_CODE = #{COMP_CODE}))
+        </when>
+         <when test="TABLE_NAME=='V_IRP_CAF_SMT' and CODE_CAF!=null and FIELD_SEQ!=null" >
+           AND CODE = 
+           	<choose><when test="isSybase == 1">
+           	    CONVERT(NUMERIC,(SELECT PARAM_VALUE1 FROM CTS_ADD_FIELDS WHERE CODE = #{CODE_CAF} AND FIELD_SEQ = #{FIELD_SEQ}))           		
+              </when>
+              <otherwise>
+                (SELECT PARAM_VALUE1 FROM CTS_ADD_FIELDS WHERE CODE = #{CODE_CAF} AND FIELD_SEQ = #{FIELD_SEQ})
+              </otherwise>
+            </choose>  
+        </when>
+        <otherwise >
+           <if test="COMP_CODE !=null">
+ 	   			AND L.COMP_CODE = #{COMP_CODE}
+ 	   		</if>
+ 	   		<if test="CB_NO !=null">
+ 	   			<choose>
+        			<when test="CB_NO==1">
+						AND L.CB_NO = 0
+					</when>
+					<otherwise>
+   						AND L.CB_NO > 0 
+   						<if test="BAS_EXPRESSION_CLASS_CODE != null">
+   						AND L.BAS_EXPRESSION_CLASS_CODE = #{BAS_EXPRESSION_CLASS_CODE}
+   						</if> 
+     		 	  	</otherwise>
+	    	   </choose> 	   			
+ 	   		</if>
+        </otherwise>
+      </choose>		 
+ 	 </where>
+  </sql>
+   <sql id="getFilterCrtDetLListSqlSubEco">
+     SELECT  
+       L.CODE AS CODE_STR,
+       L.LONG_DESC AS BRIEF_DESC_ENG,
+       L.LONG_DESC_AR AS BRIEF_DESC_ARAB,
+       L.COMP_CODE,
+       L.SECTOR_CODE,
+       L.LONG_DESC_ENG,
+       L.LONG_DESC_ARAB
+     <!-- L.CODE AS CODE_STR, L.LONG_DESC AS BRIEF_DESC_ENG , L.LONG_DESC_AR AS LONG_DESC_ARAB,L.SECTOR_CODE  AS SECTOR_CODE-->
+     FROM  V_IRP_SUB_ECO_SECTORS L
+ 	 WHERE L.COMP_CODE = #{COMP_CODE} 
+ 	 <if test="SECTOR_CODE != null">
+ 	 	AND L.SECTOR_CODE= #{SECTOR_CODE} 
+ 	 </if>
+ 	  <if test="CODE != null">
+ 	 	AND L.CODE= #{CODE} 
+ 	 </if>
+  </sql>
+  
+  <select id="getFilterCrtDetLListSubEco"  resultMap="getFilterCrtDetMap" parameterType="tmplGridSC">
+	<include refid="servicesCommon.commonGridWrpBefFlip"/>
+	<include refid="getFilterCrtDetLListSqlSubEco"/>
+	<include refid="servicesCommon.commonGridWrpAftFlip"/>
+	<include refid="servicesCommon.commmonGridWrpFlipClose"/>
+  </select>
+  
+  <select id="getFilterCrtDetLListCountSubEco"  resultType="int" parameterType="tmplGridSC">
+	<include refid="servicesCommon.commonGridWrpBefCnt"/>
+	<include refid="getFilterCrtDetLListSqlSubEco"/>
+	<include refid="servicesCommon.commonGridWrpAftCnt"/>
+	<include refid="servicesCommon.commonGridCountWrpClose"/>
+  </select>
+  
+  
+    <select id="getFilterCrtDetList"  resultMap="getFilterCrtDetMap" parameterType="tmplGridSC">
+	<include refid="servicesCommon.commonGridWrpBefFlip"/>
+	<include refid="getFilterCrtDetListSql"/>
+	<include refid="servicesCommon.commonGridWrpAftFlip"/>
+	<include refid="servicesCommon.commmonGridWrpFlipClose"/>
+  </select>
+  
+  <select id="getFilterCrtDetListCount"  resultType="int" parameterType="tmplGridSC">
+	<include refid="servicesCommon.commonGridWrpBefCnt"/>
+	<include refid="getFilterCrtDetListSql"/>
+	<include refid="servicesCommon.commonGridWrpAftCnt"/>
+	<include refid="servicesCommon.commonGridCountWrpClose"/>
+  </select>
+  
+  
+  <delete id="deleteCrtsByTemplate" parameterType="GLSTMPLTVO">
+     DELETE FROM GLSTMPLT_PARAM_LINK
+     WHERE COMP_CODE = #{COMP_CODE}
+     AND TEMP_CODE = #{CODE}
+  </delete>
+  
+   <select id="getFilterTmpltCrtDetLList"  resultMap="getFilterCrtDetMap" parameterType="tmplGridSC">
+	<include refid="servicesCommon.commonGridWrpBefFlip"/>
+	<include refid="getFilterCrtDetLListSql"/>
+	<include refid="servicesCommon.commonGridWrpAftFlip"/>
+	<include refid="servicesCommon.commmonGridWrpFlipClose"/>
+  </select>
+  
+  <select id="getFilterCrtDetLListCount"  resultType="int" parameterType="tmplGridSC">
+	<include refid="servicesCommon.commonGridWrpBefCnt"/>
+	<include refid="getFilterCrtDetLListSql"/>
+	<include refid="servicesCommon.commonGridWrpAftCnt"/>
+	<include refid="servicesCommon.commonGridCountWrpClose"/>
+  </select>
+
+</mapper>

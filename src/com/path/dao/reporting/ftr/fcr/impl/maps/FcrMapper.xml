@@ -1,0 +1,579 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="fcrRep">
+	 <resultMap id="loadFcrListMap" type="ftr_optCO" >
+	    <id column="CODE" 					property="ftrOptVO.CODE" />
+	    <result column="PROG_REF" 			property="ftrOptVO.PROG_REF" />
+	    <result column="PARENT_REF" 		property="ftrOptVO.PARENT_REF" />
+	    <result column="BRIEF_NAME_ENG" 	property="ftrOptVO.BRIEF_NAME_ENG" />
+	    <result column="BRIEF_NAME_ARAB" 	property="ftrOptVO.BRIEF_NAME_ARAB" />
+	    <result column="DISP_ORDER" 		property="ftrOptVO.DISP_ORDER" />
+	    <result column="TMPLT_CODE" 		property="ftrOptVO.TMPLT_CODE" />
+	    <result column="COLUMN_CODE" 		property="ftrOptVO.COLUMN_CODE" />
+	    <result column="APP_NAME" 			property="ftrOptVO.APP_NAME" />
+    	<result column="PARENT_REF_STR" 	property="PARENT_REF_STR" />
+	    <result column="TMPLT_CODE_STR" 	property="TMPLT_CODE_STR" />
+	    <result column="COLUMN_CODE_STR" 	property="COLUMN_CODE_STR" />
+	    <result column="DATE_UPDATED" 		property="ftrOptVO.DATE_UPDATED" />
+	    <result column="GROUP_BY" 			property="ftrOptVO.GROUP_BY" />
+	    <result column="REP_TYPE" 			property="ftrOptVO.REP_TYPE" />
+	    <result column="ROW_COLMN" 			property="ftrOptVO.ROW_COLMN" />
+	    <result column="REP_CURRENCY" 		property="ftrOptVO.REP_CURRENCY" />
+	    <result column="CURRENCY_STR" 		property="CURRENCY_STR" />
+   	    <result column="GENERATED_FILE_NAME" 		property="ftrOptVO.GENERATED_FILE_NAME" />
+	  </resultMap>
+  
+ 	 <resultMap type="commonDetailsVO"  id="pRefLkpMap">     
+	    <id column="PROG_REF" 			property="PROG_REF" />
+	    <result column="PROG_DESC" 		property="PROG_DESC" />
+	    <result column="MENU_TITLE_ENG" property="MENU_TITLE_ENG" />
+	</resultMap>
+	
+	<resultMap type="commonDetailsVO" id="retCategoriesLkpListMap">
+		  <result column="CATEG_ID" 			property="CODE" />
+		  <result column="CATEG_DESC_ENG" 		property="BRIEF_DESC_ENG" />
+		  <result column="CATEG_DESC_FR" 		property="CATEGORY" />
+		  <result column="CATEG_DESC_AR" 		property="BRIEF_DESC_ARAB" />
+	</resultMap>
+	
+ 	 <resultMap type="ftr_optCO"  id="retSavedOptsByProgRefMap">     
+	    <result column="PROG_REF" 		property="ftrOptVO.PROG_REF" />
+	    <result column="BRIEF_NAME_ENG" property="ftrOptVO.BRIEF_NAME_ENG" />
+	</resultMap>
+	
+	<resultMap type="axsCO"  id="retAxsByReportMap">     
+	    <result column="PROG_REF" 		property="PROG_REF" />
+	</resultMap>
+  	
+	
+	 <resultMap id="returnFcrDetByFtrOptRefMap" type="irpFcrReportsVO" >
+    	<result column="FCR_REPORT_QUERY" property="FCR_REPORT_QUERY" />
+  	</resultMap>
+  	
+	 <resultMap id="retDynamicFcrCols" type="colmntmpltCO" >
+    	<result column="LINE_NBR" property="colmnTmpltVO.LINE_NBR" />
+    	<result column="BRIEF_NAME_ENG" property="colmnTmpltVO.BRIEF_NAME_ENG" />
+    	<result column="FROM_DATE_STR" property="FROM_DATE_STR" />
+    	<result column="COL_TYPE_STR" property="COL_TYPE_STR" />
+    	<result column="FROM_DATE" property="colmnTmpltVO.FROM_DATE" />
+    	<result column="TO_DATE" property="colmnTmpltVO.TO_DATE" />
+    	<result column="SPECIFY_DAY" property="colmnTmpltVO.SPECIFY_DAY" />
+    	<result column="SPECIFY_MONTH" property="colmnTmpltVO.SPECIFY_MONTH" />
+    	<result column="COL_TYPE" property="colmnTmpltVO.COL_TYPE" />
+  	</resultMap>
+  
+  <sql id="loadFcrListSql" >
+    SELECT O.CODE,
+       O.GENERATED_FILE_NAME,
+       O.PROG_REF,
+       O.PARENT_REF,
+        CASE
+         WHEN O.PARENT_REF = 'ROOT' THEN
+          'ROOT'
+         ELSE(SELECT OPT.PROG_DESC
+          FROM OPT OPT
+         WHERE OPT.APP_NAME = #{appName}
+           AND (OPT.PROG_REF IN
+               (SELECT OP.PARENT_REF FROM OPT OP WHERE OP.APP_NAME =#{appName}))
+           AND OPT.PROG_REF = O.PARENT_REF) END AS PARENT_REF_STR,
+       O.BRIEF_NAME_ENG,
+       O.BRIEF_NAME_ARAB,
+       O.DISP_ORDER,
+       O.TMPLT_CODE,
+       (SELECT T.BRIEF_NAME_ENG
+          FROM GLSTMPLT T
+         WHERE T.COMP_CODE = #{COMP_CODE}
+           AND T.CODE = O.TMPLT_CODE
+           AND T.LINE_NBR = 0) AS TMPLT_CODE_STR,
+       O.COLUMN_CODE,
+       (SELECT C.BRIEF_NAME_ENG
+          FROM COLMNTMPLT C
+         WHERE C.COMP_CODE = #{COMP_CODE}
+           AND C.CODE = O.COLUMN_CODE
+           AND C.LINE_NBR = 0) AS COLUMN_CODE_STR ,
+           O.APP_NAME,
+           O.DATE_UPDATED,
+           O.GROUP_BY,
+           O.REP_TYPE,
+           (CASE WHEN (O.REP_CURRENCY=0) THEN NULL ELSE O.REP_CURRENCY END) AS REP_CURRENCY,
+       (SELECT C.BRIEF_DESC_ENG
+          FROM CURRENCIES C
+         WHERE C.CURRENCY_CODE = O.REP_CURRENCY
+           AND C.COMP_CODE = #{COMP_CODE}) AS CURRENCY_STR,
+           O.ROW_COLMN
+  FROM FTR_OPT O
+  WHERE STANDARD_FLAG_YN = 'N'
+  AND O.APP_NAME = #{appName}
+  </sql>
+  
+  <sql id="retParentRefListSql">
+	  SELECT O.PROG_REF, O.PROG_DESC, O.MENU_TITLE_ENG
+	  FROM OPT O
+	  WHERE O.APP_NAME = #{appName}
+	  <if test='CORE_IMAL_YN =="Y"'>
+	  	AND  O.PROG_REF NOT IN (SELECT PROG_REF
+								<choose> 
+									<when test="isSQLServer == 1">
+									  +
+									</when>
+									<otherwise>
+									  ||
+									</otherwise>
+								</choose>
+								'D00'
+	  							FROM FTR_OPT 
+	  							WHERE PARENT_REF='ROOT')
+	  </if>
+	  AND (O.PROG_REF IN
+      (SELECT OO.PARENT_REF FROM OPT OO WHERE OO.APP_NAME = #{appName}) OR O.PARENT_REF='ROOT'
+      OR O.PROG_REF IN (SELECT FOLDER_REF FROM IRP_FOLDER)
+      )
+       <if test='profType == "1"'>
+        AND (EXISTS
+        (SELECT 1
+           FROM AXS
+          WHERE AXS.USER_ID =  #{userId}
+            AND (AXS.COMP_CODE = #{compCode} OR AXS.COMP_CODE =0)
+            AND (AXS.BRANCH_CODE = #{branchCode} OR AXS.BRANCH_CODE = 0)
+            AND AXS.APP_NAME = O.APP_NAME
+            AND AXS.PROG_REF = O.PROG_REF
+            AND AXS.STATUS = 'P')
+            OR
+        (EXISTS (SELECT 1
+                    FROM S_APPROLUSR, S_ROLE_DETAIL
+                   WHERE S_APPROLUSR.APP_NAME = S_ROLE_DETAIL.APP_NAME
+                     AND S_ROLE_DETAIL.ROLE_NAME = S_APPROLUSR.ROLE_NAME
+                     AND S_ROLE_DETAIL.APP_NAME = O.APP_NAME
+                     AND S_ROLE_DETAIL.PROG_REF = O.PROG_REF
+                     AND S_APPROLUSR.STATUS = 'P'
+                     AND S_ROLE_DETAIL.STATUS = 'P'
+                     AND (S_APPROLUSR.COMP_CODE = #{compCode} OR S_APPROLUSR.COMP_CODE =0)
+                     AND (S_APPROLUSR.BRANCH_CODE = #{branchCode} OR S_APPROLUSR.BRANCH_CODE =0)
+                     AND S_APPROLUSR.APP_NAME =   #{appName}
+                     AND S_APPROLUSR.USER_ID = #{userId}) OR EXISTS
+         (SELECT 1
+             FROM S_GROUP_USER, S_GROUP_PROFILE, S_ROLE_DETAIL
+            WHERE (S_GROUP_USER.COMP_CODE = #{compCode} OR S_GROUP_USER.COMP_CODE = 0)
+              AND (S_GROUP_USER.BRANCH_CODE = #{branchCode} OR
+                  S_GROUP_USER.BRANCH_CODE = 0)
+              AND S_GROUP_USER.USER_ID =  #{userId}
+              AND S_GROUP_USER.STATUS = 'P'
+                 
+              AND S_GROUP_PROFILE.GROUP_ID = S_GROUP_USER.GROUP_ID
+              AND S_GROUP_PROFILE.APP_NAME = S_ROLE_DETAIL.APP_NAME
+              AND S_GROUP_PROFILE.APP_NAME =  #{appName}
+              AND S_GROUP_PROFILE.STATUS = 'P'
+                 
+              AND S_ROLE_DETAIL.ROLE_NAME = S_GROUP_PROFILE.ROLE_NAME
+              AND S_ROLE_DETAIL.APP_NAME = O.APP_NAME
+              AND S_ROLE_DETAIL.PROG_REF = O.PROG_REF
+              AND S_ROLE_DETAIL.STATUS = 'P')))
+</if>                           
+       <if test="PROG_REF != null">
+		AND O.PROG_REF=#{PROG_REF} 
+	  </if>
+	  <if test="PROG_REF == null">
+	  UNION
+		SELECT 'ROOT' AS PROG_REF, 'ROOT' AS PROG_DESC, 'ROOT' AS MENU_TITLE_ENG
+ 		 FROM DUAL
+ 		 </if>
+  </sql>
+  
+  
+  	<select id="loadFcrList"  resultMap="loadFcrListMap" parameterType="commonDetailsSC">
+		<include refid="servicesCommon.commonGridWrpBefFlip"/>
+		<include refid="loadFcrListSql"/>
+		<include refid="servicesCommon.commonGridWrpAftFlip"/>
+		<include refid="servicesCommon.commmonGridWrpFlipClose"/>  
+	</select>
+
+
+	<select id="retFcrListCount"   resultType="int" parameterType="commonDetailsSC">
+		<include refid="servicesCommon.commonGridWrpBefCnt"/>
+		<include refid="loadFcrListSql"/>
+		<include refid="servicesCommon.commonGridWrpAftCnt"/>
+		<include refid="servicesCommon.commonGridCountWrpClose"/>
+	</select>
+
+	<select id="retParentRefList"  resultMap="pRefLkpMap" parameterType="commonDetailsSC">
+		<include refid="servicesCommon.commonGridWrpBefFlip"/>
+		<include refid="retParentRefListSql"/>
+		<include refid="servicesCommon.commonGridWrpAftFlip"/>
+		<include refid="servicesCommon.commmonGridWrpFlipClose"/>  
+	</select>
+	
+	<select id="retParentRefListCount"   resultType="int" parameterType="commonDetailsSC">
+		<include refid="servicesCommon.commonGridWrpBefCnt"/>
+		<include refid="retParentRefListSql"/>
+		<include refid="servicesCommon.commonGridWrpAftCnt"/>
+		<include refid="servicesCommon.commonGridCountWrpClose"/>
+	</select>
+
+	<select id="checkProgRef" parameterType="commonDetailsSC" resultType="int">
+		SELECT COUNT(*)
+		FROM OPT
+		WHERE APP_NAME = #{appName}
+		   AND PROG_REF =#{BRIEF_DESC_ENG} 
+		   <choose> 
+			 <when test="isSQLServer == 1">
+			  +
+			 </when>
+			 <otherwise>
+			  ||
+			 </otherwise>
+		   </choose>
+		   'D00'
+	</select>
+
+ <insert id="saveOpt1" parameterType="ftr_optCO" >
+	 <selectKey resultType="java.math.BigDecimal" keyProperty="PROG_ORDER" order="BEFORE">
+  SELECT (CASE
+           WHEN COUNT(TB1.PROG_ORDER) = 0 THEN
+            1
+           ELSE
+            max(TB1.PROG_ORDER)
+         END) as PROG_ORDER
+    FROM (SELECT PROG_ORDER
+            FROM OPT
+           WHERE PROG_REF =  #{ftrOptVO.PARENT_REF}
+             AND APP_NAME = #{ftrOptVO.APP_NAME}) TB1
+     </selectKey>
+   
+	 INSERT INTO OPT
+	  (PROG_REF,PROG_DESC,APP_NAME,ALLOW_ADD_OPTIONS,ADD_OPT_REF,AUDIT_SAVE,AUDIT_DELETE,AUDIT_RETRIEVE, MAIN_OPTION_1,MAIN_OPTION_2,PARENT_REF, PROG_TYPE, PROG_ORDER, MENU_TITLE_ENG,APP_VERSION,DISP_ORDER,DYNAMIC_OPT,MENU_TITLE_ARAB)
+	 VALUES
+	  ( #{LS_REF},#{ftrOptVO.BRIEF_NAME_ENG},#{ftrOptVO.APP_NAME},'0',#{LS_REF},'0','0', '0','0', '1',#{ftrOptVO.PARENT_REF},'P',#{PROG_ORDER}, #{ftrOptVO.BRIEF_NAME_ENG},1,#{ftrOptVO.DISP_ORDER},'1',#{ftrOptVO.BRIEF_NAME_ARAB})
+ </insert>
+
+<insert id="saveOpt2" parameterType="ftr_optCO">
+	INSERT INTO  OPT( PROG_REF , PROG_DESC , APP_NAME , ALLOW_ADD_OPTIONS , ADD_OPT_REF , AUDIT_SAVE , AUDIT_DELETE , AUDIT_RETRIEVE , MAIN_OPTION_1 , MAIN_OPTION_2 )  
+	VALUES(#{LS_REF}, #{LS_PRINT},#{ftrOptVO.APP_NAME} , '0' , NULL , '0' , '0' , '0' , '0' , '1' ) 
+</insert>
+
+<insert id="saveOpt3" parameterType="ftr_optCO">
+	INSERT INTO  OPT ( PROG_REF , PROG_DESC , APP_NAME , ALLOW_ADD_OPTIONS ,  ADD_OPT_REF , AUDIT_SAVE ,  AUDIT_DELETE ,  AUDIT_RETRIEVE ,  MAIN_OPTION_1 , MAIN_OPTION_2 )  
+	VALUES (#{LS_REF} ,#{LS_SAV},#{ftrOptVO.APP_NAME} , '0' , NULL , '0' , '0' , '0' , '0' , '1' ) 
+</insert>
+
+
+<select id="retProgOrder" parameterType="ftr_optCO" resultType="int">
+	 SELECT (CASE
+           WHEN COUNT(TB1.PROG_ORDER) = 0 THEN
+            1
+           ELSE
+            max(TB1.PROG_ORDER)
+         END) as PROG_ORDER
+    FROM (SELECT PROG_ORDER +1 as PROG_ORDER
+            FROM OPT
+           WHERE PROG_REF = #{ftrOptVO.PARENT_REF}
+             AND APP_NAME =#{ftrOptVO.APP_NAME}) TB1  
+</select>
+
+<update id="updateOpt1" parameterType="ftr_optCO">
+	UPDATE OPT
+   	SET PROG_DESC      = #{LS_UPPER_NAME},
+       MENU_TITLE_ENG = #{ftrOptVO.BRIEF_NAME_ENG},
+       PARENT_REF     =  #{ftrOptVO.PARENT_REF},
+       DISP_ORDER     = #{ftrOptVO.DISP_ORDER},
+       MENU_TITLE_ARAB=#{ftrOptVO.BRIEF_NAME_ARAB}
+   WHERE APP_NAME = #{ftrOptVO.APP_NAME}
+   AND PROG_REF = #{ftrOptVO.PROG_REF}
+</update>
+
+<update id="updateOpt2" parameterType="ftr_optCO">
+	UPDATE OPT
+    SET PROG_DESC =  #{LS_PRINT}
+	WHERE APP_NAME = #{ftrOptVO.APP_NAME}
+      AND PROG_REF = #{ftrOptVO.PROG_REF}
+</update>
+
+<update id="updateOpt3" parameterType="ftr_optCO">
+	UPDATE OPT
+    SET PROG_DESC = #{LS_SAV}
+	WHERE APP_NAME = #{ftrOptVO.APP_NAME}
+      AND PROG_REF = #{ftrOptVO.PROG_REF}
+</update>
+
+<delete id="deleteOpt" parameterType="ftr_optCO">
+	   DELETE FROM OPT WHERE  APP_NAME =#{ftrOptVO.APP_NAME} AND PROG_REF LIKE  #{ftrOptVO.PROG_REF}
+</delete>
+
+<delete id="deleteOpts" parameterType="ftr_optCO">
+	BEGIN
+   		DELETE FROM USER_WORKSPACE WHERE  APP_NAME =#{ftrOptVO.APP_NAME} AND PROG_REF IN
+		<foreach item="item" index="index" collection="PROG_REFS" open="(" separator="," close=")">
+			#{item}
+		</foreach><if test="isOracle == 1">;</if>
+   		
+   		DELETE FROM OPT WHERE  APP_NAME =#{ftrOptVO.APP_NAME} AND PROG_REF IN
+		<foreach item="item" index="index" collection="PROG_REFS" open="(" separator="," close=")">
+			#{item}
+		</foreach><if test="isOracle == 1">;</if>
+	END
+	<if test="isOracle == 1">;</if>
+</delete>
+
+<delete id="deleteAxs" parameterType="axsCO">
+    DELETE FROM AXS
+    WHERE APP_NAME = #{APP_NAME}
+    AND PROG_REF IN
+	<foreach item="item" index="index" collection="PROG_REFS" open="(" separator="," close=")">
+		#{item}
+	</foreach>
+</delete>
+
+<delete id="deleteOptExtended" parameterType="ftr_optCO">
+   DELETE FROM OPT_EXTENDED WHERE  APP_NAME =#{ftrOptVO.APP_NAME} AND PROG_REF IN
+	<foreach item="item" index="index" collection="PROG_REFS" open="(" separator="," close=")">
+		#{item}
+	</foreach>
+</delete>
+
+<select id="returnDynamicReportByRef" resultMap="loadFcrListMap" parameterType="ftr_optCO">
+SELECT T.BRIEF_NAME_ENG,
+       T.CODE,
+       T.TMPLT_CODE,
+       T.COLUMN_CODE,
+       T.GROUP_BY,
+       T.ROW_COLMN,
+       T.REP_TYPE,
+       T.REP_CURRENCY
+  FROM FTR_OPT T
+ WHERE T.PROG_REF = #{ftrOptVO.PROG_REF}
+   AND T.APP_NAME = #{ftrOptVO.APP_NAME}
+</select>
+
+<select id="retrieveFcr" parameterType="commonDetailsSC" resultMap="loadFcrListMap">
+	<include refid="loadFcrListSql"/>
+    AND O.CODE=#{CODE}
+</select>
+
+<update id="updateFcr" parameterType="ftr_optCO">
+	<include refid="FTR_OPT.sql_updateFTR_OPT" />
+    <if test="DATE_UPDATED != null" > AND DATE_UPDATED = #{DATE_UPDATED} </if>
+</update>
+
+<select id="retSavedOptsByProgRef" parameterType="ftr_optCO" resultMap="retSavedOptsByProgRefMap">
+ SELECT PROG_REF,
+       (SELECT PROG_DESC
+          FROM OPT
+         WHERE APP_NAME =  #{ftrOptVO.APP_NAME}
+           AND PROG_REF =  #{ftrOptVO.PROG_REF}) AS BRIEF_NAME_ENG
+  FROM OPT
+ WHERE APP_NAME = #{ftrOptVO.APP_NAME}
+  AND PROG_REF IN
+	<foreach item="item" index="index" collection="PROG_REFS" open="(" separator="," close=")">
+		#{item}
+	</foreach> 
+</select>
+
+  <resultMap type="irpFcrReportsCO" 	id="retFcrRepMap">
+ 	 <result column="progRef" 				property="progRef" />
+ 	 <result column="STANDARD_FLAG_YN" 		property="STANDARD_FLAG_YN" />
+ 	 <result column="D.ROW_COLMN" 			property="D.ROW_COLMN" />
+     <result column="GENERATED_FILE_NAME" 		property="GENERATED_FILE_NAME" />
+  </resultMap>
+  
+  <sql id="retFcrRepSql">
+  
+SELECT IFR.REPORT_PROG_REF progRef
+	  ,D.STANDARD_FLAG_YN,D.ROW_COLMN,D.GENERATED_FILE_NAME
+  FROM (SELECT FO.GROUP_BY,
+               FO.REP_TYPE,
+               FO.ROW_COLMN,
+               FO.STANDARD_FLAG_YN,
+               FO.GENERATED_FILE_NAME, 
+               CASE
+                 WHEN (SELECT COUNT(C.CODE)
+                         FROM COLMNTMPLT C
+                        WHERE C.CODE = FO.COLUMN_CODE
+                          AND C.COL_TYPE IN ('EN', 'AR')) > 0 AND FO.REP_TYPE = 'D' THEN
+                  '1'
+                 ELSE
+                  '0'
+               END AS CURRENCY_CALC
+          FROM FTR_OPT FO
+         WHERE FO.PROG_REF = #{PROG_REF}
+         AND   FO.APP_NAME = 'REP') D,
+       IRP_FCR_REPORTS IFR
+WHERE <!-- CASE WHEN IFR.GROUP_BY IS NULL THEN '-' ELSE  IFR.GROUP_BY  END = 
+ 	  CASE WHEN D.GROUP_BY = 'R' THEN D.GROUP_BY ELSE CASE WHEN (IFR.GROUP_BY IS NULL OR IFR.GROUP_BY = 'R')THEN '-' ELSE  IFR.GROUP_BY  END END-->
+ 	  (CASE WHEN D.GROUP_BY IN ('N', 'U', 'S', 'C', 'E', 'I', 'T', 'B','G','A') AND D.REP_TYPE='D' THEN '-' ELSE D.GROUP_BY END) 	  
+   =(CASE WHEN IFR.GROUP_BY IS NULL THEN '-' ELSE IFR.GROUP_BY END)
+AND  IFR.CURRENCY_CALC = CASE WHEN D.GROUP_BY = 'R' THEN  IFR.CURRENCY_CALC ELSE D.CURRENCY_CALC END
+AND D.REP_TYPE = IFR.REPORT_TYPE
+AND D.ROW_COLMN = <choose><when test="isSybase == 1">CONVERT(NUMERIC(1,0),IFR.ROW_COLUMN)</when><otherwise>TO_NUMBER(IFR.ROW_COLUMN)</otherwise></choose>
+AND D.CURRENCY_CALC = IFR.CURRENCY_CALC	
+AND IFR.COL_TYPE =  <choose><when test="isSybase == 1">CONVERT(VARCHAR, </when></choose>
+					(SELECT COUNT(1) FROM FTR_OPT,COLMNTMPLT WHERE 
+					  FTR_OPT.COLUMN_CODE  = COLMNTMPLT.CODE
+                      AND FTR_OPT.PROG_REF = #{PROG_REF} 
+                      AND FTR_OPT.APP_NAME = 'REP'
+                      AND COLMNTMPLT.COMP_CODE = #{COMP_CODE}
+                      AND COLMNTMPLT.COL_TYPE IN ('MB', 'MBF', 'GM', 'GMF'))
+                   <choose><when test="isSybase == 1">)</when></choose> 
+</sql>
+
+  <select id="retFcrRep" resultMap="retFcrRepMap" parameterType="irp_ad_hoc_reportSC">
+ 	<include refid="retFcrRepSql"/>
+  </select>
+
+
+
+
+<select id="returnFcrProgRef" resultType="string" parameterType="java.util.HashMap">
+
+SELECT  FF.REPORT_PROG_REF
+FROM    IRP_FCR_REPORTS FF
+WHERE   CASE WHEN #{RA_REF} = 'R0020' THEN 'N'
+        ELSE
+        (CASE WHEN FF.GROUP_BY IS NULL AND FF.REPORT_TYPE = 'D' THEN '-' ELSE #{RA_TYPE}  END)
+         END
+        =  
+        (CASE WHEN #{RA_TYPE}  IN ('N','U','S','C','E','I','T','B','G','A') AND #{RA_REF} = 'R00201' THEN '-'
+         ELSE FF.GROUP_BY END)
+                     
+AND FF.REPORT_TYPE =  (SELECT FO.REP_TYPE
+              FROM FTR_OPT FO
+             WHERE FO.PROG_REF = #{RA_REF}
+               AND   FO.APP_NAME = #{applName})    
+AND FF.ROW_COLUMN = <choose><when test="isSybase == 1">
+                CONVERT(VARCHAR,#{ROW_TO_COL})
+              </when>
+              <otherwise>
+                #{ROW_TO_COL}
+              </otherwise>
+          </choose>  
+AND FF.CURRENCY_CALC = (SELECT
+                   CASE
+                         WHEN (SELECT COUNT(C.CODE)
+                                 FROM COLMNTMPLT C
+                                WHERE C.CODE = FO.COLUMN_CODE
+                                  AND C.COL_TYPE IN ('EN', 'AR')) > 0 AND FO.REP_TYPE = 'D' THEN
+                          '1'
+                         ELSE
+                          '0'
+                       END AS CURRENCY_CALC
+                  FROM FTR_OPT FO
+                  
+                   WHERE FO.PROG_REF = #{RA_REF}
+                   AND   FO.APP_NAME = #{applName})
+AND FF.COL_TYPE =  <choose><when test="isSybase == 1">CONVERT(VARCHAR, </when></choose>
+          (SELECT COUNT(1) FROM COLMNTMPLT WHERE 
+           			  COLMNTMPLT.CODE = #{RA_COL_TMPLT}
+                      AND COLMNTMPLT.COMP_CODE = #{RA_COMP_CODE}
+                      AND COLMNTMPLT.COL_TYPE IN ('MB', 'MBF', 'GM', 'GMF'))
+                   <choose><when test="isSybase == 1">)</when></choose> 
+</select>
+
+<delete id="deleteAXSByCompBranchApp" parameterType="com.path.dbmaps.vo.AXSVOKey" >
+    delete from AXS
+    where APP_NAME = #{APP_NAME}
+      and PROG_REF = #{PROG_REF}
+</delete>
+
+<select id="retAxsByReport" parameterType="axsCO" resultMap="retAxsByReportMap">
+ SELECT PROG_REF FROM AXS
+ WHERE APP_NAME    = #{APP_NAME}
+   AND USER_ID     = #{USER_ID}
+   AND COMP_CODE   = #{COMP_CODE}
+   AND BRANCH_CODE = #{BRANCH_CODE}
+   AND PROG_REF IN
+	<foreach item="item" index="index" collection="PROG_REFS" open="(" separator="," close=")">
+		#{item}
+	</foreach> 
+</select>
+
+<select id="retFcrReportEngDesc" parameterType="java.lang.String" resultType="java.lang.String">
+	SELECT BRIEF_NAME_ENG FROM FTR_OPT WHERE PROG_REF = #{VALUE}
+</select>
+
+<select id="retFixedFcrColsByRef" resultMap="IRP_FCR_FIXED_COLS.BaseResultMap" parameterType="java.lang.String">
+	select
+	<include refid="IRP_FCR_FIXED_COLS.Base_Column_List" />
+	from IRP_FCR_FIXED_COLS
+	where  PROG_REF = #{value}
+    ORDER BY COL_ORDER ASC
+</select>
+
+<select id="retDynamicFcrColsFromColTempl" parameterType="colmntmpltSC" resultMap="retDynamicFcrCols">
+SELECT LINE_NBR ,
+	BRIEF_NAME_ENG ,
+	<choose>
+		<when test="isSybase == 1">
+			RIGHT(REPLICATE('0', 2) + RTRIM(LTRIM(SUBSTRING(CONVERT(VARCHAR, CONVERT(DATE , COLMNTMPLT.FROM_DATE, 105)), 5,2))), 2) 
+			+'-'+ SUBSTRING(CONVERT(VARCHAR, CONVERT(DATE , COLMNTMPLT.FROM_DATE, 105)), 1,3) +'-'+
+			SUBSTRING(CONVERT(VARCHAR, CONVERT(DATE ,  COLMNTMPLT.FROM_DATE, 105)), 10,2)
+			<choose> <when test="isSQLServer == 1"> + ' ' + </when> <otherwise> || ' ' || </otherwise> </choose>
+			RIGHT(REPLICATE('0', 2) + RTRIM(LTRIM(SUBSTRING(CONVERT(VARCHAR, CONVERT(DATE , COLMNTMPLT.TO_DATE, 105)), 5,2))), 2) 
+			+'-'+ SUBSTRING(CONVERT(VARCHAR, CONVERT(DATE , COLMNTMPLT.TO_DATE, 105)), 1,3) +'-'+
+			SUBSTRING(CONVERT(VARCHAR, CONVERT(DATE ,  COLMNTMPLT.TO_DATE, 105)), 10,2)   AS FROM_DATE_STR ,
+		</when>
+		<otherwise>
+			TO_CHAR(TO_DATE(COLMNTMPLT.FROM_DATE, 'dd/mm/yyyy'),'DD-Mon-YY') || ' ' ||TO_CHAR(TO_DATE(COLMNTMPLT.TO_DATE, 'dd/mm/yyyy'),'DD-Mon-YY') AS FROM_DATE_STR ,
+		</otherwise>
+	</choose>
+	(SELECT VALUE_DESC
+	FROM SYS_PARAM_LOV_TRANS T
+	WHERE T.LOV_TYPE_ID = 6
+	AND T.LANG_CODE = #{LANG_CODE}
+	AND VALUE_CODE = COLMNTMPLT.COL_TYPE) AS COL_TYPE_STR,
+	COLMNTMPLT.FROM_DATE,
+	COLMNTMPLT.TO_DATE,
+	SPECIFY_DAY,
+	SPECIFY_MONTH,
+	COL_TYPE
+	FROM COLMNTMPLT
+	WHERE COMP_CODE = #{COMP_CODE}
+	AND CODE = #{CODE}
+	AND LINE_NBR > 0
+	ORDER BY LINE_NBR
+</select>
+
+<select id="retDynamicFcrColsFromTempl" parameterType="GLSTMPLTSC" resultMap="retDynamicFcrCols">
+SELECT LINE_NBR ,BRIEF_NAME_ENG 
+  FROM GLSTMPLT 
+ WHERE COMP_CODE =#{COMP_CODE}
+   AND CODE = #{CODE}
+   AND LINE_NBR > 0
+ ORDER BY LINE_NBR
+</select>
+
+<select id="returnFcrDetByFtrOptRef" parameterType="irpFcrReportsVO" resultMap="returnFcrDetByFtrOptRefMap">
+	SELECT  FCR_REPORT_QUERY
+  	FROM IRP_FCR_REPORTS
+ 	WHERE REPORT_PROG_REF = #{REPORT_PROG_REF}
+</select>
+
+	<sql id="retCategoriesLkpListSql">
+		 SELECT CATEG_ID, CATEG_DESC_ENG , CATEG_DESC_FR , CATEG_DESC_AR
+		  FROM OPT_CATEGORY
+		 WHERE IS_WEB_YN = 2
+		<if test="CODE != null">
+			AND CATEG_ID=#{CODE}
+		</if>
+	</sql>
+
+  	<select id="retCategoriesLkpList"  resultMap="retCategoriesLkpListMap" parameterType="commonDetailsSC">
+		<include refid="servicesCommon.commonGridWrpBefFlip"/>
+		<include refid="retCategoriesLkpListSql"/>
+		<include refid="servicesCommon.commonGridWrpAftFlip"/>
+		<include refid="servicesCommon.commmonGridWrpFlipClose"/>  
+	</select>
+
+
+	<select id="retCategoriesLkpCount"   resultType="int" parameterType="commonDetailsSC">
+		<include refid="servicesCommon.commonGridWrpBefCnt"/>
+		<include refid="retCategoriesLkpListSql"/>
+		<include refid="servicesCommon.commonGridWrpAftCnt"/>
+		<include refid="servicesCommon.commonGridCountWrpClose"/>
+	</select>	
+
+<delete id="deleteSRoleDetail" parameterType="ftr_optCO">
+   DELETE FROM S_ROLE_DETAIL WHERE  APP_NAME =#{ftrOptVO.APP_NAME} AND PROG_REF IN
+	<foreach item="item" index="index" collection="PROG_REFS" open="(" separator="," close=")">
+		#{item}
+	</foreach>
+</delete>
+</mapper>

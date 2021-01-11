@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="REP_MISMATCH_PARAM" >
+  <resultMap id="BaseResultMap" type="com.path.dbmaps.vo.REP_MISMATCH_PARAMVO" >
+    <id column="REP_MISMATCH_ID" property="REP_MISMATCH_ID" />
+    <result column="COMP_CODE" property="COMP_CODE" />
+    <result column="REP_REFERENCE" property="REP_REFERENCE" />
+    <result column="CRITERIA_CODE" property="CRITERIA_CODE" />
+    <result column="MISMATCH_TYPE" property="MISMATCH_TYPE" />
+    <result column="ROW_YN" property="ROW_YN" />
+    <result column="CRITERIA_COLUMN" property="CRITERIA_COLUMN" />
+    <result column="COLUMN_TYPE" property="COLUMN_TYPE" />
+    <result column="DATE_UPDATED" property="DATE_UPDATED" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    REP_MISMATCH_ID, COMP_CODE, REP_REFERENCE, CRITERIA_CODE, MISMATCH_TYPE, ROW_YN, 
+    CRITERIA_COLUMN, COLUMN_TYPE, DATE_UPDATED
+  </sql>
+  <select id="selectREP_MISMATCH_PARAM" resultMap="BaseResultMap" parameterType="com.path.dbmaps.vo.REP_MISMATCH_PARAMVO" >
+    select 
+    <include refid="Base_Column_List" />
+    from REP_MISMATCH_PARAM
+    where REP_MISMATCH_ID = #{REP_MISMATCH_ID}
+  </select>
+  <delete id="deleteREP_MISMATCH_PARAM" parameterType="com.path.dbmaps.vo.REP_MISMATCH_PARAMVO" >
+    delete from REP_MISMATCH_PARAM
+    where REP_MISMATCH_ID = #{REP_MISMATCH_ID}
+  </delete>
+  <insert id="insertREP_MISMATCH_PARAM" parameterType="com.path.dbmaps.vo.REP_MISMATCH_PARAMVO" >
+    insert into REP_MISMATCH_PARAM
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="REP_MISMATCH_ID != null and REP_MISMATCH_ID != emptyBigDecimalValue" >
+        REP_MISMATCH_ID,
+      </if>
+      <if test="COMP_CODE != null and COMP_CODE != emptyBigDecimalValue" >
+        COMP_CODE,
+      </if>
+      <if test="REP_REFERENCE != null" >
+        REP_REFERENCE,
+      </if>
+      <if test="CRITERIA_CODE != null" >
+        CRITERIA_CODE,
+      </if>
+      <if test="MISMATCH_TYPE != null and MISMATCH_TYPE != emptyBigDecimalValue" >
+        MISMATCH_TYPE,
+      </if>
+      <if test="ROW_YN != null and ROW_YN != emptyBigDecimalValue" >
+        ROW_YN,
+      </if>
+      <if test="CRITERIA_COLUMN != null" >
+        CRITERIA_COLUMN,
+      </if>
+      <if test="COLUMN_TYPE != null" >
+        COLUMN_TYPE,
+      </if>
+      DATE_UPDATED,
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="REP_MISMATCH_ID != null and REP_MISMATCH_ID != emptyBigDecimalValue" >
+        #{REP_MISMATCH_ID},
+      </if>
+      <if test="COMP_CODE != null and COMP_CODE != emptyBigDecimalValue" >
+        #{COMP_CODE},
+      </if>
+      <if test="REP_REFERENCE != null" >
+        #{REP_REFERENCE},
+      </if>
+      <if test="CRITERIA_CODE != null" >
+        #{CRITERIA_CODE},
+      </if>
+      <if test="MISMATCH_TYPE != null and MISMATCH_TYPE != emptyBigDecimalValue" >
+        #{MISMATCH_TYPE},
+      </if>
+      <if test="ROW_YN != null and ROW_YN != emptyBigDecimalValue" >
+        #{ROW_YN},
+      </if>
+      <if test="CRITERIA_COLUMN != null" >
+        #{CRITERIA_COLUMN},
+      </if>
+      <if test="COLUMN_TYPE != null" >
+        #{COLUMN_TYPE},
+      </if>
+      <choose >
+        <when test="isSybase == 1" >
+           GETDATE(),
+        </when>
+        <otherwise >
+           SYSDATE,
+        </otherwise>
+      </choose>
+    </trim>
+  </insert>
+  <sql id="sql_updateREP_MISMATCH_PARAM" >
+    update REP_MISMATCH_PARAM
+    <set >
+      <if test="COMP_CODE != null" >
+        <choose >
+          <when test="COMP_CODE == emptyBigDecimalValue" >
+            COMP_CODE = NULL ,
+          </when>
+          <otherwise >
+            COMP_CODE = #{COMP_CODE},
+          </otherwise>
+        </choose>
+      </if>
+      <if test="REP_REFERENCE != null" >
+        REP_REFERENCE = #{REP_REFERENCE},
+      </if>
+      <if test="CRITERIA_CODE != null" >
+        CRITERIA_CODE = #{CRITERIA_CODE},
+      </if>
+      <if test="MISMATCH_TYPE != null" >
+        <choose >
+          <when test="MISMATCH_TYPE == emptyBigDecimalValue" >
+            MISMATCH_TYPE = NULL ,
+          </when>
+          <otherwise >
+            MISMATCH_TYPE = #{MISMATCH_TYPE},
+          </otherwise>
+        </choose>
+      </if>
+      <if test="ROW_YN != null" >
+        <choose >
+          <when test="ROW_YN == emptyBigDecimalValue" >
+            ROW_YN = NULL ,
+          </when>
+          <otherwise >
+            ROW_YN = #{ROW_YN},
+          </otherwise>
+        </choose>
+      </if>
+      <if test="CRITERIA_COLUMN != null" >
+        CRITERIA_COLUMN = #{CRITERIA_COLUMN},
+      </if>
+      <if test="COLUMN_TYPE != null" >
+        COLUMN_TYPE = #{COLUMN_TYPE},
+      </if>
+      DATE_UPDATED = 
+      <choose >
+        <when test="isSybase == 1" >
+           GETDATE(),
+        </when>
+        <otherwise >
+           SYSDATE,
+        </otherwise>
+      </choose>
+    </set>
+    where REP_MISMATCH_ID = #{REP_MISMATCH_ID}
+  </sql>
+  <update id="updateREP_MISMATCH_PARAM" parameterType="com.path.dbmaps.vo.REP_MISMATCH_PARAMVO" >
+    <include refid="sql_updateREP_MISMATCH_PARAM" />
+    <if test="DATE_UPDATED != null" >
+      AND DATE_UPDATED = #{DATE_UPDATED}
+    </if>
+  </update>
+</mapper>

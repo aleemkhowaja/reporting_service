@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="commonRepFunc" >
+ 
+
+<update id="updateCounter"  parameterType="java.lang.String">
+	UPDATE IRP_COUNTER  SET LAST_NO=LAST_NO+1 WHERE UPPER(TABLE_NAME) = UPPER(#{VALUE})
+</update>
+
+<select id="retCounterVal" parameterType="java.lang.String" resultType="int">
+	SELECT LAST_NO 
+	FROM IRP_COUNTER 
+	WHERE UPPER(TABLE_NAME) = UPPER(#{VALUE})
+</select>
+  
+ <select id="checkUpdateReportAccess" parameterType="axsSC" resultMap="AXS.BaseResultMap">
+ 	 select 
+    <include refid="AXS.Base_Column_List" />
+    from AXS
+    where APP_NAME = #{APP_NAME}
+      and BRANCH_CODE = #{BRANCH_CODE}
+      and COMP_CODE = #{COMP_CODE}
+      and USER_ID = #{USER_ID}
+      and PROG_REF IN
+      <foreach item="item" index="index" collection="PROG_REFS" open="(" separator="," close=")">
+		#{item}
+	</foreach>
+ </select> 
+ 
+ 
+<resultMap id="fileNameResMap" type="com.path.dbmaps.vo.IRP_FILE_MAINVO" >
+    <result column="FILE_NAME" property="FILE_NAME" />
+    <result column="FILE_ID" property="FILE_ID" />
+</resultMap>
+   
+ 
+<select id="retRepositoryFolder" parameterType="java.lang.String" resultMap="fileNameResMap">
+	   SELECT IRP_FILE_MAIN.FILE_NAME,IRP_FILE_MAIN.FILE_ID
+		  FROM IRP_FILE_MAIN, IRP_FILE_DET
+		 WHERE IRP_FILE_MAIN.FILE_ID = IRP_FILE_DET.FILE_ID
+		   AND IRP_FILE_DET.PROG_REF = #{VALUE}
+</select>
+<select id="retRepositoryFileName" parameterType="irp_file_detSC"
+ resultType="java.lang.String">
+	   SELECT IRP_FILE_DET.SUB_FILE_NAME,IRP_FILE_DET.FILE_ID
+		  FROM IRP_FILE_MAIN, IRP_FILE_DET
+		 WHERE IRP_FILE_MAIN.FILE_ID = IRP_FILE_DET.FILE_ID
+		   AND IRP_FILE_DET.PROG_REF = #{PROG_REF}
+		   AND IRP_FILE_DET.FILE_ID = #{FILE_ID}
+</select>
+
+<select id="retMinRepSnapshotRepId" parameterType="java.lang.String"  resultType="java.lang.Integer">
+	SELECT MIN(REP_ID)
+	  FROM REP_SNAPSHOT_PARAM
+	 WHERE REP_REFERENCE = #{VALUE} 
+</select> 
+
+
+</mapper>

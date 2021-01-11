@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="REP_SNAPSHOT_DRILLDOWN_COLUMN" >
+  <resultMap id="BaseResultMap" type="com.path.dbmaps.vo.REP_SNAPSHOT_DRILLDOWN_COLUMNVO" >
+    <id column="COLUMN_DRILLDOWN" property="COLUMN_DRILLDOWN" />
+    <id column="REP_ID" property="REP_ID" />
+    <result column="COLUMN_TYPE" property="COLUMN_TYPE" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    COLUMN_DRILLDOWN, REP_ID, COLUMN_TYPE
+  </sql>
+  <select id="selectREP_SNAPSHOT_DRILLDOWN_COLUMN" resultMap="BaseResultMap" parameterType="com.path.dbmaps.vo.REP_SNAPSHOT_DRILLDOWN_COLUMNVO" >
+    select 
+    <include refid="Base_Column_List" />
+    from REP_SNAPSHOT_DRILLDOWN_COLUMN
+    where COLUMN_DRILLDOWN = #{COLUMN_DRILLDOWN}
+      and REP_ID = #{REP_ID}
+  </select>
+  <delete id="deleteREP_SNAPSHOT_DRILLDOWN_COLUMN" parameterType="com.path.dbmaps.vo.REP_SNAPSHOT_DRILLDOWN_COLUMNVO" >
+    delete from REP_SNAPSHOT_DRILLDOWN_COLUMN
+    where COLUMN_DRILLDOWN = #{COLUMN_DRILLDOWN}
+      and REP_ID = #{REP_ID}
+  </delete>
+  <insert id="insertREP_SNAPSHOT_DRILLDOWN_COLUMN" parameterType="com.path.dbmaps.vo.REP_SNAPSHOT_DRILLDOWN_COLUMNVO" >
+    insert into REP_SNAPSHOT_DRILLDOWN_COLUMN
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="COLUMN_DRILLDOWN != null" >
+        COLUMN_DRILLDOWN,
+      </if>
+      <if test="REP_ID != null and REP_ID != emptyBigDecimalValue" >
+        REP_ID,
+      </if>
+      <if test="COLUMN_TYPE != null" >
+        COLUMN_TYPE,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="COLUMN_DRILLDOWN != null" >
+        #{COLUMN_DRILLDOWN},
+      </if>
+      <if test="REP_ID != null and REP_ID != emptyBigDecimalValue" >
+        #{REP_ID},
+      </if>
+      <if test="COLUMN_TYPE != null" >
+        #{COLUMN_TYPE},
+      </if>
+    </trim>
+  </insert>
+  <sql id="sql_updateREP_SNAPSHOT_DRILLDOWN_COLUMN" >
+    update REP_SNAPSHOT_DRILLDOWN_COLUMN
+    <set >
+      <if test="COLUMN_TYPE != null" >
+        COLUMN_TYPE = #{COLUMN_TYPE},
+      </if>
+    </set>
+    where COLUMN_DRILLDOWN = #{COLUMN_DRILLDOWN}
+      and REP_ID = #{REP_ID}
+  </sql>
+  <update id="updateREP_SNAPSHOT_DRILLDOWN_COLUMN" parameterType="com.path.dbmaps.vo.REP_SNAPSHOT_DRILLDOWN_COLUMNVO" >
+    <include refid="sql_updateREP_SNAPSHOT_DRILLDOWN_COLUMN" />
+  </update>
+</mapper>

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="IRP_REP_SORT" >
+  <resultMap id="BaseResultMap" type="com.path.dbmaps.vo.IRP_REP_SORTVO" >
+    <id column="FIELD_DESC" property="FIELD_DESC" />
+    <id column="FIELD_ORDER" property="FIELD_ORDER" />
+    <id column="REPORT_ID" property="REPORT_ID" />
+    <id column="USER_ID" property="USER_ID" />
+  </resultMap>
+  <delete id="deleteIRP_REP_SORT" parameterType="com.path.dbmaps.vo.IRP_REP_SORTVO" >
+    delete from IRP_REP_SORT
+    where FIELD_DESC = #{FIELD_DESC}
+      and FIELD_ORDER = #{FIELD_ORDER}
+      and REPORT_ID = #{REPORT_ID}
+      and USER_ID = #{USER_ID}
+  </delete>
+  <insert id="insertIRP_REP_SORT" parameterType="com.path.dbmaps.vo.IRP_REP_SORTVO" >
+    insert into IRP_REP_SORT
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="FIELD_DESC != null and !&quot;&quot;.equals(FIELD_DESC)" >
+        FIELD_DESC,
+      </if>
+      <if test="FIELD_ORDER != null and !&quot;&quot;.equals(FIELD_ORDER)" >
+        FIELD_ORDER,
+      </if>
+      <if test="REPORT_ID != null and REPORT_ID != emptyBigDecimalValue" >
+        REPORT_ID,
+      </if>
+      <if test="USER_ID != null and !&quot;&quot;.equals(USER_ID)" >
+        USER_ID,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="FIELD_DESC != null and !&quot;&quot;.equals(FIELD_DESC)" >
+        #{FIELD_DESC},
+      </if>
+      <if test="FIELD_ORDER != null and !&quot;&quot;.equals(FIELD_ORDER)" >
+        #{FIELD_ORDER},
+      </if>
+      <if test="REPORT_ID != null and REPORT_ID != emptyBigDecimalValue" >
+        #{REPORT_ID},
+      </if>
+      <if test="USER_ID != null and !&quot;&quot;.equals(USER_ID)" >
+        #{USER_ID},
+      </if>
+    </trim>
+  </insert>
+</mapper>

@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+        "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="fileExportImport">
+<resultMap type="irp_file_detCO" id="fileDetMap">     
+  	<result	column="FILE_ID" 				property="irp_file_detVO.FILE_ID" />
+    <result	column="LINE_NO" 				property="irp_file_detVO.LINE_NO" />
+    <result column="APP_NAME" 				property="irp_file_detVO.APP_NAME" />
+    <result column="PROG_REF" 				property="PROG_REF" />
+    <result column="REPORT_NAME"			property ="REPORT_NAME"/>
+    <result column="SUB_FILE_NAME"			property="irp_file_detVO.SUB_FILE_NAME" />
+    <result column="DATE_UPDATED"  			property="irp_file_detVO.DATE_UPDATED" />
+    <result column="PROG_REF_D00"  			property="PROG_REF_D00" />
+</resultMap>
+
+  
+  <resultMap type="irp_file_mainCO" id="fileMainMap" >
+	  <result	column="FILE_ID" 				property="irp_file_mainVO.FILE_ID" />
+	   <result	column="FILE_NAME" 				property="irp_file_mainVO.FILE_NAME" />
+	   <result	column="FILE_CONTENT" 				property="irp_file_mainVO.FILE_CONTENT" />
+	   <result	column="DATE_UPDATED" 				property="irp_file_mainVO.DATE_UPDATED" />
+  </resultMap>
+  
+  <resultMap type="irp_file_detCO" id="repRefMap">
+    <result column="REPORT_NAME" 	property="REPORT_NAME" />
+    <result column="PROG_REF" 		property="PROG_REF" />
+  </resultMap>
+    
+  
+<sql id="fileMainSql">
+	SELECT FILE_ID, FILE_NAME, FILE_CONTENT, DATE_UPDATED 
+	FROM IRP_FILE_MAIN
+</sql>
+
+<sql id = "repRefSql">
+	SELECT  IR.REPORT_NAME REPORT_NAME
+	       ,IR.PROG_REF PROG_REF
+	FROM IRP_AD_HOC_REPORT IR
+	WHERE IR.REPORT_TYPE = '1'
+	AND IR.APP_NAME = #{APP_NAME}
+	UNION
+	SELECT  FO.BRIEF_NAME_ENG REPORT_NAME
+	       ,FO.PROG_REF 	  PROG_REF
+	FROM FTR_OPT FO
+	WHERE FO.APP_NAME =#{APP_NAME}
+</sql>
+
+<sql id="fileDetailsSql">
+	SELECT FILE_ID, LINE_NO, APP_NAME, PROG_REF,
+  (select IRP_AD_HOC_REPORT.REPORT_NAME
+from IRP_AD_HOC_REPORT
+WHERE IRP_AD_HOC_REPORT.APP_NAME = D.APP_NAME
+AND IRP_AD_HOC_REPORT.PROG_REF = D.PROG_REF) AS FILE_NAME,
+   SUB_FILE_NAME, DATE_UPDATED,
+      CASE WHEN (SELECT F.PROG_REF FROM FTR_OPT F WHERE F.PROG_REF=D.PROG_REF AND F.APP_NAME=D.APP_NAME) IS NULL
+                   THEN D.PROG_REF ELSE (SELECT F.PROG_REF FROM FTR_OPT F WHERE F.PROG_REF=D.PROG_REF  
+                   AND F.APP_NAME=D.APP_NAME)||'D00' END AS PROG_REF_D00
+	FROM IRP_FILE_DET D
+	WHERE D.FILE_ID = #{FILE_ID}
+</sql>
+
+
+<delete id="deleteMainFile" parameterType="irp_file_mainVO" >
+    DELETE FROM IRP_FILE_MAIN
+    WHERE FILE_ID = #{FILE_ID}
+</delete>
+
+
+<delete id="deleteDetailByFile" parameterType="irp_file_mainVO" >
+    DELETE FROM IRP_FILE_DET
+    WHERE FILE_ID = #{FILE_ID}
+</delete>
+
+<delete id="deleteFileDetails" parameterType="irp_file_detVO" >
+    DELETE FROM IRP_FILE_DET
+    WHERE FILE_ID = #{FILE_ID} AND LINE_NO = #{LINE_NO}
+</delete>
+
+<insert id="insertFileMainSql" parameterType="irp_file_mainVO">
+    INSERT INTO IRP_FILE_MAIN
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="FILE_ID != null and FILE_ID != emptyBigDecimalValue" >
+        FILE_ID,
+      </if>
+      <if test="FILE_NAME != null" >
+        FILE_NAME,
+      </if>
+      <if test="FILE_CONTENT != null" >
+        FILE_CONTENT,
+      </if>
+      DATE_UPDATED,
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="FILE_ID != null and FILE_ID != emptyBigDecimalValue" >
+        #{FILE_ID},
+      </if>
+      <if test="FILE_NAME != null" >
+        #{FILE_NAME},
+      </if>
+      <if test="FILE_CONTENT != null" >
+        #{FILE_CONTENT},
+      </if>
+      <choose >
+        <when test="isSybase == 1" >
+           GETDATE(),
+        </when>
+        <otherwise >
+           SYSDATE,
+        </otherwise>
+      </choose>
+    </trim>
+</insert>
+
+<insert id="insertFileDetSql" parameterType="irp_file_detVO">
+	
+	<selectKey resultType="java.math.BigDecimal" keyProperty="LINE_NO" order="BEFORE">
+	     SELECT (CASE
+	            WHEN COUNT(LINE_NO) = 0 THEN
+	             0
+	            ELSE
+	             MAX(LINE_NO)
+	          END) + 1
+	      FROM (SELECT MAX(LINE_NO) AS LINE_NO FROM IRP_FILE_DET 
+	      WHERE FILE_ID=#{FILE_ID}  ) TB1
+   	</selectKey>
+	
+    INSERT INTO IRP_FILE_DET
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="FILE_ID != null and FILE_ID != emptyBigDecimalValue" >
+        FILE_ID,
+      </if>
+        LINE_NO,
+      <if test="APP_NAME != null" >
+        APP_NAME,
+      </if>
+      <if test="PROG_REF != null" >
+        PROG_REF,
+      </if>
+      <if test="SUB_FILE_NAME != null" >
+        SUB_FILE_NAME,
+      </if>
+      DATE_UPDATED,
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="FILE_ID != null and FILE_ID != emptyBigDecimalValue" >
+        #{FILE_ID},
+      </if>
+        #{LINE_NO},
+      <if test="APP_NAME != null" >
+        #{APP_NAME},
+      </if>
+      <if test="PROG_REF != null" >
+        #{PROG_REF},
+      </if>
+      <if test="SUB_FILE_NAME != null" >
+        #{SUB_FILE_NAME},
+      </if>
+      <choose >
+        <when test="isSybase == 1" >
+           GETDATE(),
+        </when>
+        <otherwise >
+           SYSDATE,
+        </otherwise>
+      </choose>
+    </trim>
+</insert>
+  
+<select id="retrieveMainFiles"  resultMap="fileMainMap" parameterType="irp_file_mainSC"> 
+	<include refid="fileMainSql"/>
+	WHERE IRP_FILE_MAIN.FILE_ID= #{FILE_ID}
+</select>
+
+<select id="fileMainList"  resultMap="fileMainMap" parameterType="irp_file_mainSC">
+	<include refid="servicesCommon.commonGridWrpBefFlip"/>
+	<include refid="fileMainSql"/>
+	<include refid="servicesCommon.commonGridWrpAftFlip"/>
+	<include refid="servicesCommon.commmonGridWrpFlipClose"/>
+</select>
+
+<select id="fileDetailsList"  resultMap="fileDetMap" parameterType="irp_file_detSC">
+	<include refid="servicesCommon.commonGridWrpBefFlip"/>
+	<include refid="fileDetailsSql"/>
+	<include refid="servicesCommon.commonGridWrpAftFlip"/>
+	<include refid="servicesCommon.commmonGridWrpFlipClose"/>
+</select>
+
+<select id="fileMainCount"  resultType="int" parameterType="irp_file_mainSC"> 
+	<include refid="servicesCommon.commonGridWrpBefCnt"/>
+	<include refid="fileMainSql"/>
+	<include refid="servicesCommon.commonGridWrpAftCnt"/>
+	<include refid="servicesCommon.commonGridCountWrpClose"/>  
+</select>
+
+<select id="fileDetailsCount"  resultType="int" parameterType="irp_file_detSC"> 
+	<include refid="servicesCommon.commonGridWrpBefCnt"/>
+	<include refid="fileDetailsSql"/>
+	<include refid="servicesCommon.commonGridWrpAftCnt"/>
+	<include refid="servicesCommon.commonGridCountWrpClose"/>  
+</select>
+
+<select id="repRefListCount"  resultType="int" parameterType="irp_file_detSC"> 
+	<include refid="servicesCommon.commonGridWrpBefCnt"/>
+	<include refid="repRefSql"/>
+	<include refid="servicesCommon.commonGridWrpAftCnt"/>
+	<include refid="servicesCommon.commonGridCountWrpClose"/>  
+</select>
+
+<select id="repRefList"  resultMap="repRefMap" parameterType="irp_file_detSC">
+	<include refid="servicesCommon.commonGridWrpBefFlip"/>
+	<include refid="repRefSql"/>
+	<include refid="servicesCommon.commonGridWrpAftFlip"/>
+	<include refid="servicesCommon.commmonGridWrpFlipClose"/>
+</select>
+
+<select id="checkIfFileUploadedCount" resultType="int" parameterType="string">
+	SELECT count(FILE_NAME)
+	FROM IRP_FILE_MAIN
+	WHERE FILE_NAME =  #{FILE_NAME}
+  </select>
+
+</mapper>

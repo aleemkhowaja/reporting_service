@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="connection">
+
+ <resultMap type="irp_connectionsVO" id="retConnectionListMap">
+    <result column="CONN_ID" 			property="CONN_ID" />
+    <result column="CONN_DESC" 			property="CONN_DESC" />
+    <result column="DBMS" 				property="DBMS" />
+    <result column="URL" 				property="URL" />
+    <result column="DB_PASS" 			property="DB_PASS" />
+    <result column="USER_ID" 			property="USER_ID" />
+  </resultMap>
+  
+  <sql id="retConnectionListSql">
+  
+	SELECT  IC.CONN_ID
+	       ,IC.CONN_DESC
+	       ,IC.DBMS
+	       ,IC.URL
+	       ,IC.DB_PASS
+	       ,IC.USER_ID
+	
+	FROM IRP_CONNECTIONS IC
+	
+</sql>
+
+  <select id="retConnectionList" resultMap="retConnectionListMap" parameterType="irp_connectionsSC">
+  	<include refid="servicesCommon.commonGridWrpBefFlip"/>
+ 	<include refid="retConnectionListSql"/>
+	<include refid="servicesCommon.commonGridWrpAftFlip"/>
+	<include refid="servicesCommon.commmonGridWrpFlipClose"/>
+  </select>
+
+  <select id="retConnectionListCount" resultType="int" parameterType="irp_connectionsSC">
+	<include refid="servicesCommon.commonGridWrpBefCnt"/>
+	<include refid="retConnectionListSql"/>
+	<include refid="servicesCommon.commonGridWrpAftCnt"/>
+	<include refid="servicesCommon.commonGridCountWrpClose"/>
+  </select>
+
+  <update id="updateConDetail" parameterType="irp_connectionsVO">
+	<include refid="IRP_CONNECTIONS.sql_updateIRP_CONNECTIONS" />	
+    <if test="DATE_UPDATED != null" > AND DATE_UPDATED = #{DATE_UPDATED} </if>
+  </update>
+  
+  
+   <resultMap type="irp_app_connectionCO" id="retAppConnectionListMap">
+    <result column="CON_ID" 			property="irpAppConnectionVO.CON_ID" />
+    <result column="APP_NAME" 			property="irpAppConnectionVO.APP_NAME" />
+    <result column="LONG_DESC" 			property="LONG_DESC" />
+    
+  </resultMap>
+   
+  <sql id="retAppConnectionListSql">
+  
+	SELECT  IAC.CON_ID
+	       ,IAC.APP_NAME
+	       ,	CASE WHEN #{langCode} = 'TK' THEN S.LONG_DESC_TK  WHEN  #{langCode} = 'FR' THEN S.LONG_DESC_FR
+  			WHEN  #{langCode} = 'AR' THEN S.LONG_DESC_AR WHEN  #{langCode} = 'FA' THEN S.LONG_DESC_FA
+  			WHEN #{langCode} = 'RU' THEN S.LONG_DESC_RU ELSE S.LONG_DESC END AS LONG_DESC
+	  FROM IRP_APP_CONNECTION IAC,S_APP S
+     WHERE S.APP_NAME =IAC.APP_NAME
+
+	
+</sql>
+
+  <select id="retAppConnectionList" resultMap="retAppConnectionListMap" parameterType="irp_app_connectionSC">
+  	<include refid="servicesCommon.commonGridWrpBefFlip"/>
+ 	<include refid="retAppConnectionListSql"/>
+	<include refid="servicesCommon.commonGridWrpAftFlip"/>
+	<include refid="servicesCommon.commmonGridWrpFlipClose"/>
+  </select>
+
+  <select id="retAppConnectionListCount" resultType="int" parameterType="irp_app_connectionSC">
+	<include refid="servicesCommon.commonGridWrpBefCnt"/>
+	<include refid="retAppConnectionListSql"/>
+	<include refid="servicesCommon.commonGridWrpAftCnt"/>
+	<include refid="servicesCommon.commonGridCountWrpClose"/>
+  </select>
+
+  <resultMap type="irp_app_connectionCO" id="retAppNameListMap">
+    <result column="APP_NAME" 			property="APP_NAME" />
+    <result column="LONG_DESC" 			property="LONG_DESC" />
+  </resultMap>
+  
+  
+  <sql id="retAppNameListSql">
+  
+  SELECT  S.APP_NAME ,
+  		CASE WHEN #{langCode} = 'TK' THEN S.LONG_DESC_TK  WHEN  #{langCode} = 'FR' THEN S.LONG_DESC_FR
+  			WHEN  #{langCode} = 'AR' THEN S.LONG_DESC_AR WHEN  #{langCode} = 'FA' THEN S.LONG_DESC_FA
+  			WHEN #{langCode} = 'RU' THEN S.LONG_DESC_RU ELSE S.LONG_DESC END AS LONG_DESC
+  FROM S_APP S
+  WHERE S.APP_NAME NOT IN(
+                        SELECT IAC.APP_NAME 
+                        FROM IRP_APP_CONNECTION IAC
+                        ) 
+	
+</sql>
+
+  <select id="retAppNameList" resultMap="retAppNameListMap" parameterType="irp_app_connectionSC">
+  	<include refid="servicesCommon.commonGridWrpBefFlip"/>
+ 	<include refid="retAppNameListSql"/>
+	<include refid="servicesCommon.commonGridWrpAftFlip"/>
+	<include refid="servicesCommon.commmonGridWrpFlipClose"/>
+  </select>
+
+  <select id="retAppNameListCount" resultType="int" parameterType="irp_app_connectionSC">
+	<include refid="servicesCommon.commonGridWrpBefCnt"/>
+	<include refid="retAppNameListSql"/>
+	<include refid="servicesCommon.commonGridWrpAftCnt"/>
+	<include refid="servicesCommon.commonGridCountWrpClose"/>
+  </select>
+
+
+  <resultMap type="irp_app_connectionCO" id="retrieveAppConnDataMap">
+  
+    <result column="CONN_ID" 			property="irpAppConnectionVO.CON_ID" />
+    <result column="CONN_DESC" 			property="CONN_DESC" />
+    <result column="APP_NAME" 			property="irpAppConnectionVO.APP_NAME" />
+    <result column="LONG_DESC" 			property="LONG_DESC" />
+    <result column="DATE_UPDATED" 		property="irpAppConnectionVO.DATE_UPDATED" />
+  </resultMap>
+  
+  
+  <sql id="retrieveAppConnDataSql">
+  
+	SELECT  I.CONN_ID,
+			I.CONN_DESC,
+			CASE WHEN #{langCode} = 'TK' THEN S.LONG_DESC_TK  WHEN  #{langCode} = 'FR' THEN S.LONG_DESC_FR
+  			WHEN  #{langCode} = 'AR' THEN S.LONG_DESC_AR WHEN  #{langCode} = 'FA' THEN S.LONG_DESC_FA
+  			WHEN #{langCode} = 'RU' THEN S.LONG_DESC_RU ELSE S.LONG_DESC END AS LONG_DESC,
+       		IAC.DATE_UPDATED
+	 FROM   IRP_CONNECTIONS I,S_APP S,IRP_APP_CONNECTION IAC 
+	WHERE  I.CONN_ID =   #{irpAppConnectionVO.CON_ID}
+	  AND S.APP_NAME=UPPER(#{irpAppConnectionVO.APP_NAME}) 
+	  AND IAC.APP_NAME =UPPER(#{irpAppConnectionVO.APP_NAME})
+	
+</sql>
+
+  <select id="retrieveAppConnData" resultMap="retrieveAppConnDataMap" parameterType="irp_app_connectionCO">
+ 	<include refid="retrieveAppConnDataSql"/>
+  </select>
+
+  <update id="updateAppConDetail" parameterType="irp_app_connectionVO">
+	<include refid="IRP_APP_CONNECTION.sql_updateIRP_APP_CONNECTION" />	
+    <if test="DATE_UPDATED != null" > AND DATE_UPDATED = #{DATE_UPDATED} </if>
+  </update>
+  
+  
+  
+  <resultMap type="irp_app_connectionCO" id="applyAppConDependencyMap">
+    <result column="CONN_ID" 			property="irpAppConnectionVO.CON_ID" />
+    <result column="CONN_DESC" 			property="CONN_DESC" />
+  </resultMap>
+  
+  
+  <sql id="applyAppConDependencySql">
+  
+	SELECT  I.CONN_ID
+	       ,I.CONN_DESC
+	 FROM   IRP_CONNECTIONS I
+	WHERE  I.CONN_ID =   #{CON_ID}
+	
+</sql>
+
+  <select id="applyAppConDependency" resultMap="applyAppConDependencyMap" parameterType="irp_app_connectionVO">
+ 	<include refid="applyAppConDependencySql"/>
+  </select>
+  
+  
+   <resultMap type="irp_app_connectionCO" id="applyAppNameDependencyMap">
+     <result column="APP_NAME" 				property="irpAppConnectionVO.APP_NAME" />
+     <result column="LONG_DESC" 			property="LONG_DESC" />
+  </resultMap>
+  
+  <sql id="applyAppNameDependencySql">
+  
+	SELECT  S.APP_NAME
+	       ,S.LONG_DESC
+	 FROM   S_APP S
+	WHERE  S.APP_NAME=UPPER(#{APP_NAME}) 
+	
+</sql>
+
+  <select id="applyAppNameDependency" resultMap="applyAppNameDependencyMap" parameterType="irp_app_connectionVO">
+ 	<include refid="applyAppNameDependencySql"/>
+  </select>
+  
+  <sql id="checkIfHaveAppConCountSql">
+	SELECT (SELECT COUNT(IA.CON_ID)
+          	FROM IRP_APP_CONNECTION IA
+         	WHERE IA.CON_ID = #{CONN_ID}) 
+         	+
+	       (SELECT COUNT(IP.CONN_ID)
+	        FROM IRP_AD_HOC_REPORT IP
+	        WHERE IP.CONN_ID = #{CONN_ID})
+        <if test="isSybase == 0" >
+           FROM DUAL
+        </if>	
+  </sql>
+
+  <select id="checkIfHaveAppConCount" resultType="int" parameterType="irp_connectionsSC">
+ 	<include refid="checkIfHaveAppConCountSql"/>
+  </select>  
+  
+</mapper>

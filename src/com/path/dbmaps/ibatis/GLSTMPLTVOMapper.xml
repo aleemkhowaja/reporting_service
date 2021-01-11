@@ -1,0 +1,447 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="GLSTMPLT" >
+  <resultMap id="BaseResultMap" type="com.path.dbmaps.vo.GLSTMPLTVO" >
+    <id column="CODE" property="CODE" />
+    <id column="COMP_CODE" property="COMP_CODE" />
+    <id column="LINE_NBR" property="LINE_NBR" />
+    <id column="TEMPLATE_TYPE" property="TEMPLATE_TYPE" />
+    <result column="BRIEF_NAME_ENG" property="BRIEF_NAME_ENG" />
+    <result column="BRIEF_NAME_ARAB" property="BRIEF_NAME_ARAB" />
+    <result column="FROM_GL" property="FROM_GL" />
+    <result column="TO_GL" property="TO_GL" />
+    <result column="PRINTED" property="PRINTED" />
+    <result column="GL_TYPE" property="GL_TYPE" />
+    <result column="IS_SUB_TOTAL" property="IS_SUB_TOTAL" />
+    <result column="CREATED_BY" property="CREATED_BY" />
+    <result column="DATE_CREATED" property="DATE_CREATED" />
+    <result column="MODIFIED_BY" property="MODIFIED_BY" />
+    <result column="DATE_MODIFIED" property="DATE_MODIFIED" />
+    <result column="PER_LINE_GL" property="PER_LINE_GL" />
+    <result column="BOLD" property="BOLD" />
+    <result column="DISPLAY_ZEROS" property="DISPLAY_ZEROS" />
+    <result column="DISPLAY_VALUES" property="DISPLAY_VALUES" />
+    <result column="DISP_LINE_TOT_ZERO" property="DISP_LINE_TOT_ZERO" />
+    <result column="EXPRESSION_LINES" property="EXPRESSION_LINES" />
+    <result column="FCR" property="FCR" />
+    <result column="ADD_DESC" property="ADD_DESC" />
+    <result column="GL_CODES" property="GL_CODES" />
+    <result column="FOR_ROUND" property="FOR_ROUND" />
+    <result column="BOTTOM_BORDER" property="BOTTOM_BORDER" />
+    <result column="CURRENCY" property="CURRENCY" />
+    <result column="CSV" property="CSV" />
+    <result column="FCR_EXCEL_PATH" property="FCR_EXCEL_PATH" />
+    <result column="ADD_DESC1" property="ADD_DESC1" />
+    <result column="DATE_UPDATED" property="DATE_UPDATED" />
+    <result column="SAVE_DATA" property="SAVE_DATA" />
+    <result column="POST_CODE" property="POST_CODE" />
+    <result column="PERCENTAGE" property="PERCENTAGE" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.path.dbmaps.vo.GLSTMPLTVO" extends="BaseResultMap" >
+    <result column="EXPRESSION" property="EXPRESSION" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    CODE, COMP_CODE, LINE_NBR, TEMPLATE_TYPE, BRIEF_NAME_ENG, BRIEF_NAME_ARAB, FROM_GL, 
+    TO_GL, PRINTED, GL_TYPE, IS_SUB_TOTAL, CREATED_BY, DATE_CREATED, MODIFIED_BY, DATE_MODIFIED, 
+    PER_LINE_GL, BOLD, DISPLAY_ZEROS, DISPLAY_VALUES, DISP_LINE_TOT_ZERO, EXPRESSION_LINES, 
+    FCR, ADD_DESC, GL_CODES, FOR_ROUND, BOTTOM_BORDER, CURRENCY, CSV, FCR_EXCEL_PATH, 
+    ADD_DESC1, DATE_UPDATED, SAVE_DATA, POST_CODE, PERCENTAGE
+  </sql>
+  <sql id="Blob_Column_List" >
+    EXPRESSION
+  </sql>
+  <select id="selectGLSTMPLT" resultMap="ResultMapWithBLOBs" parameterType="com.path.dbmaps.vo.GLSTMPLTVO" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from GLSTMPLT
+    where CODE = #{CODE}
+      and COMP_CODE = #{COMP_CODE}
+      and LINE_NBR = #{LINE_NBR}
+      and TEMPLATE_TYPE = #{TEMPLATE_TYPE}
+  </select>
+  <delete id="deleteGLSTMPLT" parameterType="com.path.dbmaps.vo.GLSTMPLTVO" >
+    delete from GLSTMPLT
+    where CODE = #{CODE}
+      and COMP_CODE = #{COMP_CODE}
+      and LINE_NBR = #{LINE_NBR}
+      and TEMPLATE_TYPE = #{TEMPLATE_TYPE}
+  </delete>
+  <insert id="insertGLSTMPLT" parameterType="com.path.dbmaps.vo.GLSTMPLTVO" >
+    insert into GLSTMPLT
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="CODE != null and CODE != emptyBigDecimalValue" >
+        CODE,
+      </if>
+      <if test="COMP_CODE != null and COMP_CODE != emptyBigDecimalValue" >
+        COMP_CODE,
+      </if>
+      <if test="LINE_NBR != null and LINE_NBR != emptyBigDecimalValue" >
+        LINE_NBR,
+      </if>
+      <if test="TEMPLATE_TYPE != null" >
+        TEMPLATE_TYPE,
+      </if>
+      <if test="BRIEF_NAME_ENG != null" >
+        BRIEF_NAME_ENG,
+      </if>
+      <if test="BRIEF_NAME_ARAB != null" >
+        BRIEF_NAME_ARAB,
+      </if>
+      <if test="FROM_GL != null and FROM_GL != emptyBigDecimalValue" >
+        FROM_GL,
+      </if>
+      <if test="TO_GL != null and TO_GL != emptyBigDecimalValue" >
+        TO_GL,
+      </if>
+      <if test="PRINTED != null and PRINTED != emptyBigDecimalValue" >
+        PRINTED,
+      </if>
+      <if test="GL_TYPE != null" >
+        GL_TYPE,
+      </if>
+      <if test="IS_SUB_TOTAL != null" >
+        IS_SUB_TOTAL,
+      </if>
+      <if test="CREATED_BY != null" >
+        CREATED_BY,
+      </if>
+      <if test="DATE_CREATED != null" >
+        DATE_CREATED,
+      </if>
+      <if test="MODIFIED_BY != null" >
+        MODIFIED_BY,
+      </if>
+      <if test="DATE_MODIFIED != null" >
+        DATE_MODIFIED,
+      </if>
+      <if test="PER_LINE_GL != null" >
+        PER_LINE_GL,
+      </if>
+      <if test="BOLD != null" >
+        BOLD,
+      </if>
+      <if test="DISPLAY_ZEROS != null" >
+        DISPLAY_ZEROS,
+      </if>
+      <if test="DISPLAY_VALUES != null" >
+        DISPLAY_VALUES,
+      </if>
+      <if test="DISP_LINE_TOT_ZERO != null" >
+        DISP_LINE_TOT_ZERO,
+      </if>
+      <if test="EXPRESSION_LINES != null" >
+        EXPRESSION_LINES,
+      </if>
+      <if test="FCR != null" >
+        FCR,
+      </if>
+      <if test="ADD_DESC != null" >
+        ADD_DESC,
+      </if>
+      <if test="GL_CODES != null" >
+        GL_CODES,
+      </if>
+      <if test="FOR_ROUND != null" >
+        FOR_ROUND,
+      </if>
+      <if test="BOTTOM_BORDER != null and BOTTOM_BORDER != emptyBigDecimalValue" >
+        BOTTOM_BORDER,
+      </if>
+      <if test="CURRENCY != null and CURRENCY != emptyBigDecimalValue" >
+        CURRENCY,
+      </if>
+      <if test="CSV != null" >
+        CSV,
+      </if>
+      <if test="FCR_EXCEL_PATH != null" >
+        FCR_EXCEL_PATH,
+      </if>
+      <if test="ADD_DESC1 != null" >
+        ADD_DESC1,
+      </if>
+      DATE_UPDATED,
+      <if test="SAVE_DATA != null" >
+        SAVE_DATA,
+      </if>
+      <if test="POST_CODE != null" >
+        POST_CODE,
+      </if>
+      <if test="PERCENTAGE != null and PERCENTAGE != emptyBigDecimalValue" >
+        PERCENTAGE,
+      </if>
+      <if test="EXPRESSION != null" >
+        EXPRESSION,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="CODE != null and CODE != emptyBigDecimalValue" >
+        #{CODE},
+      </if>
+      <if test="COMP_CODE != null and COMP_CODE != emptyBigDecimalValue" >
+        #{COMP_CODE},
+      </if>
+      <if test="LINE_NBR != null and LINE_NBR != emptyBigDecimalValue" >
+        #{LINE_NBR},
+      </if>
+      <if test="TEMPLATE_TYPE != null" >
+        #{TEMPLATE_TYPE},
+      </if>
+      <if test="BRIEF_NAME_ENG != null" >
+        #{BRIEF_NAME_ENG},
+      </if>
+      <if test="BRIEF_NAME_ARAB != null" >
+        #{BRIEF_NAME_ARAB},
+      </if>
+      <if test="FROM_GL != null and FROM_GL != emptyBigDecimalValue" >
+        #{FROM_GL},
+      </if>
+      <if test="TO_GL != null and TO_GL != emptyBigDecimalValue" >
+        #{TO_GL},
+      </if>
+      <if test="PRINTED != null and PRINTED != emptyBigDecimalValue" >
+        #{PRINTED},
+      </if>
+      <if test="GL_TYPE != null" >
+        #{GL_TYPE},
+      </if>
+      <if test="IS_SUB_TOTAL != null" >
+        #{IS_SUB_TOTAL},
+      </if>
+      <if test="CREATED_BY != null" >
+        #{CREATED_BY},
+      </if>
+      <if test="DATE_CREATED != null" >
+        #{DATE_CREATED},
+      </if>
+      <if test="MODIFIED_BY != null" >
+        #{MODIFIED_BY},
+      </if>
+      <if test="DATE_MODIFIED != null" >
+        #{DATE_MODIFIED},
+      </if>
+      <if test="PER_LINE_GL != null" >
+        #{PER_LINE_GL},
+      </if>
+      <if test="BOLD != null" >
+        #{BOLD},
+      </if>
+      <if test="DISPLAY_ZEROS != null" >
+        #{DISPLAY_ZEROS},
+      </if>
+      <if test="DISPLAY_VALUES != null" >
+        #{DISPLAY_VALUES},
+      </if>
+      <if test="DISP_LINE_TOT_ZERO != null" >
+        #{DISP_LINE_TOT_ZERO},
+      </if>
+      <if test="EXPRESSION_LINES != null" >
+        #{EXPRESSION_LINES},
+      </if>
+      <if test="FCR != null" >
+        #{FCR},
+      </if>
+      <if test="ADD_DESC != null" >
+        #{ADD_DESC},
+      </if>
+      <if test="GL_CODES != null" >
+        #{GL_CODES},
+      </if>
+      <if test="FOR_ROUND != null" >
+        #{FOR_ROUND},
+      </if>
+      <if test="BOTTOM_BORDER != null and BOTTOM_BORDER != emptyBigDecimalValue" >
+        #{BOTTOM_BORDER},
+      </if>
+      <if test="CURRENCY != null and CURRENCY != emptyBigDecimalValue" >
+        #{CURRENCY},
+      </if>
+      <if test="CSV != null" >
+        #{CSV},
+      </if>
+      <if test="FCR_EXCEL_PATH != null" >
+        #{FCR_EXCEL_PATH},
+      </if>
+      <if test="ADD_DESC1 != null" >
+        #{ADD_DESC1},
+      </if>
+      <choose >
+        <when test="isSybase == 1" >
+           GETDATE(),
+        </when>
+        <otherwise >
+           SYSDATE,
+        </otherwise>
+      </choose>
+      <if test="SAVE_DATA != null" >
+        #{SAVE_DATA},
+      </if>
+      <if test="POST_CODE != null" >
+        #{POST_CODE},
+      </if>
+      <if test="PERCENTAGE != null and PERCENTAGE != emptyBigDecimalValue" >
+        #{PERCENTAGE},
+      </if>
+      <if test="EXPRESSION != null" >
+        #{EXPRESSION},
+      </if>
+    </trim>
+  </insert>
+  <sql id="sql_updateGLSTMPLT" >
+    update GLSTMPLT
+    <set >
+      <if test="BRIEF_NAME_ENG != null" >
+        BRIEF_NAME_ENG = #{BRIEF_NAME_ENG},
+      </if>
+      <if test="BRIEF_NAME_ARAB != null" >
+        BRIEF_NAME_ARAB = #{BRIEF_NAME_ARAB},
+      </if>
+      <if test="FROM_GL != null" >
+        <choose >
+          <when test="FROM_GL == emptyBigDecimalValue" >
+            FROM_GL = NULL ,
+          </when>
+          <otherwise >
+            FROM_GL = #{FROM_GL},
+          </otherwise>
+        </choose>
+      </if>
+      <if test="TO_GL != null" >
+        <choose >
+          <when test="TO_GL == emptyBigDecimalValue" >
+            TO_GL = NULL ,
+          </when>
+          <otherwise >
+            TO_GL = #{TO_GL},
+          </otherwise>
+        </choose>
+      </if>
+      <if test="PRINTED != null" >
+        <choose >
+          <when test="PRINTED == emptyBigDecimalValue" >
+            PRINTED = NULL ,
+          </when>
+          <otherwise >
+            PRINTED = #{PRINTED},
+          </otherwise>
+        </choose>
+      </if>
+      <if test="GL_TYPE != null" >
+        GL_TYPE = #{GL_TYPE},
+      </if>
+      <if test="IS_SUB_TOTAL != null" >
+        IS_SUB_TOTAL = #{IS_SUB_TOTAL},
+      </if>
+      <if test="CREATED_BY != null" >
+        CREATED_BY = #{CREATED_BY},
+      </if>
+      <if test="DATE_CREATED != null" >
+        DATE_CREATED = #{DATE_CREATED},
+      </if>
+      <if test="MODIFIED_BY != null" >
+        MODIFIED_BY = #{MODIFIED_BY},
+      </if>
+      <if test="DATE_MODIFIED != null" >
+        DATE_MODIFIED = #{DATE_MODIFIED},
+      </if>
+      <if test="PER_LINE_GL != null" >
+        PER_LINE_GL = #{PER_LINE_GL},
+      </if>
+      <if test="BOLD != null" >
+        BOLD = #{BOLD},
+      </if>
+      <if test="DISPLAY_ZEROS != null" >
+        DISPLAY_ZEROS = #{DISPLAY_ZEROS},
+      </if>
+      <if test="DISPLAY_VALUES != null" >
+        DISPLAY_VALUES = #{DISPLAY_VALUES},
+      </if>
+      <if test="DISP_LINE_TOT_ZERO != null" >
+        DISP_LINE_TOT_ZERO = #{DISP_LINE_TOT_ZERO},
+      </if>
+      <if test="EXPRESSION_LINES != null" >
+        EXPRESSION_LINES = #{EXPRESSION_LINES},
+      </if>
+      <if test="FCR != null" >
+        FCR = #{FCR},
+      </if>
+      <if test="ADD_DESC != null" >
+        ADD_DESC = #{ADD_DESC},
+      </if>
+      <if test="GL_CODES != null" >
+        GL_CODES = #{GL_CODES},
+      </if>
+      <if test="FOR_ROUND != null" >
+        FOR_ROUND = #{FOR_ROUND},
+      </if>
+      <if test="BOTTOM_BORDER != null" >
+        <choose >
+          <when test="BOTTOM_BORDER == emptyBigDecimalValue" >
+            BOTTOM_BORDER = NULL ,
+          </when>
+          <otherwise >
+            BOTTOM_BORDER = #{BOTTOM_BORDER},
+          </otherwise>
+        </choose>
+      </if>
+      <if test="CURRENCY != null" >
+        <choose >
+          <when test="CURRENCY == emptyBigDecimalValue" >
+            CURRENCY = NULL ,
+          </when>
+          <otherwise >
+            CURRENCY = #{CURRENCY},
+          </otherwise>
+        </choose>
+      </if>
+      <if test="CSV != null" >
+        CSV = #{CSV},
+      </if>
+      <if test="FCR_EXCEL_PATH != null" >
+        FCR_EXCEL_PATH = #{FCR_EXCEL_PATH},
+      </if>
+      <if test="ADD_DESC1 != null" >
+        ADD_DESC1 = #{ADD_DESC1},
+      </if>
+      DATE_UPDATED = 
+      <choose >
+        <when test="isSybase == 1" >
+           GETDATE(),
+        </when>
+        <otherwise >
+           SYSDATE,
+        </otherwise>
+      </choose>
+      <if test="SAVE_DATA != null" >
+        SAVE_DATA = #{SAVE_DATA},
+      </if>
+      <if test="POST_CODE != null" >
+        POST_CODE = #{POST_CODE},
+      </if>
+      <if test="PERCENTAGE != null" >
+        <choose >
+          <when test="PERCENTAGE == emptyBigDecimalValue" >
+            PERCENTAGE = NULL ,
+          </when>
+          <otherwise >
+            PERCENTAGE = #{PERCENTAGE},
+          </otherwise>
+        </choose>
+      </if>
+      <if test="EXPRESSION != null" >
+        EXPRESSION = #{EXPRESSION},
+      </if>
+    </set>
+    where CODE = #{CODE}
+      and COMP_CODE = #{COMP_CODE}
+      and LINE_NBR = #{LINE_NBR}
+      and TEMPLATE_TYPE = #{TEMPLATE_TYPE}
+  </sql>
+  <update id="updateGLSTMPLT" parameterType="com.path.dbmaps.vo.GLSTMPLTVO" >
+    <include refid="sql_updateGLSTMPLT" />
+    <if test="DATE_UPDATED != null" >
+      AND DATE_UPDATED = #{DATE_UPDATED}
+    </if>
+  </update>
+</mapper>

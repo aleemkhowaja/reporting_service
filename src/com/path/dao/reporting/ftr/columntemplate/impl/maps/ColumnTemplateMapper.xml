@@ -1,0 +1,402 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        
+<mapper namespace="colmnTmpltMapper">
+
+<resultMap id="ColumnSearchResultMap" type="colmntmpltCO" >
+    <result column="COMP_CODE" property="colmnTmpltVO.COMP_CODE" />
+    <result column="CODE" property="colmnTmpltVO.CODE" />
+    <result column="BRIEF_NAME_ENG" property="colmnTmpltVO.BRIEF_NAME_ENG" />
+    <result column="BRIEF_NAME_ARAB" property="colmnTmpltVO.BRIEF_NAME_ARAB" />
+    <result column="CREATED_BY" property="colmnTmpltVO.CREATED_BY" />
+    <result column="DATE_CREATED" property="colmnTmpltVO.DATE_CREATED" />
+    <result column="MODIFIED_BY" property="colmnTmpltVO.MODIFIED_BY" />
+    <result column="DATE_MODIFIED" property="colmnTmpltVO.DATE_MODIFIED" />
+    <result column="PRINT_PAPER_SIZE" property="colmnTmpltVO.PRINT_PAPER_SIZE" />
+    <result column="PRINT_PAPER_ORIENTATION" property="colmnTmpltVO.PRINT_PAPER_ORIENTATION" />
+</resultMap>
+
+<resultMap type="commonDetailsVO"  id="getGLkupMap">     
+	<id column="CODE" property="CODE" />
+	<result column="BRIEF_DESC_ENG" property="BRIEF_DESC_ENG" />
+	<result column="LONG_DESC_ENG" property="LONG_DESC_ENG" />
+	<result column="BRIEF_DESC_ARAB" property="BRIEF_DESC_ARAB" />
+	<result column="LONG_DESC_ARAB" property="LONG_DESC_ARAB" />
+</resultMap>
+
+<resultMap id="DetResultMapCO" type="colmntmpltCO">
+	<id column="COMP_CODE" property="colmnTmpltVO.COMP_CODE" />
+	<id column="CODE" property="colmnTmpltVO.CODE" />
+	<id column="LINE_NBR" property="colmnTmpltVO.LINE_NBR" />
+	<result column="BRIEF_NAME_ENG" property="colmnTmpltVO.BRIEF_NAME_ENG" />
+	<result column="BRIEF_NAME_ARAB" property="colmnTmpltVO.BRIEF_NAME_ARAB" />
+	<result column="COL_TYPE" property="colmnTmpltVO.COL_TYPE" />
+	<result column="FROM_DATE" property="colmnTmpltVO.FROM_DATE" />
+	<result column="TO_DATE" property="colmnTmpltVO.TO_DATE" />
+	<result column="CREATED_BY" property="colmnTmpltVO.CREATED_BY" />
+	<result column="DATE_CREATED" property="colmnTmpltVO.DATE_CREATED" />
+	<result column="MODIFIED_BY" property="colmnTmpltVO.MODIFIED_BY" />
+	<result column="DATE_MODIFIED" property="colmnTmpltVO.DATE_MODIFIED" />
+	<result column="COMP" property="colmnTmpltVO.COMP" />
+	<result column="FROM_BRANCH" property="colmnTmpltVO.FROM_BRANCH" />
+	<result column="TO_BRANCH" property="colmnTmpltVO.TO_BRANCH" />
+	<result column="FROM_CY" property="colmnTmpltVO.FROM_CY" />
+	<result column="TO_CY" property="colmnTmpltVO.TO_CY" />
+	<result column="FROM_DIV" property="colmnTmpltVO.FROM_DIV" />
+	<result column="TO_DIV" property="colmnTmpltVO.TO_DIV" />
+	<result column="FROM_DEPT" property="colmnTmpltVO.FROM_DEPT" />
+	<result column="TO_DEPT" property="colmnTmpltVO.TO_DEPT" />
+	<result column="FROM_UNIT" property="colmnTmpltVO.FROM_UNIT" />
+	<result column="TO_UNIT" property="colmnTmpltVO.TO_UNIT" />
+	<result column="BOLD" property="colmnTmpltVO.BOLD" />
+	<result column="DISP_COL_TOT_ZERO" property="colmnTmpltVO.DISP_COL_TOT_ZERO" />
+	<result column="EXPRESSION" property="colmnTmpltVO.EXPRESSION" />
+	<result column="EXPRESSION_LINES" property="colmnTmpltVO.EXPRESSION_LINES" />
+	<result column="ALL_CRITERIA" property="colmnTmpltVO.ALL_CRITERIA" />
+	<result column="FROM_REGION" property="colmnTmpltVO.FROM_REGION" />
+	<result column="TO_REGION" property="colmnTmpltVO.TO_REGION" />
+	<result column="COMP_STR" property="COMP_STR" />
+	<result column="FROM_BRANCH_STR" property="FROM_BRANCH_STR" />
+	<result column="TO_BRANCH_STR" property="TO_BRANCH_STR" />
+	<result column="FROM_DIV_STR" property="FROM_DIV_STR" />
+	<result column="TO_DIV_STR" property="TO_DIV_STR" />
+	<result column="FROM_DEPT_STR" property="FROM_DEPT_STR" />
+	<result column="TO_DEPT_STR" property="TO_DEPT_STR" />
+	<result column="FROM_UNIT_STR" property="FROM_UNIT_STR" />
+	<result column="TO_UNIT_STR" property="TO_UNIT_STR" />
+	<result column="COL_TYPE_STR" property="COL_TYPE_STR" />
+	<result column="FROM_REGION_STR" property="FROM_REGION_STR" />
+	<result column="TO_REGION_STR" property="TO_REGION_STR" />
+	<result column="SPECIFY_DAY" property="colmnTmpltVO.SPECIFY_DAY" />
+	<result column="SPECIFY_MONTH" property="colmnTmpltVO.SPECIFY_MONTH" />
+	<result column="CURRENCY_STR" property="CURRENCY_STR" />
+</resultMap>
+
+<resultMap id="DetResultMap" type="colmntmpltVO">
+	<id column="COMP_CODE" property="colmnTmpltVO.COMP_CODE" />
+	<id column="CODE" property="colmnTmpltVO.CODE" />
+	<id column="LINE_NBR" property="colmnTmpltVO.LINE_NBR" />
+	<result column="BRIEF_NAME_ENG" property="colmnTmpltVO.BRIEF_NAME_ENG" />
+	<result column="BRIEF_NAME_ARAB" property="colmnTmpltVO.BRIEF_NAME_ARAB" />
+	<result column="COL_TYPE" property="colmnTmpltVO.COL_TYPE" />
+	<result column="FROM_DATE" property="colmnTmpltVO.FROM_DATE" />
+	<result column="TO_DATE" property="colmnTmpltVO.TO_DATE" />
+	<result column="CREATED_BY" property="colmnTmpltVO.CREATED_BY" />
+	<result column="DATE_CREATED" property="colmnTmpltVO.DATE_CREATED" />
+	<result column="MODIFIED_BY" property="colmnTmpltVO.MODIFIED_BY" />
+	<result column="DATE_MODIFIED" property="colmnTmpltVO.DATE_MODIFIED" />
+	<result column="COMP" property="colmnTmpltVO.COMP" />
+	<result column="FROM_BRANCH" property="colmnTmpltVO.FROM_BRANCH" />
+	<result column="TO_BRANCH" property="colmnTmpltVO.TO_BRANCH" />
+	<result column="FROM_DIV" property="colmnTmpltVO.FROM_DIV" />
+	<result column="TO_DIV" property="colmnTmpltVO.TO_DIV" />
+	<result column="FROM_DEPT" property="colmnTmpltVO.FROM_DEPT" />
+	<result column="TO_DEPT" property="colmnTmpltVO.TO_DEPT" />
+	<result column="FROM_UNIT" property="colmnTmpltVO.FROM_UNIT" />
+	<result column="TO_UNIT" property="colmnTmpltVO.TO_UNIT" />
+	<result column="BOLD" property="colmnTmpltVO.BOLD" />
+	<result column="DISP_COL_TOT_ZERO" property="colmnTmpltVO.DISP_COL_TOT_ZERO" />
+	<result column="EXPRESSION" property="colmnTmpltVO.EXPRESSION" />
+	<result column="EXPRESSION_LINES" property="colmnTmpltVO.EXPRESSION_LINES" />
+	<result column="ALL_CRITERIA" property="colmnTmpltVO.ALL_CRITERIA" />
+	<result column="FROM_REGION" property="colmnTmpltVO.FROM_REGION" />
+	<result column="TO_REGION" property="colmnTmpltVO.TO_REGION" />
+</resultMap>  
+
+<sql id="columnTemplateSql">
+	SELECT 	COMP_CODE, CODE, BRIEF_NAME_ENG, BRIEF_NAME_ARAB, CREATED_BY, DATE_CREATED, 
+			MODIFIED_BY, DATE_MODIFIED, PRINT_PAPER_SIZE, PRINT_PAPER_ORIENTATION
+	FROM 	COLMNTMPLT
+	WHERE 	COMP_CODE = #{COMP_CODE}
+	AND		LINE_NBR = #{LINE_NBR}
+</sql>
+
+<sql id="Det_Column_List_det">
+	  COMP_CODE,
+      CODE,
+      LINE_NBR,
+      BRIEF_NAME_ENG,
+      BRIEF_NAME_ARAB,
+      COL_TYPE,
+      FROM_DATE,
+      TO_DATE,
+      CREATED_BY,
+      DATE_CREATED,
+      MODIFIED_BY,
+      DATE_MODIFIED,
+      COMP,
+      (SELECT C.BRIEF_DESC_ENG
+         FROM COMPANIES C
+        WHERE C.COMP_CODE = OUTR.COMP
+           ) AS COMP_STR,
+      FROM_BRANCH,
+      (SELECT B.BRIEF_DESC_ENG
+         FROM BRANCHES B
+        WHERE B.BRANCH_CODE = OUTR.FROM_BRANCH
+          AND B.COMP_CODE = OUTR.COMP_CODE
+           ) AS FROM_BRANCH_STR,
+      TO_BRANCH,
+      (SELECT B.BRIEF_DESC_ENG
+         FROM BRANCHES B
+        WHERE B.BRANCH_CODE = OUTR.TO_BRANCH
+          AND B.COMP_CODE = OUTR.COMP_CODE
+           ) AS TO_BRANCH_STR,
+      FROM_REGION,
+      (SELECT R.BRIEF_DESC_ENG
+         FROM REGIONS R
+        WHERE R.REGION_CODE = OUTR.FROM_REGION
+           ) AS FROM_REGION_STR,
+      TO_REGION,
+      (SELECT R.BRIEF_DESC_ENG
+         FROM REGIONS R
+        WHERE R.REGION_CODE = OUTR.TO_REGION
+           ) AS TO_REGION_STR,
+      FROM_DIV,
+      (SELECT D.BRIEF_DESC_ENG
+         FROM DIVISIONS D
+        WHERE D.DIVISION_CODE = OUTR.FROM_DIV
+          AND D.COMP_CODE = OUTR.COMP_CODE
+           ) AS FROM_DIV_STR,
+      TO_DIV,
+      (SELECT D.BRIEF_DESC_ENG
+         FROM DIVISIONS D
+        WHERE D.DIVISION_CODE = OUTR.TO_DIV
+          AND D.COMP_CODE = OUTR.COMP_CODE
+           ) AS TO_DIV_STR,
+      FROM_DEPT,
+      (SELECT MIN(DEPT.BRIEF_DESC_ENG)
+         FROM DEPARTMENTS DEPT
+        WHERE DEPT.DEPT_CODE = OUTR.FROM_DEPT
+          AND DEPT.COMP_CODE = OUTR.COMP_CODE
+          AND DEPT.DIVISION_CODE BETWEEN OUTR.FROM_DIV AND OUTR.TO_DIV
+           ) AS FROM_DEPT_STR,
+      TO_DEPT,
+      (SELECT MIN(DEPT.BRIEF_DESC_ENG)
+         FROM DEPARTMENTS DEPT
+        WHERE DEPT.DEPT_CODE = OUTR.TO_DEPT
+          AND DEPT.COMP_CODE = OUTR.COMP_CODE
+          AND DEPT.DIVISION_CODE BETWEEN OUTR.FROM_DIV AND OUTR.TO_DIV
+           ) AS TO_DEPT_STR,
+      FROM_UNIT,
+      (CASE WHEN FROM_UNIT=0 THEN 'All Units' ELSE
+      (SELECT UN.BRIEF_DESC_ENG
+         FROM UNITS UN
+        WHERE UN.COMP_CODE = OUTR.COMP
+          AND UN.DIVISION_CODE = OUTR.FROM_DIV
+          AND UN.DEPT_CODE = OUTR.FROM_DEPT
+          AND UN.UNIT_CODE=OUTR.FROM_UNIT
+           ) END) AS FROM_UNIT_STR,
+      TO_UNIT,
+      (CASE WHEN TO_UNIT=0 THEN 'All Units' ELSE
+      (SELECT UN.BRIEF_DESC_ENG
+         FROM UNITS UN
+        WHERE UN.COMP_CODE = OUTR.COMP
+          AND UN.DIVISION_CODE = OUTR.TO_DIV
+          AND UN.DEPT_CODE = OUTR.TO_DEPT
+          AND UN.UNIT_CODE=OUTR.TO_UNIT
+           ) END ) AS TO_UNIT_STR,
+      (SELECT UN.VALUE_DESC
+         FROM SYS_PARAM_LOV_TRANS UN
+        WHERE UN.LOV_TYPE_ID = 6
+          AND UN.VALUE_CODE = OUTR.COL_TYPE
+          AND UN.LANG_CODE = #{LANG_CODE}) AS COL_TYPE_STR,
+      (SELECT C.BRIEF_DESC_ENG
+          FROM CURRENCIES C
+         WHERE C.CURRENCY_CODE = OUTR.FROM_CY
+           AND C.COMP_CODE = OUTR.COMP_CODE) AS CURRENCY_STR,      
+      (CASE WHEN (FROM_CY=0) THEN NULL ELSE FROM_CY END) FROM_CY,     
+      BOLD,
+      DISP_COL_TOT_ZERO,
+      EXPRESSION_LINES,
+      EXPRESSION,
+      ALL_CRITERIA,
+      SPECIFY_DAY,
+      SPECIFY_MONTH
+</sql>
+
+<select id="columnTemplateList"  resultMap="ColumnSearchResultMap" parameterType="colmntmpltSC">
+	<include refid="servicesCommon.commonGridWrpBefFlip"/>
+	<include refid="columnTemplateSql"/>
+	<include refid="servicesCommon.commonGridWrpAftFlip"/>
+	<include refid="servicesCommon.commmonGridWrpFlipClose"/>
+</select>
+
+<select id="columnTemplateListCount" resultType="int" parameterType="colmntmpltSC">
+	SELECT 	COUNT(*)
+    FROM 	COLMNTMPLT
+    WHERE 	COMP_CODE = #{COMP_CODE}
+    AND		LINE_NBR = #{LINE_NBR}
+</select>
+
+<select id="select_COLUMNS_DET_template" resultMap="DetResultMapCO"	parameterType="colmntmpltSC">
+	SELECT
+	<include refid="Det_Column_List_det" />
+	FROM 	COLMNTMPLT OUTR
+	WHERE 	COMP_CODE = #{COMP_CODE}
+	AND 	CODE = #{CODE}
+	AND		LINE_NBR != 0
+	ORDER BY LINE_NBR
+</select>
+
+<select id="find_single_COLUMN_DET" resultMap="DetResultMapCO" parameterType="colmntmpltSC">
+		SELECT
+		<include refid="Det_Column_List_det" />
+		FROM COLMNTMPLT OUTR
+		where COMP_CODE = #{COMP_CODE}
+		and CODE = #{TEMPLATE_CODE}
+		and LINE_NBR = #{LINE_NBR}
+</select>
+
+<select id="get_columnDetailsCount" resultType="int" parameterType="colmntmpltSC">
+		SELECT COUNT(*) FROM COLMNTMPLT
+		WHERE COMP_CODE=#{COMP_CODE}
+		AND CODE=#{CODE}
+		AND LINE_NBR = #{LINE_NBR}
+</select>
+
+<select id="selectSingleColumnTemplate" resultMap="ColumnSearchResultMap"	parameterType="colmntmpltSC">
+	SELECT 	COMP_CODE, CODE, BRIEF_NAME_ENG, BRIEF_NAME_ARAB, CREATED_BY, DATE_CREATED, 
+			MODIFIED_BY, DATE_MODIFIED, PRINT_PAPER_SIZE, PRINT_PAPER_ORIENTATION
+	FROM 	COLMNTMPLT
+	WHERE 	COMP_CODE = #{COMP_CODE}
+	AND 	CODE = #{CODE}
+	AND		LINE_NBR = #{LINE_NBR}
+</select>
+
+<delete id="deleteColumnTemplate" parameterType="colmntmpltVO">
+  	DELETE 	FROM COLMNTMPLT
+  	WHERE 	COMP_CODE=#{COMP_CODE}
+  	AND 	CODE=#{CODE}
+</delete>
+
+<delete id="delete_lines" parameterType="colmntmpltVO">
+  	DELETE FROM COLMNTMPLT 
+  	WHERE COMP_CODE=#{COMP_CODE} 
+  	AND CODE=#{CODE}
+  	AND LINE_NBR != 0
+</delete>
+
+
+
+<sql id="getDepartmentsBetweenDivSql">
+     	    SELECT D.DEPT_CODE AS CODE,
+                 D.BRIEF_DESC_ENG AS BRIEF_DESC_ENG,
+                 D.BRIEF_DESC_ARAB AS BRIEF_DESC_ARAB,
+                 D.LONG_DESC_ENG AS LONG_DESC_ENG,
+                 D.LONG_DESC_ARAB AS LONG_DESC_ARAB
+           FROM DEPARTMENTS D 
+           WHERE  D.COMP_CODE = #{COMP_CODE}
+           AND D.DIVISION_CODE BETWEEN #{DIV_CODE} AND #{TO_DIV_CODE}
+           <if test="CODE != null">
+         	    AND D.DEPT_CODE = #{CODE} 
+           </if>
+</sql>
+
+<sql id="getDepartmentsSql">
+     	    SELECT D.DEPT_CODE AS CODE,
+                 D.BRIEF_DESC_ENG AS BRIEF_DESC_ENG,
+                 D.BRIEF_DESC_ARAB AS BRIEF_DESC_ARAB,
+                 D.LONG_DESC_ENG AS LONG_DESC_ENG,
+                 D.LONG_DESC_ARAB AS LONG_DESC_ARAB
+           FROM DEPARTMENTS D 
+           WHERE  D.COMP_CODE = #{COMP_CODE}
+           AND D.DIVISION_CODE = #{DIV_CODE}
+           <if test="CODE != null">
+         	    AND D.DEPT_CODE = #{CODE} 
+           </if>
+</sql>
+
+<sql id="getUnitsSql">
+	SELECT UNIT_CODE AS CODE, BRIEF_DESC_ENG, BRIEF_DESC_ARAB
+	FROM UNITS
+	WHERE COMP_CODE=#{COMP_CODE}
+	<if test="DIV_CODE != null">
+		AND DIVISION_CODE=#{DIV_CODE}
+	</if>
+		<if test="DEPT_CODE != null">
+		AND DEPT_CODE=#{DEPT_CODE}
+	</if>
+	
+</sql>
+
+<sql id="findSingleUnitSql">
+	SELECT UNIT_CODE AS CODE, BRIEF_DESC_ENG, BRIEF_DESC_ARAB
+	FROM UNITS
+	WHERE COMP_CODE=#{COMP_CODE}
+	<if test="DIV_CODE != null">
+		AND DIVISION_CODE=#{DIV_CODE}
+	</if>
+	<if test="CODE != null">
+		AND DEPT_CODE=#{CODE}
+	</if>
+	<if test="UNIT_CODE != null">
+		AND UNIT_CODE=#{UNIT_CODE}
+	</if>
+</sql>
+
+<select id="getUnits"  resultMap="getGLkupMap" parameterType="commonDetailsSC">
+	<include refid="servicesCommon.commonGridWrpBefFlip"/>
+	<include refid="getUnitsSql"/>
+	<include refid="servicesCommon.commonGridWrpAftFlip"/>
+	<include refid="servicesCommon.commmonGridWrpFlipClose"/>
+</select>
+
+<select id="findUnitsCount" resultType="int" parameterType="commonDetailsSC">
+	SELECT COUNT(*) FROM (
+	<include refid="getUnitsSql"/>
+	)TBL
+</select>
+
+<select id="findSingleUnit"  resultMap="getGLkupMap" parameterType="commonDetailsSC">
+	<include refid="servicesCommon.commonGridWrpBefFlip"/>
+	<include refid="findSingleUnitSql"/>
+	<include refid="servicesCommon.commonGridWrpAftFlip"/>
+	<include refid="servicesCommon.commmonGridWrpFlipClose"/>
+</select>
+
+<select id="getDepartmentsBetweenDiv"  resultMap="getGLkupMap" parameterType="commonDetailsSC">
+	<include refid="servicesCommon.commonGridWrpBefFlip"/>
+	<include refid="getDepartmentsBetweenDivSql"/>
+	<include refid="servicesCommon.commonGridWrpAftFlip"/>
+	<include refid="servicesCommon.commmonGridWrpFlipClose"/>
+</select>
+
+<select id="getDepartments"  resultMap="getGLkupMap" parameterType="commonDetailsSC">
+	<include refid="servicesCommon.commonGridWrpBefFlip"/>
+	<include refid="getDepartmentsSql"/>
+	<include refid="servicesCommon.commonGridWrpAftFlip"/>
+	<include refid="servicesCommon.commmonGridWrpFlipClose"/>
+</select>
+
+<select id="findDepartmentsCount" resultType="int" parameterType="commonDetailsSC">
+	<include refid="servicesCommon.commonGridWrpBefCnt"/>
+	<include refid="getDepartmentsBetweenDivSql"/>
+	<include refid="servicesCommon.commonGridWrpAftCnt"/>
+	<include refid="servicesCommon.commonGridCountWrpClose"/>
+</select>
+
+<select id="findSingleColumnTemplateCount" resultType="int" parameterType="colmntmpltSC">
+  SELECT COUNT(*) FROM COLMNTMPLT WHERE COMP_CODE=#{COMP_CODE} AND CODE=#{CODE} AND	LINE_NBR = 0
+</select>
+
+<update id="updateColTemplate" parameterType="colmntmpltVO">
+ 	<include refid="COLMNTMPLT.sql_updateCOLMNTMPLT" />
+   	<if test="DATE_UPDATED != null" >
+   		AND DATE_UPDATED = #{DATE_UPDATED}
+   	</if>
+</update>
+
+<insert id="createLike"  parameterType="colmntmpltSC"> 
+	<include refid="colTmplExt.createLike"/>
+</insert>
+
+<select id="checkColTempCalcType" resultType="int" parameterType="COLMNTMPLTSC">  
+	SELECT COUNT(1)
+	  FROM COLMNTMPLT
+	 WHERE COMP_CODE = #{COMP_CODE}
+	   AND CODE = #{CODE}
+	   AND COL_TYPE = #{COL_TYPE}
+</select>
+
+</mapper>

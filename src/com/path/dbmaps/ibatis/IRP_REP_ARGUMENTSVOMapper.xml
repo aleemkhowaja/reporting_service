@@ -1,0 +1,370 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="IRP_REP_ARGUMENTS" >
+  <resultMap id="BaseResultMap" type="com.path.dbmaps.vo.IRP_REP_ARGUMENTSVO" >
+    <id column="ARGUMENT_ID" property="ARGUMENT_ID" />
+    <id column="REPORT_ID" property="REPORT_ID" />
+    <result column="ARGUMENT_NAME" property="ARGUMENT_NAME" />
+    <result column="ARGUMENT_LABEL" property="ARGUMENT_LABEL" />
+    <result column="ARGUMENT_TYPE" property="ARGUMENT_TYPE" />
+    <result column="ARGUMENT_SOURCE" property="ARGUMENT_SOURCE" />
+    <result column="ARGUMENT_VALUE" property="ARGUMENT_VALUE" />
+    <result column="SESSION_ATTR_NAME" property="SESSION_ATTR_NAME" />
+    <result column="QUERY_ID" property="QUERY_ID" />
+    <result column="COLUMN_NAME" property="COLUMN_NAME" />
+    <result column="ARGUMENT_ORDER" property="ARGUMENT_ORDER" />
+    <result column="DISPLAY_FLAG" property="DISPLAY_FLAG" />
+    <result column="ENABLE_FLAG" property="ENABLE_FLAG" />
+    <result column="FLAG_VALUE_OFF" property="FLAG_VALUE_OFF" />
+    <result column="FLAG_VALUE_ON" property="FLAG_VALUE_ON" />
+    <result column="ARGUMENT_SRC_DEFAULT" property="ARGUMENT_SRC_DEFAULT" />
+    <result column="DEFAULT_VALUE_COL_NAME" property="DEFAULT_VALUE_COL_NAME" />
+    <result column="QUERY_ID_DEFAULT" property="QUERY_ID_DEFAULT" />
+    <result column="MULTISELECT_YN" property="MULTISELECT_YN" />
+    <result column="ARGUMENT_DATE_VALUE" property="ARGUMENT_DATE_VALUE" />
+    <result column="COLUMN_DESC" property="COLUMN_DESC" />
+    <result column="ARG_QUERY_OPTIONS" property="ARG_QUERY_OPTIONS" />
+    <result column="DEFAULT_VALUE_COL_DESC" property="DEFAULT_VALUE_COL_DESC" />
+    <result column="TO_SAVE_YN" property="TO_SAVE_YN" />
+    <result column="CIF_AUDIT_YN" property="CIF_AUDIT_YN" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ARGUMENT_ID, REPORT_ID, ARGUMENT_NAME, ARGUMENT_LABEL, ARGUMENT_TYPE, ARGUMENT_SOURCE, 
+    ARGUMENT_VALUE, SESSION_ATTR_NAME, QUERY_ID, COLUMN_NAME, ARGUMENT_ORDER, DISPLAY_FLAG, 
+    ENABLE_FLAG, FLAG_VALUE_OFF, FLAG_VALUE_ON, ARGUMENT_SRC_DEFAULT, DEFAULT_VALUE_COL_NAME, 
+    QUERY_ID_DEFAULT, MULTISELECT_YN, ARGUMENT_DATE_VALUE, COLUMN_DESC, ARG_QUERY_OPTIONS, 
+    DEFAULT_VALUE_COL_DESC, TO_SAVE_YN, CIF_AUDIT_YN
+  </sql>
+  <select id="selectIRP_REP_ARGUMENTS" resultMap="BaseResultMap" parameterType="com.path.dbmaps.vo.IRP_REP_ARGUMENTSVOKey" >
+    select 
+    <include refid="Base_Column_List" />
+    from IRP_REP_ARGUMENTS
+    where ARGUMENT_ID = #{ARGUMENT_ID}
+      and REPORT_ID = #{REPORT_ID}
+  </select>
+  <delete id="deleteIRP_REP_ARGUMENTS" parameterType="com.path.dbmaps.vo.IRP_REP_ARGUMENTSVOKey" >
+    delete from IRP_REP_ARGUMENTS
+    where ARGUMENT_ID = #{ARGUMENT_ID}
+      and REPORT_ID = #{REPORT_ID}
+  </delete>
+  <insert id="insertIRP_REP_ARGUMENTS" parameterType="com.path.dbmaps.vo.IRP_REP_ARGUMENTSVO" >
+    insert into IRP_REP_ARGUMENTS
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="ARGUMENT_ID != null and ARGUMENT_ID != emptyBigDecimalValue" >
+        ARGUMENT_ID,
+      </if>
+      <if test="REPORT_ID != null and REPORT_ID != emptyBigDecimalValue" >
+        REPORT_ID,
+      </if>
+      <if test="ARGUMENT_NAME != null" >
+        ARGUMENT_NAME,
+      </if>
+      <if test="ARGUMENT_LABEL != null" >
+        ARGUMENT_LABEL,
+      </if>
+      <if test="ARGUMENT_TYPE != null" >
+        ARGUMENT_TYPE,
+      </if>
+      <if test="ARGUMENT_SOURCE != null and ARGUMENT_SOURCE != emptyBigDecimalValue" >
+        ARGUMENT_SOURCE,
+      </if>
+      <if test="ARGUMENT_VALUE != null and !&quot;&quot;.equals(ARGUMENT_VALUE)" >
+        ARGUMENT_VALUE,
+      </if>
+      <if test="SESSION_ATTR_NAME != null and !&quot;&quot;.equals(SESSION_ATTR_NAME)" >
+        SESSION_ATTR_NAME,
+      </if>
+      <if test="QUERY_ID != null and QUERY_ID != emptyBigDecimalValue" >
+        QUERY_ID,
+      </if>
+      <if test="COLUMN_NAME != null and !&quot;&quot;.equals(COLUMN_NAME)" >
+        COLUMN_NAME,
+      </if>
+      <if test="ARGUMENT_ORDER != null and ARGUMENT_ORDER != emptyBigDecimalValue" >
+        ARGUMENT_ORDER,
+      </if>
+      <if test="DISPLAY_FLAG != null" >
+        DISPLAY_FLAG,
+      </if>
+      <if test="ENABLE_FLAG != null" >
+        ENABLE_FLAG,
+      </if>
+      <if test="FLAG_VALUE_OFF != null" >
+        FLAG_VALUE_OFF,
+      </if>
+      <if test="FLAG_VALUE_ON != null" >
+        FLAG_VALUE_ON,
+      </if>
+      <if test="ARGUMENT_SRC_DEFAULT != null and ARGUMENT_SRC_DEFAULT != emptyBigDecimalValue" >
+        ARGUMENT_SRC_DEFAULT,
+      </if>
+      <if test="DEFAULT_VALUE_COL_NAME != null and !&quot;&quot;.equals(DEFAULT_VALUE_COL_NAME)" >
+        DEFAULT_VALUE_COL_NAME,
+      </if>
+      <if test="QUERY_ID_DEFAULT != null and QUERY_ID_DEFAULT != emptyBigDecimalValue" >
+        QUERY_ID_DEFAULT,
+      </if>
+      <if test="MULTISELECT_YN != null and MULTISELECT_YN != emptyBigDecimalValue" >
+        MULTISELECT_YN,
+      </if>
+      <if test="ARGUMENT_DATE_VALUE != null" >
+        ARGUMENT_DATE_VALUE,
+      </if>
+      <if test="COLUMN_DESC != null" >
+        COLUMN_DESC,
+      </if>
+      <if test="ARG_QUERY_OPTIONS != null" >
+        ARG_QUERY_OPTIONS,
+      </if>
+      <if test="DEFAULT_VALUE_COL_DESC != null" >
+        DEFAULT_VALUE_COL_DESC,
+      </if>
+      <if test="TO_SAVE_YN != null and TO_SAVE_YN != emptyBigDecimalValue" >
+        TO_SAVE_YN,
+      </if>
+      <if test="CIF_AUDIT_YN != null and CIF_AUDIT_YN != emptyBigDecimalValue" >
+        CIF_AUDIT_YN,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="ARGUMENT_ID != null and ARGUMENT_ID != emptyBigDecimalValue" >
+        #{ARGUMENT_ID},
+      </if>
+      <if test="REPORT_ID != null and REPORT_ID != emptyBigDecimalValue" >
+        #{REPORT_ID},
+      </if>
+      <if test="ARGUMENT_NAME != null" >
+        #{ARGUMENT_NAME},
+      </if>
+      <if test="ARGUMENT_LABEL != null" >
+        #{ARGUMENT_LABEL},
+      </if>
+      <if test="ARGUMENT_TYPE != null" >
+        #{ARGUMENT_TYPE},
+      </if>
+      <if test="ARGUMENT_SOURCE != null and ARGUMENT_SOURCE != emptyBigDecimalValue" >
+        #{ARGUMENT_SOURCE},
+      </if>
+      <if test="ARGUMENT_VALUE != null and !&quot;&quot;.equals(ARGUMENT_VALUE)" >
+        #{ARGUMENT_VALUE},
+      </if>
+      <if test="SESSION_ATTR_NAME != null and !&quot;&quot;.equals(SESSION_ATTR_NAME)" >
+        #{SESSION_ATTR_NAME},
+      </if>
+      <if test="QUERY_ID != null and QUERY_ID != emptyBigDecimalValue" >
+        #{QUERY_ID},
+      </if>
+      <if test="COLUMN_NAME != null and !&quot;&quot;.equals(COLUMN_NAME)" >
+        #{COLUMN_NAME},
+      </if>
+      <if test="ARGUMENT_ORDER != null and ARGUMENT_ORDER != emptyBigDecimalValue" >
+        #{ARGUMENT_ORDER},
+      </if>
+      <if test="DISPLAY_FLAG != null" >
+        #{DISPLAY_FLAG},
+      </if>
+      <if test="ENABLE_FLAG != null" >
+        #{ENABLE_FLAG},
+      </if>
+      <if test="FLAG_VALUE_OFF != null" >
+        #{FLAG_VALUE_OFF},
+      </if>
+      <if test="FLAG_VALUE_ON != null" >
+        #{FLAG_VALUE_ON},
+      </if>
+      <if test="ARGUMENT_SRC_DEFAULT != null and ARGUMENT_SRC_DEFAULT != emptyBigDecimalValue" >
+        #{ARGUMENT_SRC_DEFAULT},
+      </if>
+      <if test="DEFAULT_VALUE_COL_NAME != null and !&quot;&quot;.equals(DEFAULT_VALUE_COL_NAME)" >
+        #{DEFAULT_VALUE_COL_NAME},
+      </if>
+      <if test="QUERY_ID_DEFAULT != null and QUERY_ID_DEFAULT != emptyBigDecimalValue" >
+        #{QUERY_ID_DEFAULT},
+      </if>
+      <if test="MULTISELECT_YN != null and MULTISELECT_YN != emptyBigDecimalValue" >
+        #{MULTISELECT_YN},
+      </if>
+      <if test="ARGUMENT_DATE_VALUE != null" >
+        #{ARGUMENT_DATE_VALUE},
+      </if>
+      <if test="COLUMN_DESC != null" >
+        #{COLUMN_DESC},
+      </if>
+      <if test="ARG_QUERY_OPTIONS != null" >
+        #{ARG_QUERY_OPTIONS},
+      </if>
+      <if test="DEFAULT_VALUE_COL_DESC != null" >
+        #{DEFAULT_VALUE_COL_DESC},
+      </if>
+      <if test="TO_SAVE_YN != null and TO_SAVE_YN != emptyBigDecimalValue" >
+        #{TO_SAVE_YN},
+      </if>
+      <if test="CIF_AUDIT_YN != null and CIF_AUDIT_YN != emptyBigDecimalValue" >
+        #{CIF_AUDIT_YN},
+      </if>
+    </trim>
+  </insert>
+  <sql id="sql_updateIRP_REP_ARGUMENTS" >
+    update IRP_REP_ARGUMENTS
+    <set >
+      <if test="ARGUMENT_NAME != null" >
+        ARGUMENT_NAME = #{ARGUMENT_NAME},
+      </if>
+      <if test="ARGUMENT_LABEL != null" >
+        ARGUMENT_LABEL = #{ARGUMENT_LABEL},
+      </if>
+      <if test="ARGUMENT_TYPE != null" >
+        ARGUMENT_TYPE = #{ARGUMENT_TYPE},
+      </if>
+      <if test="ARGUMENT_SOURCE != null" >
+        <choose >
+          <when test="ARGUMENT_SOURCE == emptyBigDecimalValue" >
+            ARGUMENT_SOURCE = NULL ,
+          </when>
+          <otherwise >
+            ARGUMENT_SOURCE = #{ARGUMENT_SOURCE},
+          </otherwise>
+        </choose>
+      </if>
+      <if test="ARGUMENT_VALUE != null" >
+        <choose >
+          <when test="ARGUMENT_VALUE.equals(&quot;&quot;)" >
+            ARGUMENT_VALUE = NULL ,
+          </when>
+          <otherwise >
+            ARGUMENT_VALUE = #{ARGUMENT_VALUE},
+          </otherwise>
+        </choose>
+      </if>
+      <if test="SESSION_ATTR_NAME != null" >
+        <choose >
+          <when test="SESSION_ATTR_NAME.equals(&quot;&quot;)" >
+            SESSION_ATTR_NAME = NULL ,
+          </when>
+          <otherwise >
+            SESSION_ATTR_NAME = #{SESSION_ATTR_NAME},
+          </otherwise>
+        </choose>
+      </if>
+      <if test="QUERY_ID != null" >
+        <choose >
+          <when test="QUERY_ID == emptyBigDecimalValue" >
+            QUERY_ID = NULL ,
+          </when>
+          <otherwise >
+            QUERY_ID = #{QUERY_ID},
+          </otherwise>
+        </choose>
+      </if>
+      <if test="COLUMN_NAME != null" >
+        <choose >
+          <when test="COLUMN_NAME.equals(&quot;&quot;)" >
+            COLUMN_NAME = NULL ,
+          </when>
+          <otherwise >
+            COLUMN_NAME = #{COLUMN_NAME},
+          </otherwise>
+        </choose>
+      </if>
+      <if test="ARGUMENT_ORDER != null" >
+        <choose >
+          <when test="ARGUMENT_ORDER == emptyBigDecimalValue" >
+            ARGUMENT_ORDER = NULL ,
+          </when>
+          <otherwise >
+            ARGUMENT_ORDER = #{ARGUMENT_ORDER},
+          </otherwise>
+        </choose>
+      </if>
+      <if test="DISPLAY_FLAG != null" >
+        DISPLAY_FLAG = #{DISPLAY_FLAG},
+      </if>
+      <if test="ENABLE_FLAG != null" >
+        ENABLE_FLAG = #{ENABLE_FLAG},
+      </if>
+      <if test="FLAG_VALUE_OFF != null" >
+        FLAG_VALUE_OFF = #{FLAG_VALUE_OFF},
+      </if>
+      <if test="FLAG_VALUE_ON != null" >
+        FLAG_VALUE_ON = #{FLAG_VALUE_ON},
+      </if>
+      <if test="ARGUMENT_SRC_DEFAULT != null" >
+        <choose >
+          <when test="ARGUMENT_SRC_DEFAULT == emptyBigDecimalValue" >
+            ARGUMENT_SRC_DEFAULT = NULL ,
+          </when>
+          <otherwise >
+            ARGUMENT_SRC_DEFAULT = #{ARGUMENT_SRC_DEFAULT},
+          </otherwise>
+        </choose>
+      </if>
+      <if test="DEFAULT_VALUE_COL_NAME != null" >
+        <choose >
+          <when test="DEFAULT_VALUE_COL_NAME.equals(&quot;&quot;)" >
+            DEFAULT_VALUE_COL_NAME = NULL ,
+          </when>
+          <otherwise >
+            DEFAULT_VALUE_COL_NAME = #{DEFAULT_VALUE_COL_NAME},
+          </otherwise>
+        </choose>
+      </if>
+      <if test="QUERY_ID_DEFAULT != null" >
+        <choose >
+          <when test="QUERY_ID_DEFAULT == emptyBigDecimalValue" >
+            QUERY_ID_DEFAULT = NULL ,
+          </when>
+          <otherwise >
+            QUERY_ID_DEFAULT = #{QUERY_ID_DEFAULT},
+          </otherwise>
+        </choose>
+      </if>
+      <if test="MULTISELECT_YN != null" >
+        <choose >
+          <when test="MULTISELECT_YN == emptyBigDecimalValue" >
+            MULTISELECT_YN = NULL ,
+          </when>
+          <otherwise >
+            MULTISELECT_YN = #{MULTISELECT_YN},
+          </otherwise>
+        </choose>
+      </if>
+      <if test="ARGUMENT_DATE_VALUE != null" >
+        ARGUMENT_DATE_VALUE = #{ARGUMENT_DATE_VALUE},
+      </if>
+      <if test="COLUMN_DESC != null" >
+        COLUMN_DESC = #{COLUMN_DESC},
+      </if>
+      <if test="ARG_QUERY_OPTIONS != null" >
+        ARG_QUERY_OPTIONS = #{ARG_QUERY_OPTIONS},
+      </if>
+      <if test="DEFAULT_VALUE_COL_DESC != null" >
+        DEFAULT_VALUE_COL_DESC = #{DEFAULT_VALUE_COL_DESC},
+      </if>
+      <if test="TO_SAVE_YN != null" >
+        <choose >
+          <when test="TO_SAVE_YN == emptyBigDecimalValue" >
+            TO_SAVE_YN = NULL ,
+          </when>
+          <otherwise >
+            TO_SAVE_YN = #{TO_SAVE_YN},
+          </otherwise>
+        </choose>
+      </if>
+      <if test="CIF_AUDIT_YN != null" >
+        <choose >
+          <when test="CIF_AUDIT_YN == emptyBigDecimalValue" >
+            CIF_AUDIT_YN = NULL ,
+          </when>
+          <otherwise >
+            CIF_AUDIT_YN = #{CIF_AUDIT_YN},
+          </otherwise>
+        </choose>
+      </if>
+    </set>
+    where ARGUMENT_ID = #{ARGUMENT_ID}
+      and REPORT_ID = #{REPORT_ID}
+  </sql>
+  <update id="updateIRP_REP_ARGUMENTS" parameterType="com.path.dbmaps.vo.IRP_REP_ARGUMENTSVO" >
+    <include refid="sql_updateIRP_REP_ARGUMENTS" />
+  </update>
+</mapper>

@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="FTR_TMPLT_EXPR" >
+  <resultMap id="BaseResultMap" type="com.path.dbmaps.vo.FTR_TMPLT_EXPRVO" >
+    <id column="CODE" property="CODE" />
+    <id column="COMP_CODE" property="COMP_CODE" />
+    <id column="LINE_NO" property="LINE_NO" />
+    <id column="TMPLT_LINE_NO" property="TMPLT_LINE_NO" />
+    <id column="TMPLT_TYPE" property="TMPLT_TYPE" />
+    <result column="EXP_TYPE" property="EXP_TYPE" />
+    <result column="LEFT_OPERATOR" property="LEFT_OPERATOR" />
+    <result column="EXP_LINE" property="EXP_LINE" />
+    <result column="EXP_VALUE" property="EXP_VALUE" />
+    <result column="RIGHT_OPERATOR" property="RIGHT_OPERATOR" />
+    <result column="OPERATOR" property="OPERATOR" />
+    <result column="DATE_UPDATED" property="DATE_UPDATED" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    CODE, COMP_CODE, LINE_NO, TMPLT_LINE_NO, TMPLT_TYPE, EXP_TYPE, LEFT_OPERATOR, EXP_LINE, 
+    EXP_VALUE, RIGHT_OPERATOR, OPERATOR, DATE_UPDATED
+  </sql>
+  <select id="selectFTR_TMPLT_EXPR" resultMap="BaseResultMap" parameterType="com.path.dbmaps.vo.FTR_TMPLT_EXPRVO" >
+    select 
+    <include refid="Base_Column_List" />
+    from FTR_TMPLT_EXPR
+    where CODE = #{CODE}
+      and COMP_CODE = #{COMP_CODE}
+      and LINE_NO = #{LINE_NO}
+      and TMPLT_LINE_NO = #{TMPLT_LINE_NO}
+      and TMPLT_TYPE = #{TMPLT_TYPE}
+  </select>
+  <delete id="deleteFTR_TMPLT_EXPR" parameterType="com.path.dbmaps.vo.FTR_TMPLT_EXPRVO" >
+    delete from FTR_TMPLT_EXPR
+    where CODE = #{CODE}
+      and COMP_CODE = #{COMP_CODE}
+      and LINE_NO = #{LINE_NO}
+      and TMPLT_LINE_NO = #{TMPLT_LINE_NO}
+      and TMPLT_TYPE = #{TMPLT_TYPE}
+  </delete>
+  <insert id="insertFTR_TMPLT_EXPR" parameterType="com.path.dbmaps.vo.FTR_TMPLT_EXPRVO" >
+    insert into FTR_TMPLT_EXPR
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="CODE != null and CODE != emptyBigDecimalValue" >
+        CODE,
+      </if>
+      <if test="COMP_CODE != null and COMP_CODE != emptyBigDecimalValue" >
+        COMP_CODE,
+      </if>
+      <if test="LINE_NO != null and LINE_NO != emptyBigDecimalValue" >
+        LINE_NO,
+      </if>
+      <if test="TMPLT_LINE_NO != null and TMPLT_LINE_NO != emptyBigDecimalValue" >
+        TMPLT_LINE_NO,
+      </if>
+      <if test="TMPLT_TYPE != null" >
+        TMPLT_TYPE,
+      </if>
+      <if test="EXP_TYPE != null" >
+        EXP_TYPE,
+      </if>
+      <if test="LEFT_OPERATOR != null" >
+        LEFT_OPERATOR,
+      </if>
+      <if test="EXP_LINE != null and EXP_LINE != emptyBigDecimalValue" >
+        EXP_LINE,
+      </if>
+      <if test="EXP_VALUE != null and EXP_VALUE != emptyBigDecimalValue" >
+        EXP_VALUE,
+      </if>
+      <if test="RIGHT_OPERATOR != null" >
+        RIGHT_OPERATOR,
+      </if>
+      <if test="OPERATOR != null" >
+        OPERATOR,
+      </if>
+      DATE_UPDATED,
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="CODE != null and CODE != emptyBigDecimalValue" >
+        #{CODE},
+      </if>
+      <if test="COMP_CODE != null and COMP_CODE != emptyBigDecimalValue" >
+        #{COMP_CODE},
+      </if>
+      <if test="LINE_NO != null and LINE_NO != emptyBigDecimalValue" >
+        #{LINE_NO},
+      </if>
+      <if test="TMPLT_LINE_NO != null and TMPLT_LINE_NO != emptyBigDecimalValue" >
+        #{TMPLT_LINE_NO},
+      </if>
+      <if test="TMPLT_TYPE != null" >
+        #{TMPLT_TYPE},
+      </if>
+      <if test="EXP_TYPE != null" >
+        #{EXP_TYPE},
+      </if>
+      <if test="LEFT_OPERATOR != null" >
+        #{LEFT_OPERATOR},
+      </if>
+      <if test="EXP_LINE != null and EXP_LINE != emptyBigDecimalValue" >
+        #{EXP_LINE},
+      </if>
+      <if test="EXP_VALUE != null and EXP_VALUE != emptyBigDecimalValue" >
+        #{EXP_VALUE},
+      </if>
+      <if test="RIGHT_OPERATOR != null" >
+        #{RIGHT_OPERATOR},
+      </if>
+      <if test="OPERATOR != null" >
+        #{OPERATOR},
+      </if>
+      <choose >
+        <when test="isSybase == 1" >
+           GETDATE(),
+        </when>
+        <otherwise >
+           SYSDATE,
+        </otherwise>
+      </choose>
+    </trim>
+  </insert>
+  <sql id="sql_updateFTR_TMPLT_EXPR" >
+    update FTR_TMPLT_EXPR
+    <set >
+      <if test="EXP_TYPE != null" >
+        EXP_TYPE = #{EXP_TYPE},
+      </if>
+      <if test="LEFT_OPERATOR != null" >
+        LEFT_OPERATOR = #{LEFT_OPERATOR},
+      </if>
+      <if test="EXP_LINE != null" >
+        <choose >
+          <when test="EXP_LINE == emptyBigDecimalValue" >
+            EXP_LINE = NULL ,
+          </when>
+          <otherwise >
+            EXP_LINE = #{EXP_LINE},
+          </otherwise>
+        </choose>
+      </if>
+      <if test="EXP_VALUE != null" >
+        <choose >
+          <when test="EXP_VALUE == emptyBigDecimalValue" >
+            EXP_VALUE = NULL ,
+          </when>
+          <otherwise >
+            EXP_VALUE = #{EXP_VALUE},
+          </otherwise>
+        </choose>
+      </if>
+      <if test="RIGHT_OPERATOR != null" >
+        RIGHT_OPERATOR = #{RIGHT_OPERATOR},
+      </if>
+      <if test="OPERATOR != null" >
+        OPERATOR = #{OPERATOR},
+      </if>
+      DATE_UPDATED = 
+      <choose >
+        <when test="isSybase == 1" >
+           GETDATE(),
+        </when>
+        <otherwise >
+           SYSDATE,
+        </otherwise>
+      </choose>
+    </set>
+    where CODE = #{CODE}
+      and COMP_CODE = #{COMP_CODE}
+      and LINE_NO = #{LINE_NO}
+      and TMPLT_LINE_NO = #{TMPLT_LINE_NO}
+      and TMPLT_TYPE = #{TMPLT_TYPE}
+  </sql>
+  <update id="updateFTR_TMPLT_EXPR" parameterType="com.path.dbmaps.vo.FTR_TMPLT_EXPRVO" >
+    <include refid="sql_updateFTR_TMPLT_EXPR" />
+    <if test="DATE_UPDATED != null" >
+      AND DATE_UPDATED = #{DATE_UPDATED}
+    </if>
+  </update>
+</mapper>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="src" path="service_client_common_resources_business"/>
+	<classpathentry kind="src" path="service_client_common_src_business"/>
+	<classpathentry kind="src" path="services_common"/>
+	<classpathentry kind="src" path="services_common_business"/>
+	<classpathentry excluding="**/.svn/" kind="src" path="reporting_services_common_resources"/>
+	<classpathentry excluding="**/.svn/" kind="src" path="reporting_services_common_src"/>
+	<classpathentry excluding="**/.svn/" kind="src" path="reporting_library_src"/>
+	<classpathentry kind="src" path="service_client_rep_common_src"/>
+	<classpathentry excluding="**/.svn/" kind="src" path="library_src"/>
+	<classpathentry kind="src" path="service_client_rep_common_resources"/>
+	<classpathentry kind="src" path="resources_reporting_service"/>
+	<classpathentry excluding="**/.svn/" kind="src" path="service_client_common_resources"/>
+	<classpathentry excluding="**/.svn/" kind="src" path="service_client_common_src"/>
+	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.web.container"/>
+	<classpathentry kind="con" path="org.eclipse.jst.server.core.container/org.eclipse.jst.server.tomcat.runtimeTarget/service">
+		<attributes>
+			<attribute name="owner.project.facets" value="jst.web"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/jdk1.8.0_92">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="output" path="WebContent/WEB-INF/classes"/>
+</classpath>

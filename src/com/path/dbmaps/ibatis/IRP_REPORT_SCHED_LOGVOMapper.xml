@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="IRP_REPORT_SCHED_LOG" >
+  <resultMap id="BaseResultMap" type="com.path.dbmaps.vo.IRP_REPORT_SCHED_LOGVO" >
+    <id column="REPORT_ID" property="REPORT_ID" />
+    <id column="SCHEDULED_DATE" property="SCHEDULED_DATE" />
+    <id column="SCHED_ID" property="SCHED_ID" />
+    <id column="START_DATE" property="START_DATE" />
+    <result column="END_DATE" property="END_DATE" />
+    <result column="STATUS" property="STATUS" />
+    <result column="REMARKS" property="REMARKS" />
+    <result column="REPORT_FORMAT" property="REPORT_FORMAT" />
+    <result column="SNAPSHOT_ID" property="SNAPSHOT_ID" />
+    <result column="SAVE_DATA_TYPE" property="SAVE_DATA_TYPE" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    REPORT_ID, SCHEDULED_DATE, SCHED_ID, START_DATE, END_DATE, STATUS, REMARKS, REPORT_FORMAT, 
+    SNAPSHOT_ID, SAVE_DATA_TYPE
+  </sql>
+  <select id="selectIRP_REPORT_SCHED_LOG" resultMap="BaseResultMap" parameterType="com.path.dbmaps.vo.IRP_REPORT_SCHED_LOGVO" >
+    select 
+    <include refid="Base_Column_List" />
+    from IRP_REPORT_SCHED_LOG
+    where REPORT_ID = #{REPORT_ID}
+      and SCHEDULED_DATE = #{SCHEDULED_DATE}
+      and SCHED_ID = #{SCHED_ID}
+      and START_DATE = #{START_DATE}
+  </select>
+  <delete id="deleteIRP_REPORT_SCHED_LOG" parameterType="com.path.dbmaps.vo.IRP_REPORT_SCHED_LOGVO" >
+    delete from IRP_REPORT_SCHED_LOG
+    where REPORT_ID = #{REPORT_ID}
+      and SCHEDULED_DATE = #{SCHEDULED_DATE}
+      and SCHED_ID = #{SCHED_ID}
+      and START_DATE = #{START_DATE}
+  </delete>
+  <insert id="insertIRP_REPORT_SCHED_LOG" parameterType="com.path.dbmaps.vo.IRP_REPORT_SCHED_LOGVO" >
+    insert into IRP_REPORT_SCHED_LOG
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="REPORT_ID != null and REPORT_ID != emptyBigDecimalValue" >
+        REPORT_ID,
+      </if>
+      <if test="SCHEDULED_DATE != null" >
+        SCHEDULED_DATE,
+      </if>
+      <if test="SCHED_ID != null and SCHED_ID != emptyBigDecimalValue" >
+        SCHED_ID,
+      </if>
+      <if test="START_DATE != null" >
+        START_DATE,
+      </if>
+      <if test="END_DATE != null" >
+        END_DATE,
+      </if>
+      <if test="STATUS != null" >
+        STATUS,
+      </if>
+      <if test="REMARKS != null" >
+        REMARKS,
+      </if>
+      <if test="REPORT_FORMAT != null" >
+        REPORT_FORMAT,
+      </if>
+      <if test="SNAPSHOT_ID != null and SNAPSHOT_ID != emptyBigDecimalValue" >
+        SNAPSHOT_ID,
+      </if>
+      <if test="SAVE_DATA_TYPE != null and SAVE_DATA_TYPE != emptyBigDecimalValue" >
+        SAVE_DATA_TYPE,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="REPORT_ID != null and REPORT_ID != emptyBigDecimalValue" >
+        #{REPORT_ID},
+      </if>
+      <if test="SCHEDULED_DATE != null" >
+        #{SCHEDULED_DATE},
+      </if>
+      <if test="SCHED_ID != null and SCHED_ID != emptyBigDecimalValue" >
+        #{SCHED_ID},
+      </if>
+      <if test="START_DATE != null" >
+        #{START_DATE},
+      </if>
+      <if test="END_DATE != null" >
+        #{END_DATE},
+      </if>
+      <if test="STATUS != null" >
+        #{STATUS},
+      </if>
+      <if test="REMARKS != null" >
+        #{REMARKS},
+      </if>
+      <if test="REPORT_FORMAT != null" >
+        #{REPORT_FORMAT},
+      </if>
+      <if test="SNAPSHOT_ID != null and SNAPSHOT_ID != emptyBigDecimalValue" >
+        #{SNAPSHOT_ID},
+      </if>
+      <if test="SAVE_DATA_TYPE != null and SAVE_DATA_TYPE != emptyBigDecimalValue" >
+        #{SAVE_DATA_TYPE},
+      </if>
+    </trim>
+  </insert>
+  <sql id="sql_updateIRP_REPORT_SCHED_LOG" >
+    update IRP_REPORT_SCHED_LOG
+    <set >
+      <if test="END_DATE != null" >
+        END_DATE = #{END_DATE},
+      </if>
+      <if test="STATUS != null" >
+        STATUS = #{STATUS},
+      </if>
+      <if test="REMARKS != null" >
+        REMARKS = #{REMARKS},
+      </if>
+      <if test="REPORT_FORMAT != null" >
+        REPORT_FORMAT = #{REPORT_FORMAT},
+      </if>
+      <if test="SNAPSHOT_ID != null" >
+        <choose >
+          <when test="SNAPSHOT_ID == emptyBigDecimalValue" >
+            SNAPSHOT_ID = NULL ,
+          </when>
+          <otherwise >
+            SNAPSHOT_ID = #{SNAPSHOT_ID},
+          </otherwise>
+        </choose>
+      </if>
+      <if test="SAVE_DATA_TYPE != null" >
+        <choose >
+          <when test="SAVE_DATA_TYPE == emptyBigDecimalValue" >
+            SAVE_DATA_TYPE = NULL ,
+          </when>
+          <otherwise >
+            SAVE_DATA_TYPE = #{SAVE_DATA_TYPE},
+          </otherwise>
+        </choose>
+      </if>
+    </set>
+    where REPORT_ID = #{REPORT_ID}
+      and SCHEDULED_DATE = #{SCHEDULED_DATE}
+      and SCHED_ID = #{SCHED_ID}
+      and START_DATE = #{START_DATE}
+  </sql>
+  <update id="updateIRP_REPORT_SCHED_LOG" parameterType="com.path.dbmaps.vo.IRP_REPORT_SCHED_LOGVO" >
+    <include refid="sql_updateIRP_REPORT_SCHED_LOG" />
+  </update>
+</mapper>

@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+        "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="schedulerDateProcessMapper">
+
+<resultMap type="com.path.dbmaps.vo.IRP_SCHEDULEVO"  id="getSchedLkupMap">     
+    <id column="SCHED_ID" property="SCHED_ID" />
+    <result column="SCHED_NAME" property="SCHED_NAME" />
+</resultMap>
+
+<resultMap id="ScheduleReportsResultMap" type="com.path.vo.reporting.scheduler.IRP_REPORT_SCHEDULECO" >
+    <id column="REPORT_ID" property="REPORT_ID" />
+    <id column="SCHED_ID" property="SCHED_ID" />
+    <result column="REPORT_FORMAT" property="REPORT_FORMAT" />
+    <result column="IS_ACTIVE" property="IS_ACTIVE" />
+    <result column="PRINTER_NAME" property="PRINTER_NAME" />
+    <result column="DATA_ONLY" property="DATA_ONLY" />
+    <result column="REPORT_NAME" property="REPORT_NAME" />
+    <result column="PROG_REF" property="PROG_REF" />
+    <result column="XHTML_FILE" property="XHTML_FILE" />
+    <result column="JRXML_FILE" property="JRXML_FILE" />
+    <result column="NEXT_RUN_DATE" property="NEXT_RUN_DATE" />
+    <result column="CSV_SEPARATOR" property="CSV_SEPARATOR" />
+    <result column="SHOW_HEAD_FOOT" property="SHOW_HEAD_FOOT" />
+    <result column="APP_NAME" property="REPORT_APP_NAME" />
+    <result column="REPORT_LANGUAGE" property="REPORT_LANGUAGE" />
+    <result column="SAVE_DATA_TYPE" property="SAVE_DATA_TYPE" />
+    <result column="MAIL_SERVER_CODE" property="MAIL_SERVER_CODE" />
+    <result column="FROM_EMAIL_TYPE" property="FROM_EMAIL_TYPE" />
+    <result column="FROM_EMAIL_VAL" property="FROM_EMAIL_VAL" />
+    <result column="TO_EMAIL_TYPE" property="TO_EMAIL_TYPE" />
+    <result column="TO_EMAIL_VAL" property="TO_EMAIL_VAL" />
+    <result column="CC_EMAIL_TYPE" property="CC_EMAIL_TYPE" />
+    <result column="CC_EMAIL_VAL" property="CC_EMAIL_VAL" />
+    <result column="BCC_EMAIL_TYPE" property="BCC_EMAIL_TYPE" />
+    <result column="BCC_EMAIL_VAL" property="BCC_EMAIL_VAL" />
+    <result column="EMAIL_SUBJECT" property="EMAIL_SUBJECT" />
+    <result column="EMAIL_BODY" property="EMAIL_BODY" />
+    <result column="ATTACH_FILE_NAME" property="ATTACH_FILE_NAME" />
+    <result column="SEND_IF_NO_DATA_YN" property="SEND_IF_NO_DATA_YN" />
+    <result column="PRINT_IF_NO_DATA_YN" property="PRINT_IF_NO_DATA_YN" />
+    <result column="MAIL_SERVER_HOST" property="MAIL_SERVER_HOST" />
+    <result column="DEFAULT_FROM_MS" property="DEFAULT_FROM_MS" />
+    <result column="EMAIL_CONSOLIDATED_YN" property="EMAIL_CONSOLIDATED_YN" />
+    <result column="DATE_TYPE" property="DATE_TYPE" />
+    <result column="REPORT_FORMAT_TRANS" property="REPORT_FORMAT_TRANS" />
+    <result column="CONN_ID" property="CONN_ID" />
+    <result column="WHEN_NO_DATA" property="WHEN_NO_DATA" />
+    <result column="LANG_INDEPENDENT_YN" property="LANG_INDEPENDENT_YN" />
+    <result column="REPORT_REF" property="REPORT_REF" />
+    <result column="FCR_REPORT_NAME" property="FCR_REPORT_NAME" />
+    <result column="REPORT_REF" property="REPORT_REF" />
+    <result column="FCR_REPORT_NAME" property="FCR_REPORT_NAME" />
+    <result column="SECURED_FILE_YN" property="SECURED_FILE_YN" />
+    <result column="SECURED_PWD_FIELD_NAME" property="SECURED_PWD_FIELD_NAME"/>
+    <result column="SECURED_PWD_FIELD_NAME" property="SECURED_PWD_FIELD_NAME"/>
+    <result column="SCHED_NAME" property="SCHED_NAME"/>
+  
+  </resultMap>
+  
+
+<sql id="retSchedListSql">
+	SELECT T.SCHED_ID AS SCHED_ID,
+           T.SCHED_NAME AS SCHED_NAME
+	FROM   IRP_SCHEDULE T
+</sql>
+
+
+<select id="retSchedList"  resultMap="getSchedLkupMap" parameterType="com.path.vo.reporting.scheduler.IRP_SCHEDULESC">
+	<include refid="servicesCommon.commonGridWrpBefFlip"/>
+	<include refid="retSchedListSql"/>
+	<include refid="servicesCommon.commonGridWrpAftFlip"/>
+	<include refid="servicesCommon.commmonGridWrpFlipClose"/>
+</select>
+
+<select id="retSchedListCount"   resultType="int" parameterType="com.path.vo.reporting.scheduler.IRP_SCHEDULESC">
+	<include refid="servicesCommon.commonGridWrpBefCnt"/>
+	<include refid="retSchedListSql"/>
+	<include refid="servicesCommon.commonGridWrpAftCnt"/>
+	<include refid="servicesCommon.commonGridCountWrpClose"/>
+</select>
+
+
+  <delete id="deleteSubReport" parameterType="java.util.List">
+
+      DELETE FROM IRP_SUB_REPORT    
+      WHERE REPORT_ID IN
+      <foreach item="item" index="index" collection="list"
+            open="(" separator="," close=")">
+            #{item}
+      </foreach>
+</delete>  
+
+
+
+
+
+<select id="checkUpdateReportAccess" parameterType="axsSC" resultMap="AXS.BaseResultMap">
+      select 
+    <include refid="AXS.Base_Column_List" />
+    from AXS
+    where APP_NAME = #{APP_NAME}
+      and BRANCH_CODE = #{BRANCH_CODE}
+      and COMP_CODE = #{COMP_CODE}
+      and USER_ID = #{USER_ID}
+      and PROG_REF IN
+      <foreach item="item" index="index" collection="PROG_REFS" open="(" separator="," close=")">
+            #{item}
+      </foreach>
+</select>
+
+  <select id="findScheduleReports" parameterType="com.path.dbmaps.vo.schedulerdateprocess.SchedulerDateProcessSC" resultMap="ScheduleReportsResultMap">
+	<include refid="servicesCommon.commonGridWrpBefFlip"/>
+	<include refid="findScheduleReportsSql"/>
+	<include refid="servicesCommon.commonGridWrpAftFlip"/>
+	<include refid="servicesCommon.commmonGridWrpFlipClose"/>
+  </select>
+
+
+<sql id="findScheduleReportsSql">
+		select 
+       		T.*, NEXT_RUN_DATE, SCHED_NAME,
+       		CASE WHEN T.IS_FCR_YN =1 THEN (SELECT MIN(BRIEF_NAME_ENG) FROM FTR_OPT WHERE
+       			FTR_OPT.PROG_REF =T.REPORT_REF) ELSE IRP_AD_HOC_REPORT.REPORT_NAME END AS REPORT_NAME ,
+       		(SELECT VALUE_DESC
+          FROM SYS_PARAM_LOV_TRANS
+         WHERE VALUE_CODE =T.REPORT_FORMAT
+           AND LOV_TYPE_ID = #{lovTypeId}
+           AND LANG_CODE = #{langCode}) AS REPORT_FORMAT_TRANS
+		from 
+     		IRP_REPORT_SCHEDULE T INNER JOIN IRP_AD_HOC_REPORT 
+     		ON T.REPORT_ID = IRP_AD_HOC_REPORT.REPORT_ID
+     		
+     		INNER JOIN IRP_SCHEDULE ON T.SCHED_ID=IRP_SCHEDULE.SCHED_ID
+     		WHERE T.SCHED_ID IN
+    		  <choose> 
+		 	 <when test="isSybase == 1" >
+		 	 <foreach item="item" index="index" collection="schedIds" open="(" separator="," close=")">
+            	CONVERT(NUMERIC,#{item})
+     		 </foreach>
+		 	 </when>
+		 	<otherwise >
+		 		 <foreach item="item" index="index" collection="schedIds" open="(" separator="," close=")">
+            	#{item}
+     		 </foreach>
+		 	 </otherwise>
+		 </choose>
+     		AND EXISTS (SELECT 1 FROM  IRP_REP_ARGUMENTS WHERE IRP_REP_ARGUMENTS.REPORT_ID = T.REPORT_ID
+     		AND IRP_REP_ARGUMENTS.ARGUMENT_DATE_VALUE IN
+     			 <foreach item="value" index="index" collection="dateValue" open="(" separator="," close=")">
+            	#{value}
+     		 </foreach>
+     		   AND IRP_REP_ARGUMENTS.ARGUMENT_TYPE IN ('DATE','DATETIME'))     		
+</sql>
+
+ <select id="findScheduleReportsCount" parameterType="com.path.dbmaps.vo.schedulerdateprocess.SchedulerDateProcessSC" resultType="int">
+	<include refid="servicesCommon.commonGridWrpBefCnt"/>
+	<include refid="findScheduleReportsSql"/>
+	<include refid="servicesCommon.commonGridWrpAftCnt"/>
+	<include refid="servicesCommon.commonGridCountWrpClose"/>   
+  </select>
+  
+   <update id="updateDateReportSched" parameterType="com.path.dbmaps.vo.schedulerdateprocess.SchedulerDateProcessSC" >		
+		   UPDATE IRP_REPORT_SCHED_PARAMS SET PARAM_VALUE = 
+		  <choose> 
+		 	 <when test="isSybase == 1" >
+		 		CONVERT(VARCHAR,CONVERT(DATE,#{dateStr},103),103)
+		 	 </when>
+		 	<otherwise >
+		 		TO_CHAR(TO_DATE(#{dateStr},'dd/mm/yyyy'),'dd/mm/yyyy')
+		 	 </otherwise>
+		 </choose>
+		 	WHERE <foreach item="item" index="index" collection="procList" open="(" separator="OR" close=")">
+		 		(SCHED_ID = 
+            	#{item.schedId}
+            	 AND REPORT_ID = 
+            	#{item.reportId}
+            	)
+     		 </foreach>
+			  AND PARAM_TYPE IN ('DATE','DATETIME')
+			  AND EXISTS (SELECT 1 FROM  IRP_REP_ARGUMENTS WHERE IRP_REP_ARGUMENTS.REPORT_ID = IRP_REPORT_SCHED_PARAMS.REPORT_ID  
+			  AND  IRP_REP_ARGUMENTS.ARGUMENT_ID =  IRP_REPORT_SCHED_PARAMS.PARAM_ID 
+         	AND IRP_REP_ARGUMENTS.ARGUMENT_DATE_VALUE = #{dateType}
+            AND IRP_REP_ARGUMENTS.ARGUMENT_TYPE IN ('DATE','DATETIME'))
+
+ </update>
+  
+   <update id="updatePeriodicDateReportSched" parameterType="com.path.dbmaps.vo.schedulerdateprocess.SchedulerDateProcessSC" >		
+		  UPDATE IRP_REPORT_SCHED_PARAMS SET PARAM_VALUE = 
+		  <choose> 
+		 	 <when test="isSybase == 1" >
+		 	   CONVERT(VARCHAR, (CASE WHEN #{periodType} ='M' THEN 
+   CASE WHEN DATEPART(mm, CONVERT(DATE,PARAM_VALUE,103)) = 2 AND DATEPART(dd, CONVERT(DATE,PARAM_VALUE,103)) = 28 and DATEPART(yy, CONVERT(DATE,PARAM_VALUE,103))%4 != 0 THEN  
+    dateadd(dd,-1 ,dateadd(mm,#{periodicDate}+1,dateadd(dd,-(day(CONVERT(DATE,PARAM_VALUE,103))-1),CONVERT(DATE,PARAM_VALUE,103))))
+	WHEN DATEPART(mm, CONVERT(DATE,PARAM_VALUE,103)) = 2 AND DATEPART(dd, CONVERT(DATE,PARAM_VALUE,103)) = 29 and  DATEPART(yy, CONVERT(DATE,PARAM_VALUE,103))%4 = 0 THEN 
+    dateadd(dd,-1 ,dateadd(mm,#{periodicDate}+1,dateadd(dd,-(day(CONVERT(DATE,PARAM_VALUE,103))-1),CONVERT(DATE,PARAM_VALUE,103))))
+    WHEN DATEPART(mm, CONVERT(DATE,PARAM_VALUE,103)) in(4,6,9,11) AND DATEPART(dd, CONVERT(DATE,PARAM_VALUE,103)) = 30 THEN  
+    dateadd(dd,-1 ,dateadd(mm,#{periodicDate}+1,dateadd(dd,-(day(CONVERT(DATE,PARAM_VALUE,103))-1),CONVERT(DATE,PARAM_VALUE,103))))
+    ELSE dateadd(mm,1,CONVERT(DATE,PARAM_VALUE,103)) END 
+   WHEN #{periodType}='Y' THEN dateadd(yy,#{periodicDate}, CONVERT(DATE,PARAM_VALUE,103) ) 
+   ELSE dateadd(dd,#{periodicDate},CONVERT(DATE,PARAM_VALUE,103)) END ),103)
+		  	 </when>
+		 	<otherwise >
+	TO_CHAR((CASE WHEN #{periodType} ='M' 
+		THEN ADD_MONTHS(TO_DATE((CASE WHEN PARAM_VALUE='00/00/0000' THEN '01/01/0001'
+		ELSE PARAM_VALUE END),'DD/MM/YYYY'), CASE WHEN (#{periodicDate}/12+TO_NUMBER(TO_CHAR(TO_DATE((CASE WHEN PARAM_VALUE='00/00/0000' THEN '01/01/0001'
+		ELSE PARAM_VALUE END),'DD/MM/YYYY'),'YYYY')))>9999 THEN 0 ELSE  #{periodicDate} END) 
+	WHEN #{periodType}='Y' 
+		THEN ADD_MONTHS(TO_DATE((
+	CASE WHEN PARAM_VALUE='00/00/0000' THEN '01/01/0001' ELSE PARAM_VALUE END),'DD/MM/YYYY'),(CASE WHEN (#{periodicDate}/12+TO_NUMBER(TO_CHAR(TO_DATE((CASE WHEN PARAM_VALUE='00/00/0000' THEN '01/01/0001'
+		ELSE PARAM_VALUE END),'DD/MM/YYYY'),'YYYY')))>9999 THEN 0 ELSE  #{periodicDate} END) * 12)
+	ELSE 
+		TO_DATE((CASE WHEN PARAM_VALUE='00/00/0000' THEN '01/01/0001' ELSE PARAM_VALUE END),'DD/MM/YYYY') + CASE 
+		WHEN (#{periodicDate}/365+TO_NUMBER(TO_CHAR(TO_DATE((CASE WHEN PARAM_VALUE='00/00/0000' THEN '01/01/0001'
+		ELSE PARAM_VALUE END),'DD/MM/YYYY'),'YYYY')))>9999 THEN 0 ELSE  #{periodicDate} END 
+		END ),'dd/mm/yyyy')
+		 	 </otherwise>
+		 </choose>
+		 		WHERE <foreach item="item" index="index" collection="procList" open="(" separator="OR" close=")">
+		 		(SCHED_ID = 
+            	#{item.schedId}
+            	 AND REPORT_ID = 
+            	#{item.reportId}
+            	)
+     		 </foreach>
+			  AND PARAM_TYPE IN ('DATE','DATETIME')
+			  AND PARAM_VALUE IS NOT NULL
+			  AND EXISTS (SELECT 1 FROM  IRP_REP_ARGUMENTS WHERE IRP_REP_ARGUMENTS.REPORT_ID = IRP_REPORT_SCHED_PARAMS.REPORT_ID
+			  AND  IRP_REP_ARGUMENTS.ARGUMENT_ID = IRP_REPORT_SCHED_PARAMS.PARAM_ID
+         	AND IRP_REP_ARGUMENTS.ARGUMENT_DATE_VALUE IN
+ 			 ('1','2','3')
+            AND IRP_REP_ARGUMENTS.ARGUMENT_TYPE IN ('DATE','DATETIME'))
+ </update>
+ 
+ 
+
+
+</mapper>

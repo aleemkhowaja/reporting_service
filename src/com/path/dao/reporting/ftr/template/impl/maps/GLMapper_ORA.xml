@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        
+<mapper namespace="glExt">
+	<sql id="getGLsByLineSql">
+      SELECT I.COMP_CODE || I.CODE || I.LINE_NBR ||
+       I.LINE_NBR_DET AS CONCATKEY,
+       I.COMP_CODE,
+       I.LINE_NBR_DET,
+       I.CODE,
+       I.LINE_NBR,
+       I.FROM_GL,
+       (SELECT GG.BRIEF_DESC_ENG
+          FROM GEN_LEDGER GG
+         WHERE GG.COMP_CODE = #{COMP_CODE}
+           AND GG.GL_CODE = I.FROM_GL) AS FROM_GLSTR,
+       I.TO_GL,
+       (SELECT GG.BRIEF_DESC_ENG
+          FROM GEN_LEDGER GG
+         WHERE GG.COMP_CODE = #{COMP_CODE}
+           AND GG.GL_CODE = I.TO_GL) AS TO_GLSTR,
+       I.GL_COMP,
+       (SELECT C.BRIEF_DESC_ENG
+          FROM COMPANIES C
+         WHERE C.COMP_CODE = I.GL_COMP) AS GL_COMP_NAME,
+       I.BRANCH_CODE,
+       CASE
+         WHEN I.BRANCH_CODE = 0 THEN
+          'ALL BRANCHES'
+         ELSE
+          (SELECT B.BRIEF_DESC_ENG
+             FROM BRANCHES B
+            WHERE B.BRANCH_CODE = I.BRANCH_CODE
+              AND B.COMP_CODE = I.COMP_CODE)
+       END AS BRANCH_NAME,
+       I.DIV_CODE,
+       CASE
+         WHEN I.DIV_CODE = 0 THEN
+          'ALL DIVISIONS'
+         ELSE
+          (SELECT D.BRIEF_DESC_ENG
+             FROM DIVISIONS D
+            WHERE D.DIVISION_CODE = I.DIV_CODE
+              AND D.COMP_CODE = I.COMP_CODE)
+       END AS DIV_NAME,
+       I.DEPT_CODE,
+       CASE
+         WHEN I.DEPT_CODE = 0 THEN
+          'ALL DEPARTMENTS'
+         ELSE
+          (SELECT DEPT.BRIEF_DESC_ENG
+             FROM DEPARTMENTS DEPT
+            WHERE DEPT.DEPT_CODE = I.DEPT_CODE
+              AND DEPT.COMP_CODE = I.COMP_CODE
+              AND DIVISION_CODE = I.DIV_CODE)
+       END AS DEPT_NAME,
+       I.PERCENTAGE,
+       I.CALC_TYPE,
+       (SELECT S.VALUE_DESC
+          FROM SYS_PARAM_LOV_TRANS S
+         WHERE S.VALUE_CODE = I.CALC_TYPE
+           AND S.LOV_TYPE_ID = 4
+           AND S.LANG_CODE = #{LANG_CODE}) AS CALC_TYPE_NAME,
+       (CASE
+         WHEN I.EXCLUDE_CLOSING_ENTRY = 'Y' THEN
+          'YES'
+         ELSE
+          'NO'
+       END) AS EXCLUDE_CLOSING_ENTRY
+  FROM GLSTMPLTGLSDET  I
+ WHERE COMP_CODE = #{COMP_CODE}
+   AND CODE =	   #{CODE}
+   AND LINE_NBR =  #{LINE_NBR}
+	</sql>
+	
+	
+	<sql id="selecAccSql">
+		SELECT
+			   ABS(TO_NUMBER(COALESCE (AMF.COMP_CODE,0))) || ABS(TO_NUMBER(COALESCE (AMF.BRANCH_CODE,0))) || ABS(TO_NUMBER(COALESCE (AMF.CURRENCY_CODE,0))) || 
+			   ABS(TO_NUMBER(COALESCE (AMF.GL_CODE,0))) || ABS(TO_NUMBER(COALESCE (AMF.CIF_SUB_NO,0))) || ABS(TO_NUMBER(COALESCE (AMF.SL_NO,0)))  AS CONCATKEY,
+			   AMF.COMP_CODE COMP_CODE,
+		       AMF.BRANCH_CODE BRANCH_CODE,
+		       AMF.CURRENCY_CODE CURRENCY_CODE,
+		       AMF.GL_CODE GL_CODE,
+		       AMF.CIF_SUB_NO CIF_SUB_NO,
+		       AMF.SL_NO SL_NO,
+		       'N' INCLUDE,
+		       ROUND(#{tmpCode}, 0) TEMP_CODE,
+		       ROUND(#{tmpltLineNbr}, 0) TMPLT_LINE_NBR,
+		       ROUND(#{subLineNbr}, 0) SUB_LINE_NBR,
+		       0 OLD_SUB_LINE_NBR,
+		       'false' AS INC
+		  FROM AMF
+		 WHERE AMF.COMP_CODE = #{compCode}
+		   AND AMF.GL_CODE BETWEEN #{fromGL} AND #{toGL}
+		   AND ((#{branch} = 0) OR (AMF.BRANCH_CODE = #{branch}))
+		   AND ((#{div} = 0) OR (AMF.DIV = #{div}))
+		   AND ((#{dpt} = 0) OR (AMF.DEPT = #{dpt}))
+		   AND AMF.STATUS NOT IN ('D', 'C', 'M')
+		   AND NOT EXISTS
+		 (SELECT 1
+		          FROM FTR_ACCOUNTS
+		         WHERE FTR_ACCOUNTS.TEMP_CODE = #{tmpCode}
+		           AND FTR_ACCOUNTS.TMPLT_LINE_NBR = #{tmpltLineNbr}
+		           AND FTR_ACCOUNTS.SUB_LINE_NBR = #{subLineNbr}
+		           AND FTR_ACCOUNTS.COMP_CODE = AMF.COMP_CODE
+		           AND FTR_ACCOUNTS.BRANCH_CODE = AMF.BRANCH_CODE
+		           AND FTR_ACCOUNTS.CURRENCY_CODE = AMF.CURRENCY_CODE
+		           AND FTR_ACCOUNTS.GL_CODE = AMF.GL_CODE
+		           AND FTR_ACCOUNTS.CIF_SUB_NO = AMF.CIF_SUB_NO
+		           AND FTR_ACCOUNTS.SL_NO = AMF.SL_NO)
+
+	</sql>
+</mapper>

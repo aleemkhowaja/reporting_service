@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="IRP_FILE_MAIN" >
+  <resultMap id="BaseResultMap" type="com.path.dbmaps.vo.IRP_FILE_MAINVO" >
+    <id column="FILE_ID" property="FILE_ID" />
+    <result column="FILE_NAME" property="FILE_NAME" />
+    <result column="DATE_UPDATED" property="DATE_UPDATED" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.path.dbmaps.vo.IRP_FILE_MAINVO" extends="BaseResultMap" >
+    <result column="FILE_CONTENT" property="FILE_CONTENT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    FILE_ID, FILE_NAME, DATE_UPDATED
+  </sql>
+  <sql id="Blob_Column_List" >
+    FILE_CONTENT
+  </sql>
+  <select id="selectIRP_FILE_MAIN" resultMap="ResultMapWithBLOBs" parameterType="com.path.dbmaps.vo.IRP_FILE_MAINVO" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from IRP_FILE_MAIN
+    where FILE_ID = #{FILE_ID}
+  </select>
+  <delete id="deleteIRP_FILE_MAIN" parameterType="com.path.dbmaps.vo.IRP_FILE_MAINVO" >
+    delete from IRP_FILE_MAIN
+    where FILE_ID = #{FILE_ID}
+  </delete>
+  <insert id="insertIRP_FILE_MAIN" parameterType="com.path.dbmaps.vo.IRP_FILE_MAINVO" >
+    insert into IRP_FILE_MAIN
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="FILE_ID != null and FILE_ID != emptyBigDecimalValue" >
+        FILE_ID,
+      </if>
+      <if test="FILE_NAME != null" >
+        FILE_NAME,
+      </if>
+      DATE_UPDATED,
+      <if test="FILE_CONTENT != null" >
+        FILE_CONTENT,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="FILE_ID != null and FILE_ID != emptyBigDecimalValue" >
+        #{FILE_ID},
+      </if>
+      <if test="FILE_NAME != null" >
+        #{FILE_NAME},
+      </if>
+      <choose >
+        <when test="isSybase == 1" >
+           GETDATE(),
+        </when>
+        <otherwise >
+           SYSDATE,
+        </otherwise>
+      </choose>
+      <if test="FILE_CONTENT != null" >
+        #{FILE_CONTENT},
+      </if>
+    </trim>
+  </insert>
+  <sql id="sql_updateIRP_FILE_MAIN" >
+    update IRP_FILE_MAIN
+    <set >
+      <if test="FILE_NAME != null" >
+        FILE_NAME = #{FILE_NAME},
+      </if>
+      DATE_UPDATED = 
+      <choose >
+        <when test="isSybase == 1" >
+           GETDATE(),
+        </when>
+        <otherwise >
+           SYSDATE,
+        </otherwise>
+      </choose>
+      <if test="FILE_CONTENT != null" >
+        FILE_CONTENT = #{FILE_CONTENT},
+      </if>
+    </set>
+    where FILE_ID = #{FILE_ID}
+  </sql>
+  <update id="updateIRP_FILE_MAIN" parameterType="com.path.dbmaps.vo.IRP_FILE_MAINVO" >
+    <include refid="sql_updateIRP_FILE_MAIN" />
+    <if test="DATE_UPDATED != null" >
+      AND DATE_UPDATED = #{DATE_UPDATED}
+    </if>
+  </update>
+</mapper>

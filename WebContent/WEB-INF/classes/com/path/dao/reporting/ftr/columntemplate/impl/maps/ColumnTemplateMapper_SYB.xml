@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        
+<mapper namespace="colTmplExt">
+	<sql id="createLike">
+		  begin
+INSERT INTO COLMNTMPLT
+  (COMP_CODE,
+   CODE,
+   LINE_NBR,
+   BRIEF_NAME_ENG,
+   BRIEF_NAME_ARAB,
+   COL_TYPE,
+   FROM_DATE,
+   TO_DATE,
+   CREATED_BY,
+   DATE_CREATED,
+   MODIFIED_BY,
+   DATE_MODIFIED,
+   COMP,
+   FROM_BRANCH,
+   TO_BRANCH,
+   FROM_CY,
+   TO_CY,
+   FROM_DIV,
+   TO_DIV,
+   FROM_DEPT,
+   TO_DEPT,
+   FROM_UNIT,
+   TO_UNIT,
+   PRINT_PAPER_SIZE,
+   PRINT_PAPER_ORIENTATION,
+   BOLD,
+   DISP_COL_TOT_ZERO,
+   EXPRESSION,
+   EXPRESSION_LINES,
+   ALL_CRITERIA,
+   FROM_REGION,
+   TO_REGION 
+   )
+  SELECT   COMP_CODE,
+		   #{CODE},
+		   LINE_NBR,
+		   BRIEF_NAME_ENG,
+		   BRIEF_NAME_ARAB,
+		   COL_TYPE,
+		   FROM_DATE,
+		   TO_DATE,
+		   #{userName},
+		   getDate(),
+		   NULL,
+		   NULL,
+		   COMP,
+		   FROM_BRANCH,
+		   TO_BRANCH,
+		   FROM_CY,
+		   TO_CY,
+		   FROM_DIV,
+		   TO_DIV,
+		   FROM_DEPT,
+		   TO_DEPT,
+		   FROM_UNIT,
+		   TO_UNIT,
+		   PRINT_PAPER_SIZE,
+		   PRINT_PAPER_ORIENTATION,
+		   BOLD,
+		   DISP_COL_TOT_ZERO,
+		   EXPRESSION,
+		   EXPRESSION_LINES,
+		   ALL_CRITERIA,
+		   FROM_REGION,
+		   TO_REGION
+         
+    FROM COLMNTMPLT
+   WHERE COLMNTMPLT.COMP_CODE = #{COMP_CODE}
+     AND COLMNTMPLT.CODE = #{oldCode}
+
+
+INSERT INTO COLMNTMPLT_PARAM_LINK
+  (COMP_CODE,
+   TEMP_CODE,
+   LINE_NO,
+   CRITERIA_CODE,
+   CODE1,
+   CODE2,
+   SUB_LINE_NO,
+   PERCENTAGE,
+   TYPE1,
+   RESIDENT,
+   SECURITY_LISTED,
+   INCLUDE,
+   OPERATOR,
+   AMOUNT,
+   DEBIT_CREDIT_IND,
+   COLL_PER_TYPE,
+   TOTAL_AMT_SIGN,
+   TRS_ASSET_TYPE,
+   MAT_DATE,
+   SECURITY_CODE1,
+   SECURITY_CODE2,
+   CBK_CIF_TYPE,
+   OPERATOR1,
+   DEAL_TENURE)
+  SELECT COMP_CODE,
+         #{CODE},
+         LINE_NO,
+         CRITERIA_CODE,
+         CODE1,
+         CODE2,
+         SUB_LINE_NO,
+         PERCENTAGE,
+         TYPE1,
+         RESIDENT,
+         SECURITY_LISTED,
+         INCLUDE,
+         OPERATOR,
+         AMOUNT,
+         DEBIT_CREDIT_IND,
+         COLL_PER_TYPE,
+         TOTAL_AMT_SIGN,
+         TRS_ASSET_TYPE,
+         MAT_DATE,
+         SECURITY_CODE1,
+         SECURITY_CODE2,
+         CBK_CIF_TYPE,
+         OPERATOR1,
+         DEAL_TENURE
+    FROM COLMNTMPLT_PARAM_LINK
+   WHERE COLMNTMPLT_PARAM_LINK.COMP_CODE = #{COMP_CODE}
+     AND COLMNTMPLT_PARAM_LINK.TEMP_CODE = #{oldCode}
+  
+  
+   INSERT INTO FTR_TMPLT_EXPR(TMPLT_TYPE,
+                        COMP_CODE,
+                        CODE,
+                        TMPLT_LINE_NO,
+                        LINE_NO,
+                        EXP_TYPE,
+                        LEFT_OPERATOR,
+                        EXP_LINE,
+                        EXP_VALUE,
+                        RIGHT_OPERATOR,
+                        OPERATOR)
+    SELECT TMPLT_TYPE,
+           COMP_CODE,
+           #{CODE},
+           TMPLT_LINE_NO,
+           LINE_NO,
+           EXP_TYPE,
+           LEFT_OPERATOR,
+           EXP_LINE,
+           EXP_VALUE,
+           RIGHT_OPERATOR,
+           OPERATOR
+           FROM FTR_TMPLT_EXPR
+           WHERE FTR_TMPLT_EXPR.COMP_CODE = #{COMP_CODE}
+           AND FTR_TMPLT_EXPR.CODE = #{oldCode}
+           AND FTR_TMPLT_EXPR.TMPLT_TYPE = 'C'
+end
+	</sql>
+	
+</mapper>

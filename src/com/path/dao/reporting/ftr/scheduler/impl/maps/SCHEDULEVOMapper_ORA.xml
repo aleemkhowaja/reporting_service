@@ -1,0 +1,299 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="SCHEDULEREXT">
+  	<sql id="findReportByRunningStatus">
+		SELECT  RSL.REPORT_FORMAT AS REP_FORMAT,
+		(SELECT VALUE_DESC
+          FROM SYS_PARAM_LOV_TRANS
+         WHERE VALUE_CODE = RSL.REPORT_FORMAT
+           AND LOV_TYPE_ID = #{FILE_FORMAT_LOV_TYPE_ID}
+           AND LANG_CODE =#{LANG_CODE}) AS REPORT_FORMAT_TRANS,
+		 (SELECT VALUE_DESC
+          FROM SYS_PARAM_LOV_TRANS
+         WHERE LOV_TYPE_ID = #{LOV_DATA_TYPE}
+           AND VALUE_CODE = RSL.SAVE_DATA_TYPE
+           AND LANG_CODE = #{LANG_CODE}) AS SAVE_DATA_TYPE_STR,
+            (SELECT VALUE_DESC
+              FROM SYS_PARAM_LOV_TRANS
+              WHERE LOV_TYPE_ID = #{SCHED_STATUS_LOV_TYPE_ID}
+                    AND VALUE_CODE = RSL.STATUS
+                    AND LANG_CODE = #{LANG_CODE}) AS STATUS_DESC,
+           	RSL.*, R.REPORT_NAME,R.PROG_REF, S.SCHED_NAME,
+        	TO_CHAR(RSL.START_DATE, 'DD/MM/YYYY HH12:MI AM') AS START_DATE_STR ,
+        	 TO_CHAR(RSL.START_DATE, 'DD/MM/YYYY HH:MI:SS AM') AS START_DATE_STR1,
+        	 TO_CHAR(RSL.SCHEDULED_DATE, 'DD/MM/YYYY HH:MI:SS AM') AS SCHED_DATE_STR1,
+              (SELECT IS_DB FROM IRP_SNAPSHOTS WHERE SNAPSHOT_ID=RSL.SNAPSHOT_ID) AS IS_DB,
+              (SELECT FILE_NAME FROM IRP_SNAPSHOTS WHERE SNAPSHOT_ID=RSL.SNAPSHOT_ID) AS FILE_NAME,
+              (SELECT CONN_ID FROM IRP_SNAPSHOTS WHERE SNAPSHOT_ID=RSL.SNAPSHOT_ID) AS CONN_ID,
+              CASE
+             	WHEN SAVE_DATA_TYPE = 4 THEN NULL
+             	ELSE S.SCHED_NAME
+             END AS PREVIEW
+		FROM 
+		   	IRP_REPORT_SCHED_LOG RSL LEFT JOIN IRP_AD_HOC_REPORT R ON RSL.REPORT_ID=R.REPORT_ID
+			, IRP_SCHEDULE S
+		WHERE RSL.SCHED_ID = S.SCHED_ID
+	</sql>
+	
+  
+  
+  	<sql id="Scheduler_Column_List" >
+   	   SCHED_ID,
+       END_OF_MONTH,
+       SCHED_NAME,
+       FIRST_RUN_DATE,
+       SCHED_EXPIRY_DATE,
+       SCHED_FREQUENCY,
+       NEXT_RUN_DATE,
+       DATE_UPDATED,
+       SCHED_TYPE,
+       FREQUENCY_HOUR, 
+       FREQUENCY_MINUTE,
+       BATCH_CODE,
+       (SELECT E.BATCH_BRIEF_NAME FROM EOD_BATCH_MASTER E WHERE E.BATCH_CODE = IRP_SCHEDULE.BATCH_CODE) BATCH_BRIEF_NAME,
+       EVT_ID,
+       ${tableQuery} AS EVT_BRIEF_NAME,
+       TO_CHAR(FIRST_RUN_DATE, 'DD/MM/YYYY HH12:MI AM') AS FIRST_RUN_DATE_STR,
+       TO_CHAR(SCHED_EXPIRY_DATE, 'DD/MM/YYYY HH12:MI AM') as SCHED_EXPIRY_DATE_STR,
+       TO_CHAR(NEXT_RUN_DATE, 'DD/MM/YYYY HH12:MI AM') as NEXT_RUN_DATE_STR
+  </sql>
+  
+  	<sql id="Scheduler_Grid_Column_List" >
+   	   SCHED_ID,
+       END_OF_MONTH,
+       SCHED_NAME,
+       FIRST_RUN_DATE,
+       SCHED_EXPIRY_DATE,
+       SCHED_FREQUENCY,
+       NEXT_RUN_DATE,
+       DATE_UPDATED,
+       SCHED_TYPE,
+      (SELECT VALUE_DESC
+          FROM SYS_PARAM_LOV_TRANS
+         WHERE LOV_TYPE_ID = #{SCHED_TYPE_LOV_TYPE_ID}
+           AND VALUE_CODE =IRP_SCHEDULE.SCHED_TYPE
+           AND LANG_CODE = #{LANG_CODE}) AS SCHED_TYPE_STR,
+       FREQUENCY_HOUR, 
+       FREQUENCY_MINUTE,
+       TO_CHAR(FIRST_RUN_DATE, 'DD/MM/YYYY HH12:MI AM') AS FIRST_RUN_DATE_STR,
+       TO_CHAR(SCHED_EXPIRY_DATE, 'DD/MM/YYYY HH12:MI AM') as SCHED_EXPIRY_DATE_STR,
+       TO_CHAR(NEXT_RUN_DATE, 'DD/MM/YYYY HH12:MI AM') as NEXT_RUN_DATE_STR
+  </sql>
+  
+   <select id="selectDueReports" parameterType="com.path.vo.reporting.scheduler.IRP_SCHEDULESC" resultMap="SCHEDULER.ReportScheduleResultMap">
+  	SELECT  IRP_SCHEDULE.EVT_ID, IRP_REPORT_SCHEDULE.*,IRP_AD_HOC_REPORT.REPORT_NAME,XHTML_FILE, JRXML_FILE, IRP_AD_HOC_REPORT.PROG_REF,IRP_AD_HOC_REPORT.APP_NAME,
+  	NEXT_RUN_DATE,IRP_AD_HOC_REPORT.CONN_ID,IRP_AD_HOC_REPORT.WHEN_NO_DATA,IRP_AD_HOC_REPORT.LANG_INDEPENDENT_YN,IRP_SCHEDULE.BATCH_CODE
+	FROM 
+    IRP_AD_HOC_REPORT 
+    INNER JOIN IRP_REPORT_SCHEDULE ON IRP_AD_HOC_REPORT.REPORT_ID=IRP_REPORT_SCHEDULE.REPORT_ID
+    INNER JOIN IRP_SCHEDULE ON IRP_REPORT_SCHEDULE.SCHED_ID=IRP_SCHEDULE.SCHED_ID
+    WHERE IRP_SCHEDULE.NEXT_RUN_DATE  <![CDATA[<=]]> TO_DATE(TO_CHAR(#{NEXT_RUN_DATE},'YYYY-MM-DD HH24:MI:SS'),'YYYY-MM-DD HH24:MI:SS')
+    AND IRP_REPORT_SCHEDULE.IS_ACTIVE='Y'
+    AND IRP_SCHEDULE.SCHED_EXPIRY_DATE <![CDATA[>=]]> TO_DATE(TO_CHAR(#{NEXT_RUN_DATE},'YYYY-MM-DD HH24:MI:SS'),'YYYY-MM-DD HH24:MI:SS')
+    AND NOT EXISTS (SELECT 1
+	FROM IRP_REPORT_SCHED_LOG L
+	WHERE L.REPORT_ID = IRP_REPORT_SCHEDULE.REPORT_ID
+	AND L.SCHED_ID = IRP_REPORT_SCHEDULE.SCHED_ID
+	AND L.STATUS = 'r')
+	AND IRP_SCHEDULE.SCHED_TYPE != 6
+	
+	UNION ALL
+	
+	SELECT IRP_SCHEDULE.EVT_ID,
+         IRP_SCHEDULE.SCHED_ID,
+         null AS REPORT_ID,
+         null AS REPORT_FORMAT,
+         null AS IS_ACTIVE,
+         null AS PRINTER_NAME,
+		 null AS DATA_ONLY,
+         null AS REPORT_LANGUAGE,
+         null AS ATTACH_FILE_NAME,
+         null AS BCC_EMAIL_TYPE,
+         null AS BCC_EMAIL_VAL,
+         null AS CC_EMAIL_TYPE,
+         null AS CC_EMAIL_VAL,
+         null AS EMAIL_BODY,
+         null AS EMAIL_SUBJECT,
+         null AS FROM_EMAIL_TYPE,
+         null AS FROM_EMAIL_VAL,
+         null MAIL_SERVER_CODE,
+         null AS PRINT_IF_NO_DATA_YN,
+         null AS SEND_IF_NO_DATA_YN,
+         null AS TO_EMAIL_TYPE,
+         null AS TO_EMAIL_VAL,
+         null AS EMAIL_CONSOLIDATED_YN,
+         null AS DATE_TYPE,
+         null AS SAVE_DATA_TYPE,
+         null AS CSV_SEPARATOR,
+         null AS SHOW_HEAD_FOOT,
+         null AS IS_FCR_YN,
+         null AS REPORT_REF,
+         null AS SECURED_FILE_YN,
+         null AS SECURED_PWD_FIELD_NAME,
+         null AS REPORT_NAME,
+         null AS XHTML_FILE,
+         null AS JRXML_FILE,
+         null AS PROG_REF,
+         null AS APP_NAME,
+		 IRP_SCHEDULE.NEXT_RUN_DATE,
+		 null AS CONN_ID,
+         null AS WHEN_NO_DATA,
+         null AS LANG_INDEPENDENT_YN,
+         null AS BATCH_CODE
+	FROM IRP_SCHEDULE WHERE IRP_SCHEDULE.SCHED_TYPE = 6 AND
+	IRP_SCHEDULE.NEXT_RUN_DATE  <![CDATA[<=]]> TO_DATE(TO_CHAR(#{NEXT_RUN_DATE},'YYYY-MM-DD HH24:MI:SS'),'YYYY-MM-DD HH24:MI:SS')
+    AND IRP_SCHEDULE.SCHED_EXPIRY_DATE <![CDATA[>=]]> TO_DATE(TO_CHAR(#{NEXT_RUN_DATE},'YYYY-MM-DD HH24:MI:SS'),'YYYY-MM-DD HH24:MI:SS')
+  </select>
+  
+
+  
+  <sql id="updateLOG">
+        update IRP_REPORT_SCHED_LOG
+    <set >
+      <if test="END_DATE != null" >
+        END_DATE = #{END_DATE},
+      </if>
+      <if test="STATUS != null" >
+        STATUS = #{STATUS},
+      </if>
+      <if test="REMARKS != null" >
+        REMARKS = #{REMARKS},
+      </if>
+      <if test="SNAPSHOT_ID != null" >
+        <choose >
+          <when test="SNAPSHOT_ID == emptyBigDecimalValue" >
+            SNAPSHOT_ID = NULL ,
+          </when>
+          <otherwise >
+            SNAPSHOT_ID = #{SNAPSHOT_ID},
+          </otherwise>
+        </choose>
+      </if>
+    </set>
+    where REPORT_ID = #{REPORT_ID}
+      and SCHEDULED_DATE = TO_DATE(TO_CHAR(#{SCHEDULED_DATE},'YYYY-MM-DD HH24:MI:SS'),'YYYY-MM-DD HH24:MI:SS')
+      and SCHED_ID = #{SCHED_ID}
+      and START_DATE = TO_DATE(TO_CHAR(#{START_DATE},'YYYY-MM-DD HH24:MI:SS'),'YYYY-MM-DD HH24:MI:SS')
+  </sql>
+  
+    <sql id="retRepSchedMailLogDetSql">
+  		
+	  SELECT D.FROM_EMAIL_VAL,
+       D.RECEIVER_TYPE,
+       D.RECEIVER_EMAIL_VAL,
+       D.LINE_NBR,
+       D.STATUS,
+       D.REMARKS,
+       D.EMAIL_SUBJECT,
+       D.CIF_NO,
+       (SELECT VALUE_DESC
+          FROM SYS_PARAM_LOV_TRANS
+         WHERE LOV_TYPE_ID = #{SCHED_STATUS_LOV_TYPE_ID}
+           AND VALUE_CODE = D.STATUS
+           AND LANG_CODE = #{LANG_CODE}) AS STATUS_DESC,
+       
+       (SELECT VALUE_DESC
+          FROM SYS_PARAM_LOV_TRANS
+         WHERE LOV_TYPE_ID = #{SCHED_MAIL_RECEIVER_TYPE_ID}
+           AND VALUE_CODE = D.RECEIVER_TYPE
+           AND LANG_CODE =  #{LANG_CODE}) AS RECEIVER_TYPE_STR,
+        D.START_DATE
+  FROM IRP_REPORT_SCHED_LOG_DETAILS D
+ WHERE D.REPORT_ID = #{REPORT_ID}
+   AND D.SCHED_ID =  #{SCHED_ID}
+   AND D.SCHEDULED_DATE =#{SCHEDULED_DATE}
+   AND D.START_DATE =TO_DATE(TO_CHAR(#{START_DATE},'YYYY-MM-DD HH24:MI:SS'),'YYYY-MM-DD HH24:MI:SS')
+  	</sql>
+  
+  
+   <insert id="insertRepSchedLogDetails" parameterType="irp_report_sched_log_detailsvo">
+  		<selectKey resultType="java.math.BigDecimal" keyProperty="LINE_NBR" order="BEFORE">
+	        SELECT (CASE
+	          WHEN COUNT(LINE_NBR) = 0 THEN
+	           0
+	          ELSE
+	           MAX(LINE_NBR)
+	        END) + 1
+	       FROM (SELECT MAX(LINE_NBR) AS LINE_NBR
+	           FROM IRP_REPORT_SCHED_LOG_DETAILS
+	          WHERE  REPORT_ID = #{REPORT_ID}
+	      AND SCHEDULED_DATE = #{SCHEDULED_DATE}
+	      AND SCHED_ID = #{SCHED_ID}
+	      AND START_DATE =  TO_DATE(TO_CHAR(#{START_DATE},'YYYY-MM-DD HH24:MI:SS'),'YYYY-MM-DD HH24:MI:SS')) TB1
+	   </selectKey>
+	   insert into IRP_REPORT_SCHED_LOG_DETAILS
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+        LINE_NBR,
+      <if test="REPORT_ID != null and REPORT_ID != emptyBigDecimalValue" >
+        REPORT_ID,
+      </if>
+      <if test="SCHEDULED_DATE != null" >
+        SCHEDULED_DATE,
+      </if>
+      <if test="SCHED_ID != null and SCHED_ID != emptyBigDecimalValue" >
+        SCHED_ID,
+      </if>
+      <if test="START_DATE != null" >
+        START_DATE,
+      </if>
+      <if test="FROM_EMAIL_VAL != null" >
+        FROM_EMAIL_VAL,
+      </if>
+      <if test="RECEIVER_TYPE != null and RECEIVER_TYPE != emptyBigDecimalValue" >
+        RECEIVER_TYPE,
+      </if>
+      <if test="RECEIVER_EMAIL_VAL != null" >
+        RECEIVER_EMAIL_VAL,
+      </if>
+      <if test="STATUS != null" >
+        STATUS,
+      </if>
+      <if test="REMARKS != null" >
+        REMARKS,
+      </if>
+      <if test="EMAIL_SUBJECT != null" >
+        EMAIL_SUBJECT,
+      </if>
+      <if test="CIF_NO != null and CIF_NO != emptyBigDecimalValue" >
+        CIF_NO,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+        #{LINE_NBR},
+      <if test="REPORT_ID != null and REPORT_ID != emptyBigDecimalValue" >
+        #{REPORT_ID},
+      </if>
+      <if test="SCHEDULED_DATE != null" >
+        #{SCHEDULED_DATE},
+      </if>
+      <if test="SCHED_ID != null and SCHED_ID != emptyBigDecimalValue" >
+        #{SCHED_ID},
+      </if>
+      <if test="START_DATE != null" >
+        #{START_DATE},
+      </if>
+      <if test="FROM_EMAIL_VAL != null" >
+        #{FROM_EMAIL_VAL},
+      </if>
+      <if test="RECEIVER_TYPE != null and RECEIVER_TYPE != emptyBigDecimalValue" >
+        #{RECEIVER_TYPE},
+      </if>
+      <if test="RECEIVER_EMAIL_VAL != null" >
+        #{RECEIVER_EMAIL_VAL},
+      </if>
+      <if test="STATUS != null" >
+        #{STATUS},
+      </if>
+      <if test="REMARKS != null" >
+        #{REMARKS},
+      </if>
+      <if test="EMAIL_SUBJECT != null" >
+        #{EMAIL_SUBJECT},
+      </if>
+      <if test="CIF_NO != null and CIF_NO != emptyBigDecimalValue" >
+        #{CIF_NO},
+      </if>
+    </trim>
+  </insert>
+</mapper>

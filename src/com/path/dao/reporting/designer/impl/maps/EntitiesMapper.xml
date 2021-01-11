@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        
+<mapper namespace="entities">
+
+<resultMap id="loadEntitiesListMap" type="irp_entitiesVO" >
+	<result column="ENTITY_DB_NAME" property="ENTITY_DB_NAME" />
+    <result column="ENTITY_ALIAS" property="ENTITY_ALIAS" />
+</resultMap>
+  
+<resultMap id="loadFieldsListMap" type="fieldCO" >
+   <result column="ENTITY_DB_NAME" property="ENTITY_DB_NAME" />
+   <result column="FIELD_DB_NAME" property="FIELD_DB_NAME" />
+   <result column="FIELD_ALIAS" property="FIELD_ALIAS" />
+   <result column="FIELD_DATA_TYPE" property="FIELD_DATA_TYPE" />
+   <result column="oldField" property="oldField" />
+</resultMap>
+  
+<resultMap id="loadTableViewListMap" type="irp_tableViewCO" >
+	<result column="OBJECT_DB_NAME" property="OBJECT_DB_NAME" />
+    <result column="OBJECT_TYPE" property="OBJECT_TYPE" />
+</resultMap>
+
+<resultMap id="loadFieldLkpListMap" type="irp_entitiesSC" >
+	<result column="COLUMN_NAME" property="COLUMN_NAME" />
+    <result column="COLUMN_TYPE" property="COLUMN_TYPE" />
+</resultMap>
+
+<resultMap id="loadAllFieldsListMap" type="fieldCO" >
+   <result column="ENTITY_DB_NAME" property="ENTITY_DB_NAME" />
+   <result column="FIELD_DB_NAME" property="FIELD_DB_NAME" />
+   <result column="FIELD_ALIAS" property="FIELD_ALIAS" />
+   <result column="FIELD_DATA_TYPE" property="FIELD_DATA_TYPE" />
+</resultMap>
+  
+  
+<sql id="loadEntitiesListSql">
+  	SELECT 	ENTITY_DB_NAME, 
+  			ENTITY_ALIAS 
+  	FROM 	IRP_ENTITIES
+</sql>
+  	
+
+<sql id="loadFieldsListSql">
+  	SELECT 	ENTITY_DB_NAME, 
+  			FIELD_DB_NAME, 
+  			FIELD_ALIAS, 
+  			FIELD_DATA_TYPE ,
+  			'1' oldField
+  	FROM 	IRP_FIELDS
+  	<where>
+  		<if test="ENTITY_DB_NAME != null" >
+  		ENTITY_DB_NAME =  #{ENTITY_DB_NAME}
+  		</if>
+  	</where>	
+</sql>
+  	
+  	
+<select id="loadEntitiesList"  resultMap="loadEntitiesListMap" parameterType="irp_entitiesSC">
+	<include refid="servicesCommon.commonGridWrpBefFlip"/>
+	<include refid="loadEntitiesListSql"/>
+	<include refid="servicesCommon.commonGridWrpAftFlip"/>
+	<include refid="servicesCommon.commmonGridWrpFlipClose"/>
+</select>
+
+<select id="retEntitiesListCount"  resultType="int" >
+	<include refid="servicesCommon.commonGridWrpBefCnt"/>
+	<include refid="loadEntitiesListSql"/>
+	<include refid="servicesCommon.commonGridWrpAftCnt"/>
+	<include refid="servicesCommon.commonGridCountWrpClose"/>
+</select>
+
+<select id="loadFieldsList"  resultMap="loadFieldsListMap" parameterType="irp_entitiesSC">
+	<include refid="servicesCommon.commonGridWrpBefFlip"/>
+	<include refid="loadFieldsListSql"/>
+	<include refid="servicesCommon.commonGridWrpAftFlip"/>
+	<include refid="servicesCommon.commmonGridWrpFlipClose"/>
+</select>
+
+<select id="retFieldsListCount"  resultType="int" >
+	<include refid="servicesCommon.commonGridWrpBefCnt"/>
+	<include refid="loadFieldsListSql"/>
+	<include refid="servicesCommon.commonGridWrpAftCnt"/>
+	<include refid="servicesCommon.commonGridCountWrpClose"/>	
+</select>
+
+<select id="loadTableViewList"  resultMap="loadTableViewListMap" parameterType="irp_tableViewCO">
+	<include refid="servicesCommon.commonGridWrpBefFlip"/>
+	<include refid="entExt.loadTableViewListSql"/>
+	<include refid="servicesCommon.commonGridWrpAftFlip"/>
+	<include refid="servicesCommon.commmonGridWrpFlipClose"/>
+</select>
+
+<select id="retTableViewListCount"  resultType="int" >
+	<include refid="servicesCommon.commonGridWrpBefCnt"/>
+	<include refid="entExt.loadTableViewListSql"/>
+	<include refid="servicesCommon.commonGridWrpAftCnt"/>
+	<include refid="servicesCommon.commonGridCountWrpClose"/>
+</select>
+
+<select id="loadFieldLkpList"  resultMap="loadFieldLkpListMap" parameterType="irp_entitiesSC">
+	<include refid="servicesCommon.commonGridWrpBefFlip"/>
+	<include refid="entExt.loadFieldLkpListSql"/>
+	<include refid="servicesCommon.commonGridWrpAftFlip"/>
+	<include refid="servicesCommon.commmonGridWrpFlipClose"/>
+</select>
+
+<select id="retFieldLkpListCount"  resultType="int" >
+	<include refid="servicesCommon.commonGridWrpBefCnt"/>
+	<include refid="entExt.loadFieldLkpListSql"/>
+	<include refid="servicesCommon.commonGridWrpAftCnt"/>
+	<include refid="servicesCommon.commonGridCountWrpClose"/>
+</select>
+
+<select id="loadAllFieldsList"  resultMap="loadAllFieldsListMap" parameterType="irp_entitiesSC">
+	<include refid="servicesCommon.commonGridWrpBefFlip"/>
+	<include refid="entExt.loadAllFieldsListSql"/>
+	<include refid="servicesCommon.commonGridWrpAftFlip"/>
+	<include refid="servicesCommon.commmonGridWrpFlipClose"/>
+</select>
+
+<select id="retAllFieldsListCount"  resultType="int" >
+	<include refid="servicesCommon.commonGridWrpBefCnt"/>
+	<include refid="entExt.loadAllFieldsListSql"/>
+	<include refid="servicesCommon.commonGridWrpAftCnt"/>
+	<include refid="servicesCommon.commonGridCountWrpClose"/>
+</select>
+
+<update id="updateEntity" parameterType="irp_entitiesVO">
+	 <include refid="IRP_ENTITIES.sql_updateIRP_ENTITIES" />
+	 <if test="DATE_UPDATED != null" > AND DATE_UPDATED = #{DATE_UPDATED} </if>
+</update>
+
+  	
+  	
+<delete id="deleteFields" parameterType="irp_entitiesSC">
+	DELETE FROM IRP_FIELDS  	
+	WHERE ENTITY_DB_NAME = #{ENTITY_DB_NAME}
+	<if test="delFieldsList != null">
+		AND FIELD_DB_NAME IN 
+		<foreach item="item" index="index" collection="delFieldsList" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</if>
+</delete>
+
+
+<insert id="insertFields" parameterType="fieldCO">
+    INSERT INTO IRP_FIELDS
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+        ENTITY_DB_NAME,
+        FIELD_DB_NAME,
+        FIELD_ALIAS,
+        FIELD_DATA_TYPE
+    </trim>
+    VALUES(
+		#{ENTITY_DB_NAME},
+		#{FIELD_DB_NAME},
+		#{FIELD_ALIAS},
+		#{FIELD_DATA_TYPE}
+		)
+</insert>
+
+
+
+<update id="updateField" parameterType="fieldCO">
+	UPDATE IRP_FIELDS
+   	SET FIELD_ALIAS = #{FIELD_ALIAS}
+ 	WHERE FIELD_DB_NAME =#{FIELD_DB_NAME}
+   	AND ENTITY_DB_NAME = #{ENTITY_DB_NAME}
+</update>
+
+<delete id="deleteEntity" parameterType="irp_entitiesSC">
+	DELETE FROM IRP_ENTITIES WHERE ENTITY_DB_NAME= #{ENTITY_DB_NAME}
+</delete>
+
+
+</mapper>

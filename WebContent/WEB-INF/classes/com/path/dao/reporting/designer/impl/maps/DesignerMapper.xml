@@ -1,0 +1,2074 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="designer" >
+
+ <resultMap id="reportResultMap" type="irp_ad_hoc_reportVO" >
+    <id column="REPORT_ID" property="REPORT_ID" />
+    <result column="REPORT_NAME" property="REPORT_NAME" />
+    <result column="PROG_REF" property="PROG_REF" />
+    <result column="CREATED_BY" property="CREATED_BY" />
+    <result column="DATE_CREATED" property="DATE_CREATED" />
+    <result column="MODIFIED_BY" property="MODIFIED_BY" />
+    <result column="DATE_MODIFIED" property="DATE_MODIFIED" />
+    <result column="DEFAULT_FORMAT" property="DEFAULT_FORMAT" />
+    <result column="CONN_ID" property="CONN_ID" />
+    <result column="APP_NAME" property="APP_NAME" />
+    <result column="DATE_UPDATED" property="DATE_UPDATED" />
+    <result column="CSV_SEPARATOR" property="CSV_SEPARATOR" />
+    <result column="SHOW_HEAD_FOOT" property="SHOW_HEAD_FOOT" />
+    <result column="REP_FLAG" property="REP_FLAG" />
+     <result column="xlsName" property="xlsName" />
+     <result column="REPORT_TYPE" property="REPORT_TYPE" />
+     <result column="DOWNLOADABLE_FLAG" property="DOWNLOADABLE_FLAG" />
+    <result column="EDITABLE_FLAG" property="EDITABLE_FLAG" />
+    <result column="COMP_CODE" property="COMP_CODE" /> 
+    <result column="WHEN_NO_DATA" property="WHEN_NO_DATA" /> 
+    <result column="MAIL_SERVER_CODE" property="MAIL_SERVER_CODE" /> 
+    <result column="LANG_INDEPENDENT_YN" property="LANG_INDEPENDENT_YN" /> 
+    <result column="REPORT_VERSION" property="REPORT_VERSION" /> 
+     <result column="VERSION_DATE" property="VERSION_DATE" />
+     <result column="REPORT_MODIFIED_YN" property="REPORT_MODIFIED_YN" />
+     <result column="NBR_DISPLAYED_ARG_PER_ROW" property="NBR_DISPLAYED_ARG_PER_ROW" />
+     <result column="GENERATED_FILE_NAME" property="GENERATED_FILE_NAME" /> 
+     <result column="METADATA_REPORT_YN" property="METADATA_REPORT_YN" /> 
+    <result column="METADATA_REPORT_NAME" property="METADATA_REPORT_NAME" /> 
+    <result column="METADATA_REPORT_ID" property="METADATA_REPORT_ID" /> 
+    <result column="METADATA_REPORT_EXT" property="METADATA_REPORT_EXT" /> 
+    <result column="METADATA_GENERATED_LOCATION" property="METADATA_GENERATED_LOCATION" />
+    <result column="CIF_AUDIT_YN" property="CIF_AUDIT_YN" />
+    <result column="EXEC_PRC_ON_RETRIEVE_YN" property="EXEC_PRC_ON_RETRIEVE_YN" />
+  </resultMap>
+  
+  <resultMap type="irp_ad_hoc_reportCO" id="retrieveReporTMap" extends="reportResultMap" >
+	<result column="PARENT_REF" property="PARENT_REF" />
+    <result column="PARENT_REF_STR" property="PARENT_REF_STR" />  
+	<result column="OPT_DESC_NAME" property="OPT_DESC_NAME" /> 
+	<result column="HOST" property="HOST" />  
+	<result column="MENU_TITLE_ENG" property="MENU_TITLE_ENG" />  
+	<result column="CATEGORY_ID" property="CATEGORY_ID" />  
+	<result column="CATEGORY_DESC" property="CATEGORY_DESC" />  
+  </resultMap>
+  
+  <resultMap id="ResultMapWithBLOBs" type="irp_ad_hoc_reportCO" extends="reportResultMap" >
+    <result column="XHTML_FILE" property="XHTML_FILE" />
+    <result column="JRXML_FILE" property="JRXML_FILE" />
+    <result column="PARENT_REF" property="PARENT_REF" />
+    <result column="PARENT_REF_STR" property="PARENT_REF_STR" />  
+  </resultMap>
+  
+  <resultMap id="reportsListResultMap" type="irp_ad_hoc_reportCO" extends="reportResultMap" >
+    <result column="PARENT_REF" property="PARENT_REF" />
+    <result column="PARENT_REF_STR" property="PARENT_REF_STR" />
+    <result column="OLD_REPORT_ID" property="OLD_REPORT_ID" />
+    <result column="APP_NAME" property="APP_NAME" />
+  </resultMap>
+  
+  <resultMap id="reportxmlResultMap" type="irp_ad_hoc_reportCO">
+  	<result column="REPORT_NAME" property="REPORT_NAME" />
+    <result column="JRXML_FILE" property="JRXML_FILE" />
+  </resultMap>
+  
+  <resultMap id="retReportFlagsMap" type="irp_ad_hoc_reportCO">
+  	<result column="DOWNLOADABLE_FLAG" property="DOWNLOADABLE_FLAG" />
+    <result column="EDITABLE_FLAG" property="EDITABLE_FLAG" />
+    <result column="REP_FLAG" property="REP_FLAG" />
+    <result column="REPORT_ID" property="REPORT_ID" />
+    <result column="isSubRep" property="isSubRep" />
+    <result column="REPORT_VERSION" property="REPORT_VERSION" />
+    <result column="VERSION_DATE" property="VERSION_DATE" />
+    <result column="REPORT_MODIFIED_YN" property="REPORT_MODIFIED_YN" />
+  </resultMap>
+  
+  <resultMap id="retProgRefByRepIdMap" type="irp_ad_hoc_reportCO">
+    <result column="PROG_REF" property="PROG_REF" />
+    <result column="APP_NAME" property="APP_NAME" />
+    <result column="REPORT_TYPE" property="REPORT_TYPE" />
+    <result column="REPORT_ID" property="REPORT_ID" />
+  </resultMap>
+  
+  <resultMap id="retRepIdByProgRefMap" type="irp_ad_hoc_reportCO">
+    <result column="REPORT_ID" property="REPORT_ID" />
+    <result column="REPORT_NAME" property="REPORT_NAME" />
+  </resultMap>
+  
+  <resultMap id="retQueriesByReportMap" type="irp_ad_hoc_queryVO">
+    <result column="QUERY_OBJECT" property="QUERY_OBJECT" />
+  </resultMap>
+  
+  <resultMap id="argsResultMap" type="irp_rep_argumentsCO" >
+    <result column="ARGUMENT_ID" property="ARGUMENT_ID"/>
+    <result column="REPORT_ID" property="REPORT_ID"/>
+    <result column="ARGUMENT_NAME" property="ARGUMENT_NAME"/>
+    <result column="ARGUMENT_LABEL" property="ARGUMENT_LABEL"/>
+    <result column="ARGUMENT_TYPE" property="ARGUMENT_TYPE"/>
+    <result column="ARGUMENT_SOURCE" property="ARGUMENT_SOURCE"/>
+    <result column="ARGUMENT_VALUE" property="ARGUMENT_VALUE"/>
+    <result column="SESSION_ATTR_NAME" property="SESSION_ATTR_NAME"/>
+    <result column="QUERY_ID" property="QUERY_ID"/>
+    <result column="COLUMN_NAME" property="COLUMN_NAME"/>
+    <result column="ARGUMENT_ORDER" property="ARGUMENT_ORDER"/>
+    <result column="DISPLAY_FLAG" property="DISPLAY_FLAG"/>
+    <result column="ENABLE_FLAG" property="ENABLE_FLAG"/>
+    <result column="FLAG_VALUE_ON" property="FLAG_VALUE_ON"/>
+    <result column="FLAG_VALUE_OFF" property="FLAG_VALUE_OFF"/>
+	<result column="QUERY_ID_DEFAULT"  property="QUERY_ID_DEFAULT"/>
+    <result column="DEFAULT_VALUE_COL_NAME" property="DEFAULT_VALUE_COL_NAME"/>
+    <result column="DEFAULT_VALUE_COL_DESC" property="DEFAULT_VALUE_COL_DESC"/>
+    <result column="ARGUMENT_SRC_DEFAULT" property="ARGUMENT_SRC_DEFAULT"/>
+    <result column="DEFAULT_VAL_QRY_NAME" property="DEFAULT_VAL_QRY_NAME"/>
+    <result column="CASE_SENSITIVITY" property="irpRepArgConstraintCO.CASE_SENSITIVITY"/>
+    <result column="MAX_LENGTH" property="irpRepArgConstraintCO.MAX_LENGTH"/>
+    <result column="MAX_VAL" property="irpRepArgConstraintCO.MAX_VAL"/>
+    <result column="MIN_VAL" property="irpRepArgConstraintCO.MIN_VAL"/>
+    <result column="FORMAT" property="irpRepArgConstraintCO.FORMAT"/>
+    <result column="CONDITION" property="irpRepArgConstraintCO.CONDITION"/>
+    <result column="SHOW_EXPR" property="irpRepArgConstraintCO.SHOW_EXPR"/>
+    <result column="HIDE_EXPR" property="irpRepArgConstraintCO.HIDE_EXPR"/>
+    <result column="BTR_CONTROL_DISP" property="irpRepArgConstraintCO.BTR_CONTROL_DISP"/>
+    <result column="MULTISELECT_YN" property="MULTISELECT_YN"/>
+    <result column="ARGUMENT_DATE_VALUE" property="ARGUMENT_DATE_VALUE"/>
+    <result column="COLUMN_DESC" property="COLUMN_DESC"/>
+    <result column="ARG_QUERY_OPTIONS" property="ARG_QUERY_OPTIONS"/>
+  </resultMap>
+  
+  <resultMap type="irp_ad_hoc_reportVOWithBLOBs" id="retRepDetailsByRepIdMap" extends="IRP_AD_HOC_REPORT.BaseResultMap">
+    <result column="XHTML_FILE" property="XHTML_FILE" />
+    <result column="JRXML_FILE" property="JRXML_FILE" />
+  </resultMap>
+
+    
+  <sql id="reportsSql">
+  	select 
+    REPORT_ID, REPORT_NAME, REP_FLAG, PROG_REF, CREATED_BY, DATE_CREATED, MODIFIED_BY, DATE_MODIFIED,WHEN_NO_DATA,GENERATED_FILE_NAME
+    , XHTML_FILE, JRXML_FILE, DEFAULT_FORMAT, CONN_ID,APP_NAME,DATE_UPDATED, CSV_SEPARATOR, SHOW_HEAD_FOOT,MAIL_SERVER_CODE,NBR_DISPLAYED_ARG_PER_ROW,
+    (SELECT M.HOST
+        FROM IRP_MAIL_SERVER_CONFIG M
+        WHERE M.MAIL_SERVER_CODE = R.MAIL_SERVER_CODE ) AS HOST,
+    (SELECT O.PARENT_REF
+          FROM OPT O
+         WHERE O.APP_NAME = R.APP_NAME
+           AND O.PROG_REF = R.PROG_REF ) AS PARENT_REF,
+       (SELECT T.PROG_DESC
+          FROM OPT T
+         WHERE T.APP_NAME = R.APP_NAME
+           AND T.PROG_REF =
+               (SELECT O.PARENT_REF
+                  FROM OPT O
+                 WHERE O.APP_NAME = R.APP_NAME
+                   AND O.PROG_REF = R.PROG_REF )) AS PARENT_REF_STR
+      ,(SELECT XLS_PATH FROM FTR_EXP_XLS  WHERE REP_REF =  R.PROG_REF) xlsName      
+      ,REPORT_TYPE
+      ,LANG_INDEPENDENT_YN
+      ,REPORT_VERSION
+      ,VERSION_DATE
+      ,REPORT_MODIFIED_YN
+      ,(CASE WHEN METADATA_REPORT_ID IS NULL THEN '0' ELSE '1' END)  METADATA_REPORT_YN
+      ,(SELECT REPORT_NAME FROM IRP_AD_HOC_REPORT T WHERE T.REPORT_ID = R.METADATA_REPORT_ID)METADATA_REPORT_NAME
+      ,METADATA_REPORT_ID
+      ,METADATA_REPORT_EXT
+      ,METADATA_GENERATED_LOCATION
+      ,CIF_AUDIT_YN  
+      ,EXEC_PRC_ON_RETRIEVE_YN    
+    from IRP_AD_HOC_REPORT R
+  </sql>
+ 
+  <select id="selectReports" resultMap="reportsListResultMap" parameterType="irp_ad_hoc_reportSC" >
+  	<include refid="servicesCommon.commonGridWrpBefFlip"/>
+	<include refid="selectReportsSql"/>
+	<include refid="servicesCommon.commonGridWrpAftFlip"/>
+	<include refid="servicesCommon.commmonGridWrpFlipClose"/>
+  </select>
+  
+  <select id="selectAllReports" resultMap="reportsListResultMap" parameterType="irp_ad_hoc_reportSC" >
+  		<include refid="servicesCommon.commonGridWrpBefFlip"/>
+	select R.REPORT_ID, R.REPORT_NAME, R.PROG_REF,R.OLD_REPORT_ID,R.APP_NAME,R.CONN_ID,R.DOWNLOADABLE_FLAG,R.DEFAULT_FORMAT
+	 <if test="FILTER_DESIGNER_REP != null">
+	 	,(SELECT O.PARENT_REF
+          FROM OPT O
+         WHERE O.APP_NAME = R.APP_NAME
+           AND O.PROG_REF = R.PROG_REF ) AS PARENT_REF,
+       (SELECT T.PROG_DESC
+          FROM OPT T
+         WHERE T.APP_NAME = R.APP_NAME
+           AND T.PROG_REF =
+               (SELECT O.PARENT_REF
+                  FROM OPT O
+                 WHERE O.APP_NAME = R.APP_NAME
+                   AND O.PROG_REF = R.PROG_REF )) AS PARENT_REF_STR
+	 </if>
+    from IRP_AD_HOC_REPORT R
+    WHERE 1 = 1
+    <if test="REPORT_ID != null">
+    	 AND R.REPORT_ID != #{REPORT_ID}
+    </if>
+    <if test="fromSched != null">
+    	 AND ((EXISTS (SELECT PROG_REF
+                   FROM AXS X
+                  WHERE R.APP_NAME = X.APP_NAME
+                  	<choose> 
+						<when test="isSQLServer == 1">
+							AND R.PROG_REF + 'SC' = X.PROG_REF
+						</when>
+						<otherwise>
+							AND R.PROG_REF || 'SC' = X.PROG_REF
+						</otherwise>
+					</choose>
+                    AND X.COMP_CODE = #{COMP_CODE}
+                    AND X.BRANCH_CODE = #{BRANCH_CODE}
+                    AND X.USER_ID = #{USER_ID}))
+      			 OR (EXISTS (SELECT PROG_REF
+                      FROM AXS X
+                     WHERE R.APP_NAME = X.APP_NAME
+						<choose> 
+						<when test="isSQLServer == 1">
+							AND R.PROG_REF + 'SC' = X.PROG_REF
+						</when>
+						<otherwise>
+							AND R.PROG_REF || 'SC' = X.PROG_REF
+						</otherwise>
+						</choose>
+                       AND X.COMP_CODE = 0
+                       AND X.BRANCH_CODE = 0
+                       AND X.USER_ID =#{USER_ID}))
+       )
+    </if>
+	<include refid="servicesCommon.commonGridWrpAftFlip"/>
+	<include refid="servicesCommon.commmonGridWrpFlipClose"/>
+  </select>
+  
+  <select id="reportsCnt" resultType="int" parameterType="irp_ad_hoc_reportSC"> 
+	<include refid="servicesCommon.commonGridWrpBefCnt"/>
+	<include refid="selectReportsSql"/>
+	<include refid="servicesCommon.commonGridWrpAftCnt"/>
+	<include refid="servicesCommon.commonGridCountWrpClose"/>
+  </select>
+  
+  <select id="allReportsCnt" resultType="int" parameterType="irp_ad_hoc_reportSC"> 
+	<include refid="servicesCommon.commonGridWrpBefCnt"/>
+		SELECT R.REPORT_ID, R.REPORT_NAME, R.PROG_REF
+	    FROM IRP_AD_HOC_REPORT R
+	     <if test="fromSched != null">
+      	 WHERE ((EXISTS (SELECT PROG_REF
+                   FROM AXS X
+                  WHERE R.APP_NAME = X.APP_NAME
+					<choose> 
+						<when test="isSQLServer == 1">
+							AND R.PROG_REF + 'SC' = X.PROG_REF
+						</when>
+						<otherwise>
+							AND R.PROG_REF || 'SC' = X.PROG_REF
+						</otherwise>
+					</choose>
+                    AND X.COMP_CODE = #{COMP_CODE}
+                    AND X.BRANCH_CODE = #{BRANCH_CODE}
+                    AND X.USER_ID = #{USER_ID}))
+      			 OR (EXISTS (SELECT PROG_REF
+                      FROM AXS X
+                     WHERE R.APP_NAME = X.APP_NAME
+					 <choose> 
+						<when test="isSQLServer == 1">
+							AND R.PROG_REF + 'SC' = X.PROG_REF
+						</when>
+						<otherwise>
+							AND R.PROG_REF || 'SC' = X.PROG_REF
+						</otherwise>
+					 </choose>
+                       AND X.COMP_CODE = 0
+                       AND X.BRANCH_CODE = 0
+                       AND X.USER_ID =#{USER_ID}))
+       )
+    </if>
+	<include refid="servicesCommon.commonGridWrpAftCnt"/>
+	<include refid="servicesCommon.commonGridCountWrpClose"/>
+  </select>
+  
+  
+  <sql id="selectReportsSql">
+		SELECT R.REPORT_ID,
+		       R.REPORT_NAME,
+		       R.PROG_REF,
+		       R.OLD_REPORT_ID,
+		       R.APP_NAME,
+		       R.CONN_ID,
+		       R.DOWNLOADABLE_FLAG,
+		       R.DEFAULT_FORMAT
+		       <if test = "FILTER_DESIGNER_REP != null">
+		         ,(SELECT O.PARENT_REF
+		                FROM OPT O
+		               WHERE O.APP_NAME = R.APP_NAME
+		                 AND O.PROG_REF = R.PROG_REF ) AS PARENT_REF,
+		             (SELECT T.PROG_DESC
+		                FROM OPT T
+		               WHERE T.APP_NAME = R.APP_NAME
+		                 AND T.PROG_REF =
+		                     (SELECT O.PARENT_REF
+		                        FROM OPT O
+		                       WHERE O.APP_NAME = R.APP_NAME
+		                         AND O.PROG_REF = R.PROG_REF )) AS PARENT_REF_STR
+		       </if>
+		  FROM IRP_AD_HOC_REPORT R, OPT OPT
+		 WHERE  1 = 1
+    <if test="REPORT_ID != null">
+    	 AND R.REPORT_ID = #{REPORT_ID}
+    </if>
+    <if test="PARENT_REP_ID != null">
+    	AND R.REPORT_ID != #{PARENT_REP_ID}
+    </if>
+		 AND OPT.APP_NAME = R.APP_NAME 
+		   AND OPT.PROG_REF = R.PROG_REF 
+		   AND OPT.PARENT_REF IS NOT NULL
+		   <if test = "FILTER_DESIGNER_REP == null">
+	     		AND R.REP_FLAG =0
+	       </if>
+		   AND ((EXISTS (SELECT 1
+                           FROM AXS
+                          WHERE AXS.USER_ID = #{USER_ID}
+                            AND AXS.COMP_CODE = #{COMP_CODE}
+                            AND AXS.BRANCH_CODE = #{BRANCH_CODE}
+                            AND AXS.APP_NAME = OPT.APP_NAME
+                            <choose> 
+								<when test="isSQLServer == 1">
+									AND AXS.PROG_REF = OPT.PROG_REF 
+									 <if test='OPT_EXT != null and !"".equals(OPT_EXT)'>
+    									+ #{OPT_EXT} 
+    								</if>
+								</when>
+								<otherwise>
+									AND AXS.PROG_REF = OPT.PROG_REF
+									 <if test='OPT_EXT != null and !"".equals(OPT_EXT)'>
+    									|| #{OPT_EXT} 
+    								</if>
+								</otherwise>
+							</choose>
+                            AND AXS.STATUS = 'P'
+                             AND ( ( AXS.ACCESS_FROM_DATE IS NULL OR AXS.ACCESS_FROM_DATE <![CDATA[ <= ]]> <choose><when test="isSybase == 1" >GETDATE()</when><otherwise>SYSDATE</otherwise></choose> ) AND ( AXS.ACCESS_TO_DATE IS NULL OR AXS.ACCESS_TO_DATE <![CDATA[ >= ]]> <choose><when test="isSybase == 1" >GETDATE()</when><otherwise>SYSDATE</otherwise></choose> ) ))) OR
+               (EXISTS (SELECT 1
+                           FROM AXS
+                          WHERE AXS.USER_ID =  #{USER_ID}
+                            AND AXS.COMP_CODE = 0
+                            AND AXS.BRANCH_CODE = 0
+                            AND AXS.APP_NAME = OPT.APP_NAME
+                            <choose> 
+								<when test="isSQLServer == 1">
+									AND AXS.PROG_REF = OPT.PROG_REF
+									 <if test='OPT_EXT != null and !"".equals(OPT_EXT)'>
+    									+ #{OPT_EXT}
+    								</if>
+								</when>
+								<otherwise>
+									AND AXS.PROG_REF = OPT.PROG_REF
+									 <if test='OPT_EXT != null and !"".equals(OPT_EXT)'>
+    									|| #{OPT_EXT}
+    								</if> 
+								</otherwise>
+							</choose>
+                            AND AXS.STATUS = 'P' 
+                            AND AXS.APP_NAME='SADS')))
+               <if test="calledFrom != null">               
+               AND (SELECT COUNT(1)
+				    FROM IRP_REP_ARGUMENTS C
+				    WHERE C.REPORT_ID = R.REPORT_ID
+				    ) > 0 
+			   </if>	    
+		
+		UNION
+		
+		SELECT R.REPORT_ID,
+		       R.REPORT_NAME,
+		       R.PROG_REF,
+		       R.OLD_REPORT_ID,
+		       R.APP_NAME,
+		       R.CONN_ID,
+		       R.DOWNLOADABLE_FLAG,
+		       R.DEFAULT_FORMAT
+		       <if test = "FILTER_DESIGNER_REP != null" >
+		           ,(SELECT O.PARENT_REF
+		              FROM OPT O
+		             WHERE O.APP_NAME = R.APP_NAME
+		               AND O.PROG_REF = R.PROG_REF ) AS PARENT_REF,
+		           (SELECT T.PROG_DESC
+		              FROM OPT T
+		             WHERE T.APP_NAME = R.APP_NAME
+		               AND T.PROG_REF =
+		                   (SELECT O.PARENT_REF
+		                      FROM OPT O
+		                     WHERE O.APP_NAME = R.APP_NAME
+		                       AND O.PROG_REF = R.PROG_REF )) AS PARENT_REF_STR
+		        </if>
+		
+		  FROM IRP_AD_HOC_REPORT R, OPT OPT
+		 WHERE OPT.APP_NAME = R.APP_NAME 
+		   AND OPT.PROG_REF = R.PROG_REF
+		   AND OPT.PARENT_REF IS NOT NULL
+		   AND #{profType} = '1'
+		   <if test = "FILTER_DESIGNER_REP == null">
+		     	AND R.REP_FLAG =0
+		   </if>
+		   AND EXISTS (SELECT 1
+		          FROM S_APPROLUSR, S_ROLE_DETAIL
+		         WHERE S_APPROLUSR.APP_NAME = S_ROLE_DETAIL.APP_NAME
+		           AND S_ROLE_DETAIL.ROLE_NAME = S_APPROLUSR.ROLE_NAME
+		           AND S_ROLE_DETAIL.APP_NAME = OPT.APP_NAME
+		           <choose> 
+						<when test="isSQLServer == 1">
+							AND S_ROLE_DETAIL.PROG_REF = OPT.PROG_REF
+							<if test='OPT_EXT != null and !"".equals(OPT_EXT)'>
+    							+ #{OPT_EXT} 
+    						</if> 
+						</when>
+						<otherwise>
+							AND S_ROLE_DETAIL.PROG_REF = OPT.PROG_REF
+							<if test='OPT_EXT != null and !"".equals(OPT_EXT)'>
+    							|| #{OPT_EXT} 
+    						</if>
+						</otherwise>
+				   </choose>
+		           AND S_APPROLUSR.STATUS = 'P'
+		           AND S_ROLE_DETAIL.STATUS = 'P'
+		           AND S_APPROLUSR.COMP_CODE = #{COMP_CODE}
+		           AND S_APPROLUSR.BRANCH_CODE = #{BRANCH_CODE}
+		           AND S_APPROLUSR.APP_NAME = OPT.APP_NAME
+		           AND S_APPROLUSR.USER_ID = #{USER_ID})
+		    <if test="calledFrom != null">         
+			AND (SELECT COUNT(1)
+				 FROM IRP_REP_ARGUMENTS C
+				 WHERE C.REPORT_ID = R.REPORT_ID
+				 ) > 0 
+			</if>	 
+		UNION
+		
+		SELECT R.REPORT_ID,
+		       R.REPORT_NAME,
+		       R.PROG_REF,
+		       R.OLD_REPORT_ID,
+		       R.APP_NAME,
+		       R.CONN_ID,
+		       R.DOWNLOADABLE_FLAG,
+		       R.DEFAULT_FORMAT
+		       
+		       <if test = "FILTER_DESIGNER_REP != null" >
+		           ,(SELECT O.PARENT_REF
+		                FROM OPT O
+		               WHERE O.APP_NAME = R.APP_NAME
+		                 AND O.PROG_REF = R.PROG_REF ) AS PARENT_REF,
+		             (SELECT T.PROG_DESC
+		                FROM OPT T
+		               WHERE T.APP_NAME = R.APP_NAME
+		                 AND T.PROG_REF =
+		                     (SELECT O.PARENT_REF
+		                        FROM OPT O
+		                       WHERE O.APP_NAME = R.APP_NAME
+		                         AND O.PROG_REF = R.PROG_REF )) AS PARENT_REF_STR 
+		       </if>
+		
+		  FROM IRP_AD_HOC_REPORT R, OPT OPT
+		 WHERE OPT.APP_NAME = R.APP_NAME 
+		   AND OPT.PROG_REF = R.PROG_REF
+		   AND OPT.PARENT_REF IS NOT NULL
+		   AND #{profType} = '1'
+	        <if test = "FILTER_DESIGNER_REP == null">
+	     		AND R.REP_FLAG =0
+	     	</if>
+		   AND EXISTS
+		 (SELECT 1
+		          FROM S_GROUP_USER, S_GROUP_PROFILE, S_ROLE_DETAIL
+		         WHERE (S_GROUP_USER.COMP_CODE = #{COMP_CODE} OR
+		               S_GROUP_USER.COMP_CODE = 0)
+		           AND (S_GROUP_USER.BRANCH_CODE = #{BRANCH_CODE} OR
+		               S_GROUP_USER.BRANCH_CODE = 0)
+		           AND S_GROUP_USER.USER_ID = #{USER_ID}
+		           AND S_GROUP_USER.STATUS = 'P'
+		            AND ( ( S_GROUP_USER.FROM_DATE IS NULL OR S_GROUP_USER.FROM_DATE <![CDATA[ <= ]]> <choose><when test="isSybase == 1" >GETDATE()</when><otherwise>SYSDATE</otherwise></choose> ) AND ( S_GROUP_USER.TO_DATE IS NULL OR S_GROUP_USER.TO_DATE <![CDATA[ >= ]]> <choose><when test="isSybase == 1" >GETDATE()</when><otherwise>SYSDATE</otherwise></choose> ) )
+		            AND S_GROUP_PROFILE.GROUP_ID = S_GROUP_USER.GROUP_ID
+		           AND S_GROUP_PROFILE.APP_NAME = S_ROLE_DETAIL.APP_NAME
+		           AND S_GROUP_PROFILE.APP_NAME = OPT.APP_NAME
+		           AND S_GROUP_PROFILE.STATUS = 'P'
+		           AND S_ROLE_DETAIL.ROLE_NAME = S_GROUP_PROFILE.ROLE_NAME
+		           AND S_ROLE_DETAIL.APP_NAME = OPT.APP_NAME
+		           <choose> 
+						<when test="isSQLServer == 1">
+							AND S_ROLE_DETAIL.PROG_REF = OPT.PROG_REF
+							<if test='OPT_EXT != null and !"".equals(OPT_EXT)'>
+    							+ #{OPT_EXT} 
+    						</if>
+						</when>
+						<otherwise>
+							AND S_ROLE_DETAIL.PROG_REF = OPT.PROG_REF
+							<if test='OPT_EXT != null and !"".equals(OPT_EXT)'>
+    							|| #{OPT_EXT} 
+    						</if> 
+						</otherwise>
+				   </choose>
+		           AND S_ROLE_DETAIL.STATUS = 'P'
+		           AND NOT EXISTS (SELECT 1 FROM S_GROUP_USER_EXCLUSION 
+                                                WHERE S_GROUP_USER_EXCLUSION.USER_ID = S_GROUP_USER.USER_ID 
+                                                      AND S_GROUP_USER_EXCLUSION.GROUP_ID = S_GROUP_USER.GROUP_ID
+                                                      AND S_GROUP_USER_EXCLUSION.COMP_CODE = S_GROUP_USER.COMP_CODE
+                                                      AND S_GROUP_USER_EXCLUSION.BRANCH_CODE = S_GROUP_USER.BRANCH_CODE
+                                                      AND S_GROUP_USER_EXCLUSION.ROLE_NAME = S_GROUP_PROFILE.ROLE_NAME
+                                                ) )
+		  <if test="calledFrom != null">           
+		  AND (SELECT COUNT(1)
+			   FROM IRP_REP_ARGUMENTS C
+			   WHERE C.REPORT_ID = R.REPORT_ID
+			   ) > 0 
+		  </if>	   
+  </sql>
+  
+  <select id="selectReportByName" resultType="int" parameterType="irp_ad_hoc_reportSC"> 
+	select REPORT_ID
+    from IRP_AD_HOC_REPORT
+	where REPORT_NAME = #{REPORT_NAME}
+  </select>
+  
+  <select id="selectReportByRef" resultType="int" parameterType="irp_ad_hoc_reportSC"> 
+	select REPORT_ID
+    from IRP_AD_HOC_REPORT
+	where PROG_REF = #{PROG_REF}
+	<if test="APP_NAME != null" >
+		AND APP_NAME=#{APP_NAME}
+	</if>
+  </select>
+  
+  <select id="selectReportById" resultMap="ResultMapWithBLOBs" parameterType="java.math.BigDecimal"> 
+	<include refid="reportsSql"/>
+	where REPORT_ID = #{reportId}
+  </select> 
+  
+  <select id="returnReportXMLByRef" resultMap="reportxmlResultMap" parameterType="irp_ad_hoc_reportSC"> 
+	select REPORT_NAME, JRXML_FILE 
+    from IRP_AD_HOC_REPORT
+	where PROG_REF = #{PROG_REF}
+  </select> 
+  
+  <insert id="insertReport" parameterType="irp_ad_hoc_reportVOWithBLOBs">
+    insert into IRP_AD_HOC_REPORT
+    	(REPORT_ID,APP_NAME,REPORT_NAME,PROG_REF,CREATED_BY,DATE_CREATED,MODIFIED_BY,DATE_MODIFIED,
+    	 XHTML_FILE,JRXML_FILE,CONN_ID,DEFAULT_FORMAT, CSV_SEPARATOR, SHOW_HEAD_FOOT,DATE_UPDATED
+    	 <if test="MAIL_SERVER_CODE != null and MAIL_SERVER_CODE != emptyBigDecimalValue" >
+          ,MAIL_SERVER_CODE
+         </if>   	    	 
+    	  <if test="REP_FLAG != null" >
+      		  ,REP_FLAG
+     	 </if>
+    	  <if test="OLD_REPORT_ID != null" >
+      		  ,OLD_REPORT_ID
+     	 </if>
+         )
+    values (#{REPORT_ID},#{APP_NAME},#{REPORT_NAME},#{PROG_REF},#{CREATED_BY},#{DATE_CREATED},
+            #{MODIFIED_BY},#{DATE_MODIFIED},#{XHTML_FILE},#{JRXML_FILE},#{CONN_ID},#{DEFAULT_FORMAT},#{CSV_SEPARATOR},#{SHOW_HEAD_FOOT}           
+            <if test="MAIL_SERVER_CODE != null and MAIL_SERVER_CODE != emptyBigDecimalValue" >
+            ,#(MAIL_SERVER_CODE)
+            </if>
+            
+            <choose >
+		        <when test="isSybase == 1" >
+		           GETDATE()
+		        </when>
+		        <otherwise >
+		          SYSDATE
+		        </otherwise>
+	      </choose>
+            <if test="REP_FLAG != null" >
+      		  ,#{REP_FLAG}
+      		</if>
+            <if test="OLD_REPORT_ID != null" >
+      		  ,#{OLD_REPORT_ID}
+      		</if>
+      		
+           )
+  </insert>
+  
+  <delete id="deleteSubReport" parameterType="java.util.List">
+
+	DELETE FROM IRP_SUB_REPORT  	
+	WHERE REPORT_ID IN
+	<foreach item="item" index="index" collection="list"
+		open="(" separator="," close=")">
+		#{item}
+	</foreach>
+ </delete>	
+
+  <delete id="deleteLinkQuery" parameterType="java.util.List">
+
+	DELETE FROM IRP_QUERY_ARG_MAPPING  	
+	WHERE REPORT_ID IN
+	<foreach item="item" index="index" collection="list"
+		open="(" separator="," close=")">
+		#{item}
+	</foreach>
+ </delete>	
+	
+ <delete id="deleteReport" parameterType="java.util.List">	
+	delete from IRP_AD_HOC_REPORT  	
+	WHERE REPORT_ID in
+	<foreach item="item" index="index" collection="list"
+		open="(" separator="," close=")">
+		#{item}
+	</foreach>
+  </delete>
+  
+  <select id="retQueriesByReport" parameterType="irp_ad_hoc_reportSC" resultMap="retQueriesByReportMap">
+	  	SELECT Q.QUERY_OBJECT
+	 	FROM IRP_REPORT_QUERY RQ, IRP_AD_HOC_REPORT R, IRP_AD_HOC_QUERY Q
+		WHERE RQ.REPORT_ID = R.REPORT_ID
+	    AND RQ.QUERY_ID = Q.QUERY_ID
+	    AND R.PROG_REF = #{PROG_REF}
+  		ORDER BY Q.QUERY_ID
+  </select>
+  
+  <select id="retArgsByReport" parameterType="irp_ad_hoc_reportSC" resultMap="argsResultMap">
+	 SELECT 
+	    A.ARGUMENT_ID, A.REPORT_ID, A.ARGUMENT_NAME, A.ARGUMENT_LABEL, A.ARGUMENT_TYPE,
+	  	A.ARGUMENT_SOURCE, A.ARGUMENT_VALUE, A.SESSION_ATTR_NAME, A.QUERY_ID,
+	    A.COLUMN_NAME, A.ARGUMENT_ORDER, A.DISPLAY_FLAG, A.ENABLE_FLAG, A.FLAG_VALUE_ON, A.FLAG_VALUE_OFF,  
+	    A.MULTISELECT_YN, A.COLUMN_DESC, A.ARG_QUERY_OPTIONS
+	 FROM IRP_REP_ARGUMENTS A
+	 WHERE  A.REPORT_ID = #{REPORT_ID}
+	 ORDER BY ARGUMENT_ORDER
+  </select>
+  
+  <select id="retProgRefByRepId" resultMap="retProgRefByRepIdMap" parameterType="irp_ad_hoc_reportSC"> 
+	SELECT PROG_REF ,APP_NAME, REPORT_TYPE, REPORT_ID
+	FROM IRP_AD_HOC_REPORT 
+	WHERE REPORT_ID =#{REPORT_ID}
+  </select> 
+  
+ <select id="selectArgsByReportId" resultMap="argsResultMap" parameterType="irp_ad_hoc_reportSC">
+ SELECT ARGUMENT_ID,
+       REPORT_ID,
+       ARGUMENT_NAME,
+       ARGUMENT_LABEL,
+       ARGUMENT_TYPE,
+       ARGUMENT_SOURCE,
+       ARGUMENT_VALUE,
+       SESSION_ATTR_NAME,
+       A.QUERY_ID,
+       COLUMN_NAME,
+       ARGUMENT_ORDER,
+       DISPLAY_FLAG,
+       ENABLE_FLAG,
+       Q.QUERY_NAME,
+       FLAG_VALUE_ON,
+       FLAG_VALUE_OFF,
+       A.QUERY_ID_DEFAULT,
+       A.DEFAULT_VALUE_COL_NAME,
+       A.DEFAULT_VALUE_COL_DESC,
+       A.ARGUMENT_SRC_DEFAULT,
+       QD.QUERY_NAME DEFAULT_VAL_QRY_NAME,
+       MULTISELECT_YN,
+       TO_SAVE_YN,
+       CIF_AUDIT_YN,
+       ARGUMENT_DATE_VALUE,
+       COLUMN_DESC,
+       ARG_QUERY_OPTIONS,
+       <choose>
+    	<when test="isOracle == 1">
+      		(SELECT C.VALUE
+	          FROM IRP_REP_ARG_CONSTRAINTS C
+	         WHERE C.ARGUMENT_ID = A.ARGUMENT_ID
+	           AND C.REPORT_ID = A.REPORT_ID
+	           AND C.VALUE_CODE = 1) AS CASE_SENSITIVITY,
+	       (SELECT C.VALUE
+	          FROM IRP_REP_ARG_CONSTRAINTS C
+	         WHERE C.ARGUMENT_ID = A.ARGUMENT_ID
+	           AND C.REPORT_ID = A.REPORT_ID
+	           AND C.VALUE_CODE = 2) AS FORMAT,
+	       (SELECT C.VALUE
+	          FROM IRP_REP_ARG_CONSTRAINTS C
+	         WHERE C.ARGUMENT_ID = A.ARGUMENT_ID
+	           AND C.REPORT_ID = A.REPORT_ID
+	           AND C.VALUE_CODE = 3) AS MAX_LENGTH,
+	       (SELECT C.VALUE
+	          FROM IRP_REP_ARG_CONSTRAINTS C
+	         WHERE C.ARGUMENT_ID = A.ARGUMENT_ID
+	           AND C.REPORT_ID = A.REPORT_ID
+	           AND C.VALUE_CODE = 4) AS MAX_VAL,
+	       (SELECT C.VALUE
+	          FROM IRP_REP_ARG_CONSTRAINTS C
+	         WHERE C.ARGUMENT_ID = A.ARGUMENT_ID
+	           AND C.REPORT_ID = A.REPORT_ID
+	           AND C.VALUE_CODE = 5) AS MIN_VAL,
+	       (SELECT C.VALUE
+	          FROM IRP_REP_ARG_CONSTRAINTS C
+	         WHERE C.ARGUMENT_ID = A.ARGUMENT_ID
+	           AND C.REPORT_ID = A.REPORT_ID
+	           AND C.VALUE_CODE = 6) AS CONDITION,
+	       (SELECT C.VALUE
+	          FROM IRP_REP_ARG_CONSTRAINTS C
+	         WHERE C.ARGUMENT_ID = A.ARGUMENT_ID
+	           AND C.REPORT_ID = A.REPORT_ID
+	           AND C.VALUE_CODE = 7) AS SHOW_EXPR,
+	       (SELECT C.VALUE
+	          FROM IRP_REP_ARG_CONSTRAINTS C
+	         WHERE C.ARGUMENT_ID = A.ARGUMENT_ID
+	           AND C.REPORT_ID = A.REPORT_ID
+	           AND C.VALUE_CODE = 8) AS HIDE_EXPR,
+	       (SELECT C.VALUE
+	          FROM IRP_REP_ARG_CONSTRAINTS C
+	         WHERE C.ARGUMENT_ID = A.ARGUMENT_ID
+	           AND C.REPORT_ID = A.REPORT_ID
+	           AND C.VALUE_CODE = 9) AS BTR_CONTROL_DISP     
+    	</when>
+    	<otherwise>
+	  		(SELECT CONVERT(VARCHAR(255),C.VALUE)
+	          FROM IRP_REP_ARG_CONSTRAINTS C
+	         WHERE C.ARGUMENT_ID = A.ARGUMENT_ID
+	           AND C.REPORT_ID = A.REPORT_ID
+	           AND C.VALUE_CODE = '1') AS CASE_SENSITIVITY,
+	       (SELECT CONVERT(VARCHAR(255),C.VALUE)
+	          FROM IRP_REP_ARG_CONSTRAINTS C
+	         WHERE C.ARGUMENT_ID = A.ARGUMENT_ID
+	           AND C.REPORT_ID = A.REPORT_ID
+	           AND C.VALUE_CODE = '2') AS FORMAT,
+	       (SELECT CONVERT(VARCHAR(255),C.VALUE)
+	          FROM IRP_REP_ARG_CONSTRAINTS C
+	         WHERE C.ARGUMENT_ID = A.ARGUMENT_ID
+	           AND C.REPORT_ID = A.REPORT_ID
+	           AND C.VALUE_CODE = '3') AS MAX_LENGTH,
+	       (SELECT CONVERT(VARCHAR(255),C.VALUE)
+	          FROM IRP_REP_ARG_CONSTRAINTS C
+	         WHERE C.ARGUMENT_ID = A.ARGUMENT_ID
+	           AND C.REPORT_ID = A.REPORT_ID
+	           AND C.VALUE_CODE = '4') AS MAX_VAL,
+	       (SELECT CONVERT(VARCHAR(255),C.VALUE)
+	          FROM IRP_REP_ARG_CONSTRAINTS C
+	         WHERE C.ARGUMENT_ID = A.ARGUMENT_ID
+	           AND C.REPORT_ID = A.REPORT_ID
+	           AND C.VALUE_CODE = '5') AS MIN_VAL,
+	       (SELECT CONVERT(VARCHAR(255),C.VALUE)
+	          FROM IRP_REP_ARG_CONSTRAINTS C
+	         WHERE C.ARGUMENT_ID = A.ARGUMENT_ID
+	           AND C.REPORT_ID = A.REPORT_ID
+	           AND C.VALUE_CODE = '6') AS CONDITION,
+	       (SELECT CONVERT(VARCHAR(255),C.VALUE)
+	          FROM IRP_REP_ARG_CONSTRAINTS C
+	         WHERE C.ARGUMENT_ID = A.ARGUMENT_ID
+	           AND C.REPORT_ID = A.REPORT_ID
+	           AND C.VALUE_CODE = '7') AS SHOW_EXPR,
+	       (SELECT CONVERT(VARCHAR(255),C.VALUE)
+	          FROM IRP_REP_ARG_CONSTRAINTS C
+	         WHERE C.ARGUMENT_ID = A.ARGUMENT_ID
+	           AND C.REPORT_ID = A.REPORT_ID
+	           AND C.VALUE_CODE = '8') AS HIDE_EXPR,
+	       (SELECT CONVERT(VARCHAR(255),C.VALUE)
+	          FROM IRP_REP_ARG_CONSTRAINTS C
+	         WHERE C.ARGUMENT_ID = A.ARGUMENT_ID
+	           AND C.REPORT_ID = A.REPORT_ID
+	           AND C.VALUE_CODE = '9') AS BTR_CONTROL_DISP         
+    	</otherwise>
+       </choose>   
+  FROM IRP_REP_ARGUMENTS A
+  LEFT OUTER JOIN IRP_AD_HOC_QUERY Q ON (A.QUERY_ID = Q.QUERY_ID)
+  LEFT OUTER JOIN IRP_AD_HOC_QUERY QD ON (A.QUERY_ID_DEFAULT = QD.QUERY_ID)
+ WHERE REPORT_ID = #{REPORT_ID}
+ ORDER BY DISPLAY_FLAG DESC, ARGUMENT_ORDER ASC
+ 
+ </select>
+
+ <delete id="deleteArguments" parameterType="java.util.List">
+	delete from IRP_REP_ARGUMENTS
+	WHERE REPORT_ID in
+	<foreach item="item" index="index" collection="list"
+		open="(" separator="," close=")">
+		#{item}
+	</foreach>
+ </delete>
+  
+ <insert id="insertArgument" parameterType="irp_rep_argumentsVO">
+ 	<selectKey resultType="java.math.BigDecimal" keyProperty="ARGUMENT_ID" order="BEFORE">
+	     SELECT (CASE
+	            WHEN COUNT(ARGUMENT_ID) = 0 THEN
+	             0
+	            ELSE
+	             MAX(ARGUMENT_ID)
+	          END) + 1
+	      FROM (SELECT MAX(ARGUMENT_ID) AS ARGUMENT_ID FROM IRP_REP_ARGUMENTS WHERE REPORT_ID=#{REPORT_ID} ) TB1
+   </selectKey>
+   
+    insert into IRP_REP_ARGUMENTS
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+        ARGUMENT_ID,
+        REPORT_ID,
+        ARGUMENT_NAME,
+        ARGUMENT_LABEL,
+        ARGUMENT_TYPE,
+        ARGUMENT_SOURCE,
+      <if test="ARGUMENT_VALUE != null" >
+        ARGUMENT_VALUE,
+      </if>  
+      <if test="SESSION_ATTR_NAME != null" >
+        SESSION_ATTR_NAME,
+      </if>
+      <if test="QUERY_ID != null and QUERY_ID != emptyBigDecimalValue" >
+        QUERY_ID,
+      </if>
+      <if test="COLUMN_NAME != null" >
+        COLUMN_NAME,
+      </if>
+        ARGUMENT_ORDER,
+      <if test="DISPLAY_FLAG != null" >
+        DISPLAY_FLAG,
+      </if>
+      <if test="ENABLE_FLAG != null" >
+        ENABLE_FLAG,
+      </if>
+      <if test="FLAG_VALUE_ON != null" >
+        FLAG_VALUE_ON,
+      </if>
+      <if test="FLAG_VALUE_OFF != null" >
+        FLAG_VALUE_OFF,
+      </if>
+      <if test="QUERY_ID_DEFAULT != null and QUERY_ID_DEFAULT != emptyBigDecimalValue" >
+        QUERY_ID_DEFAULT,
+      </if>
+      <if test="ARGUMENT_SRC_DEFAULT != null and ARGUMENT_SRC_DEFAULT != emptyBigDecimalValue" >
+        ARGUMENT_SRC_DEFAULT,
+      </if>
+      <if test="DEFAULT_VALUE_COL_NAME != null" >
+        DEFAULT_VALUE_COL_NAME,
+      </if>
+       <if test="DEFAULT_VALUE_COL_DESC != null" >
+        DEFAULT_VALUE_COL_DESC,
+      </if>
+      <if test="MULTISELECT_YN != null" >
+        MULTISELECT_YN,
+      </if>
+      <if test="TO_SAVE_YN != null" >
+        TO_SAVE_YN,
+      </if>
+      <if test="CIF_AUDIT_YN != null" >
+        CIF_AUDIT_YN,
+      </if>
+      <if test="ARGUMENT_DATE_VALUE != null">
+      	ARGUMENT_DATE_VALUE,
+      </if>
+      <if test="COLUMN_DESC != null">
+      	COLUMN_DESC,
+      </if>
+      <if test="ARG_QUERY_OPTIONS != null">
+      	ARG_QUERY_OPTIONS,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+        #{ARGUMENT_ID},
+        #{REPORT_ID},
+        #{ARGUMENT_NAME},
+        #{ARGUMENT_LABEL},
+        #{ARGUMENT_TYPE},
+        #{ARGUMENT_SOURCE},
+      <if test="ARGUMENT_VALUE != null" >
+        #{ARGUMENT_VALUE},
+      </if>
+      <if test="SESSION_ATTR_NAME != null" >
+        #{SESSION_ATTR_NAME},
+      </if>
+      <if test="QUERY_ID != null and QUERY_ID != emptyBigDecimalValue" >
+        #{QUERY_ID},
+      </if>
+      <if test="COLUMN_NAME != null" >
+        #{COLUMN_NAME},
+      </if>
+        #{ARGUMENT_ORDER},
+      <if test="DISPLAY_FLAG != null" >
+        #{DISPLAY_FLAG},
+      </if>
+      <if test="ENABLE_FLAG != null" >
+        #{ENABLE_FLAG},
+      </if>
+      <if test="FLAG_VALUE_ON != null" >
+        #{FLAG_VALUE_ON},
+      </if>
+      <if test="FLAG_VALUE_OFF != null" >
+        #{FLAG_VALUE_OFF},
+      </if>
+      <if test="QUERY_ID_DEFAULT != null and QUERY_ID_DEFAULT != emptyBigDecimalValue" >
+        #{QUERY_ID_DEFAULT},
+      </if>
+      <if test="ARGUMENT_SRC_DEFAULT != null and ARGUMENT_SRC_DEFAULT != emptyBigDecimalValue" >
+        #{ARGUMENT_SRC_DEFAULT},
+      </if>
+      <if test="DEFAULT_VALUE_COL_NAME != null" >
+        #{DEFAULT_VALUE_COL_NAME},
+      </if>
+      <if test="DEFAULT_VALUE_COL_DESC != null" >
+        #{DEFAULT_VALUE_COL_DESC},
+      </if>
+      <if test="MULTISELECT_YN != null" >
+        #{MULTISELECT_YN},
+      </if>
+      <if test="TO_SAVE_YN != null" >
+        #{TO_SAVE_YN},
+      </if>
+      <if test="CIF_AUDIT_YN != null" >
+        #{CIF_AUDIT_YN},
+      </if>     
+       <if test="ARGUMENT_DATE_VALUE != null" >
+        #{ARGUMENT_DATE_VALUE},
+      </if>      
+      <if test="COLUMN_DESC != null" >
+        #{COLUMN_DESC},
+      </if>  
+      <if test="ARG_QUERY_OPTIONS != null" >
+        #{ARG_QUERY_OPTIONS},
+      </if>  
+    </trim>
+ </insert>
+
+  <select id="retRepIdByProgRef" resultMap="retRepIdByProgRefMap" parameterType="irp_ad_hoc_reportSC"> 
+	SELECT REPORT_ID,REPORT_NAME FROM IRP_AD_HOC_REPORT WHERE PROG_REF =#{PROG_REF} AND APP_NAME=#{APP_NAME}
+  </select>
+  
+  <select id="retReportFlags" resultMap="retReportFlagsMap" parameterType="irp_ad_hoc_reportSC">
+  		SELECT REPORT_ID,REP_FLAG, DOWNLOADABLE_FLAG, EDITABLE_FLAG
+  			   ,(SELECT COUNT( SR.SUB_REPORT_ID) FROM IRP_SUB_REPORT SR WHERE SR.SUB_REPORT_ID = #{REPORT_ID}) isSubRep,
+  			   REPORT_VERSION, VERSION_DATE, REPORT_MODIFIED_YN
+ 		 FROM IRP_AD_HOC_REPORT 
+		 WHERE REPORT_ID =#{REPORT_ID}
+  </select> 
+  
+    <select id="retPbAppCnt" resultType="int"> 
+		SELECT COUNT(1) FROM S_APP WHERE IS_WEB_YN = 0
+  </select>
+  
+   <delete id="deleteRepCatalogue" parameterType="java.util.List">
+		DELETE FROM REP_CATALOGUE
+   		WHERE REP_ID  IN
+		<foreach item="item" index="index" collection="list"
+			open="(" separator="," close=")">
+			#{item}
+		</foreach>
+  </delete>
+  
+     <delete id="deleteRepInfo" parameterType="java.util.List">
+		DELETE FROM REP_INFO
+   		WHERE REP_ID  IN
+		<foreach item="item" index="index" collection="list"
+			open="(" separator="," close=")">
+			#{item}
+		</foreach>
+  </delete>
+  
+  <select id="retOldRepIdFromRepId" parameterType="java.math.BigDecimal" resultType="java.math.BigDecimal">
+  	SELECT CASE
+         WHEN OLD_REPORT_ID IS NULL THEN
+          0
+         ELSE
+          OLD_REPORT_ID
+       END
+   FROM IRP_AD_HOC_REPORT
+   WHERE REPORT_ID = #{value}
+  </select>
+ 
+  <select id="retRepIdFromOldRepId" parameterType="java.math.BigDecimal" resultType="java.math.BigDecimal">
+  	SELECT REPORT_ID FROM IRP_AD_HOC_REPORT WHERE OLD_REPORT_ID =(SELECT REP_ID
+              FROM REP_INFO
+             WHERE APPLICATION =
+                   (SELECT APPLICATION FROM REP_INFO WHERE REP_ID = #{value})
+               AND REP_REFERENCE =
+                   (SELECT REP_REFERENCE
+                      FROM REP_INFO
+                     WHERE REP_ID = #{value})
+               AND DW_OBJECT = '$$JAVA'
+               AND REP_TYPE = 'DWS')
+  </select>
+  
+  <update id="updateReport" parameterType="irp_ad_hoc_reportVOWithBLOBs">
+	   <include refid="IRP_AD_HOC_REPORT.sql_updateIRP_AD_HOC_REPORT" />
+    <if test="DATE_UPDATED != null" > AND DATE_UPDATED = #{DATE_UPDATED} </if>
+</update>
+  
+  <select id="retrieveReportVO" parameterType="java.math.BigDecimal" resultMap="retrieveReporTMap">
+	SELECT R.REPORT_ID,
+       R.REPORT_NAME,
+       R.PROG_REF,
+       R.CREATED_BY,
+       R.DATE_CREATED,
+       R.MODIFIED_BY,
+       R.DATE_MODIFIED,
+       R.EDITABLE_FLAG,
+       R.DOWNLOADABLE_FLAG,
+       R.REP_FLAG,
+       R.DEFAULT_FORMAT,
+       R.CONN_ID,
+       R.OLD_REPORT_ID,
+       R.APP_NAME,
+       R.DATE_UPDATED,
+       R.WHEN_NO_DATA,
+       R.MAIL_SERVER_CODE,
+       LANG_INDEPENDENT_YN,
+       NBR_DISPLAYED_ARG_PER_ROW,
+       R.GENERATED_FILE_NAME,
+       (SELECT HOST
+          FROM IRP_MAIL_SERVER_CONFIG M
+          WHERE M.MAIL_SERVER_CODE = R.MAIL_SERVER_CODE) AS HOST,
+       (SELECT O.PARENT_REF
+          FROM OPT O
+         WHERE O.APP_NAME = R.APP_NAME
+           AND O.PROG_REF = R.PROG_REF ) AS PARENT_REF,
+       (CASE
+         WHEN (SELECT O.PARENT_REF
+                 FROM OPT O
+                WHERE O.APP_NAME = R.APP_NAME
+                  AND O.PROG_REF = R.PROG_REF) = 'ROOT' THEN
+          'ROOT'
+         ELSE
+          (SELECT
+           
+            T.PROG_DESC
+             FROM OPT T
+            WHERE T.APP_NAME = R.APP_NAME
+              AND T.PROG_REF = (SELECT O.PARENT_REF
+                                  FROM OPT O
+                                 WHERE O.APP_NAME = R.APP_NAME
+                                   AND O.PROG_REF = R.PROG_REF))
+       END) AS PARENT_REF_STR,
+                   (CASE WHEN SHOW_HEAD_FOOT='1' THEN 'false' ELSE 'true' END) AS SHOW_HEAD_FOOT,
+                   CSV_SEPARATOR
+      ,(SELECT XLS_PATH FROM FTR_EXP_XLS  WHERE REP_REF =  R.PROG_REF) xlsName
+      ,REPORT_TYPE    
+      , (select O.PROG_DESC From OPT O where O.PROG_REF = R.PROG_REF and O.APP_NAME= R.APP_NAME ) OPT_DESC_NAME             
+      , (SELECT O.MENU_TITLE_ENG FROM OPT O WHERE O.APP_NAME = R.APP_NAME AND O.PROG_REF = R.PROG_REF ) AS MENU_TITLE_ENG
+      ,REPORT_VERSION
+      ,VERSION_DATE
+      ,REPORT_MODIFIED_YN
+      ,(SELECT O.CATEG_ID
+          FROM OPT O
+         WHERE O.APP_NAME = R.APP_NAME
+           AND O.PROG_REF = R.PROG_REF ) AS CATEGORY_ID,
+		(SELECT C.CATEG_DESC_ENG
+          FROM OPT_CATEGORY C ,OPT O
+         WHERE O.APP_NAME = R.APP_NAME
+           AND O.PROG_REF = R.PROG_REF 
+           AND C.CATEG_ID =O.CATEG_ID  ) AS CATEGORY_DESC    
+           ,(CASE WHEN METADATA_REPORT_ID IS NULL THEN '0' ELSE '1' END)  METADATA_REPORT_YN
+      ,(SELECT REPORT_NAME FROM IRP_AD_HOC_REPORT T WHERE T.REPORT_ID = R.METADATA_REPORT_ID)METADATA_REPORT_NAME
+      ,METADATA_REPORT_ID
+      ,METADATA_REPORT_EXT
+      ,METADATA_GENERATED_LOCATION
+      ,CIF_AUDIT_YN             
+  FROM IRP_AD_HOC_REPORT R
+
+    WHERE REPORT_ID = #{value}   
+  </select>
+  
+    <resultMap id="subreportMap" 		type="irp_sub_reportCO">
+    <result column="REPORT_ID" 					property="irpSubReportVO.REPORT_ID"/>
+    <result column="SUB_REPORT_ID" 				property="irpSubReportVO.SUB_REPORT_ID"/>
+    <result column="SUB_REPORT_NAME" 			property="SUB_REPORT_NAME"/>
+    <result column="SUB_REPORT_EXPRESSION" 		property="irpSubReportVO.SUB_REPORT_EXPRESSION"/>
+    <result column="PARENT_REP_NAME" 			property="PARENT_REP_NAME"/>
+    <result column="PARENT_REPORT_ID" 			property="PARENT_REPORT_ID"/> 
+    <result column="DOWNLOADABLE_FLAG"			property="DOWNLOADABLE_FLAG"/>
+    <result column="JRXML_FILE"					property="JRXML_FILE"/>  
+    <result column="APP_NAME"					property="APP_NAME"/>  
+    <result column="PROG_REF"					property="PROG_REF"/>    
+  </resultMap>
+  
+  <select id="selectSubreports" parameterType="java.math.BigDecimal" resultMap="subreportMap">
+	
+SELECT    TBL.REPORT_NAME AS SUB_REPORT_NAME
+	      ,TBL.REPORT_ID AS REPORT_ID
+	      ,TBL.SUB_REPORT_EXPRESSION AS SUB_REPORT_EXPRESSION
+	      ,II.REPORT_NAME AS PARENT_REP_NAME
+		  ,TBL.DOWNLOADABLE_FLAG
+          ,TBL.JRXML_FILE
+          ,TBL.APP_NAME
+          ,TBL.PROG_REF
+	      ,#{reportId} AS PARENT_REPORT_ID
+	   
+			FROM(
+	
+			      SELECT AHR.REPORT_ID 
+			          	,AHR.REPORT_NAME
+			          	,SR.SUB_REPORT_EXPRESSION
+			          	,AHR.DOWNLOADABLE_FLAG
+			          	,AHR.JRXML_FILE
+                  		,AHR.APP_NAME
+                  		,AHR.PROG_REF
+			      FROM IRP_SUB_REPORT SR
+			      LEFT JOIN IRP_AD_HOC_REPORT AHR 
+				  ON SR.SUB_REPORT_ID = AHR.REPORT_ID
+				  WHERE SR.REPORT_ID = #{reportId}  
+									 )TBL
+			 ,IRP_AD_HOC_REPORT II
+			 WHERE II.REPORT_ID =#{reportId}
+	
+  </select>
+
+
+
+ <delete id="deleteSubRep" parameterType="java.math.BigDecimal">
+  DELETE FROM IRP_SUB_REPORT WHERE REPORT_ID = #{parentRepId}
+ </delete>
+
+ <insert id="insertSubReport" parameterType="irp_sub_reportCO">
+	  INSERT INTO IRP_SUB_REPORT ( REPORT_ID
+							      ,SUB_REPORT_ID
+							      ,SUB_REPORT_EXPRESSION)
+  VALUES(#{PARENT_REPORT_ID},
+              <choose >
+		        <when test="irpSubReportVO.REPORT_ID != null" >
+		            #{irpSubReportVO.REPORT_ID}
+		        </when>
+		        <otherwise >
+		          NULL
+		        </otherwise>
+	     	 </choose>
+  
+,#{irpSubReportVO.SUB_REPORT_EXPRESSION}) 
+ </insert>
+  
+  
+	<select id="checkIfSubRepUploaded" resultType="string" parameterType="string">
+		SELECT IR.TECHNICAL_REPORT_NAME
+		FROM IRP_AD_HOC_REPORT IR
+		WHERE IR.TECHNICAL_REPORT_NAME = #{subRepName} 
+  </select>
+  
+  
+   <resultMap type="irp_sub_reportVO" 	  id="retSubRepListMap">
+    <result column="REPORT_ID" 			 	property="REPORT_ID" />
+    <result column="SUB_REPORT_ID" 		 	property="SUB_REPORT_ID" />
+    <result column="SUB_REPORT_NAME" 		property="SUB_REPORT_NAME" />
+  </resultMap>
+  
+  <sql id="retSubRepListSql">
+  
+	SELECT  IR.REPORT_ID
+	       ,IR.SUB_REPORT_ID
+	       ,IR.SUB_REPORT_NAME
+	 FROM IRP_SUB_REPORT IR
+	
+</sql>
+
+  <select id="retSubRepList" resultMap="retSubRepListMap" parameterType="irp_sub_reportSC">
+  	<include refid="servicesCommon.commonGridWrpBefFlip"/>
+ 	<include refid="retSubRepListSql"/>
+	<include refid="servicesCommon.commonGridWrpAftFlip"/>
+	<include refid="servicesCommon.commmonGridWrpFlipClose"/>
+  </select>
+
+  <select id="retSubRepListCount" resultType="int" parameterType="irp_sub_reportSC">
+	<include refid="servicesCommon.commonGridWrpBefCnt"/>
+	<include refid="retSubRepListSql"/>
+	<include refid="servicesCommon.commonGridWrpAftCnt"/>
+	<include refid="servicesCommon.commonGridCountWrpClose"/>
+  </select>
+  
+  
+  
+    <delete id="deleteReportHyperlinks" parameterType="java.util.List">
+
+	DELETE FROM IRP_REP_HYPERLINKS  	
+	WHERE REPORT_ID IN
+	<foreach item="item" index="index" collection="list"
+		open="(" separator="," close=")">
+		#{item}
+	</foreach>
+ </delete>	
+ 
+ <resultMap type="irp_rep_argumentsCO" 	  id="getSubRepParamsMap">
+    <result column="ARGUMENT_NAME" 			 	property="ARGUMENT_NAME" />
+    <result column="ARGUMENT_TYPE" 			 	property="ARGUMENT_TYPE" />
+  </resultMap>
+  
+  <sql id="getSubRepParamsListSql">
+  
+ SELECT ARGUMENT_NAME
+ 	   ,ARGUMENT_TYPE  
+   FROM IRP_REP_ARGUMENTS 
+  WHERE REPORT_ID = #{SUB_REPORT_ID}
+	
+</sql>
+
+  <select id="getSubRepParamsList" resultMap="getSubRepParamsMap" parameterType="irp_sub_reportSC">
+  	<include refid="servicesCommon.commonGridWrpBefFlip"/>
+ 	<include refid="getSubRepParamsListSql"/>
+	<include refid="servicesCommon.commonGridWrpAftFlip"/>
+	<include refid="servicesCommon.commmonGridWrpFlipClose"/>
+  </select>
+
+  <select id="getSubRepParamsCount" resultType="int" parameterType="irp_sub_reportSC">
+	<include refid="servicesCommon.commonGridWrpBefCnt"/>
+	<include refid="getSubRepParamsListSql"/>
+	<include refid="servicesCommon.commonGridWrpAftCnt"/>
+	<include refid="servicesCommon.commonGridCountWrpClose"/>
+  </select>
+  
+   <select id="retSubReportUsage"  parameterType="java.util.List" resultType="java.math.BigDecimal">
+	 SELECT DISTINCT SUB_REPORT_ID FROM IRP_SUB_REPORT WHERE SUB_REPORT_ID IN
+	  <foreach item="item" index="index" collection="list"
+			open="(" separator="," close=")">
+			#{item}
+	</foreach>
+  </select>
+  
+  
+  
+  <resultMap type="irp_query_arg_mappingCO" 	  id="selectQryArgMapLstMap">
+    <result column="REPORT_ID" 			 			 property="irpQueryArgsMappingVO.REPORT_ID" />
+    <result column="REPORT_ARGUMENT_ID" 			 property="irpQueryArgsMappingVO.REPORT_ARGUMENT_ID" />
+    <result column="QUERY_ID" 			 			 property="irpQueryArgsMappingVO.QUERY_ID" />
+    <result column="QUERY_ARG_NAME" 			 	 property="irpQueryArgsMappingVO.QUERY_ARG_NAME" />
+    <result column="REPORT_MAPPED_ARG_NAME" 		 property="irpQueryArgsMappingVO.REPORT_MAPPED_ARG_NAME" />
+    <result column="STATIC_VALUE" 			 		 property="irpQueryArgsMappingVO.STATIC_VALUE" />
+    <result column="DEFAULT_SOURCE" 			 	 property="irpQueryArgsMappingVO.DEFAULT_SOURCE" />
+  </resultMap>
+  
+  <select id="selectQryArgMapLst" resultMap="selectQryArgMapLstMap" parameterType="irp_query_arg_mappingCO">
+  
+  select  REPORT_ID 
+         ,REPORT_ARGUMENT_ID
+         ,QUERY_ID
+         ,QUERY_ARG_NAME
+         ,REPORT_MAPPED_ARG_NAME
+         ,STATIC_VALUE
+         ,DEFAULT_SOURCE
+  FROM  IRP_QUERY_ARG_MAPPING
+  WHERE REPORT_ID 		   = #{irpQueryArgsMappingVO.REPORT_ID}
+    AND REPORT_ARGUMENT_ID = #{irpQueryArgsMappingVO.REPORT_ARGUMENT_ID}
+   <if test="irpQueryArgsMappingVO.DEFAULT_SOURCE != null and irpQueryArgsMappingVO.DEFAULT_SOURCE != emptyBigDecimalValue" >
+	   AND DEFAULT_SOURCE = #{irpQueryArgsMappingVO.DEFAULT_SOURCE}
+	</if>
+	
+  </select>
+
+
+ <delete id="deleteLinkQryArgsMap" parameterType="irp_query_arg_mappingVO">
+	DELETE 
+	  FROM IRP_QUERY_ARG_MAPPING
+	 WHERE REPORT_ID = #{REPORT_ID}
+	   AND REPORT_ARGUMENT_ID = #{REPORT_ARGUMENT_ID}
+	<if test="DEFAULT_SOURCE != null and DEFAULT_SOURCE != emptyBigDecimalValue" >
+	   AND DEFAULT_SOURCE = #{DEFAULT_SOURCE}
+	</if>
+ </delete>
+
+
+ <resultMap type="irp_query_arg_mappingCO" id="retQryArgMappingListMap">
+    <result column="REPORT_ID" 						property="irpQueryArgsMappingVO.REPORT_ID" />
+    <result column="REPORT_ARGUMENT_ID" 			property="irpQueryArgsMappingVO.REPORT_ARGUMENT_ID" />
+    <result column="QUERY_ID" 						property="irpQueryArgsMappingVO.QUERY_ID" />
+    <result column="QUERY_ARG_NAME" 				property="irpQueryArgsMappingVO.QUERY_ARG_NAME" />
+    <result column="REPORT_MAPPED_ARG_NAME" 		property="irpQueryArgsMappingVO.REPORT_MAPPED_ARG_NAME" />
+    <result column="STATIC_VALUE" 					property="irpQueryArgsMappingVO.STATIC_VALUE" />
+    <result column="DEFAULT_SOURCE" 				property="irpQueryArgsMappingVO.DEFAULT_SOURCE" />
+    <result column="REP_ARG_SOURCE" 	     	    property="argumentCO.ARGUMENT_SOURCE"/>
+  </resultMap>
+  
+  <resultMap type="irp_rep_argumentsVO" id="retRepArgDepListMap">
+    <result column="REPORT_ARGUMENT_ID" 	property="ARGUMENT_ID" />
+    <result column="ARGUMENT_NAME" 			property="ARGUMENT_NAME" />
+    <result column="ARGUMENT_TYPE" 			property="ARGUMENT_TYPE" />
+    <result column="ARGUMENT_SOURCE" 		property="ARGUMENT_SOURCE" />
+  </resultMap>
+  
+  <sql id="retQryArgMappingListSql">
+  
+ SELECT IM.REPORT_ID
+       ,IM.REPORT_ARGUMENT_ID
+       ,IM.QUERY_ID
+       ,IM.QUERY_ARG_NAME
+       ,IM.REPORT_MAPPED_ARG_NAME
+       ,IM.STATIC_VALUE
+       ,IM.DEFAULT_SOURCE
+       ,(SELECT A.ARGUMENT_SOURCE
+          FROM IRP_REP_ARGUMENTS A
+         WHERE A.ARGUMENT_NAME = IM.REPORT_MAPPED_ARG_NAME
+           AND A.REPORT_ID = IM.REPORT_ID) AS REP_ARG_SOURCE
+ FROM  IRP_QUERY_ARG_MAPPING IM
+ WHERE IM.REPORT_ID = #{REPORT_ID}
+   AND IM.REPORT_ARGUMENT_ID = #{reportArgumentId}
+ <if test="defaultSrc != null and defaultSrc!= emptyBigDecimalValue" >
+   AND IM.DEFAULT_SOURCE = #{defaultSrc}
+ </if>
+</sql>
+
+ <select id="retRepArgDepList" resultMap="retRepArgDepListMap" parameterType="irp_ad_hoc_reportSC">
+   SELECT IM.REPORT_ARGUMENT_ID, A.ARGUMENT_NAME, A.ARGUMENT_TYPE, A.ARGUMENT_SOURCE
+   FROM  IRP_QUERY_ARG_MAPPING IM, IRP_REP_ARGUMENTS A
+   WHERE IM.REPORT_ID = #{REPORT_ID}
+   AND IM.REPORT_MAPPED_ARG_NAME = #{reportArgumentName}
+   AND A.ARGUMENT_ID = IM.REPORT_ARGUMENT_ID
+   AND A.REPORT_ID = IM.REPORT_ID
+ <if test="defaultSrc != null and defaultSrc!= emptyBigDecimalValue" >
+   AND IM.DEFAULT_SOURCE = #{defaultSrc}
+ </if>
+</select>
+
+  <select id="retQryArgMappingList" resultMap="retQryArgMappingListMap" parameterType="irp_ad_hoc_reportSC">
+  	<include refid="servicesCommon.commonGridWrpBefFlip"/>
+ 	<include refid="retQryArgMappingListSql"/>
+	<include refid="servicesCommon.commonGridWrpAftFlip"/>
+	<include refid="servicesCommon.commmonGridWrpFlipClose"/>
+  </select>
+
+ <resultMap type="irp_hash_tableVO" id="retHashTablListMap">
+    <result column="HASH_TABLE_ID" 				property="HASH_TABLE_ID" />
+    <result column="HASH_TABLE_NAME" 			property="HASH_TABLE_NAME" />
+
+  </resultMap>
+  
+  <sql id="retHashTablListSql">
+  
+	SELECT  HASH_TABLE_ID
+	       ,HASH_TABLE_NAME
+	
+	FROM IRP_HASH_TABLE
+	
+</sql>
+
+  <select id="retHashTablList" resultMap="retHashTablListMap" >
+  	<include refid="servicesCommon.commonGridWrpBefFlip"/>
+ 	<include refid="retHashTablListSql"/>
+	<include refid="servicesCommon.commonGridWrpAftFlip"/>
+	<include refid="servicesCommon.commmonGridWrpFlipClose"/>
+  </select>
+
+  <select id="retHashTablListCount" resultType="int" >
+	<include refid="servicesCommon.commonGridWrpBefCnt"/>
+	<include refid="retHashTablListSql"/>
+	<include refid="servicesCommon.commonGridWrpAftCnt"/>
+	<include refid="servicesCommon.commonGridCountWrpClose"/>
+  </select>
+  
+  
+  <delete id="deleteHashTbl" parameterType="java.math.BigDecimal">
+
+	DELETE FROM IRP_HASH_TABLE_REPORT  	
+	WHERE REPORT_ID = #{repId}
+
+ </delete>	
+  
+   
+  <insert id="insertHashTbl" parameterType="irp_hash_tableCO">
+	INSERT INTO IRP_HASH_TABLE_REPORT ( REPORT_ID ,HASH_TABLE_ID)
+  	VALUES(#{REPORT_ID},#{irpHashTableVO.HASH_TABLE_ID}) 
+ </insert>
+ 
+ 
+  <resultMap type="irp_hash_tableCO" id="retHashTablGridMap">
+    <result column="HASH_TABLE_ID" 				property="irpHashTableVO.HASH_TABLE_ID" />
+    <result column="HASH_TABLE_NAME" 			property="irpHashTableVO.HASH_TABLE_NAME" />
+    <result column="HASH_TABLE_SCRIPT" 			property="irpHashTableVO.HASH_TABLE_SCRIPT" />
+	<result column="REPORT_ID" 					property="REPORT_ID" />
+  </resultMap>
+  
+  <sql id="retHashTablGridSql">
+	SELECT  RH.HASH_TABLE_ID
+	       ,RH.REPORT_ID
+	       ,H.HASH_TABLE_NAME
+	       ,H.HASH_TABLE_SCRIPT
+	FROM IRP_HASH_TABLE_REPORT RH,IRP_HASH_TABLE H
+  WHERE RH.HASH_TABLE_ID = H.HASH_TABLE_ID
+  AND RH.REPORT_ID =  #{REPORT_ID}
+	
+</sql>
+
+  <select id="retHashTablGrid" resultMap="retHashTablGridMap" parameterType="irp_hash_tableSC">
+  	<include refid="servicesCommon.commonGridWrpBefFlip"/>
+ 	<include refid="retHashTablGridSql"/>
+	<include refid="servicesCommon.commonGridWrpAftFlip"/>
+	<include refid="servicesCommon.commmonGridWrpFlipClose"/>
+  </select>
+
+  <insert id="insertSysParamKey" parameterType="irp_ad_hoc_reportCO">
+                                      
+    INSERT INTO SYS_PARAM_KEY_LABEL (APP_NAME, PROG_REF, KEY_LABEL_CODE, KEY_LABEL_DESC, KEY_GROUP_ID)
+    SELECT #{APP_NAME},#{PROG_REF}, KEY_LABEL_CODE, KEY_LABEL_DESC, KEY_GROUP_ID
+      FROM SYS_PARAM_KEY_LABEL
+     WHERE APP_NAME = #{oldRepAppName} 
+       AND PROG_REF = #{oldRepProgRef}                                       
+ </insert>
+ 
+  <insert id="insertSysParamKeyTrans" parameterType="irp_ad_hoc_reportCO">
+    INSERT INTO SYS_PARAM_KEY_LABEL_TRANS (APP_NAME, PROG_REF, KEY_LABEL_CODE, LANG_CODE, VALUE_TRANS)
+    SELECT #{APP_NAME},#{PROG_REF}, KEY_LABEL_CODE, LANG_CODE, VALUE_TRANS
+      FROM SYS_PARAM_KEY_LABEL_TRANS
+     WHERE APP_NAME = #{oldRepAppName} 
+       AND PROG_REF = #{oldRepProgRef}    
+                                             
+ </insert>   
+ 
+ 
+ <select id="returnXslName" resultType="string" parameterType="irp_ad_hoc_reportSC">
+ 
+SELECT G.FCR_EXCEL_PATH 
+  FROM GLSTMPLT G
+ WHERE G.LINE_NBR =0
+   AND G.COMP_CODE = #{COMP_CODE} 
+   AND G.CODE = #{templateCode} 
+   
+  </select>
+
+
+  <resultMap type="userTabColsCO" id="returnTblColsNameMap">
+    <result column="TABLE_NAME" 				property="TABLE_NAME" />
+    <result column="COLUMN_NAME" 				property="COLUMN_NAME" />
+    <result column="Data_Type" 					property="Data_Type" />
+  </resultMap>
+
+<select id="returnTblColsName" resultMap="returnTblColsNameMap" parameterType="userTabColsCO">
+
+  <choose>
+     <when test="isSybase == 1" >
+        select   #{TABLE_NAME} AS TABLE_NAME,
+        		 name AS COLUMN_NAME,
+       (case
+         when type = 47 or type = 39 or type = 135 or type = 155 or type =35 then
+          'VARCHAR'
+         when type = 49 or type = 123 then
+          'DATE'
+         when type = 58 or type = 111 or type = 61 then
+          'DATE'
+         when type = 59 or type = 60 or type = 110 or type = 62 or
+              type = 109 or type = 55 or type = 106 then
+          'NUMBER'
+         when type = 54 or type = 56 or type = 38 or type = 122 or type = 48 or
+              type = 52 or type = 108 or type = 63 then
+          'NUMBER'
+         when type = 51 or type = 147 or type = 37 then
+          'TIME'
+         when  type = 34 then
+
+          'BLOB' 
+       
+       end)AS Data_Type
+  from syscolumns
+ where id = (select id
+               from sysobjects
+              where name = #{TABLE_NAME}
+                and type = 'U')
+                
+     </when>
+     <otherwise >
+       	SELECT TABLE_NAME
+	       ,COLUMN_NAME
+	       ,Data_Type
+	FROM USER_TAB_COLS
+	WHERE TABLE_NAME=#{TABLE_NAME} 
+	
+     </otherwise>
+  </choose>
+
+</select>
+
+  
+ <select id="returnAllOptsLst" parameterType="OPTVO" resultType="OPTVO">
+
+ <if test="PROG_REF != 'ROOT'" >
+ 
+SELECT *
+  FROM OPT
+  WHERE PROG_REF=#{PROG_REF}
+    AND APP_NAME = #{APP_NAME} 
+
+ </if>	
+</select>
+
+  
+ <select id="retExistingOpts" parameterType="ftr_optCO" resultMap="OPT.BaseResultMap">
+	SELECT PROG_REF,
+	PROG_REF AS MENU_TITLE_ENG,
+	PROG_REF AS MENU_TITLE_FR,
+	PROG_REF AS MENU_TITLE_ARAB
+	FROM IRP_AD_HOC_REPORT
+	WHERE PROG_REF =#{ftrOptVO.PROG_REF}
+	AND APP_NAME = #{APPL_NAME}
+	UNION
+	SELECT PROG_REF, MENU_TITLE_ENG, MENU_TITLE_FR, MENU_TITLE_ARAB
+	FROM OPT
+	WHERE PROG_REF IN
+	<foreach item="item" index="index" collection="PROG_REFS" open="(" separator="," close=")">
+		#{item}
+	</foreach>
+	AND APP_NAME=#{APPL_NAME}
+</select>
+
+<select id="checkIfOptInAdHocReport" parameterType="com.path.dbmaps.vo.OPTVOKey" resultType="int">
+	SELECT COUNT(1) FROM IRP_AD_HOC_REPORT WHERE PROG_REF = #{PROG_REF} AND APP_NAME = #{APP_NAME}
+</select>
+
+
+ <select id="retConnection" resultType="irp_connectionsVO"  parameterType="irp_connectionsVO"> 
+			SELECT * FROM IRP_CONNECTIONS  WHERE URL = #{URL} AND CONN_DESC =#{CONN_DESC} 
+ </select>
+
+ <select id="retProc" resultType="irp_procVO" parameterType="irp_procVO"> 
+		SELECT * FROM IRP_PROC  WHERE PROC_NAME = #{PROC_NAME} 
+ </select>
+ 
+ <select id="retHashTbl" resultType="irp_hash_tableVO" parameterType="irp_hash_tableVO"> 
+		SELECT * FROM IRP_HASH_TABLE WHERE HASH_TABLE_NAME = #{HASH_TABLE_NAME} 
+ </select>
+ 
+ <insert id="insertHashTable" parameterType="irp_hash_tableVO">
+ 	<selectKey resultType="java.math.BigDecimal" keyProperty="HASH_TABLE_ID" order="BEFORE">
+		SELECT MAX(HASH_TABLE_ID)+1 AS HASH_TABLE_ID FROM IRP_HASH_TABLE 
+   </selectKey>
+   
+       INSERT INTO IRP_HASH_TABLE(HASH_TABLE_ID,HASH_TABLE_NAME,HASH_TABLE_SCRIPT)
+         VALUES(#{HASH_TABLE_ID},
+         		#{HASH_TABLE_NAME},
+         		#{HASH_TABLE_SCRIPT}
+       			)
+    
+ </insert>
+ 
+ <delete id="deleteRepHashTable" parameterType="java.util.List">
+		DELETE FROM IRP_HASH_TABLE_REPORT
+   		WHERE REPORT_ID IN
+		<foreach item="item" index="index" collection="list"
+			open="(" separator="," close=")">
+			#{item}
+		</foreach>
+  </delete>
+
+ <select id="retProcLstFromOraPackage" resultType="irp_procvo">
+ 	
+ 	SELECT U.OBJECT_NAME AS PROC_NAME
+ 	  FROM USER_PROCEDURES U
+     WHERE U.OBJECT_NAME IN 
+     					<foreach item="item" index="index" collection="list"
+							open="(" separator="," close=")">
+							#{item}
+						</foreach>
+       AND U.OBJECT_TYPE = 'PROCEDURE'
+	
+ </select>		   
+ 
+<select id="retProcLstFromSybPackage" resultType="irp_procVO">	
+
+	SELECT name AS PROC_NAME 
+	  FROM sysobjects
+	 WHERE type ='P'	
+	   AND  name IN
+				 <foreach item="item" index="index" collection="list"
+					open="(" separator="," close=")">
+					#{item}
+				</foreach>	
+ </select>
+ 
+  <select id="retTemplateQry" resultType="irp_ad_hoc_queryVO"  parameterType="irp_ad_hoc_queryVO"> 
+		SELECT * FROM IRP_AD_HOC_QUERY WHERE QUERY_NAME = #{QUERY_NAME} AND QUERY_ID NOT IN (SELECT QUERY_ID FROM IRP_REPORT_QUERY )
+ </select>
+
+<select id="retExistRepInDb" resultType="irp_ad_hoc_reportVOWithBLOBs" parameterType="irp_ad_hoc_reportVOWithBLOBs">		
+	SELECT * FROM IRP_AD_HOC_REPORT WHERE PROG_REF = #{PROG_REF} AND APP_NAME =#{APP_NAME}
+</select>
+
+<select id="retExistFolderInDb" resultType="irp_folderSC" parameterType="irp_folderSC">		
+	SELECT * FROM IRP_FOLDER WHERE FOLDER_REF = #{FOLDER_REF} AND APP_NAME =#{APP_NAME} AND PARENT_REF!=#{PARENT_REF}
+</select>
+
+
+<select id="checkOptProgRef" parameterType="commonDetailsSC" resultType="String">
+ 
+  SELECT   FOLDER_REF
+    FROM   IRP_FOLDER
+    WHERE   APP_NAME = #{appName}
+    AND   FOLDER_REF = #{PROG_REF} 
+
+</select>
+
+ <resultMap type="pthClientsCO" id="retRepClientLstMap">
+    <result column="CLIENT_ACRONYM" 			property="pthClientsVO.CLIENT_ACRONYM" />
+    <result column="CLIENT_NAME" 				property="pthClientsVO.CLIENT_NAME" />
+
+  </resultMap>
+  
+  <sql id="retRepClientLstSql">
+  
+	SELECT CLIENT_ACRONYM
+	       ,CLIENT_NAME
+	 FROM  PTH_CLIENTS   
+	
+</sql>
+
+  <select id="retRepClientLst" resultMap="retRepClientLstMap" >
+  	<include refid="servicesCommon.commonGridWrpBefFlip"/>
+ 	<include refid="retRepClientLstSql"/>
+	<include refid="servicesCommon.commonGridWrpAftFlip"/>
+	<include refid="servicesCommon.commmonGridWrpFlipClose"/>
+  </select>
+
+  <select id="retRepClientLstCount" resultType="int" >
+	<include refid="servicesCommon.commonGridWrpBefCnt"/>
+	<include refid="retRepClientLstSql"/>
+	<include refid="servicesCommon.commonGridWrpAftCnt"/>
+	<include refid="servicesCommon.commonGridCountWrpClose"/>
+  </select>
+  
+  
+  <resultMap id="repClientMap" 		type="irpClientReportCO">
+ 	<result column="REPORT_REF"				property="irpClientReportVO.REPORT_REF"/>
+ 	<result column="APP_NAME"				property="irpClientReportVO.APP_NAME"/>
+    <result column="CLIENT_ACRONYM" 		property="irpClientReportVO.CLIENT_ACRONYM"/>
+    <result column="CLIENT_NAME" 			property="CLIENT_NAME"/>
+ </resultMap>
+  
+
+  <select id="returnClientReport" parameterType="irpClientReportSC" resultMap="repClientMap">
+	
+ SELECT I.REPORT_REF,
+		I.APP_NAME,  
+        I.CLIENT_ACRONYM,
+        P.CLIENT_NAME 
+ FROM PTH_CLIENTS P,IRP_CLIENT_REPORT I
+ WHERE P.CLIENT_ACRONYM = I.CLIENT_ACRONYM
+ AND I.REPORT_REF =#{REPORT_REF}
+ AND I.APP_NAME =#{APP_NAME}
+	
+  </select>
+  
+  <select id="returnDefaultClient" resultMap="retRepClientLstMap">
+	 SELECT  P.CLIENT_NAME 
+	         ,P.CLIENT_ACRONYM
+	 FROM PTH_CLIENTS P
+	 WHERE P.IS_DEFAULT_YN = 'Y'	
+  </select>
+  
+    <select id="returnClient" parameterType="pthClientSC" resultMap="retRepClientLstMap">
+	 SELECT  P.CLIENT_NAME 
+	         ,P.CLIENT_ACRONYM
+	 FROM PTH_CLIENTS P
+	 WHERE P.CLIENT_ACRONYM = #{CLIENT_ACRONYM}
+  </select>
+  
+    
+ <delete id="deleteAllClientReport" parameterType="irpClientReportVO">
+		DELETE FROM IRP_CLIENT_REPORT
+   		WHERE REPORT_REF = #{REPORT_REF}
+   		  AND APP_NAME = #{APP_NAME}
+  </delete>
+  
+<select id="retParentReports" resultMap="reportResultMap"  parameterType="java.math.BigDecimal">
+	SELECT REPORT_ID,
+		   (SELECT PROG_REF FROM IRP_AD_HOC_REPORT WHERE IRP_AD_HOC_REPORT.REPORT_ID = IRP_SUB_REPORT.REPORT_ID) AS PROG_REF 
+	FROM IRP_SUB_REPORT WHERE SUB_REPORT_ID = #{reportId}
+</select>
+
+ <select id="selectRepsBySubRepId" resultMap="subreportMap" parameterType="irp_sub_reportCO">
+ 	SELECT * FROM IRP_SUB_REPORT WHERE SUB_REPORT_ID =#{irpSubReportVO.REPORT_ID} AND REPORT_ID NOT IN
+	<foreach item="item" index="index" collection="REPORTS_ID"
+		open="(" separator="," close=")">
+		#{item}
+	</foreach>
+  </select>
+
+ <delete id="deleteConstraints" parameterType="IRP_REP_ARG_CONSTRAINTSVO">
+	DELETE FROM IRP_REP_ARG_CONSTRAINTS WHERE REPORT_ID = #{REPORT_ID} AND ARGUMENT_ID = #{ARGUMENT_ID}
+ </delete>
+ 
+  <delete id="deleteConstraintsAsList" parameterType="java.util.List">
+	DELETE FROM IRP_REP_ARG_CONSTRAINTS WHERE REPORT_ID IN
+	<foreach item="item" index="index" collection="list"
+		open="(" separator="," close=")">
+		#{item}
+	</foreach>
+ </delete>
+
+	<select id="returnDataByTable" parameterType="irp_ad_hoc_reportSC"
+		resultType="java.util.HashMap">
+		SELECT *
+		FROM ${tblName}
+		<where>
+			<if test="REPORT_ID != null">
+				REPORT_ID = #{REPORT_ID}
+	     	</if>
+			<if
+				test="PROG_REF != null and tblName!='OPT' and tblName!='OPT_EXTENDED'">
+				AND REP_REF = #{PROG_REF}
+	     	</if>
+			<if
+				test="PROG_REF != null and (tblName=='OPT' or tblName=='OPT_EXTENDED')">
+				AND PROG_REF = #{PROG_REF} 
+	     	</if>
+			<if test="COMP_CODE != null">
+				AND COMP_CODE = #{COMP_CODE}
+	     	</if>
+			<if test="QUERY_ID != null">
+				AND QUERY_ID = #{QUERY_ID}
+	     	</if>
+			<if test="APP_NAME != null">
+				AND APP_NAME = #{APP_NAME}
+	     	</if>
+			<if test="REPORT_REF != null and tblName!='REP_SNAPSHOT_PARAM' and tblName!='IRP_SNAPSHOT_PARAM_MAPPING'">
+				AND REPORT_REF = #{REPORT_REF}
+	     	</if>
+			<if test="listProcIds != null and listProcIds.size > 0">
+				AND PROC_ID IN
+				<foreach item="item" index="index" collection="listProcIds"
+					open="(" separator="," close=")">
+					#{item}
+				</foreach>
+			</if>
+			<if test="listArgsIds != null and listArgsIds.size > 0">
+				AND REPORT_ARGUMENT_ID IN
+				<foreach item="item" index="index" collection="listArgsIds"
+					open="(" separator="," close=")">
+					#{item}
+				</foreach>
+			</if>
+			<if test="listHashIds != null and listHashIds.size > 0">
+				AND HASH_TABLE_ID IN
+				<foreach item="item" index="index" collection="listHashIds"
+					open="(" separator="," close=")">
+					#{item}
+				</foreach>
+			</if>
+			<if test="listQryIds != null and listQryIds.size > 0">
+				AND QUERY_ID IN
+				<foreach item="item" index="index" collection="listQryIds"
+					open="(" separator="," close=")">
+					#{item}
+			</foreach>
+			</if>
+			<if test="listConIds != null and listConIds.size > 0">
+				AND CONN_ID IN
+				<foreach item="item" index="index" collection="listConIds"
+					open="(" separator="," close=")">
+					#{item}
+				</foreach>
+			</if>
+			<if test="listClientAcronym != null and listClientAcronym.size > 0">
+				AND CLIENT_ACRONYM IN
+				<foreach item="item" index="index" collection="listClientAcronym"
+					open="(" separator="," close=")">
+					#{item}
+			</foreach>
+			</if>
+			<if test="listOpts != null and listOpts.size > 0">
+				AND PROG_REF IN
+				<foreach item="item" index="index" collection="listOpts"
+					open="(" separator="," close=")">
+					#{item}
+				</foreach>
+			</if>
+			<if test="listFolderRef != null and listFolderRef.size > 0">
+				AND FOLDER_REF IN
+				<foreach item="item" index="index" collection="listFolderRef"
+					open="(" separator="," close=")">
+					#{item}
+				</foreach>
+			</if>
+			<if	test="REPORT_REF != null and tblName=='REP_SNAPSHOT_PARAM'">
+				 REP_REFERENCE = #{REPORT_REF} 
+	     	</if>
+	     	<if	test="REPORT_REF != null and tblName=='IRP_SNAPSHOT_PARAM_MAPPING'">
+				 REP_ID = (SELECT REP_ID FROM REP_SNAPSHOT_PARAM WHERE REP_REFERENCE=#{REPORT_REF})
+	     	</if>
+		</where>
+	</select>
+  <insert id="insertScrApiLogSql" parameterType="api_scr_logVO">
+
+    INSERT INTO API_SCR_LOG
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="isOracle == 1">
+       	AUTO_INC,
+       </if>
+      <if test="ENTITY_NAME != null" >
+        ENTITY_NAME,
+      </if>
+      <if test="ENTITY_TYPE != null" >
+        ENTITY_TYPE,
+      </if>
+      <if test="SERVER_DATE != null" >
+        SERVER_DATE,
+      </if>
+      <if test="VERSION != null" >
+        VERSION,
+      </if>
+      <if test="APP_NAME != null" >
+        APP_NAME,
+      </if>
+      <if test="COMMENTS != null" >
+        COMMENTS,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="isOracle == 1">
+    	API_SCR_LOG_SEQ.Nextval,
+      </if>
+      <if test="ENTITY_NAME != null" >
+        #{ENTITY_NAME},
+      </if>
+      <if test="ENTITY_TYPE != null" >
+        #{ENTITY_TYPE},
+      </if>
+      <if test="SERVER_DATE != null" >
+        #{SERVER_DATE},
+      </if>
+      <if test="VERSION != null" >
+        #{VERSION},
+      </if>
+      <if test="APP_NAME != null" >
+        #{APP_NAME},
+      </if>
+      <if test="COMMENTS != null" >
+        #{COMMENTS},
+      </if>
+    </trim>
+  </insert>
+  
+	
+	
+  <select id="retRepHyperlinksByRepId"  resultType="IRP_REP_HYPERLINKSVO" parameterType="irp_report_schedulesc">
+  		SELECT * FROM IRP_REP_HYPERLINKS WHERE REPORT_ID IN
+  		<foreach item="item" index="index" collection="listReportsId"
+			open="(" separator="," close=")">
+			#{item}
+	    </foreach>
+  </select>  
+  
+  
+  <update id="updateHashTable" parameterType="irp_hash_tableVO">
+    UPDATE IRP_HASH_TABLE SET HASH_TABLE_SCRIPT = #{HASH_TABLE_SCRIPT} WHERE HASH_TABLE_ID = #{HASH_TABLE_ID}
+  </update> 
+  
+  <delete id="deleteArgumentFromFilters" parameterType="IRP_REP_FILTERSSC">
+  	<choose>
+		 <when test="isSybase == 1" >
+		 	begin transaction
+		 		DELETE FROM IRP_REP_ARGUMENTS_FILTERS WHERE REPORT_ID = #{REPORT_ID} AND ARGUMENT_ID = #{ARGUMENT_ID}
+  				DELETE FROM IRP_REP_FILTERS  WHERE FILTER_ID NOT IN (SELECT FILTER_ID FROM IRP_REP_ARGUMENTS_FILTERS)
+  			commit transaction
+		 </when>
+		 <otherwise>
+		 	begin
+		 		DELETE FROM IRP_REP_ARGUMENTS_FILTERS WHERE REPORT_ID = #{REPORT_ID} AND ARGUMENT_ID = #{ARGUMENT_ID};
+  				DELETE FROM IRP_REP_FILTERS T WHERE NOT EXISTS(SELECT 1 FROM IRP_REP_ARGUMENTS_FILTERS TT WHERE TT.FILTER_ID=T.FILTER_ID);
+		 	end;
+		 </otherwise>
+	</choose>
+ </delete>  
+ 
+ <delete id="deleteFilterOfReport" parameterType="IRP_REP_FILTERSSC">
+ 	<choose>
+		 <when test="isSybase == 1" >
+		    begin transaction
+		       DELETE FROM IRP_REP_ARGUMENTS_FILTERS WHERE REPORT_ID IN	
+		       <foreach item="item" index="index" collection="reportsIdList" open="(" separator="," close=")">
+							#{item}
+			   </foreach>
+			   DELETE FROM IRP_REP_FILTERS  WHERE FILTER_ID NOT IN (SELECT FILTER_ID FROM IRP_REP_ARGUMENTS_FILTERS)
+			commit transaction
+		 </when>
+		 <otherwise>
+		 	begin
+		       DELETE FROM IRP_REP_ARGUMENTS_FILTERS WHERE REPORT_ID IN	
+		       <foreach item="item" index="index" collection="reportsIdList" open="(" separator="," close=")">
+							#{item}
+			   </foreach>;
+			   DELETE FROM IRP_REP_FILTERS T WHERE NOT EXISTS(SELECT 1 FROM IRP_REP_ARGUMENTS_FILTERS TT WHERE TT.FILTER_ID=T.FILTER_ID);
+			end;
+		 </otherwise>
+	</choose>
+ </delete>
+ 
+  <resultMap id="irpRepImagesMap" type="com.path.dbmaps.vo.IRP_REP_IMAGESVO" >
+    <result column="IMAGE_NAME" property="IMAGE_NAME" />
+ </resultMap>
+  
+ <select id="retImagesGridsRecords" resultMap="irpRepImagesMap">
+	<include refid="servicesCommon.commonGridWrpBefFlip"/>
+	<include refid="selectImagesSql"/>
+	<include refid="servicesCommon.commonGridWrpAftFlip"/>
+	<include refid="servicesCommon.commmonGridWrpFlipClose"/>
+ </select>
+  
+ <select id="retImagesGridRecordsCount" resultType="int" parameterType="irp_ad_hoc_reportSC"> 
+	<include refid="servicesCommon.commonGridWrpBefCnt"/>
+	<include refid="selectImagesSql"/>
+	<include refid="servicesCommon.commonGridWrpAftCnt"/>
+	<include refid="servicesCommon.commonGridCountWrpClose"/>
+  </select> 
+  
+ <sql id="selectImagesSql">
+ 	 	SELECT IMAGE_NAME FROM IRP_REP_IMAGES 
+ </sql>    
+  
+  <resultMap id="reArgFiltersMap" type="com.path.dbmaps.vo.IRP_REP_ARGUMENTS_FILTERSVO" >
+    <result column="FILTER_ID" 		property="FILTER_ID" />
+    <result column="REPORT_ID" 		property="REPORT_ID" />
+    <result column="ARGUMENT_ID" 	property="ARGUMENT_ID" />
+    <result column="ARGUMENT_VALUE" property="ARGUMENT_VALUE" />
+    <result column="CREATED_BY" 	property="CREATED_BY" />
+    <result column="CREATED_DATE" 	property="CREATED_DATE" />
+    <result column="MODIFIED_BY" 	property="MODIFIED_BY" />
+    <result column="MODIFIED_DATE" 	property="MODIFIED_DATE" />
+   </resultMap>
+  
+  <select id="retArgumentsFiltersByReport" resultMap="reArgFiltersMap" parameterType="irp_ad_hoc_reportSC">
+		SELECT FILTER_ID ,REPORT_ID, ARGUMENT_ID, ARGUMENT_VALUE, CREATED_BY, CREATED_DATE, MODIFIED_BY, MODIFIED_DATE
+		FROM IRP_REP_ARGUMENTS_FILTERS WHERE REPORT_ID = #{REPORT_ID} 
+			AND ARGUMENT_ID IN
+			<foreach item="item" index="index" collection="listArgsIds"
+					open="(" separator="," close=")">
+					#{item}
+			</foreach>
+  </select>
+  
+  <select id="checkArgSameNameAndType" resultType="BigDecimal" parameterType="irp_ad_hoc_reportSC">
+  		SELECT CASE WHEN (COUNT(1) = 0) THEN 0 ELSE MAX(ARGUMENT_ID) END 
+  			FROM IRP_REP_ARGUMENTS WHERE ARGUMENT_NAME = #{reportArgumentName} 
+  			AND ARGUMENT_TYPE = #{argumentType} AND REPORT_ID = #{REPORT_ID}
+  </select>
+  
+  <select id="checkIfAnyFilterForCurrentReport" resultType="int" parameterType="irp_ad_hoc_reportSC">
+  	SELECT COUNT(1) FROM IRP_REP_ARGUMENTS_FILTERS T WHERE T.REPORT_ID = #{REPORT_ID}
+  </select>
+  
+   <select id="retRepDetailsByRepId" parameterType="irp_ad_hoc_reportVOWithBLOBs" resultMap="retRepDetailsByRepIdMap">
+    select 
+    <include refid="IRP_AD_HOC_REPORT.Base_Column_List" />
+    ,
+    <include refid="IRP_AD_HOC_REPORT.Blob_Column_List" />
+    from IRP_AD_HOC_REPORT
+    where REPORT_ID = #{REPORT_ID}
+ </select>
+ 
+ <select id="retMetaDataReports" parameterType="java.util.List" resultType="java.math.BigDecimal">
+ 	SELECT METADATA_REPORT_ID FROM IRP_AD_HOC_REPORT WHERE REPORT_ID IN
+	<foreach item="item" index="index" collection="list"
+		open="(" separator="," close=")">
+		#{item}
+	</foreach>
+ </select>
+ 
+ <select id="retReportsBeingMetadata" parameterType="java.util.List" resultMap="reportResultMap">
+  SELECT METADATA_REPORT_ID, REPORT_ID FROM IRP_AD_HOC_REPORT WHERE METADATA_REPORT_ID IN
+   <foreach item="item" index="index" collection="list"
+		open="(" separator="," close=")">
+		#{item}
+   </foreach>
+ </select>
+ 
+ <select id="retAlreadyExportedArgsLogs" parameterType="irp_ad_hoc_reportSC"  resultMap="IRP_REP_METADATA_LOG.ResultMapWithBLOBs" >
+ 	SELECT LOG_ID, REPORT_ID, PROG_REF, REPORT_ARGUMENTS, REP_FILE_NAME, LOG_DATE
+ 	FROM IRP_REP_METADATA_LOG
+ 	WHERE REPORT_ID = #{REPORT_ID}
+ </select>
+   
+ <update id="updateAllCifAuditParams" parameterType="java.math.BigDecimal">
+ 	UPDATE IRP_REP_ARGUMENTS SET CIF_AUDIT_YN = 0 WHERE REPORT_ID = #{reportId}
+ </update>  
+
+  <insert id="insertReportExecLog_NewTrans" parameterType="com.path.dbmaps.vo.IRP_REPORT_EXEC_LOGVO">
+	<selectKey resultType="java.math.BigDecimal" keyProperty="REPORT_EXEC_LOG_ID" order="BEFORE" >
+		<if test="isOracle == 1">
+			SELECT IRP_REPORT_EXEC_LOG_SEQ.NEXTVAL FROM dual
+		</if>
+		<if test="isSybase == 1 and isSQLServer != 1 " >
+			SELECT next_identity('IRP_REPORT_EXEC_LOG')
+		</if>
+	</selectKey>
+	insert into IRP_REPORT_EXEC_LOG
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="isOracle == 1">
+      	<if test="REPORT_EXEC_LOG_ID != null and REPORT_EXEC_LOG_ID != emptyBigDecimalValue" >
+	        REPORT_EXEC_LOG_ID,
+	    </if>
+      </if>
+      <if test="USER_ID != null and !&quot;&quot;.equals(USER_ID)" >
+        USER_ID,
+      </if>
+      <if test="COMP_CODE != null and COMP_CODE != emptyBigDecimalValue" >
+        COMP_CODE,
+      </if>
+      <if test="BRANCH_CODE != null and BRANCH_CODE != emptyBigDecimalValue" >
+        BRANCH_CODE,
+      </if>
+      <if test="REPORT_APP_NAME != null and !&quot;&quot;.equals(REPORT_APP_NAME)" >
+        REPORT_APP_NAME,
+      </if>
+      <if test="APP_NAME != null and !&quot;&quot;.equals(APP_NAME)" >
+        APP_NAME,
+      </if>
+      <if test="REPORT_PROG_REF != null and !&quot;&quot;.equals(REPORT_PROG_REF)" >
+        REPORT_PROG_REF,
+      </if>
+      <if test="REPORT_PARAMS != null and !&quot;&quot;.equals(REPORT_PARAMS)" >
+        REPORT_PARAMS,
+      </if>
+      <if test="HTTP_SESSION != null and !&quot;&quot;.equals(HTTP_SESSION)" >
+        HTTP_SESSION,
+      </if>
+      <if test="EXEC_START_TIME != null" >
+        EXEC_START_TIME,
+      </if>
+      <if test="EXEC_END_TIME != null" >
+        EXEC_END_TIME,
+      </if>
+      <if test="REPORT_EXCEPTION != null and !&quot;&quot;.equals(REPORT_EXCEPTION)" >
+        REPORT_EXCEPTION,
+      </if>
+      <if test="REPORT_ID != null and REPORT_ID != emptyBigDecimalValue" >
+        REPORT_ID,
+      </if>
+      <if test="SOURCE_ID != null and SOURCE_ID != emptyBigDecimalValue" >
+        SOURCE_ID,
+      </if>
+      <if test="CONN_ID != null and CONN_ID != emptyBigDecimalValue" >
+        CONN_ID,
+      </if>
+      <if test="REPORT_SIZE != null and !&quot;&quot;.equals(REPORT_SIZE)" >
+        REPORT_SIZE,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="isOracle == 1">
+	      <if test="REPORT_EXEC_LOG_ID != null and REPORT_EXEC_LOG_ID != emptyBigDecimalValue" >
+	        #{REPORT_EXEC_LOG_ID},
+	      </if>
+      </if>
+      <if test="USER_ID != null and !&quot;&quot;.equals(USER_ID)" >
+        #{USER_ID},
+      </if>
+      <if test="COMP_CODE != null and COMP_CODE != emptyBigDecimalValue" >
+        #{COMP_CODE},
+      </if>
+      <if test="BRANCH_CODE != null and BRANCH_CODE != emptyBigDecimalValue" >
+        #{BRANCH_CODE},
+      </if>
+      <if test="REPORT_APP_NAME != null and !&quot;&quot;.equals(REPORT_APP_NAME)" >
+        #{REPORT_APP_NAME},
+      </if>
+      <if test="APP_NAME != null and !&quot;&quot;.equals(APP_NAME)" >
+        #{APP_NAME},
+      </if>
+      <if test="REPORT_PROG_REF != null and !&quot;&quot;.equals(REPORT_PROG_REF)" >
+        #{REPORT_PROG_REF},
+      </if>
+      <if test="REPORT_PARAMS != null and !&quot;&quot;.equals(REPORT_PARAMS)" >
+        #{REPORT_PARAMS},
+      </if>
+      <if test="HTTP_SESSION != null and !&quot;&quot;.equals(HTTP_SESSION)" >
+        #{HTTP_SESSION},
+      </if>
+      <if test="EXEC_START_TIME != null" >
+        #{EXEC_START_TIME},
+      </if>
+      <if test="EXEC_END_TIME != null" >
+        #{EXEC_END_TIME},
+      </if>
+      <if test="REPORT_EXCEPTION != null and !&quot;&quot;.equals(REPORT_EXCEPTION)" >
+        #{REPORT_EXCEPTION},
+      </if>
+      <if test="REPORT_ID != null and REPORT_ID != emptyBigDecimalValue" >
+        #{REPORT_ID},
+      </if>
+      <if test="SOURCE_ID != null and SOURCE_ID != emptyBigDecimalValue" >
+        #{SOURCE_ID},
+      </if>
+      <if test="CONN_ID != null and CONN_ID != emptyBigDecimalValue" >
+        #{CONN_ID},
+      </if>
+      <if test="REPORT_SIZE != null and !&quot;&quot;.equals(REPORT_SIZE)" >
+        #{REPORT_SIZE},
+      </if>
+    </trim>
+</insert> 
+
+</mapper>

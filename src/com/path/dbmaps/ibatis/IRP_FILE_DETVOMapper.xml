@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="IRP_FILE_DET" >
+  <resultMap id="BaseResultMap" type="com.path.dbmaps.vo.IRP_FILE_DETVO" >
+    <id column="FILE_ID" property="FILE_ID" />
+    <id column="LINE_NO" property="LINE_NO" />
+    <result column="APP_NAME" property="APP_NAME" />
+    <result column="PROG_REF" property="PROG_REF" />
+    <result column="SUB_FILE_NAME" property="SUB_FILE_NAME" />
+    <result column="DATE_UPDATED" property="DATE_UPDATED" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    FILE_ID, LINE_NO, APP_NAME, PROG_REF, SUB_FILE_NAME, DATE_UPDATED
+  </sql>
+  <select id="selectIRP_FILE_DET" resultMap="BaseResultMap" parameterType="com.path.dbmaps.vo.IRP_FILE_DETVO" >
+    select 
+    <include refid="Base_Column_List" />
+    from IRP_FILE_DET
+    where FILE_ID = #{FILE_ID}
+      and LINE_NO = #{LINE_NO}
+  </select>
+  <delete id="deleteIRP_FILE_DET" parameterType="com.path.dbmaps.vo.IRP_FILE_DETVO" >
+    delete from IRP_FILE_DET
+    where FILE_ID = #{FILE_ID}
+      and LINE_NO = #{LINE_NO}
+  </delete>
+  <insert id="insertIRP_FILE_DET" parameterType="com.path.dbmaps.vo.IRP_FILE_DETVO" >
+    insert into IRP_FILE_DET
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="FILE_ID != null and FILE_ID != emptyBigDecimalValue" >
+        FILE_ID,
+      </if>
+      <if test="LINE_NO != null and LINE_NO != emptyBigDecimalValue" >
+        LINE_NO,
+      </if>
+      <if test="APP_NAME != null" >
+        APP_NAME,
+      </if>
+      <if test="PROG_REF != null" >
+        PROG_REF,
+      </if>
+      <if test="SUB_FILE_NAME != null" >
+        SUB_FILE_NAME,
+      </if>
+      DATE_UPDATED,
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="FILE_ID != null and FILE_ID != emptyBigDecimalValue" >
+        #{FILE_ID},
+      </if>
+      <if test="LINE_NO != null and LINE_NO != emptyBigDecimalValue" >
+        #{LINE_NO},
+      </if>
+      <if test="APP_NAME != null" >
+        #{APP_NAME},
+      </if>
+      <if test="PROG_REF != null" >
+        #{PROG_REF},
+      </if>
+      <if test="SUB_FILE_NAME != null" >
+        #{SUB_FILE_NAME},
+      </if>
+      <choose >
+        <when test="isSybase == 1" >
+           GETDATE(),
+        </when>
+        <otherwise >
+           SYSDATE,
+        </otherwise>
+      </choose>
+    </trim>
+  </insert>
+  <sql id="sql_updateIRP_FILE_DET" >
+    update IRP_FILE_DET
+    <set >
+      <if test="APP_NAME != null" >
+        APP_NAME = #{APP_NAME},
+      </if>
+      <if test="PROG_REF != null" >
+        PROG_REF = #{PROG_REF},
+      </if>
+      <if test="SUB_FILE_NAME != null" >
+        SUB_FILE_NAME = #{SUB_FILE_NAME},
+      </if>
+      DATE_UPDATED = 
+      <choose >
+        <when test="isSybase == 1" >
+           GETDATE(),
+        </when>
+        <otherwise >
+           SYSDATE,
+        </otherwise>
+      </choose>
+    </set>
+    where FILE_ID = #{FILE_ID}
+      and LINE_NO = #{LINE_NO}
+  </sql>
+  <update id="updateIRP_FILE_DET" parameterType="com.path.dbmaps.vo.IRP_FILE_DETVO" >
+    <include refid="sql_updateIRP_FILE_DET" />
+    <if test="DATE_UPDATED != null" >
+      AND DATE_UPDATED = #{DATE_UPDATED}
+    </if>
+  </update>
+</mapper>

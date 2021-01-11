@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="FTR_TIME_BUCKETS" >
+  <resultMap id="BaseResultMap" type="com.path.dbmaps.vo.FTR_TIME_BUCKETSVO" >
+    <id column="COMP_CODE" property="COMP_CODE" />
+    <id column="CURRENCY_CODE" property="CURRENCY_CODE" />
+    <id column="LINE_NO" property="LINE_NO" />
+    <id column="REP_REF" property="REP_REF" />
+    <result column="RATE_DESC" property="RATE_DESC" />
+    <result column="LIMIT" property="LIMIT" />
+    <result column="RATE" property="RATE" />
+    <result column="NO_OF_DAYS" property="NO_OF_DAYS" />
+    <result column="DATE_UPDATED" property="DATE_UPDATED" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    COMP_CODE, CURRENCY_CODE, LINE_NO, REP_REF, RATE_DESC, LIMIT, RATE, NO_OF_DAYS, DATE_UPDATED
+  </sql>
+  <select id="selectFTR_TIME_BUCKETS" resultMap="BaseResultMap" parameterType="com.path.dbmaps.vo.FTR_TIME_BUCKETSVO" >
+    select 
+    <include refid="Base_Column_List" />
+    from FTR_TIME_BUCKETS
+    where COMP_CODE = #{COMP_CODE}
+      and CURRENCY_CODE = #{CURRENCY_CODE}
+      and LINE_NO = #{LINE_NO}
+      and REP_REF = #{REP_REF}
+  </select>
+  <delete id="deleteFTR_TIME_BUCKETS" parameterType="com.path.dbmaps.vo.FTR_TIME_BUCKETSVO" >
+    delete from FTR_TIME_BUCKETS
+    where COMP_CODE = #{COMP_CODE}
+      and CURRENCY_CODE = #{CURRENCY_CODE}
+      and LINE_NO = #{LINE_NO}
+      and REP_REF = #{REP_REF}
+  </delete>
+  <insert id="insertFTR_TIME_BUCKETS" parameterType="com.path.dbmaps.vo.FTR_TIME_BUCKETSVO" >
+    insert into FTR_TIME_BUCKETS
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="COMP_CODE != null and COMP_CODE != emptyBigDecimalValue" >
+        COMP_CODE,
+      </if>
+      <if test="CURRENCY_CODE != null and CURRENCY_CODE != emptyBigDecimalValue" >
+        CURRENCY_CODE,
+      </if>
+      <if test="LINE_NO != null and LINE_NO != emptyBigDecimalValue" >
+        LINE_NO,
+      </if>
+      <if test="REP_REF != null" >
+        REP_REF,
+      </if>
+      <if test="RATE_DESC != null" >
+        RATE_DESC,
+      </if>
+      <if test="LIMIT != null and LIMIT != emptyBigDecimalValue" >
+        LIMIT,
+      </if>
+      <if test="RATE != null and RATE != emptyBigDecimalValue" >
+        RATE,
+      </if>
+      <if test="NO_OF_DAYS != null and NO_OF_DAYS != emptyBigDecimalValue" >
+        NO_OF_DAYS,
+      </if>
+      DATE_UPDATED,
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="COMP_CODE != null and COMP_CODE != emptyBigDecimalValue" >
+        #{COMP_CODE},
+      </if>
+      <if test="CURRENCY_CODE != null and CURRENCY_CODE != emptyBigDecimalValue" >
+        #{CURRENCY_CODE},
+      </if>
+      <if test="LINE_NO != null and LINE_NO != emptyBigDecimalValue" >
+        #{LINE_NO},
+      </if>
+      <if test="REP_REF != null" >
+        #{REP_REF},
+      </if>
+      <if test="RATE_DESC != null" >
+        #{RATE_DESC},
+      </if>
+      <if test="LIMIT != null and LIMIT != emptyBigDecimalValue" >
+        #{LIMIT},
+      </if>
+      <if test="RATE != null and RATE != emptyBigDecimalValue" >
+        #{RATE},
+      </if>
+      <if test="NO_OF_DAYS != null and NO_OF_DAYS != emptyBigDecimalValue" >
+        #{NO_OF_DAYS},
+      </if>
+      <choose >
+        <when test="isSybase == 1" >
+           GETDATE(),
+        </when>
+        <otherwise >
+           SYSDATE,
+        </otherwise>
+      </choose>
+    </trim>
+  </insert>
+  <sql id="sql_updateFTR_TIME_BUCKETS" >
+    update FTR_TIME_BUCKETS
+    <set >
+      <if test="RATE_DESC != null" >
+        RATE_DESC = #{RATE_DESC},
+      </if>
+      <if test="LIMIT != null" >
+        <choose >
+          <when test="LIMIT == emptyBigDecimalValue" >
+            LIMIT = NULL ,
+          </when>
+          <otherwise >
+            LIMIT = #{LIMIT},
+          </otherwise>
+        </choose>
+      </if>
+      <if test="RATE != null" >
+        <choose >
+          <when test="RATE == emptyBigDecimalValue" >
+            RATE = NULL ,
+          </when>
+          <otherwise >
+            RATE = #{RATE},
+          </otherwise>
+        </choose>
+      </if>
+      <if test="NO_OF_DAYS != null" >
+        <choose >
+          <when test="NO_OF_DAYS == emptyBigDecimalValue" >
+            NO_OF_DAYS = NULL ,
+          </when>
+          <otherwise >
+            NO_OF_DAYS = #{NO_OF_DAYS},
+          </otherwise>
+        </choose>
+      </if>
+      DATE_UPDATED = 
+      <choose >
+        <when test="isSybase == 1" >
+           GETDATE(),
+        </when>
+        <otherwise >
+           SYSDATE,
+        </otherwise>
+      </choose>
+    </set>
+    where COMP_CODE = #{COMP_CODE}
+      and CURRENCY_CODE = #{CURRENCY_CODE}
+      and LINE_NO = #{LINE_NO}
+      and REP_REF = #{REP_REF}
+  </sql>
+  <update id="updateFTR_TIME_BUCKETS" parameterType="com.path.dbmaps.vo.FTR_TIME_BUCKETSVO" >
+    <include refid="sql_updateFTR_TIME_BUCKETS" />
+    <if test="DATE_UPDATED != null" >
+      AND DATE_UPDATED = #{DATE_UPDATED}
+    </if>
+  </update>
+</mapper>

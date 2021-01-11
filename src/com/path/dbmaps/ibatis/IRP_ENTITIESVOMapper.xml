@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="IRP_ENTITIES" >
+  <resultMap id="BaseResultMap" type="com.path.dbmaps.vo.IRP_ENTITIESVO" >
+    <id column="ENTITY_DB_NAME" property="ENTITY_DB_NAME" />
+    <result column="ENTITY_ALIAS" property="ENTITY_ALIAS" />
+    <result column="DATE_UPDATED" property="DATE_UPDATED" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ENTITY_DB_NAME, ENTITY_ALIAS, DATE_UPDATED
+  </sql>
+  <select id="selectIRP_ENTITIES" resultMap="BaseResultMap" parameterType="com.path.dbmaps.vo.IRP_ENTITIESVO" >
+    select 
+    <include refid="Base_Column_List" />
+    from IRP_ENTITIES
+    where ENTITY_DB_NAME = #{ENTITY_DB_NAME}
+  </select>
+  <delete id="deleteIRP_ENTITIES" parameterType="com.path.dbmaps.vo.IRP_ENTITIESVO" >
+    delete from IRP_ENTITIES
+    where ENTITY_DB_NAME = #{ENTITY_DB_NAME}
+  </delete>
+  <insert id="insertIRP_ENTITIES" parameterType="com.path.dbmaps.vo.IRP_ENTITIESVO" >
+    insert into IRP_ENTITIES
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="ENTITY_DB_NAME != null" >
+        ENTITY_DB_NAME,
+      </if>
+      <if test="ENTITY_ALIAS != null" >
+        ENTITY_ALIAS,
+      </if>
+      DATE_UPDATED,
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="ENTITY_DB_NAME != null" >
+        #{ENTITY_DB_NAME},
+      </if>
+      <if test="ENTITY_ALIAS != null" >
+        #{ENTITY_ALIAS},
+      </if>
+      <choose >
+        <when test="isSybase == 1" >
+           GETDATE(),
+        </when>
+        <otherwise >
+           SYSDATE,
+        </otherwise>
+      </choose>
+    </trim>
+  </insert>
+  <sql id="sql_updateIRP_ENTITIES" >
+    update IRP_ENTITIES
+    <set >
+      <if test="ENTITY_ALIAS != null" >
+        ENTITY_ALIAS = #{ENTITY_ALIAS},
+      </if>
+      DATE_UPDATED = 
+      <choose >
+        <when test="isSybase == 1" >
+           GETDATE(),
+        </when>
+        <otherwise >
+           SYSDATE,
+        </otherwise>
+      </choose>
+    </set>
+    where ENTITY_DB_NAME = #{ENTITY_DB_NAME}
+  </sql>
+  <update id="updateIRP_ENTITIES" parameterType="com.path.dbmaps.vo.IRP_ENTITIESVO" >
+    <include refid="sql_updateIRP_ENTITIES" />
+  </update>
+</mapper>

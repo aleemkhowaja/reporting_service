@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="proc" >
+
+  <resultMap type="irp_rep_procCO" id="retProcListMap">
+    <result column="PROC_NAME" property="PROC_NAME" />
+    <result column="PROC_DESC" property="PROC_DESC" />
+    <result column="PROC_ORDER" property="PROC_ORDER" />
+    <result column="EXEC_BEFORE" property="EXEC_BEFORE" />
+    <result column="PROC_ID" property="PROC_ID" />
+    <result column="REPORT_ID" property="REPORT_ID" />
+    <result column="PROC_PARAMS" property="PROC_PARAMS" />
+  </resultMap>
+  
+  <resultMap type="irp_rep_procCO" id="retSysProcListMap">
+    <result column="PROC_NAME" property="PROC_NAME" />
+    <result column="PROC_DESC" property="PROC_DESC" />
+  </resultMap>
+  
+  <resultMap type="irp_rep_proc_paramsCO" id="retProceduresParamsListMap">
+    <result column="PARAM_ID" property="PARAM_ID" />
+    <result column="PROC_ID" property="PROC_ID" />
+    <result column="REPORT_ID" property="REPORT_ID" />
+    <result column="PARAM_ORDER" property="PARAM_ORDER" />
+    <result column="PARAM_NAME" property="PARAM_NAME" />
+    <result column="PARAM_TYPE" property="PARAM_TYPE" />
+    <result column="PARAM_IN_OUT" property="PARAM_IN_OUT"/>
+    <result column="OUTPUT_PARAM_TYPE" property = "OUTPUT_PARAM_TYPE"/>
+    <result column="SUCCESS_VALUE" property ="SUCCESS_VALUE"/>
+    <result column="QRY_PARAM_NAME" property="QRY_PARAM_NAME" />
+    <result column="PROC_NAME" property="PROC_NAME" />
+  </resultMap>
+  
+  <resultMap type="irp_rep_argumentsCO" id="retQryParamListMap">
+    <result column="ARGUMENT_NAME" property="ARGUMENT_NAME" />
+    <result column="ARGUMENT_LABEL" property="ARGUMENT_LABEL" />
+    <result column="ARGUMENT_ID" property="ARGUMENT_ID" />
+  </resultMap>
+  
+
+  <resultMap id="retProcParamsValuesResMap" type="irp_rep_proc_paramsCO" >
+ 	<id column="PARAM_NAME" property="PARAM_NAME" />
+    <result column="PARAM_VALUE" property="PARAM_VALUE" />
+  </resultMap>
+  
+    <resultMap type="irp_rep_procCO" id="retProcIdByProcNameMap">
+    <result column="PROC_ID" property="PROC_ID" />
+  </resultMap>
+  
+  <sql id="retProcListSql">
+  	SELECT RP.PROC_ID,
+       RP.REPORT_ID,
+       RP.PROC_ORDER,
+       RP.EXEC_BEFORE,
+       P.PROC_NAME,
+       null as PROC_PARAMS,
+       P.PROC_DESC
+ 	FROM IRP_PROC P, IRP_REP_PROC RP
+ 	WHERE P.PROC_ID = RP.PROC_ID
+ 	AND RP.REPORT_ID=#{REP_ID}
+ 	<if test="EXEC_BEFORE != null">
+ 		AND  RP.EXEC_BEFORE=#{EXEC_BEFORE}
+ 	</if>
+  </sql>
+  
+  <sql id="retProceduresParamsSql">
+	<include refid="procExt.retProceduresParamsSql"/>
+  </sql>
+  
+  <sql id="retSysProcParamsSql">
+	<include refid="procExt.retSysProcParamsSql"/>
+  </sql>
+  
+  <sql id="retQryParamListSql">
+	SELECT RA.ARGUMENT_NAME ,
+	       RA.ARGUMENT_LABEL ,
+	       RA.ARGUMENT_ID  
+	FROM IRP_REP_ARGUMENTS RA
+	WHERE RA.REPORT_ID = #{REP_ID}
+	   AND RA.ARGUMENT_TYPE = #{PARAM_TYPE}
+  </sql>
+  
+  <sql id="retSysProcListSql">
+  	<include refid="procExt.retSysProcListSql"/>
+  </sql>
+  
+  
+  <select id="retProcList" resultMap="retProcListMap" parameterType="irp_rep_procSC">
+  	<include refid="servicesCommon.commonGridWrpBefFlip"/>
+ 	<include refid="retProcListSql"/>
+	<include refid="servicesCommon.commonGridWrpAftFlip"/>
+	<include refid="servicesCommon.commmonGridWrpFlipClose"/>
+  </select>
+  
+   <select id="retProcListCount" resultType="int" parameterType="irp_rep_procSC"> 
+	<include refid="servicesCommon.commonGridWrpBefCnt"/>
+	<include refid="retProcListSql"/>
+	<include refid="servicesCommon.commonGridWrpAftCnt"/>
+	<include refid="servicesCommon.commonGridCountWrpClose"/>
+  </select>
+  
+   <select id="retSysProcListCount" resultType="int" parameterType="irp_rep_procSC"> 
+	<include refid="servicesCommon.commonGridWrpBefCnt"/>
+	<include refid="retSysProcListSql"/>
+	<include refid="servicesCommon.commonGridWrpAftCnt"/>
+	<include refid="servicesCommon.commonGridCountWrpClose"/>
+  </select>
+  
+    <select id="retSysProcList" resultMap="retSysProcListMap" parameterType="irp_rep_procSC">
+  	<include refid="servicesCommon.commonGridWrpBefFlip"/>
+ 	<include refid="retSysProcListSql"/>
+	<include refid="servicesCommon.commonGridWrpAftFlip"/>
+	<include refid="servicesCommon.commmonGridWrpFlipClose"/>
+  </select>
+  
+   <select id="retProceduresParamsCount" resultType="int" parameterType="irp_rep_procSC"> 
+	<include refid="servicesCommon.commonGridWrpBefCnt"/>
+	<include refid="retProceduresParamsSql"/>
+	<include refid="servicesCommon.commonGridWrpAftCnt"/>
+	<include refid="servicesCommon.commonGridCountWrpClose"/>
+  </select>
+  
+   <select id="retProceduresParamsList" resultMap="retProceduresParamsListMap" parameterType="irp_rep_procSC">
+  	<include refid="servicesCommon.commonGridWrpBefFlip"/>
+ 	<include refid="retProceduresParamsSql"/>
+	<include refid="servicesCommon.commonGridWrpAftFlip"/>
+	<include refid="servicesCommon.commmonGridWrpFlipClose"/>
+  </select>
+  
+  <select id="retSysProcParamsCount" resultType="int" parameterType="irp_rep_procSC"> 
+	<include refid="servicesCommon.commonGridWrpBefCnt"/>
+	<include refid="retSysProcParamsSql"/>
+	<include refid="servicesCommon.commonGridWrpAftCnt"/>
+	<include refid="servicesCommon.commonGridCountWrpClose"/>
+  </select>
+  
+  <select id="retSysProcParamsList" resultMap="retProceduresParamsListMap" parameterType="irp_rep_procSC">
+  	<include refid="servicesCommon.commonGridWrpBefFlip"/>
+ 	<include refid="retSysProcParamsSql"/>
+	<include refid="servicesCommon.commonGridWrpAftFlip"/>
+	<include refid="servicesCommon.commmonGridWrpFlipClose"/>
+  </select>
+  
+  <select id="retQryParamList" resultMap="retQryParamListMap" parameterType="irp_rep_procSC">
+  	<include refid="servicesCommon.commonGridWrpBefFlip"/>
+ 	<include refid="retQryParamListSql"/>
+	<include refid="servicesCommon.commonGridWrpAftFlip"/>
+	<include refid="servicesCommon.commmonGridWrpFlipClose"/>
+  </select>
+  
+  <select id="retQryParamListCount" resultType="int" parameterType="irp_rep_procSC"> 
+	<include refid="servicesCommon.commonGridWrpBefCnt"/>
+	<include refid="retQryParamListSql"/>
+	<include refid="servicesCommon.commonGridWrpAftCnt"/>
+	<include refid="servicesCommon.commonGridCountWrpClose"/>
+  </select>
+  
+  <delete id="deleteParamsByProcedure" parameterType="irp_rep_procSC">
+  	 DELETE FROM IRP_REP_PROC_PARAMS
+     WHERE PROC_ID = #{PROCEDURE_ID}
+      AND REPORT_ID = #{REP_ID}
+  </delete>
+  
+  <select id="retProcParamsValuesMap" resultMap="retProcParamsValuesResMap" parameterType="irp_rep_procSC">
+	   SELECT PP.PARAM_NAME, RA.ARGUMENT_VALUE AS PARAM_VALUE
+	   FROM IRP_REP_PROC_PARAMS PP, IRP_REP_ARGUMENTS RA
+	   WHERE RA.REPORT_ID = PP.REPORT_ID
+	   AND  PP.PARAM_ID = RA.ARGUMENT_ID
+	   AND PP.REPORT_ID =  #{REP_ID}
+	   AND PP.PROC_ID = #{PROCEDURE_ID}
+  </select>
+  
+  <select id="retProcIdByProcName" parameterType="irp_rep_procSC" resultMap="retProcIdByProcNameMap">
+  	SELECT PROC_ID FROM IRP_PROC WHERE PROC_NAME=#{PROCEDURE_NAME}
+  </select>
+  
+  <select id="checkProcUsageById" parameterType="irp_rep_procSC" resultType="int"> 	
+	SELECT COUNT(PROC_ID)
+  	FROM 
+  	(SELECT PROC_ID
+          FROM IRP_REP_PROC_PARAMS
+          WHERE PROC_ID = #{PROCEDURE_ID}
+          UNION ALL
+          SELECT PROC_ID 
+          FROM IRP_REP_PROC 
+          WHERE PROC_ID = #{PROCEDURE_ID}
+     )TBL
+  </select>
+  
+  <delete id="deleteProcParamsByReportId" parameterType="irp_rep_procSC">
+  	DELETE FROM IRP_REP_PROC_PARAMS WHERE REPORT_ID IN
+  	<foreach item="item" index="index" collection="REPORTS_ID" open="(" separator="," close=")">
+		#{item}
+	</foreach>
+  	
+  	
+  </delete>
+  
+  <delete id="deleteProcsByReportId" parameterType="irp_rep_procSC">
+  	DELETE FROM IRP_REP_PROC WHERE REPORT_ID IN 
+	<foreach item="item" index="index" collection="REPORTS_ID" open="(" separator="," close=")">
+		#{item}
+	</foreach>
+  </delete>
+  
+</mapper>

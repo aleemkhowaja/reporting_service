@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="IRP_SNAPSHOT_PARAM_MAPPING" >
+  <resultMap id="BaseResultMap" type="com.path.dbmaps.vo.IRP_SNAPSHOT_PARAM_MAPPINGVO" >
+    <id column="MAPPING_CODE" property="MAPPING_CODE" />
+    <id column="REP_ID" property="REP_ID" />
+    <result column="PARAM_NAME" property="PARAM_NAME" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    MAPPING_CODE, REP_ID, PARAM_NAME
+  </sql>
+  <select id="selectIRP_SNAPSHOT_PARAM_MAPPING" resultMap="BaseResultMap" parameterType="com.path.dbmaps.vo.IRP_SNAPSHOT_PARAM_MAPPINGVO" >
+    select 
+    <include refid="Base_Column_List" />
+    from IRP_SNAPSHOT_PARAM_MAPPING
+    where MAPPING_CODE = #{MAPPING_CODE}
+      and REP_ID = #{REP_ID}
+  </select>
+  <delete id="deleteIRP_SNAPSHOT_PARAM_MAPPING" parameterType="com.path.dbmaps.vo.IRP_SNAPSHOT_PARAM_MAPPINGVO" >
+    delete from IRP_SNAPSHOT_PARAM_MAPPING
+    where MAPPING_CODE = #{MAPPING_CODE}
+      and REP_ID = #{REP_ID}
+  </delete>
+  <insert id="insertIRP_SNAPSHOT_PARAM_MAPPING" parameterType="com.path.dbmaps.vo.IRP_SNAPSHOT_PARAM_MAPPINGVO" >
+    insert into IRP_SNAPSHOT_PARAM_MAPPING
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="MAPPING_CODE != null and MAPPING_CODE != emptyBigDecimalValue" >
+        MAPPING_CODE,
+      </if>
+      <if test="REP_ID != null and REP_ID != emptyBigDecimalValue" >
+        REP_ID,
+      </if>
+      <if test="PARAM_NAME != null" >
+        PARAM_NAME,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="MAPPING_CODE != null and MAPPING_CODE != emptyBigDecimalValue" >
+        #{MAPPING_CODE},
+      </if>
+      <if test="REP_ID != null and REP_ID != emptyBigDecimalValue" >
+        #{REP_ID},
+      </if>
+      <if test="PARAM_NAME != null" >
+        #{PARAM_NAME},
+      </if>
+    </trim>
+  </insert>
+  <sql id="sql_updateIRP_SNAPSHOT_PARAM_MAPPING" >
+    update IRP_SNAPSHOT_PARAM_MAPPING
+    <set >
+      <if test="PARAM_NAME != null" >
+        PARAM_NAME = #{PARAM_NAME},
+      </if>
+    </set>
+    where MAPPING_CODE = #{MAPPING_CODE}
+      and REP_ID = #{REP_ID}
+  </sql>
+  <update id="updateIRP_SNAPSHOT_PARAM_MAPPING" parameterType="com.path.dbmaps.vo.IRP_SNAPSHOT_PARAM_MAPPINGVO" >
+    <include refid="sql_updateIRP_SNAPSHOT_PARAM_MAPPING" />
+  </update>
+</mapper>

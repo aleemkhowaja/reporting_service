@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        
+<mapper namespace="tmplLineExt">
+	<sql id="getAllTemplateLinesSql">  
+	  SELECT CONVERT(VARCHAR,COMP_CODE) + CONVERT(VARCHAR, CODE)+CONVERT(VARCHAR, LINE_NBR) as concatKey,
+       COMP_CODE,
+       CODE,
+       LINE_NBR,
+       BRIEF_NAME_ENG AS TEMPLATE_DESCRIPTION1,
+       BRIEF_NAME_ENG AS TEMPLATE_DESCRIPTION2,
+       POST_CODE,
+       PERCENTAGE,
+       BRIEF_NAME_ARAB,
+       CASE
+         WHEN PRINTED = 1 THEN
+          'YES'
+         ELSE
+          'NO'
+       END AS PRINTEDSTR,
+       PRINTED,
+		BRIEF_NAME_ENG AS FORMAT,
+       CASE
+         WHEN BOLD = 'N' THEN
+          'NO'
+         ELSE
+          'YES'
+       END AS BOLD,
+       CASE
+         WHEN DISPLAY_ZEROS = 'N' THEN
+          'NO'
+         ELSE
+          'YES'
+       END AS DISPLAY_ZEROS,
+       CASE
+         WHEN SAVE_DATA = 'N' THEN
+          'NO'
+         ELSE
+          'YES'
+       END AS SAVE_DATA,
+       CASE
+         WHEN DISP_LINE_TOT_ZERO = 'N' THEN
+          'NO'
+         ELSE
+          'YES'
+       END AS DISP_LINE_TOT_ZERO,
+       EXPRESSION,
+       EXPRESSION_LINES,
+       ADD_DESC1,
+       GL_CODES,
+       GL_TYPE,
+       (SELECT S.VALUE_DESC
+          FROM SYS_PARAM_LOV_TRANS S
+         WHERE S.LOV_TYPE_ID = 3
+           AND S.VALUE_CODE = CONVERT(VARCHAR,TL.BOTTOM_BORDER)
+           AND S.LANG_CODE = #{LANG_CODE}) AS BOTTOM_BORDERSTR,
+       BOTTOM_BORDER,
+       CSV,
+       (SELECT C.BRIEF_DESC_ENG
+          FROM CURRENCIES C
+         WHERE C.CURRENCY_CODE = TL.CURRENCY
+           AND C.COMP_CODE = 1) AS CURRENCYSTR,
+       COALESCE(CURRENCY,0)CURRENCY,
+       FOR_ROUND,
+       ADD_DESC,
+       (ADD_DESC1) AS ADD_DESC2,
+       IS_SUB_TOTAL,
+       (CASE WHEN (IS_SUB_TOTAL='Y') THEN 'YES' ELSE 'NO' END) isSubTotalStr
+  FROM GLSTMPLT TL
+ WHERE COMP_CODE = #{COMP_CODE}
+   AND CODE = #{CODE}
+   AND LINE_NBR <![CDATA[ <> ]]> 0
+	</sql>
+
+
+</mapper>

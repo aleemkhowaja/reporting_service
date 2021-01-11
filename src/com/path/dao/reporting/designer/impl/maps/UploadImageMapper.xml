@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        
+<mapper namespace="uploadImage">
+
+<resultMap type="pthCtrl1VO" id="retImgParamsMap">
+<result column="REP_IMG_LIMIT_SIZE" property="REP_IMG_LIMIT_SIZE" />
+<result column="REP_IMG_LIMIT_SIZE_MAND" property="REP_IMG_LIMIT_SIZE_MAND" />
+</resultMap>
+
+<select id="retImgParams" resultMap="retImgParamsMap">
+SELECT REP_IMG_LIMIT_SIZE,REP_IMG_LIMIT_SIZE_MAND FROM PTH_CTRL1 
+</select>
+
+</mapper>

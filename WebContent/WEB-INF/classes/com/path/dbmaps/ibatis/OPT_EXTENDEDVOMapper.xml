@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="OPT_EXTENDED" >
+  <resultMap id="BaseResultMap" type="com.path.dbmaps.vo.OPT_EXTENDEDVO" >
+    <id column="APP_NAME" property="APP_NAME" />
+    <id column="PROG_REF" property="PROG_REF" />
+    <result column="OPT_URL" property="OPT_URL" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    APP_NAME, PROG_REF, OPT_URL
+  </sql>
+  <select id="selectOPT_EXTENDED" resultMap="BaseResultMap" parameterType="com.path.dbmaps.vo.OPT_EXTENDEDVOKey" >
+    select 
+    <include refid="Base_Column_List" />
+    from OPT_EXTENDED
+    where APP_NAME = #{APP_NAME}
+      and PROG_REF = #{PROG_REF}
+  </select>
+  <delete id="deleteOPT_EXTENDED" parameterType="com.path.dbmaps.vo.OPT_EXTENDEDVOKey" >
+    delete from OPT_EXTENDED
+    where APP_NAME = #{APP_NAME}
+      and PROG_REF = #{PROG_REF}
+  </delete>
+  <insert id="insertOPT_EXTENDED" parameterType="com.path.dbmaps.vo.OPT_EXTENDEDVO" >
+    insert into OPT_EXTENDED
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="APP_NAME != null" >
+        APP_NAME,
+      </if>
+      <if test="PROG_REF != null" >
+        PROG_REF,
+      </if>
+      <if test="OPT_URL != null" >
+        OPT_URL,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="APP_NAME != null" >
+        #{APP_NAME},
+      </if>
+      <if test="PROG_REF != null" >
+        #{PROG_REF},
+      </if>
+      <if test="OPT_URL != null" >
+        #{OPT_URL},
+      </if>
+    </trim>
+  </insert>
+  <sql id="sql_updateOPT_EXTENDED" >
+    update OPT_EXTENDED
+    <set >
+      <if test="OPT_URL != null" >
+        OPT_URL = #{OPT_URL},
+      </if>
+    </set>
+    where APP_NAME = #{APP_NAME}
+      and PROG_REF = #{PROG_REF}
+  </sql>
+  <update id="updateOPT_EXTENDED" parameterType="com.path.dbmaps.vo.OPT_EXTENDEDVO" >
+    <include refid="sql_updateOPT_EXTENDED" />
+  </update>
+</mapper>

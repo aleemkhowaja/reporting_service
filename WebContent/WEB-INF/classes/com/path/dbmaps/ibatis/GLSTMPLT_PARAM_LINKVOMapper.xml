@@ -1,0 +1,431 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="GLSTMPLT_PARAM_LINK" >
+  <resultMap id="BaseResultMap" type="com.path.dbmaps.vo.GLSTMPLT_PARAM_LINKVO" >
+    <id column="COMP_CODE" property="COMP_CODE" />
+    <id column="CRITERIA_CODE" property="CRITERIA_CODE" />
+    <id column="LINE_NO" property="LINE_NO" />
+    <id column="SUB_LINE_NO" property="SUB_LINE_NO" />
+    <id column="TEMP_CODE" property="TEMP_CODE" />
+    <result column="CODE1" property="CODE1" />
+    <result column="CODE2" property="CODE2" />
+    <result column="PERCENTAGE" property="PERCENTAGE" />
+    <result column="TYPE1" property="TYPE1" />
+    <result column="RESIDENT" property="RESIDENT" />
+    <result column="INCLUDE" property="INCLUDE" />
+    <result column="OPERATOR" property="OPERATOR" />
+    <result column="AMOUNT" property="AMOUNT" />
+    <result column="DEBIT_CREDIT_IND" property="DEBIT_CREDIT_IND" />
+    <result column="COLL_PER_TYPE" property="COLL_PER_TYPE" />
+    <result column="TOTAL_AMT_SIGN" property="TOTAL_AMT_SIGN" />
+    <result column="TRS_ASSET_TYPE" property="TRS_ASSET_TYPE" />
+    <result column="CATEGORY" property="CATEGORY" />
+    <result column="AMOUNT2" property="AMOUNT2" />
+    <result column="SOURCE_USAGES" property="SOURCE_USAGES" />
+    <result column="OPERATOR1" property="OPERATOR1" />
+    <result column="DEAL_TENURE" property="DEAL_TENURE" />
+    <result column="SECURITY_CODE1" property="SECURITY_CODE1" />
+    <result column="SECURITY_CODE2" property="SECURITY_CODE2" />
+    <result column="MAT_DATE" property="MAT_DATE" />
+    <result column="CBK_CIF_TYPE" property="CBK_CIF_TYPE" />
+    <result column="SECURITY_LISTED" property="SECURITY_LISTED" />
+    <result column="DATE_TYPE" property="DATE_TYPE" />
+    <result column="GL_TERM" property="GL_TERM" />
+    <result column="DATE_UPDATED" property="DATE_UPDATED" />
+    <result column="GENDER" property="GENDER" />
+    <result column="SECURITY_CLASS" property="SECURITY_CLASS" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    COMP_CODE, CRITERIA_CODE, LINE_NO, SUB_LINE_NO, TEMP_CODE, CODE1, CODE2, PERCENTAGE, 
+    TYPE1, RESIDENT, INCLUDE, OPERATOR, AMOUNT, DEBIT_CREDIT_IND, COLL_PER_TYPE, TOTAL_AMT_SIGN, 
+    TRS_ASSET_TYPE, CATEGORY, AMOUNT2, SOURCE_USAGES, OPERATOR1, DEAL_TENURE, SECURITY_CODE1, 
+    SECURITY_CODE2, MAT_DATE, CBK_CIF_TYPE, SECURITY_LISTED, DATE_TYPE, GL_TERM, DATE_UPDATED, 
+    GENDER, SECURITY_CLASS
+  </sql>
+  <select id="selectGLSTMPLT_PARAM_LINK" resultMap="BaseResultMap" parameterType="com.path.dbmaps.vo.GLSTMPLT_PARAM_LINKVO" >
+    select 
+    <include refid="Base_Column_List" />
+    from GLSTMPLT_PARAM_LINK
+    where COMP_CODE = #{COMP_CODE}
+      and CRITERIA_CODE = #{CRITERIA_CODE}
+      and LINE_NO = #{LINE_NO}
+      and SUB_LINE_NO = #{SUB_LINE_NO}
+      and TEMP_CODE = #{TEMP_CODE}
+  </select>
+  <delete id="deleteGLSTMPLT_PARAM_LINK" parameterType="com.path.dbmaps.vo.GLSTMPLT_PARAM_LINKVO" >
+    delete from GLSTMPLT_PARAM_LINK
+    where COMP_CODE = #{COMP_CODE}
+      and CRITERIA_CODE = #{CRITERIA_CODE}
+      and LINE_NO = #{LINE_NO}
+      and SUB_LINE_NO = #{SUB_LINE_NO}
+      and TEMP_CODE = #{TEMP_CODE}
+  </delete>
+  <insert id="insertGLSTMPLT_PARAM_LINK" parameterType="com.path.dbmaps.vo.GLSTMPLT_PARAM_LINKVO" >
+    insert into GLSTMPLT_PARAM_LINK
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="COMP_CODE != null and COMP_CODE != emptyBigDecimalValue" >
+        COMP_CODE,
+      </if>
+      <if test="CRITERIA_CODE != null and CRITERIA_CODE != emptyBigDecimalValue" >
+        CRITERIA_CODE,
+      </if>
+      <if test="LINE_NO != null and LINE_NO != emptyBigDecimalValue" >
+        LINE_NO,
+      </if>
+      <if test="SUB_LINE_NO != null and SUB_LINE_NO != emptyBigDecimalValue" >
+        SUB_LINE_NO,
+      </if>
+      <if test="TEMP_CODE != null and TEMP_CODE != emptyBigDecimalValue" >
+        TEMP_CODE,
+      </if>
+      <if test="CODE1 != null and CODE1 != emptyBigDecimalValue" >
+        CODE1,
+      </if>
+      <if test="CODE2 != null and CODE2 != emptyBigDecimalValue" >
+        CODE2,
+      </if>
+      <if test="PERCENTAGE != null and PERCENTAGE != emptyBigDecimalValue" >
+        PERCENTAGE,
+      </if>
+      <if test="TYPE1 != null" >
+        TYPE1,
+      </if>
+      <if test="RESIDENT != null" >
+        RESIDENT,
+      </if>
+      <if test="INCLUDE != null" >
+        INCLUDE,
+      </if>
+      <if test="OPERATOR != null" >
+        OPERATOR,
+      </if>
+      <if test="AMOUNT != null and AMOUNT != emptyBigDecimalValue" >
+        AMOUNT,
+      </if>
+      <if test="DEBIT_CREDIT_IND != null" >
+        DEBIT_CREDIT_IND,
+      </if>
+      <if test="COLL_PER_TYPE != null" >
+        COLL_PER_TYPE,
+      </if>
+      <if test="TOTAL_AMT_SIGN != null" >
+        TOTAL_AMT_SIGN,
+      </if>
+      <if test="TRS_ASSET_TYPE != null" >
+        TRS_ASSET_TYPE,
+      </if>
+      <if test="CATEGORY != null and CATEGORY != emptyBigDecimalValue" >
+        CATEGORY,
+      </if>
+      <if test="AMOUNT2 != null and AMOUNT2 != emptyBigDecimalValue" >
+        AMOUNT2,
+      </if>
+      <if test="SOURCE_USAGES != null" >
+        SOURCE_USAGES,
+      </if>
+      <if test="OPERATOR1 != null" >
+        OPERATOR1,
+      </if>
+      <if test="DEAL_TENURE != null and DEAL_TENURE != emptyBigDecimalValue" >
+        DEAL_TENURE,
+      </if>
+      <if test="SECURITY_CODE1 != null and SECURITY_CODE1 != emptyBigDecimalValue" >
+        SECURITY_CODE1,
+      </if>
+      <if test="SECURITY_CODE2 != null and SECURITY_CODE2 != emptyBigDecimalValue" >
+        SECURITY_CODE2,
+      </if>
+      <if test="MAT_DATE != null" >
+        MAT_DATE,
+      </if>
+      <if test="CBK_CIF_TYPE != null" >
+        CBK_CIF_TYPE,
+      </if>
+      <if test="SECURITY_LISTED != null" >
+        SECURITY_LISTED,
+      </if>
+      <if test="DATE_TYPE != null" >
+        DATE_TYPE,
+      </if>
+      <if test="GL_TERM != null" >
+        GL_TERM,
+      </if>
+      DATE_UPDATED,
+      <if test="GENDER != null" >
+        GENDER,
+      </if>
+      <if test="SECURITY_CLASS != null" >
+        SECURITY_CLASS,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="COMP_CODE != null and COMP_CODE != emptyBigDecimalValue" >
+        #{COMP_CODE},
+      </if>
+      <if test="CRITERIA_CODE != null and CRITERIA_CODE != emptyBigDecimalValue" >
+        #{CRITERIA_CODE},
+      </if>
+      <if test="LINE_NO != null and LINE_NO != emptyBigDecimalValue" >
+        #{LINE_NO},
+      </if>
+      <if test="SUB_LINE_NO != null and SUB_LINE_NO != emptyBigDecimalValue" >
+        #{SUB_LINE_NO},
+      </if>
+      <if test="TEMP_CODE != null and TEMP_CODE != emptyBigDecimalValue" >
+        #{TEMP_CODE},
+      </if>
+      <if test="CODE1 != null and CODE1 != emptyBigDecimalValue" >
+        #{CODE1},
+      </if>
+      <if test="CODE2 != null and CODE2 != emptyBigDecimalValue" >
+        #{CODE2},
+      </if>
+      <if test="PERCENTAGE != null and PERCENTAGE != emptyBigDecimalValue" >
+        #{PERCENTAGE},
+      </if>
+      <if test="TYPE1 != null" >
+        #{TYPE1},
+      </if>
+      <if test="RESIDENT != null" >
+        #{RESIDENT},
+      </if>
+      <if test="INCLUDE != null" >
+        #{INCLUDE},
+      </if>
+      <if test="OPERATOR != null" >
+        #{OPERATOR},
+      </if>
+      <if test="AMOUNT != null and AMOUNT != emptyBigDecimalValue" >
+        #{AMOUNT},
+      </if>
+      <if test="DEBIT_CREDIT_IND != null" >
+        #{DEBIT_CREDIT_IND},
+      </if>
+      <if test="COLL_PER_TYPE != null" >
+        #{COLL_PER_TYPE},
+      </if>
+      <if test="TOTAL_AMT_SIGN != null" >
+        #{TOTAL_AMT_SIGN},
+      </if>
+      <if test="TRS_ASSET_TYPE != null" >
+        #{TRS_ASSET_TYPE},
+      </if>
+      <if test="CATEGORY != null and CATEGORY != emptyBigDecimalValue" >
+        #{CATEGORY},
+      </if>
+      <if test="AMOUNT2 != null and AMOUNT2 != emptyBigDecimalValue" >
+        #{AMOUNT2},
+      </if>
+      <if test="SOURCE_USAGES != null" >
+        #{SOURCE_USAGES},
+      </if>
+      <if test="OPERATOR1 != null" >
+        #{OPERATOR1},
+      </if>
+      <if test="DEAL_TENURE != null and DEAL_TENURE != emptyBigDecimalValue" >
+        #{DEAL_TENURE},
+      </if>
+      <if test="SECURITY_CODE1 != null and SECURITY_CODE1 != emptyBigDecimalValue" >
+        #{SECURITY_CODE1},
+      </if>
+      <if test="SECURITY_CODE2 != null and SECURITY_CODE2 != emptyBigDecimalValue" >
+        #{SECURITY_CODE2},
+      </if>
+      <if test="MAT_DATE != null" >
+        #{MAT_DATE},
+      </if>
+      <if test="CBK_CIF_TYPE != null" >
+        #{CBK_CIF_TYPE},
+      </if>
+      <if test="SECURITY_LISTED != null" >
+        #{SECURITY_LISTED},
+      </if>
+      <if test="DATE_TYPE != null" >
+        #{DATE_TYPE},
+      </if>
+      <if test="GL_TERM != null" >
+        #{GL_TERM},
+      </if>
+      <choose >
+        <when test="isSybase == 1" >
+           GETDATE(),
+        </when>
+        <otherwise >
+           SYSDATE,
+        </otherwise>
+      </choose>
+      <if test="GENDER != null" >
+        #{GENDER},
+      </if>
+      <if test="SECURITY_CLASS != null" >
+        #{SECURITY_CLASS},
+      </if>
+    </trim>
+  </insert>
+  <sql id="sql_updateGLSTMPLT_PARAM_LINK" >
+    update GLSTMPLT_PARAM_LINK
+    <set >
+      <if test="CODE1 != null" >
+        <choose >
+          <when test="CODE1 == emptyBigDecimalValue" >
+            CODE1 = NULL ,
+          </when>
+          <otherwise >
+            CODE1 = #{CODE1},
+          </otherwise>
+        </choose>
+      </if>
+      <if test="CODE2 != null" >
+        <choose >
+          <when test="CODE2 == emptyBigDecimalValue" >
+            CODE2 = NULL ,
+          </when>
+          <otherwise >
+            CODE2 = #{CODE2},
+          </otherwise>
+        </choose>
+      </if>
+      <if test="PERCENTAGE != null" >
+        <choose >
+          <when test="PERCENTAGE == emptyBigDecimalValue" >
+            PERCENTAGE = NULL ,
+          </when>
+          <otherwise >
+            PERCENTAGE = #{PERCENTAGE},
+          </otherwise>
+        </choose>
+      </if>
+      <if test="TYPE1 != null" >
+        TYPE1 = #{TYPE1},
+      </if>
+      <if test="RESIDENT != null" >
+        RESIDENT = #{RESIDENT},
+      </if>
+      <if test="INCLUDE != null" >
+        INCLUDE = #{INCLUDE},
+      </if>
+      <if test="OPERATOR != null" >
+        OPERATOR = #{OPERATOR},
+      </if>
+      <if test="AMOUNT != null" >
+        <choose >
+          <when test="AMOUNT == emptyBigDecimalValue" >
+            AMOUNT = NULL ,
+          </when>
+          <otherwise >
+            AMOUNT = #{AMOUNT},
+          </otherwise>
+        </choose>
+      </if>
+      <if test="DEBIT_CREDIT_IND != null" >
+        DEBIT_CREDIT_IND = #{DEBIT_CREDIT_IND},
+      </if>
+      <if test="COLL_PER_TYPE != null" >
+        COLL_PER_TYPE = #{COLL_PER_TYPE},
+      </if>
+      <if test="TOTAL_AMT_SIGN != null" >
+        TOTAL_AMT_SIGN = #{TOTAL_AMT_SIGN},
+      </if>
+      <if test="TRS_ASSET_TYPE != null" >
+        TRS_ASSET_TYPE = #{TRS_ASSET_TYPE},
+      </if>
+      <if test="CATEGORY != null" >
+        <choose >
+          <when test="CATEGORY == emptyBigDecimalValue" >
+            CATEGORY = NULL ,
+          </when>
+          <otherwise >
+            CATEGORY = #{CATEGORY},
+          </otherwise>
+        </choose>
+      </if>
+      <if test="AMOUNT2 != null" >
+        <choose >
+          <when test="AMOUNT2 == emptyBigDecimalValue" >
+            AMOUNT2 = NULL ,
+          </when>
+          <otherwise >
+            AMOUNT2 = #{AMOUNT2},
+          </otherwise>
+        </choose>
+      </if>
+      <if test="SOURCE_USAGES != null" >
+        SOURCE_USAGES = #{SOURCE_USAGES},
+      </if>
+      <if test="OPERATOR1 != null" >
+        OPERATOR1 = #{OPERATOR1},
+      </if>
+      <if test="DEAL_TENURE != null" >
+        <choose >
+          <when test="DEAL_TENURE == emptyBigDecimalValue" >
+            DEAL_TENURE = NULL ,
+          </when>
+          <otherwise >
+            DEAL_TENURE = #{DEAL_TENURE},
+          </otherwise>
+        </choose>
+      </if>
+      <if test="SECURITY_CODE1 != null" >
+        <choose >
+          <when test="SECURITY_CODE1 == emptyBigDecimalValue" >
+            SECURITY_CODE1 = NULL ,
+          </when>
+          <otherwise >
+            SECURITY_CODE1 = #{SECURITY_CODE1},
+          </otherwise>
+        </choose>
+      </if>
+      <if test="SECURITY_CODE2 != null" >
+        <choose >
+          <when test="SECURITY_CODE2 == emptyBigDecimalValue" >
+            SECURITY_CODE2 = NULL ,
+          </when>
+          <otherwise >
+            SECURITY_CODE2 = #{SECURITY_CODE2},
+          </otherwise>
+        </choose>
+      </if>
+      <if test="MAT_DATE != null" >
+        MAT_DATE = #{MAT_DATE},
+      </if>
+      <if test="CBK_CIF_TYPE != null" >
+        CBK_CIF_TYPE = #{CBK_CIF_TYPE},
+      </if>
+      <if test="SECURITY_LISTED != null" >
+        SECURITY_LISTED = #{SECURITY_LISTED},
+      </if>
+      <if test="DATE_TYPE != null" >
+        DATE_TYPE = #{DATE_TYPE},
+      </if>
+      <if test="GL_TERM != null" >
+        GL_TERM = #{GL_TERM},
+      </if>
+      DATE_UPDATED = 
+      <choose >
+        <when test="isSybase == 1" >
+           GETDATE(),
+        </when>
+        <otherwise >
+           SYSDATE,
+        </otherwise>
+      </choose>
+      <if test="GENDER != null" >
+        GENDER = #{GENDER},
+      </if>
+      <if test="SECURITY_CLASS != null" >
+        SECURITY_CLASS = #{SECURITY_CLASS},
+      </if>
+    </set>
+    where COMP_CODE = #{COMP_CODE}
+      and CRITERIA_CODE = #{CRITERIA_CODE}
+      and LINE_NO = #{LINE_NO}
+      and SUB_LINE_NO = #{SUB_LINE_NO}
+      and TEMP_CODE = #{TEMP_CODE}
+  </sql>
+  <update id="updateGLSTMPLT_PARAM_LINK" parameterType="com.path.dbmaps.vo.GLSTMPLT_PARAM_LINKVO" >
+    <include refid="sql_updateGLSTMPLT_PARAM_LINK" />
+    <if test="DATE_UPDATED != null" >
+      AND DATE_UPDATED = #{DATE_UPDATED}
+    </if>
+  </update>
+</mapper>

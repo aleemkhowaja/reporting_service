@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="IRP_FIELDS" >
+  <resultMap id="BaseResultMap" type="com.path.dbmaps.vo.IRP_FIELDSVO" >
+    <id column="ENTITY_DB_NAME" property="ENTITY_DB_NAME" />
+    <id column="FIELD_DB_NAME" property="FIELD_DB_NAME" />
+    <result column="FIELD_ALIAS" property="FIELD_ALIAS" />
+    <result column="FIELD_DATA_TYPE" property="FIELD_DATA_TYPE" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ENTITY_DB_NAME, FIELD_DB_NAME, FIELD_ALIAS, FIELD_DATA_TYPE
+  </sql>
+  <select id="selectIRP_FIELDS" resultMap="BaseResultMap" parameterType="com.path.dbmaps.vo.IRP_FIELDSVOKey" >
+    select 
+    <include refid="Base_Column_List" />
+    from IRP_FIELDS
+    where ENTITY_DB_NAME = #{ENTITY_DB_NAME}
+      and FIELD_DB_NAME = #{FIELD_DB_NAME}
+  </select>
+  <delete id="deleteIRP_FIELDS" parameterType="com.path.dbmaps.vo.IRP_FIELDSVOKey" >
+    delete from IRP_FIELDS
+    where ENTITY_DB_NAME = #{ENTITY_DB_NAME}
+      and FIELD_DB_NAME = #{FIELD_DB_NAME}
+  </delete>
+  <insert id="insertIRP_FIELDS" parameterType="com.path.dbmaps.vo.IRP_FIELDSVO" >
+    insert into IRP_FIELDS
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="ENTITY_DB_NAME != null" >
+        ENTITY_DB_NAME,
+      </if>
+      <if test="FIELD_DB_NAME != null" >
+        FIELD_DB_NAME,
+      </if>
+      <if test="FIELD_ALIAS != null" >
+        FIELD_ALIAS,
+      </if>
+      <if test="FIELD_DATA_TYPE != null" >
+        FIELD_DATA_TYPE,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="ENTITY_DB_NAME != null" >
+        #{ENTITY_DB_NAME},
+      </if>
+      <if test="FIELD_DB_NAME != null" >
+        #{FIELD_DB_NAME},
+      </if>
+      <if test="FIELD_ALIAS != null" >
+        #{FIELD_ALIAS},
+      </if>
+      <if test="FIELD_DATA_TYPE != null" >
+        #{FIELD_DATA_TYPE},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateIRP_FIELDS" parameterType="com.path.dbmaps.vo.IRP_FIELDSVO" >
+    update IRP_FIELDS
+    <set >
+      <if test="FIELD_ALIAS != null" >
+        FIELD_ALIAS = #{FIELD_ALIAS},
+      </if>
+      <if test="FIELD_DATA_TYPE != null" >
+        FIELD_DATA_TYPE = #{FIELD_DATA_TYPE},
+      </if>
+    </set>
+    where ENTITY_DB_NAME = #{ENTITY_DB_NAME}
+      and FIELD_DB_NAME = #{FIELD_DB_NAME}
+  </update>
+</mapper>

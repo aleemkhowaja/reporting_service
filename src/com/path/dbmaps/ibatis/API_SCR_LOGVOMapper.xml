@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="API_SCR_LOG" >
+  <resultMap id="BaseResultMap" type="com.path.dbmaps.vo.API_SCR_LOGVO" >
+    <id column="AUTO_INC" property="AUTO_INC" />
+    <id column="ENTITY_NAME" property="ENTITY_NAME" />
+    <id column="ENTITY_TYPE" property="ENTITY_TYPE" />
+    <result column="SERVER_DATE" property="SERVER_DATE" />
+    <result column="VERSION" property="VERSION" />
+    <result column="APP_NAME" property="APP_NAME" />
+    <result column="COMMENTS" property="COMMENTS" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    AUTO_INC, ENTITY_NAME, ENTITY_TYPE, SERVER_DATE, VERSION, APP_NAME, COMMENTS
+  </sql>
+  <select id="selectAPI_SCR_LOG" resultMap="BaseResultMap" parameterType="com.path.dbmaps.vo.API_SCR_LOGVO" >
+    select 
+    <include refid="Base_Column_List" />
+    from API_SCR_LOG
+    where AUTO_INC = #{AUTO_INC}
+      and ENTITY_NAME = #{ENTITY_NAME}
+      and ENTITY_TYPE = #{ENTITY_TYPE}
+  </select>
+  <delete id="deleteAPI_SCR_LOG" parameterType="com.path.dbmaps.vo.API_SCR_LOGVO" >
+    delete from API_SCR_LOG
+    where AUTO_INC = #{AUTO_INC}
+      and ENTITY_NAME = #{ENTITY_NAME}
+      and ENTITY_TYPE = #{ENTITY_TYPE}
+  </delete>
+  <insert id="insertAPI_SCR_LOG" parameterType="com.path.dbmaps.vo.API_SCR_LOGVO" >
+    insert into API_SCR_LOG
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="AUTO_INC != null and AUTO_INC != emptyBigDecimalValue" >
+        AUTO_INC,
+      </if>
+      <if test="ENTITY_NAME != null" >
+        ENTITY_NAME,
+      </if>
+      <if test="ENTITY_TYPE != null" >
+        ENTITY_TYPE,
+      </if>
+      <if test="SERVER_DATE != null" >
+        SERVER_DATE,
+      </if>
+      <if test="VERSION != null" >
+        VERSION,
+      </if>
+      <if test="APP_NAME != null" >
+        APP_NAME,
+      </if>
+      <if test="COMMENTS != null" >
+        COMMENTS,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="AUTO_INC != null and AUTO_INC != emptyBigDecimalValue" >
+        #{AUTO_INC},
+      </if>
+      <if test="ENTITY_NAME != null" >
+        #{ENTITY_NAME},
+      </if>
+      <if test="ENTITY_TYPE != null" >
+        #{ENTITY_TYPE},
+      </if>
+      <if test="SERVER_DATE != null" >
+        #{SERVER_DATE},
+      </if>
+      <if test="VERSION != null" >
+        #{VERSION},
+      </if>
+      <if test="APP_NAME != null" >
+        #{APP_NAME},
+      </if>
+      <if test="COMMENTS != null" >
+        #{COMMENTS},
+      </if>
+    </trim>
+  </insert>
+  <sql id="sql_updateAPI_SCR_LOG" >
+    update API_SCR_LOG
+    <set >
+      <if test="SERVER_DATE != null" >
+        SERVER_DATE = #{SERVER_DATE},
+      </if>
+      <if test="VERSION != null" >
+        VERSION = #{VERSION},
+      </if>
+      <if test="APP_NAME != null" >
+        APP_NAME = #{APP_NAME},
+      </if>
+      <if test="COMMENTS != null" >
+        COMMENTS = #{COMMENTS},
+      </if>
+    </set>
+    where AUTO_INC = #{AUTO_INC}
+      and ENTITY_NAME = #{ENTITY_NAME}
+      and ENTITY_TYPE = #{ENTITY_TYPE}
+  </sql>
+  <update id="updateAPI_SCR_LOG" parameterType="com.path.dbmaps.vo.API_SCR_LOGVO" >
+    <include refid="sql_updateAPI_SCR_LOG" />
+  </update>
+</mapper>

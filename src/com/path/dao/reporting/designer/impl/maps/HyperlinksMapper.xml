@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="hyperlinks" >
+
+  <resultMap id="retHyperlinksParamsMap" type="hyperlinkCO" >
+   <result column="ARGUMENT_TYPE" property="hyperlinkVO.ARGUMENT_TYPE" />
+   <result column="VALUE_STATIC" property="hyperlinkVO.VALUE_STATIC" />
+   <result column="FIELD_INDEX" property="hyperlinkVO.FIELD_INDEX" />
+   <result column="PARAM_TYPE" property="PARAM_TYPE" />
+   <result column="LINKED_REPORT_ID" property="hyperlinkVO.LINKED_REPORT_ID" />
+   <result column="LINKED_PROG_REF" property="LINKED_PROG_REF" />
+  </resultMap>
+  
+  <resultMap id="retHyperlinksListMap" type="hyperlinkCO" >
+    <id column="COLUMN_NAME" property="hyperlinkVO.COLUMN_NAME" />
+    <id column="REPORT_ID" property="hyperlinkVO.REPORT_ID" />
+    <result column="LINKED_REPORT_ID" property="hyperlinkVO.LINKED_REPORT_ID" />
+    <result column="REPORT_NAME" property="REPORT_NAME" />
+    <result column="LINKED_REP_NAME" property="LINKED_REP_NAME" />
+    <result column="HYPERLINK_PARAMS" property="HYPERLINK_PARAMS" />
+    <result column="FIELD_INDEX" property="hyperlinkVO.FIELD_INDEX" />
+    <result column="SAVE_FLAG" property="SAVE_FLAG" />
+    
+	<result column="ARGUMENT_ID" property="hyperlinkVO.ARGUMENT_ID" />
+    <result column="ARGUMENT_TYPE" property="hyperlinkVO.ARGUMENT_TYPE" />
+    <result column="VALUE_STATIC" property="hyperlinkVO.VALUE_STATIC" />
+    <result column="VALUE_SESSION" property="hyperlinkVO.VALUE_SESSION" />
+    <result column="VALUE_COLUMN" property="hyperlinkVO.VALUE_COLUMN" />
+     <result column="LINKED_FIELD_INDEX" property="hyperlinkVO.LINKED_FIELD_INDEX" />
+  </resultMap>
+  
+  
+    <resultMap id="retHyperlinkParamsMap" type="hyperlinkCO" >
+    <result column="COLUMN_NAME" property="hyperlinkVO.COLUMN_NAME" />
+    <result column="ARGUMENT_NAME" property="ARGUMENT_NAME" />
+    <result column="ARGUMENT_ID" property="hyperlinkVO.ARGUMENT_ID" />
+    <result column="ARGUMENT_TYPE" property="hyperlinkVO.ARGUMENT_TYPE" />
+    <result column="VALUE_STATIC" property="hyperlinkVO.VALUE_STATIC" />
+    <result column="VALUE_SESSION" property="hyperlinkVO.VALUE_SESSION" />
+    <result column="VALUE_COLUMN" property="hyperlinkVO.VALUE_COLUMN" />
+    <result column="REPORT_ID" property="hyperlinkVO.REPORT_ID" />
+    <result column="LINKED_REPORT_ID" property="hyperlinkVO.LINKED_REPORT_ID" />
+    <result column="PARAM_TYPE" property="PARAM_TYPE" />
+    <result column="LINKED_FIELD_INDEX" property="hyperlinkVO.LINKED_FIELD_INDEX" />
+    <result column="FIELD_INDEX" property="hyperlinkVO.FIELD_INDEX" />
+    <result column="DATE_UPDATED_STR" property="DATE_UPDATED_STR" />
+ 
+  </resultMap>
+  
+  <sql id="retHyperlinksListSql" >
+ SELECT DISTINCT H.REPORT_ID,
+                (SELECT R.REPORT_NAME
+                   FROM IRP_AD_HOC_REPORT R
+                  WHERE R.REPORT_ID = H.REPORT_ID) AS REPORT_NAME,
+                 (SELECT R.REPORT_NAME
+                   FROM IRP_AD_HOC_REPORT R
+                  WHERE R.REPORT_ID = H.LINKED_REPORT_ID) AS LINKED_REP_NAME,
+                H.COLUMN_NAME,
+                H.LINKED_REPORT_ID, 
+                null as HYPERLINK_PARAMS,
+                H.FIELD_INDEX,
+               'U' SAVE_FLAG,
+               
+               H.ARGUMENT_ID,
+               H.ARGUMENT_TYPE,
+               H.VALUE_STATIC,
+               H.VALUE_SESSION,
+               H.VALUE_COLUMN,
+               H.LINKED_FIELD_INDEX
+               
+  FROM IRP_REP_HYPERLINKS H
+   <if test = "rep_Id != null">
+	     WHERE H.REPORT_ID = #{rep_Id}
+	</if>
+  </sql>
+  
+  <sql id="retHyperlinkParamsListSql">
+  SELECT AR.ARGUMENT_NAME,
+       AR.ARGUMENT_ID,
+      (CASE
+          WHEN H.ARGUMENT_TYPE IS NULL THEN
+           0
+          ELSE
+           H.ARGUMENT_TYPE
+       	  END) ARGUMENT_TYPE,
+       (CASE
+         WHEN H.ARGUMENT_TYPE IS NULL THEN
+          AR.ARGUMENT_VALUE
+         ELSE
+          H.VALUE_STATIC
+       END) VALUE_STATIC,
+       H.VALUE_SESSION,
+       H.VALUE_COLUMN,
+       #{link_rep_Id} LINKED_REPORT_ID,
+       #{rep_Id} REPORT_ID,
+       AR.ARGUMENT_TYPE PARAM_TYPE,
+       LINKED_FIELD_INDEX,
+       #{field_index} FIELD_INDEX,
+       #{col_name} COLUMN_NAME,
+       <include refid="hyperlinksExt.retHyperlinkParamsListSql" />
+  FROM IRP_REP_ARGUMENTS AR
+  LEFT OUTER JOIN IRP_REP_HYPERLINKS H ON AR.ARGUMENT_ID = H.ARGUMENT_ID
+                                      AND AR.REPORT_ID = H.LINKED_REPORT_ID
+                                      AND H.REPORT_ID = #{rep_Id}
+ WHERE AR.REPORT_ID = #{link_rep_Id}
+  
+  
+  </sql>
+  
+  
+  <select id="retHyperlinksList" resultMap="retHyperlinksListMap" parameterType="designerGridSC" >
+    <include refid="servicesCommon.commonGridWrpBefFlip"/>
+	<include refid="retHyperlinksListSql"/>
+	<include refid="servicesCommon.commonGridWrpAftFlip"/>
+	<include refid="servicesCommon.commmonGridWrpFlipClose"/>
+  </select>
+  <select id="retHyperlinksCnt"   resultType="int" parameterType="designerGridSC">
+	<include refid="servicesCommon.commonGridWrpBefCnt"/>
+	<include refid="retHyperlinksListSql"/>
+	<include refid="servicesCommon.commonGridWrpAftCnt"/>
+	<include refid="servicesCommon.commonGridCountWrpClose"/>
+</select>
+
+
+
+  <select id="retHyperlinkParamsList" resultMap="retHyperlinkParamsMap" parameterType="designerGridSC" >
+    <include refid="servicesCommon.commonGridWrpBefFlip"/>
+	<include refid="retHyperlinkParamsListSql"/>
+	<include refid="servicesCommon.commonGridWrpAftFlip"/>
+	<include refid="servicesCommon.commmonGridWrpFlipClose"/>
+  </select>
+  <select id="retHyperlinkParamsCnt"   resultType="int" parameterType="designerGridSC">
+	<include refid="servicesCommon.commonGridWrpBefCnt"/>
+	<include refid="retHyperlinkParamsListSql"/>
+	<include refid="servicesCommon.commonGridWrpAftCnt"/>
+	<include refid="servicesCommon.commonGridCountWrpClose"/>
+</select>
+  
+  <delete id="deleteHyperlink" parameterType="hyperlinkCO" >
+	   DELETE FROM IRP_REP_HYPERLINKS
+	   WHERE FIELD_INDEX = #{hyperlinkVO.FIELD_INDEX}
+	     AND REPORT_ID = #{hyperlinkVO.REPORT_ID}
+	     <if test="PARAM_DELETE !=null">
+	     	AND ARGUMENT_ID = #{hyperlinkVO.ARGUMENT_ID}
+	       <if test="DATE_UPDATED_STR !=null">
+	     	<include refid="hyperlinksExt.deleteHyperlink" />
+	     </if>
+	     </if>
+ </delete>
+   
+   <select id="retHyperlinksParams" resultMap="retHyperlinksParamsMap" parameterType="designerGridSC" >
+	<include refid="hyperlinksExt.retHyperlinksParams" />
+  </select>
+  
+  <select id="retHypReportUsage"  parameterType="java.util.List" resultType="java.math.BigDecimal">
+	  SELECT DISTINCT LINKED_REPORT_ID FROM IRP_REP_HYPERLINKS WHERE LINKED_REPORT_ID IN
+	  <foreach item="item" index="index" collection="list"
+			open="(" separator="," close=")">
+			#{item}
+	</foreach>
+  </select>
+  
+  <select id="retIfRepHasHyp" parameterType="java.math.BigDecimal" resultType="int">
+  	SELECT COUNT(1) FROM IRP_REP_HYPERLINKS WHERE REPORT_ID=#{value}
+  </select>
+</mapper>

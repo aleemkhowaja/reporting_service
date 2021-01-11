@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="CBK_RPT_LINE" >
+  <resultMap id="BaseResultMap" type="com.path.dbmaps.vo.CBK_RPT_LINEVO" >
+    <id column="COMP_CODE" property="COMP_CODE" />
+    <id column="LINE_NBR" property="LINE_NBR" />
+    <id column="REP_REF" property="REP_REF" />
+    <result column="CSV_ITEM_ID" property="CSV_ITEM_ID" />
+    <result column="DATE_UPDATED" property="DATE_UPDATED" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    COMP_CODE, LINE_NBR, REP_REF, CSV_ITEM_ID, DATE_UPDATED
+  </sql>
+  <select id="selectCBK_RPT_LINE" resultMap="BaseResultMap" parameterType="com.path.dbmaps.vo.CBK_RPT_LINEVO" >
+    select 
+    <include refid="Base_Column_List" />
+    from CBK_RPT_LINE
+    where COMP_CODE = #{COMP_CODE}
+      and LINE_NBR = #{LINE_NBR}
+      and REP_REF = #{REP_REF}
+  </select>
+  <delete id="deleteCBK_RPT_LINE" parameterType="com.path.dbmaps.vo.CBK_RPT_LINEVO" >
+    delete from CBK_RPT_LINE
+    where COMP_CODE = #{COMP_CODE}
+      and LINE_NBR = #{LINE_NBR}
+      and REP_REF = #{REP_REF}
+  </delete>
+  <insert id="insertCBK_RPT_LINE" parameterType="com.path.dbmaps.vo.CBK_RPT_LINEVO" >
+    insert into CBK_RPT_LINE
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="COMP_CODE != null and COMP_CODE != emptyBigDecimalValue" >
+        COMP_CODE,
+      </if>
+      <if test="LINE_NBR != null and LINE_NBR != emptyBigDecimalValue" >
+        LINE_NBR,
+      </if>
+      <if test="REP_REF != null" >
+        REP_REF,
+      </if>
+      <if test="CSV_ITEM_ID != null" >
+        CSV_ITEM_ID,
+      </if>
+      DATE_UPDATED,
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="COMP_CODE != null and COMP_CODE != emptyBigDecimalValue" >
+        #{COMP_CODE},
+      </if>
+      <if test="LINE_NBR != null and LINE_NBR != emptyBigDecimalValue" >
+        #{LINE_NBR},
+      </if>
+      <if test="REP_REF != null" >
+        #{REP_REF},
+      </if>
+      <if test="CSV_ITEM_ID != null" >
+        #{CSV_ITEM_ID},
+      </if>
+      <choose >
+        <when test="isSybase == 1" >
+           GETDATE(),
+        </when>
+        <otherwise >
+           SYSDATE,
+        </otherwise>
+      </choose>
+    </trim>
+  </insert>
+  <sql id="sql_updateCBK_RPT_LINE" >
+    update CBK_RPT_LINE
+    <set >
+      <if test="CSV_ITEM_ID != null" >
+        CSV_ITEM_ID = #{CSV_ITEM_ID},
+      </if>
+      DATE_UPDATED = 
+      <choose >
+        <when test="isSybase == 1" >
+           GETDATE(),
+        </when>
+        <otherwise >
+           SYSDATE,
+        </otherwise>
+      </choose>
+    </set>
+    where COMP_CODE = #{COMP_CODE}
+      and LINE_NBR = #{LINE_NBR}
+      and REP_REF = #{REP_REF}
+  </sql>
+  <update id="updateCBK_RPT_LINE" parameterType="com.path.dbmaps.vo.CBK_RPT_LINEVO" >
+    <include refid="sql_updateCBK_RPT_LINE" />
+    <if test="DATE_UPDATED != null" >
+      AND DATE_UPDATED = #{DATE_UPDATED}
+    </if>
+  </update>
+</mapper>

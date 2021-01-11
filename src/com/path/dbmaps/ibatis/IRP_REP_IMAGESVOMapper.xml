@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="IRP_REP_IMAGES" >
+  <resultMap id="BaseResultMap" type="com.path.dbmaps.vo.IRP_REP_IMAGESVO" >
+    <id column="IMAGE_NAME" property="IMAGE_NAME" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.path.dbmaps.vo.IRP_REP_IMAGESVO" extends="BaseResultMap" >
+    <result column="IMAGE_OBJECT" property="IMAGE_OBJECT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    IMAGE_NAME
+  </sql>
+  <sql id="Blob_Column_List" >
+    IMAGE_OBJECT
+  </sql>
+  <select id="selectIRP_REP_IMAGES" resultMap="ResultMapWithBLOBs" parameterType="com.path.dbmaps.vo.IRP_REP_IMAGESVO" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from IRP_REP_IMAGES
+    where IMAGE_NAME = #{IMAGE_NAME}
+  </select>
+  <delete id="deleteIRP_REP_IMAGES" parameterType="com.path.dbmaps.vo.IRP_REP_IMAGESVO" >
+    delete from IRP_REP_IMAGES
+    where IMAGE_NAME = #{IMAGE_NAME}
+  </delete>
+  <insert id="insertIRP_REP_IMAGES" parameterType="com.path.dbmaps.vo.IRP_REP_IMAGESVO" >
+    insert into IRP_REP_IMAGES
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="IMAGE_NAME != null" >
+        IMAGE_NAME,
+      </if>
+      <if test="IMAGE_OBJECT != null" >
+        IMAGE_OBJECT,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="IMAGE_NAME != null" >
+        #{IMAGE_NAME},
+      </if>
+      <if test="IMAGE_OBJECT != null" >
+        #{IMAGE_OBJECT},
+      </if>
+    </trim>
+  </insert>
+  <sql id="sql_updateIRP_REP_IMAGES" >
+    update IRP_REP_IMAGES
+    <set >
+      <if test="IMAGE_OBJECT != null" >
+        IMAGE_OBJECT = #{IMAGE_OBJECT},
+      </if>
+    </set>
+    where IMAGE_NAME = #{IMAGE_NAME}
+  </sql>
+  <update id="updateIRP_REP_IMAGES" parameterType="com.path.dbmaps.vo.IRP_REP_IMAGESVO" >
+    <include refid="sql_updateIRP_REP_IMAGES" />
+  </update>
+</mapper>

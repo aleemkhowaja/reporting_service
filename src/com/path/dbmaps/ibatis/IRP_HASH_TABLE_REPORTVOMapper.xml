@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="IRP_HASH_TABLE_REPORT" >
+  <resultMap id="BaseResultMap" type="com.path.dbmaps.vo.IRP_HASH_TABLE_REPORTVO" >
+    <id column="HASH_TABLE_ID" property="HASH_TABLE_ID" />
+    <id column="REPORT_ID" property="REPORT_ID" />
+  </resultMap>
+  <delete id="deleteIRP_HASH_TABLE_REPORT" parameterType="com.path.dbmaps.vo.IRP_HASH_TABLE_REPORTVO" >
+    delete from IRP_HASH_TABLE_REPORT
+    where HASH_TABLE_ID = #{HASH_TABLE_ID}
+      and REPORT_ID = #{REPORT_ID}
+  </delete>
+  <insert id="insertIRP_HASH_TABLE_REPORT" parameterType="com.path.dbmaps.vo.IRP_HASH_TABLE_REPORTVO" >
+    insert into IRP_HASH_TABLE_REPORT
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="HASH_TABLE_ID != null and HASH_TABLE_ID != emptyBigDecimalValue" >
+        HASH_TABLE_ID,
+      </if>
+      <if test="REPORT_ID != null and REPORT_ID != emptyBigDecimalValue" >
+        REPORT_ID,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="HASH_TABLE_ID != null and HASH_TABLE_ID != emptyBigDecimalValue" >
+        #{HASH_TABLE_ID},
+      </if>
+      <if test="REPORT_ID != null and REPORT_ID != emptyBigDecimalValue" >
+        #{REPORT_ID},
+      </if>
+    </trim>
+  </insert>
+</mapper>

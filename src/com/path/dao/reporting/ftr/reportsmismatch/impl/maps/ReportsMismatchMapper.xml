@@ -1,0 +1,435 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+        "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="reportsMismatchMapper">
+
+<resultMap type="REP_MISMATCH_PARAMCO"  						id="getReportsMismatchMap">     
+  <result property="repMismatchParamVO.REP_MISMATCH_ID" 		column="REP_MISMATCH_ID"/>
+  <result property="repMismatchParamVO.COMP_CODE" 				column="COMP_CODE"/>
+  <result property="repMismatchParamVO.REP_REFERENCE" 			column="REP_REFERENCE"/>
+  <result property="repMismatchParamVO.CRITERIA_CODE" 			column="CRITERIA_CODE"/>
+  <result property="repMismatchParamVO.MISMATCH_TYPE" 			column="MISMATCH_TYPE"/>
+  <result property="repMismatchParamVO.ROW_YN"		 			column="ROW_YN"/>
+  <result property="repMismatchParamVO.CRITERIA_COLUMN"			column="CRITERIA_COLUMN"/>
+  <result property="repMismatchParamVO.COLUMN_TYPE" 			column="COLUMN_TYPE"/>
+  <result property="repMismatchParamVO.DATE_UPDATED" 			column="DATE_UPDATED"/>
+  <result property="oldCrt" 									column="oldCrt"/>
+  <result property="oldProgRef" 								column="oldProgRef"/>
+  <result property="relRep" 								    column="relRep"/>
+  <result property="relCols" 									column="relCols"/>
+  <result property="relCrt" 									column="relCrt"/>
+  <result property="CRT_COL" 									column="CRT_COL"/>
+  <result property="PARENT_ID" 									column="PARENT_ID"/>
+  <result property="CONCAT_KEY" 								column="CONCAT_KEY"/>
+</resultMap>
+
+<resultMap type="REP_SNAPSHOT_PARAMCO"  						id="getReportsMismatchLookupMap">     
+  <result property="repSnapshotParamVO.REP_REFERENCE" 			column="REP_REFERENCE"/>
+  <result property="PROG_DESC" 									column="progDesc"/>
+</resultMap>
+
+
+<sql id="getReportsMismatchListSql">
+SELECT CRITERIA_CODE,
+       REP_MISMATCH_ID,
+       COMP_CODE,
+       REP_REFERENCE,
+       MISMATCH_TYPE,
+       ROW_YN,
+       CRITERIA_COLUMN,
+       COLUMN_TYPE,
+       '' AS relRep,
+       '' AS relCols,
+       '' AS relCrt,
+       CRITERIA_CODE AS oldCrt,
+       REP_REFERENCE AS oldProgRef,
+       CRITERIA_COLUMN AS CRT_COL       
+  FROM REP_MISMATCH_PARAM
+ WHERE COMP_CODE = #{compCode}
+   AND MISMATCH_TYPE = #{misType}
+   AND REP_MISMATCH_ID =
+       (CASE WHEN #{misType} = 1 THEN
+        (SELECT MIN(REP_MISMATCH_ID)
+           FROM REP_MISMATCH_PARAM A
+          WHERE REP_MISMATCH_PARAM.CRITERIA_CODE = A.CRITERIA_CODE
+            AND REP_MISMATCH_PARAM.COMP_CODE = A.COMP_CODE
+            AND REP_MISMATCH_PARAM.MISMATCH_TYPE = A.MISMATCH_TYPE) ELSE
+        REP_MISMATCH_ID END)
+</sql>
+
+<sql id="lookupMisSql">
+	   SELECT PROG_REF AS REP_REFERENCE,REPORT_NAME AS progDesc FROM ( 
+	   	SELECT  IR.REPORT_NAME
+	       ,IR.PROG_REF
+	       ,'1' AS FTR_REP_YN
+	FROM IRP_AD_HOC_REPORT IR
+	UNION
+	SELECT  FO.BRIEF_NAME_ENG REPORT_NAME
+	       ,FO.PROG_REF 	  PROG_REF
+		   ,'0' AS 			  FTR_REP_YN
+	FROM FTR_OPT FO
+	WHERE FO.STANDARD_FLAG_YN ='N'
+	AND FO.APP_NAME =#{appName})TBL
+	   WHERE EXISTS (SELECT 1 FROM REP_SNAPSHOT_PARAM P WHERE P.REP_REFERENCE = TBL.PROG_REF)
+</sql>
+
+<sql id="getRelatedReportsMismatchListSql">
+	
+	SELECT REP_MISMATCH_PARAM.REP_MISMATCH_ID,
+	       REP_MISMATCH_PARAM.COMP_CODE,
+	       REP_MISMATCH_PARAM.REP_REFERENCE,
+	       REP_MISMATCH_PARAM.CRITERIA_CODE,
+	       REP_MISMATCH_PARAM.MISMATCH_TYPE,
+	       REP_MISMATCH_PARAM.ROW_YN,
+	       REP_MISMATCH_PARAM.CRITERIA_COLUMN,
+	       REP_MISMATCH_PARAM.COLUMN_TYPE,
+	       CRITERIA_COLUMN AS CRT_COL,
+	       CRITERIA_CODE AS oldCrt,
+       	   REP_REFERENCE AS oldProgRef
+	  FROM REP_MISMATCH_PARAM
+	 WHERE REP_MISMATCH_PARAM.COMP_CODE = #{compCode}
+	   AND REP_MISMATCH_PARAM.MISMATCH_TYPE = #{misType}
+	   AND REP_REFERENCE NOT IN
+       (SELECT REP_REFERENCE
+          FROM REP_MISMATCH_PARAM P
+         WHERE P.REP_MISMATCH_ID =
+               (SELECT MIN(REP_MISMATCH_ID)
+                  FROM REP_MISMATCH_PARAM PP
+                 WHERE CRITERIA_CODE = #{criteriaCode}
+                 AND PP.MISMATCH_TYPE=1))
+	   AND CRITERIA_CODE=#{criteriaCode}
+	
+</sql>
+
+<resultMap type="REP_MISMATCH_INTRA_CRITERIACO"  						id="retReportsMismatchRelCriteriaMap">     
+  <result property="repMismatchIntraCriteriaVO.REP_MISMATCH_ID" 			column="REP_MISMATCH_ID"/>
+  <result property="repMismatchIntraCriteriaVO.RELATED_CRITERIA" 			column="RELATED_CRITERIA"/>
+</resultMap>
+
+<sql id="retReportsMismatchRelCriteriaListSql">
+	SELECT REP_MISMATCH_ID,RELATED_CRITERIA FROM REP_MISMATCH_INTRA_CRITERIA WHERE REP_MISMATCH_ID = #{REP_MISMATCH_ID} 
+</sql>
+
+<select id="retReportsMismatchRelCriteriaList"  resultMap="retReportsMismatchRelCriteriaMap" parameterType="reportsMismatchSC">
+	<include refid="servicesCommon.commonGridWrpBefFlip"/>
+	<include refid="retReportsMismatchRelCriteriaListSql"/>
+	<include refid="servicesCommon.commonGridWrpAftFlip"/>
+	<include refid="servicesCommon.commmonGridWrpFlipClose"/>
+</select>
+
+
+<select id="retReportsMismatchRelCriteriaListCount"   resultType="int" parameterType="reportsMismatchSC">
+	<include refid="servicesCommon.commonGridWrpBefCnt"/>
+	<include refid="retReportsMismatchRelCriteriaListSql"/>
+	<include refid="servicesCommon.commonGridWrpAftCnt"/>
+	<include refid="servicesCommon.commonGridCountWrpClose"/>
+</select>
+
+
+
+
+
+
+
+<select id="getReportsMismatchList"  resultMap="getReportsMismatchMap" parameterType="reportsMismatchSC">
+	<include refid="servicesCommon.commonGridWrpBefFlip"/>
+	<include refid="getReportsMismatchListSql"/>
+	<include refid="servicesCommon.commonGridWrpAftFlip"/>
+	<include refid="servicesCommon.commmonGridWrpFlipClose"/>
+</select>
+
+
+<select id="getReportsMismatchListCount"   resultType="int" parameterType="reportsMismatchSC">
+	<include refid="servicesCommon.commonGridWrpBefCnt"/>
+	<include refid="getReportsMismatchListSql"/>
+	<include refid="servicesCommon.commonGridWrpAftCnt"/>
+	<include refid="servicesCommon.commonGridCountWrpClose"/>
+</select>
+
+<select id="getReportsMismatchLookupList" resultMap="getReportsMismatchLookupMap" parameterType="reportsMismatchSC">
+	<include refid="servicesCommon.commonGridWrpBefFlip"/>
+	<include refid="lookupMisSql"/>
+	<include refid="servicesCommon.commonGridWrpAftFlip"/>
+	<include refid="servicesCommon.commmonGridWrpFlipClose"/>	
+</select>
+
+<select id="getReportsMismatchLookupListCount"   resultType="int" parameterType="reportsMismatchSC">
+	<include refid="servicesCommon.commonGridWrpBefCnt"/>
+	<include refid="lookupMisSql"/>
+	<include refid="servicesCommon.commonGridWrpAftCnt"/>
+	<include refid="servicesCommon.commonGridCountWrpClose"/>
+</select>
+
+
+<resultMap type="REP_MISMATCH_COLUMNCO"  						id="getReportsMismatchRelColsMap">     
+  <result property="repMismatchColumnVO.REP_MISMATCH_ID" 			column="REP_MISMATCH_ID"/>
+  <result property="repMismatchColumnVO.RELATED_COLUMN" 			column="RELATED_COLUMN"/>
+  <result property="repMismatchColumnVO.COLUMN_TYPE" 				column="COLUMN_TYPE"/>
+  <result property="CRITERIA_COL" 									column="CRITERIA_COLUMN"/>
+  <result property="TECH_COL_NAME" 									column="TECH_COL_NAME"/>
+</resultMap>
+
+
+<sql id="getReportsMismatchRelColsSql">
+	SELECT REP_MISMATCH_ID,RELATED_COLUMN,COLUMN_TYPE,RELATED_COLUMN as TECH_COL_NAME  FROM REP_MISMATCH_COLUMN WHERE REP_MISMATCH_ID = #{REP_MISMATCH_ID} 
+	AND COLUMN_TYPE = 'N'
+</sql>
+
+
+<select id="getReportsMismatchRelColsList"  resultMap="getReportsMismatchRelColsMap" parameterType="reportsMismatchSC">
+	<include refid="servicesCommon.commonGridWrpBefFlip"/>
+	<include refid="getReportsMismatchRelColsSql"/>
+	<include refid="servicesCommon.commonGridWrpAftFlip"/>
+	<include refid="servicesCommon.commmonGridWrpFlipClose"/>
+</select>
+
+
+<select id="getReportsMismatchRelColsListCount"   resultType="int" parameterType="reportsMismatchSC">
+	<include refid="servicesCommon.commonGridWrpBefCnt"/>
+	<include refid="getReportsMismatchRelColsSql"/>
+	<include refid="servicesCommon.commonGridWrpAftCnt"/>
+	<include refid="servicesCommon.commonGridCountWrpClose"/>
+</select>
+
+<select id="getRelatedReportsMismatchList"  resultMap="getReportsMismatchMap" parameterType="reportsMismatchSC">
+	<include refid="servicesCommon.commonGridWrpBefFlip"/>
+	<include refid="getRelatedReportsMismatchListSql"/>
+	<include refid="servicesCommon.commonGridWrpAftFlip"/>
+	<include refid="servicesCommon.commmonGridWrpFlipClose"/>
+</select>
+
+
+<select id="getRelatedReportsMismatchListCount"   resultType="int" parameterType="reportsMismatchSC">
+	<include refid="servicesCommon.commonGridWrpBefCnt"/>
+	<include refid="getRelatedReportsMismatchListSql"/>
+	<include refid="servicesCommon.commonGridWrpAftCnt"/>
+	<include refid="servicesCommon.commonGridCountWrpClose"/>
+</select>
+
+<!-- added an if to the below query to handle the case where user is deleting main grid's record -->
+<delete id="deleteRelColsByRelRep" parameterType="ReportsMismatchSC">
+	DELETE FROM REP_MISMATCH_COLUMN WHERE REP_MISMATCH_ID = #{REP_MISMATCH_ID} 
+	  <if test="dateUpdated != null ">
+         AND #{dateUpdated}=(SELECT DATE_UPDATED FROM REP_MISMATCH_PARAM WHERE REP_MISMATCH_ID = #{parentId})
+      </if>	
+</delete>
+
+<delete id="deleteRelColByProgRefCriteria"    parameterType="reportsMismatchSC">
+	DELETE FROM REP_MISMATCH_COLUMN
+	 WHERE REP_MISMATCH_ID =
+	       (SELECT REP_MISMATCH_ID
+	          FROM REP_MISMATCH_PARAM P
+	         WHERE P.REP_REFERENCE = #{repReference}
+	           AND P.CRITERIA_CODE = #{criteriaCode}
+	           AND P.MISMATCH_TYPE = #{misType})
+	   AND #{dateUpdated} =
+	       (SELECT DATE_UPDATED
+	          FROM REP_MISMATCH_PARAM P
+	         WHERE P.REP_REFERENCE = #{repReference}
+	           AND P.CRITERIA_CODE = #{criteriaCode}
+	           AND P.MISMATCH_TYPE = #{misType})
+</delete>
+
+<!-- added an if to the below query to handle the case where user is deleting main grid's record -->
+<delete id="deleteRelCrtById" parameterType="ReportsMismatchSC">
+	DELETE FROM REP_MISMATCH_INTRA_CRITERIA WHERE REP_MISMATCH_ID = #{REP_MISMATCH_ID} 
+	<if test="dateUpdated != null ">
+        AND #{dateUpdated}=(SELECT DATE_UPDATED FROM REP_MISMATCH_PARAM WHERE REP_MISMATCH_ID = #{parentId})
+    </if>	
+</delete>
+
+<delete id="deleteRelCrtByProgRefCriteria"    parameterType="reportsMismatchSC">
+	DELETE FROM REP_MISMATCH_INTRA_CRITERIA
+	 WHERE REP_MISMATCH_ID =
+	       (SELECT REP_MISMATCH_ID
+	          FROM REP_MISMATCH_PARAM P
+	         WHERE P.REP_REFERENCE = #{repReference}
+	           AND P.CRITERIA_CODE = #{criteriaCode}
+	           AND P.MISMATCH_TYPE = #{misType})
+	   AND #{dateUpdated} =
+	       (SELECT DATE_UPDATED
+	          FROM REP_MISMATCH_PARAM P
+	         WHERE P.REP_REFERENCE = #{repReference}
+	           AND P.CRITERIA_CODE = #{criteriaCode}
+	           AND P.MISMATCH_TYPE = #{misType})
+</delete>
+
+<insert id="insertRelatedReports" parameterType="com.path.dbmaps.vo.REP_MISMATCH_PARAMVO" >
+    insert into REP_MISMATCH_PARAM
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="REP_MISMATCH_ID != null and REP_MISMATCH_ID != emptyBigDecimalValue" >
+        REP_MISMATCH_ID,
+      </if>
+      <if test="COMP_CODE != null and COMP_CODE != emptyBigDecimalValue" >
+        COMP_CODE,
+      </if>
+      <if test="REP_REFERENCE != null" >
+        REP_REFERENCE,
+      </if>
+      <if test="CRITERIA_CODE != null" >
+        CRITERIA_CODE,
+      </if>
+      <if test="MISMATCH_TYPE != null and MISMATCH_TYPE != emptyBigDecimalValue" >
+        MISMATCH_TYPE,
+      </if>
+      <if test="ROW_YN != null and ROW_YN != emptyBigDecimalValue" >
+        ROW_YN,
+      </if>
+      <if test="CRITERIA_COLUMN != null" >
+        CRITERIA_COLUMN,
+      </if>
+      <if test="COLUMN_TYPE != null" >
+        COLUMN_TYPE,
+      </if>
+      DATE_UPDATED,
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="REP_MISMATCH_ID != null and REP_MISMATCH_ID != emptyBigDecimalValue" >
+        #{REP_MISMATCH_ID},
+      </if>
+      <if test="COMP_CODE != null and COMP_CODE != emptyBigDecimalValue" >
+        #{COMP_CODE},
+      </if>
+      <if test="REP_REFERENCE != null" >
+        #{REP_REFERENCE},
+      </if>
+      <if test="CRITERIA_CODE != null" >
+        #{CRITERIA_CODE},
+      </if>
+      <if test="MISMATCH_TYPE != null and MISMATCH_TYPE != emptyBigDecimalValue" >
+        #{MISMATCH_TYPE},
+      </if>
+      <if test="ROW_YN != null and ROW_YN != emptyBigDecimalValue" >
+        #{ROW_YN},
+      </if>
+      <if test="CRITERIA_COLUMN != null" >
+        #{CRITERIA_COLUMN},
+      </if>
+      <if test="COLUMN_TYPE != null" >
+        #{COLUMN_TYPE},
+      </if>
+      #{DATE_UPDATED}
+    </trim>
+</insert>
+
+
+  <sql id="sql_updateREP_MISMATCH_PARAM" >
+    update REP_MISMATCH_PARAM
+    <set >
+      <if test="repMismatchParamVO.COMP_CODE != null" >
+        <choose >
+          <when test="repMismatchParamVO.COMP_CODE == emptyBigDecimalValue" >
+            COMP_CODE = NULL ,
+          </when>
+          <otherwise >
+            COMP_CODE = #{repMismatchParamVO.COMP_CODE},
+          </otherwise>
+        </choose>
+      </if>
+      <if test="repMismatchParamVO.REP_REFERENCE != null" >
+        REP_REFERENCE = #{repMismatchParamVO.REP_REFERENCE},
+      </if>
+      <if test="repMismatchParamVO.CRITERIA_CODE != null" >
+        CRITERIA_CODE = #{repMismatchParamVO.CRITERIA_CODE},
+      </if>
+      <if test="repMismatchParamVO.MISMATCH_TYPE != null" >
+        <choose >
+          <when test="repMismatchParamVO.MISMATCH_TYPE == emptyBigDecimalValue" >
+            MISMATCH_TYPE = NULL ,
+          </when>
+          <otherwise >
+            MISMATCH_TYPE = #{repMismatchParamVO.MISMATCH_TYPE},
+          </otherwise>
+        </choose>
+      </if>
+      <if test="repMismatchParamVO.ROW_YN != null" >
+        <choose >
+          <when test="repMismatchParamVO.ROW_YN == emptyBigDecimalValue" >
+            ROW_YN = NULL ,
+          </when>
+          <otherwise >
+            ROW_YN = #{repMismatchParamVO.ROW_YN},
+          </otherwise>
+        </choose>
+      </if>
+      <if test="repMismatchParamVO.CRITERIA_COLUMN != null" >
+        CRITERIA_COLUMN = #{repMismatchParamVO.CRITERIA_COLUMN},
+      </if>
+      <if test="repMismatchParamVO.COLUMN_TYPE != null" >
+        COLUMN_TYPE = #{repMismatchParamVO.COLUMN_TYPE},
+      </if>
+    </set>
+    where REP_MISMATCH_ID = #{repMismatchParamVO.REP_MISMATCH_ID}
+  </sql>
+<update id="updateRelatedReport" parameterType="REP_MISMATCH_PARAMCO">
+    <include refid="sql_updateREP_MISMATCH_PARAM" />
+    AND #{repMismatchParamVO.DATE_UPDATED}=(SELECT DATE_UPDATED FROM REP_MISMATCH_PARAM PP WHERE PP.REP_MISMATCH_ID = #{PARENT_ID} 
+    AND MISMATCH_TYPE = #{repMismatchParamVO.MISMATCH_TYPE})
+</update>
+
+<select id="checkIfDateUpdatedModified"   resultType="int" parameterType="reportsMismatchSC">
+	SELECT (CASE WHEN P.DATE_UPDATED=#{dateUpdated} THEN 1 ELSE 0 END) AS VAL 
+		FROM REP_MISMATCH_PARAM P WHERE P.REP_MISMATCH_ID = #{parentId} AND P.MISMATCH_TYPE = #{misType}
+</select>
+
+<select id="fillHashInterIntraInit" parameterType="reportsMismatchSC" resultMap="getReportsMismatchMap">
+SELECT  REP_REFERENCE
+	<choose><when test="isSQLServer == 1">+'~'+</when><otherwise>||'~'||</otherwise></choose>
+ CRITERIA_CODE AS CONCAT_KEY, 
+		P.REP_MISMATCH_ID,
+		(SELECT MIN(REP_MISMATCH_ID)
+          FROM REP_MISMATCH_PARAM PP
+         WHERE PP.CRITERIA_CODE = P.CRITERIA_CODE
+         AND PP.MISMATCH_TYPE = #{misType}) AS PARENT_ID,
+	<if test="misType == 1" >
+         (CASE
+         WHEN ((SELECT MIN(REP_MISMATCH_ID)
+                  FROM REP_MISMATCH_PARAM PP
+                 WHERE PP.CRITERIA_CODE = P.CRITERIA_CODE
+                 AND PP.MISMATCH_TYPE=#{misType})  <![CDATA[ <> ]]> 
+              P.REP_MISMATCH_ID) THEN
+          (SELECT DATE_UPDATED
+             FROM REP_MISMATCH_PARAM
+            WHERE REP_MISMATCH_ID =
+                  (SELECT MIN(REP_MISMATCH_ID)
+                     FROM REP_MISMATCH_PARAM PP
+                    WHERE PP.CRITERIA_CODE = P.CRITERIA_CODE
+                    AND PP.MISMATCH_TYPE=#{misType}))
+         ELSE
+          P.DATE_UPDATED
+       END) AS DATE_UPDATED,
+	</if>  
+       COMP_CODE,
+       REP_REFERENCE,
+       CRITERIA_CODE,
+       MISMATCH_TYPE,
+       ROW_YN,
+       CRITERIA_COLUMN,
+       COLUMN_TYPE
+   <if test="misType ==0">
+   	   ,DATE_UPDATED
+   </if>
+  FROM REP_MISMATCH_PARAM P
+ WHERE MISMATCH_TYPE = #{misType}
+</select>
+
+<update id="updateMainRecordDateUpdated"  parameterType="reportsMismatchSC">
+	UPDATE REP_MISMATCH_PARAM
+	   SET DATE_UPDATED = 
+	   <choose >
+        <when test="isSybase == 1" >
+           GETDATE()
+        </when>
+        <otherwise >
+           SYSDATE
+        </otherwise>
+      </choose>
+	 WHERE REP_MISMATCH_ID =
+	       (SELECT MIN(REP_MISMATCH_ID)
+	          FROM REP_MISMATCH_PARAM PP
+	         WHERE PP.CRITERIA_CODE = #{criteriaCode})
+	   AND DATE_UPDATED = #{dateUpdated}
+	   AND MISMATCH_TYPE = #{misType}
+	   
+</update>
+</mapper>

@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="IRP_VERIFIED_REPORTS" >
+  <resultMap id="BaseResultMap" type="com.path.dbmaps.vo.IRP_VERIFIED_REPORTSVO" >
+    <result column="BRANCH_CODE" property="BRANCH_CODE" />
+    <result column="USER_ID" property="USER_ID" />
+    <result column="VERIFICATION_DATE" property="VERIFICATION_DATE" />
+    <result column="REP_ID" property="REP_ID" />
+    <result column="PAGES_NUMBER" property="PAGES_NUMBER" />
+    <result column="REP_TITLE" property="REP_TITLE" />
+    <result column="PROG_REF" property="PROG_REF" />
+    <result column="APP_NAME" property="APP_NAME" />
+    <result column="VERIFICATION_ID" property="VERIFICATION_ID" />
+  </resultMap>
+  <insert id="insertIRP_VERIFIED_REPORTS" parameterType="com.path.dbmaps.vo.IRP_VERIFIED_REPORTSVO" >
+    insert into IRP_VERIFIED_REPORTS
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="BRANCH_CODE != null and BRANCH_CODE != emptyBigDecimalValue" >
+        BRANCH_CODE,
+      </if>
+      <if test="USER_ID != null" >
+        USER_ID,
+      </if>
+      <if test="VERIFICATION_DATE != null" >
+        VERIFICATION_DATE,
+      </if>
+      <if test="REP_ID != null and REP_ID != emptyBigDecimalValue" >
+        REP_ID,
+      </if>
+      <if test="PAGES_NUMBER != null and PAGES_NUMBER != emptyBigDecimalValue" >
+        PAGES_NUMBER,
+      </if>
+      <if test="REP_TITLE != null" >
+        REP_TITLE,
+      </if>
+      <if test="PROG_REF != null" >
+        PROG_REF,
+      </if>
+      <if test="APP_NAME != null" >
+        APP_NAME,
+      </if>
+      <if test="VERIFICATION_ID != null and VERIFICATION_ID != emptyBigDecimalValue" >
+        VERIFICATION_ID,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="BRANCH_CODE != null and BRANCH_CODE != emptyBigDecimalValue" >
+        #{BRANCH_CODE},
+      </if>
+      <if test="USER_ID != null" >
+        #{USER_ID},
+      </if>
+      <if test="VERIFICATION_DATE != null" >
+        #{VERIFICATION_DATE},
+      </if>
+      <if test="REP_ID != null and REP_ID != emptyBigDecimalValue" >
+        #{REP_ID},
+      </if>
+      <if test="PAGES_NUMBER != null and PAGES_NUMBER != emptyBigDecimalValue" >
+        #{PAGES_NUMBER},
+      </if>
+      <if test="REP_TITLE != null" >
+        #{REP_TITLE},
+      </if>
+      <if test="PROG_REF != null" >
+        #{PROG_REF},
+      </if>
+      <if test="APP_NAME != null" >
+        #{APP_NAME},
+      </if>
+      <if test="VERIFICATION_ID != null and VERIFICATION_ID != emptyBigDecimalValue" >
+        #{VERIFICATION_ID},
+      </if>
+    </trim>
+  </insert>
+</mapper>
